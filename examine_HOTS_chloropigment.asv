@@ -33,6 +33,11 @@ days = day + datetime(1988,09,30);
 days = reshape(days,101,[]);
 
 figure
+% z = peaks;
+% [c,h] = contourf(z);
+% clabel(c,h)
+% colorbar
+
 [a,b] = contourf(chloro2D);
-% clabel(a,b);
-colorbar;
+clabel(a,b);
+colorbar
