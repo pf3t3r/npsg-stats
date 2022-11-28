@@ -1,4 +1,8 @@
 close all; clc; clear;
+set(groot,'defaultAxesXGrid','on');
+set(groot,'defaultAxesYGrid','on');
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
+set(0,'defaultAxesFontSize',18);
 
 % File to open HOTS chloropigment data and examine it
 
@@ -9,10 +13,9 @@ day = data(:,2);
 pressure = data(:,3);
 chloro = data(:,4);
 
-% B1(A1==0) = NaN;
 chloro(chloro==-9) = NaN;
 
-ax = figure;
+ax1 = figure;
 plot(chloro(1:101),-pressure(1:101),'DisplayName','CRN 1');
 hold on
 plot(chloro(102:202),-pressure(102:202),'DisplayName','CRN 2');
@@ -23,21 +26,25 @@ ylabel('pressure [db]');
 xlabel('chloropigment (fluorescence) [ug/L]');
 title('CTD: chloropigment vs depth (HOTS Day 1 - 1988)');
 
-exportgraphics(ax,'figures/ctd-day-1.png');
+exportgraphics(ax1,'figures/ctd-day-1.png');
 
-%%
+%% Filled Contour Plot of DCM
 
 chloro2D = reshape(chloro,101,[]);
-
 days = day + datetime(1988,09,30);
 days = reshape(days,101,[]);
+pres = reshape(pressure,101,[]);
 
-figure
-% z = peaks;
-% [c,h] = contourf(z);
-% clabel(c,h)
-% colorbar
+[t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
 
-[a,b] = contourf(chloro2D);
-clabel(a,b);
-colorbar
+ax2 = figure;
+[a,b] = contourf(t_grid,-p_grid,chloro2D,'LineColor','auto');
+datetick('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral')));
+c = colorbar;
+c.Label.String = 'chloropigment (fluorescence) [ug/L]';
+xlabel('Time');
+ylabel('Depth [db]');
+title('DCM Time Series: 1988 - 2021');
+
+exportgraphics(ax2,'figures/ctd-day-1.png');
