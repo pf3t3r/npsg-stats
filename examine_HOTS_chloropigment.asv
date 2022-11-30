@@ -1,11 +1,15 @@
+% File to open and examine HOTS chloropigment data (1988 - 2021).
+
+% Clear/close unnecessary code, variables, etc.
 close all; clc; clear;
+
+% Set Figure Parameters
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
 set(0,'defaultAxesFontSize',18);
 
-% File to open HOTS chloropigment data and examine it
-
+%% Open data file and extract variables
 data = importdata('data/hots-chloropigment.txt').data;
 
 crn = data(:,1);
@@ -15,20 +19,22 @@ chloro = data(:,4);
 
 chloro(chloro==-9) = NaN;
 
+%% Examine First Days of Data
+
 ax1 = figure;
-plot(chloro(1:101),-pressure(1:101),'DisplayName','CRN 1');
+plot(chloro(1:101),-pressure(1:101),'DisplayName','CRN 1: Nov 88');
 hold on
-plot(chloro(102:202),-pressure(102:202),'DisplayName','CRN 2');
-plot(chloro(203:303),-pressure(203:303),'DisplayName','CRN 3');
+plot(chloro(102:202),-pressure(102:202),'DisplayName','CRN 2: Dec 88');
+plot(chloro(203:303),-pressure(203:303),'DisplayName','CRN 3: Jan 89');
 hold off
 legend();
 ylabel('pressure [db]');
 xlabel('chloropigment (fluorescence) [ug/L]');
-title('CTD: chloropigment vs depth (HOTS Day 1 - 1988)');
+title('CTD: chloropigment vs depth (HOTS 88/89)');
 
 exportgraphics(ax1,'figures/ctd-day-1.png');
 
-%% Filled Contour Plot of DCM
+%% Fluorescence Depth- and Time-Series (1988-2022): Eulerian View
 
 chloro2D = reshape(chloro,101,[]);
 days = day + datetime(1988,09,30);
@@ -38,7 +44,8 @@ pres = reshape(pressure,101,[]);
 [t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
 
 ax2 = figure;
-[a,b] = contourf(t_grid,-p_grid,chloro2D,'LineColor','auto');
+contourf(t_grid,p_grid,chloro2D,0:0.14:1.4,'LineColor','auto');
+set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral')));
 c = colorbar;
@@ -47,4 +54,81 @@ xlabel('Time');
 ylabel('Depth [db]');
 title('DCM Time Series: 1988 - 2021');
 
-exportgraphics(ax2,'figures/ctd-day-1.png');
+exportgraphics(ax2,'figures/fluorescence-1988-2021.png');
+
+%% Fluorescence Depth- and Time-Series (1988-2022): Lagrangian View
+
+% Find the DCM
+for i=1:329
+    [val(i),idx(i)] = max(chloro2D(:,i));
+end
+
+%% Lagrangian Pressure
+
+% Put pressure in terms of DCM
+for i = 1:329
+    p_lang(:,i) = pres(:,i) - pres(idx(i),i);
+end
+
+
+%% Lagrangian Fluorescence
+
+% chloro2D(isnan(chloro2D)) = 0;
+
+% Put fluorescence in terms of DC
+chloro_lang = zeros(101,329);
+
+midpt = 51;
+% idx from above
+offset = midpt - idx;
+
+% -1 = midpt - idx = offset
+% 2 = midpt - idx = offset
+% => define midpt, idx
+
+% if offset > 0, newArray(1:offset,:) = 0
+% if offset < -1, newArray(offset:end,:) = 0
+% if offset = -1, newArray(end,:) = 0
+
+for i = 1:329
+    %chlorod2D(isnan(chloro2D)) = 0;
+    chloro_lang(:,i) = circshift(chloro2D(:,i),offset(i));
+    if offset(i) > -1 && offset(i) < 40
+        disp(i);
+        chloro_lang(1:offset(i),i) = NaN;
+    elseif offset(i) == -1
+        chloro_lang(end,i) = NaN;
+    elseif offset(i) < -1 && offset(i) > -40
+        disp(i);
+        chloro_lang((end+offset(i)):end,i) = NaN;
+    elseif abs(offset(i)) > 40
+        chloro_lang(:,i) = NaN;
+    end
+end
+
+%%
+[t_lang_grid,p_lang_grid] = meshgrid(datenum(days(1,:)),p_lang(:,1));
+
+%% Langrangian View
+
+ax3 = figure;
+contourf(t_lang_grid,p_lang_grid,chloro_lang,0:0.14:1.4,'LineColor','auto');
+set(gca,'Ydir','reverse')
+datetick('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral')));
+c = colorbar;
+c.Label.String = 'chloropigment (fluorescence) [ug/L]';
+xlabel('Time');
+ylabel('Depth [db]');
+title('DCM Time Series: 1988 - 2021 (Lagrangian View');
+
+exportgraphics(ax3,'figures/fluorescence-1988-2021_lagrangianView.png');
+
+
+%% ROUGH WORK
+% chloro_lang(:,1) = circshift(chloro2D(:,1),-1);
+% chloro_lang(end,1) = 0;
+% chloro_lang(:,2) = circshift(chloro2D(:,2),2); % DCM = 49
+% chloro_lang(1:2,2) = 0;
+% chloro_lang(1:100,1) = chloro2D(2:101,1); % DCM = 52
+% chloro_lang(3:101,2) = chloro2D(1:99,2); % DCM = 49
