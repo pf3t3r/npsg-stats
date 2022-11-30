@@ -54,7 +54,7 @@ xlabel('Time');
 ylabel('Depth [db]');
 title('DCM Time Series: 1988 - 2021 (Eulerian Perspective)');
 
-exportgraphics(ax2,'figures/fluorescence-1988-2021.png');
+exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerianView.png');
 
 %% Fluorescence Depth- and Time-Series (1988-2022): Lagrangian View
 
