@@ -52,9 +52,9 @@ c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
 ylabel('Depth [db]');
-title('DCM Time Series: 1988 - 2021');
+title('DCM Time Series: 1988 - 2021 (Eulerian Perspective)');
 
-exportgraphics(ax2,'figures/fluorescence-1988-2021.png');
+exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerianView.png');
 
 %% Fluorescence Depth- and Time-Series (1988-2022): Lagrangian View
 
@@ -63,35 +63,18 @@ for i=1:329
     [val(i),idx(i)] = max(chloro2D(:,i));
 end
 
-%% Lagrangian Pressure
-
 % Put pressure in terms of DCM
 for i = 1:329
     p_lang(:,i) = pres(:,i) - pres(idx(i),i);
 end
 
-
-%% Lagrangian Fluorescence
-
-% chloro2D(isnan(chloro2D)) = 0;
-
-% Put fluorescence in terms of DC
+% Put fluorescence in terms of DCM
+% Shift the original fluorescence data such that the DCM is centred
 chloro_lang = zeros(101,329);
-
 midpt = 51;
-% idx from above
 offset = midpt - idx;
 
-% -1 = midpt - idx = offset
-% 2 = midpt - idx = offset
-% => define midpt, idx
-
-% if offset > 0, newArray(1:offset,:) = 0
-% if offset < -1, newArray(offset:end,:) = 0
-% if offset = -1, newArray(end,:) = 0
-
 for i = 1:329
-    %chlorod2D(isnan(chloro2D)) = 0;
     chloro_lang(:,i) = circshift(chloro2D(:,i),offset(i));
     if offset(i) > -1 && offset(i) < 40
         disp(i);
@@ -106,11 +89,10 @@ for i = 1:329
     end
 end
 
-%%
-[t_lang_grid,p_lang_grid] = meshgrid(datenum(days(1,:)),p_lang(:,1));
+% Create meshgrid for time and pressure in Lagrangian view
+[t_lang_grid,p_lang_grid] = meshgrid(datenum(days(1,:)),pres(:,1)-100);
 
-%% Langrangian View
-
+% Make a filled contour plot of the DCM in the Lagrangian perspective
 ax3 = figure;
 contourf(t_lang_grid,p_lang_grid,chloro_lang,0:0.14:1.4,'LineColor','auto');
 set(gca,'Ydir','reverse')
@@ -120,15 +102,48 @@ c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
 ylabel('Depth [db]');
-title('DCM Time Series: 1988 - 2021 (Lagrangian View');
+title('DCM Time Series: 1988 - 2021 (Lagrangian Perspective)');
 
 exportgraphics(ax3,'figures/fluorescence-1988-2021_lagrangianView.png');
 
+%% Histograms at Depth
 
-%% ROUGH WORK
-% chloro_lang(:,1) = circshift(chloro2D(:,1),-1);
-% chloro_lang(end,1) = 0;
-% chloro_lang(:,2) = circshift(chloro2D(:,2),2); % DCM = 49
-% chloro_lang(1:2,2) = 0;
-% chloro_lang(1:100,1) = chloro2D(2:101,1); % DCM = 52
-% chloro_lang(3:101,2) = chloro2D(1:99,2); % DCM = 49
+nbins = 25; 
+
+[histFreq,histXout] = hist(chloro2D(6,:),nbins);
+[histFreq36,histXout36] = hist(chloro2D(36,:),nbins);
+[histFreq62,histXout62] = hist(chloro2D(62,:),nbins);
+
+ax4 = figure;
+sgtitle('Histograms of Concentration at Different Depths','FontSize',20);
+subplot(2,2,1)
+bar(histXout, histFreq/sum(histFreq),'DisplayName','10 db');
+hold on
+bar(histXout36,histFreq36/sum(histFreq36),'DisplayName','70 db');
+bar(histXout62,histFreq62/sum(histFreq62),'DisplayName','122 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Concentration (Eulerian)');
+
+subplot(2,2,2)
+bar(log(histXout), histFreq/sum(histFreq),'DisplayName','10 db');
+hold on
+bar(log(histXout36),histFreq36/sum(histFreq36),'DisplayName','70 db');
+bar(log(histXout62),histFreq62/sum(histFreq62),'DisplayName','122 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Log-Concentration (Eulerian)');
+
+subplot(2,2,2)
+bar(log(histXout), histFreq/sum(histFreq),'DisplayName','10 db');
+hold on
+bar(log(histXout36),histFreq36/sum(histFreq36),'DisplayName','70 db');
+bar(log(histXout62),histFreq62/sum(histFreq62),'DisplayName','122 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Log-Concentration (Eulerian)');
+
+exportgraphics(ax4,'figures/hist_chloropig_selectDepths_1989-2021.png');

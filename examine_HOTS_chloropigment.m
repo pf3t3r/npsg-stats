@@ -7,7 +7,7 @@ close all; clc; clear;
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
-set(0,'defaultAxesFontSize',18);
+set(0,'defaultAxesFontSize',16);
 
 %% Open data file and extract variables
 data = importdata('data/hots-chloropigment.txt').data;
@@ -105,3 +105,62 @@ ylabel('Depth [db]');
 title('DCM Time Series: 1988 - 2021 (Lagrangian Perspective)');
 
 exportgraphics(ax3,'figures/fluorescence-1988-2021_lagrangianView.png');
+
+%% Histograms at Depth
+
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 35 20]);
+nbins = 25; 
+
+% Eulerian
+[histFreq,histXout] = hist(chloro2D(6,:),nbins);
+[histFreq36,histXout36] = hist(chloro2D(36,:),nbins);
+[histFreq62,histXout62] = hist(chloro2D(62,:),nbins);
+
+% Lagrangian
+[histFreqL,histXoutL] = hist(chloro_lang(2,:),nbins);
+[histFreq36L,histXout36L] = hist(chloro_lang(26,:),nbins);
+[histFreq62L,histXout62L] = hist(chloro_lang(45,:),nbins);
+
+ax4 = figure;
+sgtitle('Histograms of Concentration at Different Depths','FontSize',20);
+subplot(2,2,1)
+bar(histXout, histFreq/sum(histFreq),'DisplayName','10 db');
+hold on
+bar(histXout36,histFreq36/sum(histFreq36),'DisplayName','70 db');
+bar(histXout62,histFreq62/sum(histFreq62),'DisplayName','122 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Concentration (Eulerian)');
+
+subplot(2,2,2)
+bar(log(histXout), histFreq/sum(histFreq),'DisplayName','10 db');
+hold on
+bar(log(histXout36),histFreq36/sum(histFreq36),'DisplayName','70 db');
+bar(log(histXout62),histFreq62/sum(histFreq62),'DisplayName','122 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Log-Concentration (Eulerian)');
+
+subplot(2,2,3)
+bar(histXoutL, histFreqL/sum(histFreqL),'DisplayName','-100 db');
+hold on
+bar(histXout36L,histFreq36L/sum(histFreq36L),'DisplayName','-50 db');
+bar(histXout62L,histFreq62L/sum(histFreq62L),'DisplayName','-12 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Log-Concentration (Lagrangian)');
+
+subplot(2,2,4)
+bar(log(histXoutL), histFreqL/sum(histFreqL),'DisplayName','-100 db');
+hold on
+bar(log(histXout36L),histFreq36L/sum(histFreq36L),'DisplayName','-50 db');
+bar(log(histXout62L),histFreq62L/sum(histFreq62L),'DisplayName','-12 db');
+legend();
+xlabel('chloropigment (\mu g L^{-1})');
+ylabel('Frequency');
+title('Frequency of Log-Concentration (Lagrangian)');
+
+exportgraphics(ax4,'figures/hist_chloropig_selectDepths_1989-2021.png');
