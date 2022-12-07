@@ -30,12 +30,12 @@ nitrate(nitrate==-9) = NaN;
 
 SA = gsw_SA_from_SP(S,pressure,-158,22.75);
 CT = gsw_CT_from_t(SA,T,pressure);
-rho = gsw_rho(SA,CT,pressure);
+sigma0 = gsw_sigma0(SA,CT);
 
 %% Examine First Days of Data for CT, SA, and sigma
 
 ax1 = figure;
-sgtitle('CTD: Temperature & Salinity vs Depth (HOTS 88/89)');
+sgtitle('CTD: Temperature & Salinity vs Pressure (HOTS 88/89)');
 subplot(1,3,1)
 plot(CT(1:101),-pressure(1:101),'DisplayName','CRN 1: Nov 88');
 hold on
@@ -56,14 +56,14 @@ ylabel('pressure [db]');
 xlabel('Absolute Salinity S_A (g/kg)');
 
 subplot(1,3,3)
-plot(rho(1:101),-pressure(1:101),'DisplayName','CRN 1: Nov 88');
+plot(sigma0(1:101),-pressure(1:101),'DisplayName','CRN 1: Nov 88');
 hold on
-plot(rho(102:202),-pressure(102:202),'DisplayName','CRN 2: Dec 88');
-plot(rho(203:303),-pressure(203:303),'DisplayName','CRN 3: Jan 89');
+plot(sigma0(102:202),-pressure(102:202),'DisplayName','CRN 2: Dec 88');
+plot(sigma0(203:303),-pressure(203:303),'DisplayName','CRN 3: Jan 89');
 hold off
 legend('Location','best');
 ylabel('pressure [db]');
-xlabel('Potential Density \sigma (kgm^{-3})');
+xlabel('Potential Density Anomaly \sigma^\Theta (kgm^{-3})');
 
 exportgraphics(ax1,'figures/ctd-day-1-SA-CT-sigma.png');
 
@@ -78,3 +78,96 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [16 5 2
 ax2 = figure;
 gsw_SA_CT_plot(SA,CT,p_ref,isopycs,'\it{S}\rm_A - {\Theta} diagram');
 exportgraphics(ax2,'figures/ctd-SA-CT.png');
+
+'color',[1,1,1]
+
+%% Conservative Temperature Pressure- and Time-Series (1988-2022): Eulerian View
+
+% Return to default view for Pressure- and time-series
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
+
+CT2D = reshape(CT,101,[]);
+days = day + datetime(1988,09,30);
+days = reshape(days,101,[]);
+pres = reshape(pressure,101,[]);
+
+[t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
+nb=100
+ax3 = figure;
+h=contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
+set(gca,'Ydir','reverse')
+datetick('x','yyyy mmm','keeplimits');
+d = colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Conservative Temperature (C)';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian)');
+
+exportgraphics(ax3,'figures/conservativeTemperature-1988-2021_eulerianView.png');
+
+figure
+plot(sigma2d(50,:),)
+%% Absolute Salinity Pressure- and Time-Series (1988-2022): Eulerian View
+
+SA2D = reshape(SA,101,[]);
+
+ax4 = figure;
+contourf(t_grid,p_grid,SA2D,linspace(34.6,35.6,nb),'LineColor','auto');
+set(gca,'Ydir','reverse')
+datetick('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Absolute Salinity S_A (g kg^{-1})';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Absolute Salinity S_A: 1988 - 2021 (Eulerian)');
+
+exportgraphics(ax4,'figures/absoluteSalinity-1988-2021_eulerianView.png');
+
+%% Density Pressure- and Time-Series (1988-2022): Eulerian View
+
+% Definitions of Mixed Layer Depth (MLD)
+% Birol Kara et al. (2000) suggest \Delta T = 0.8 K
+% de Boyer Montegut et al (2004) suggest \Delta T = 0.2 C or \Delta \sigma
+% = 0.03 kg/m3
+% Dong et al (2008) used the above method, so let's try that.
+
+sigma2D = reshape(sigma0,101,[]);
+
+MLD = [];
+sigmaTEMP = fillmissing(sigma2D(1,:),"previous");
+for j = 1:329
+    MLD(j) = find(sigma2D(:,j) > sigmaTEMP(j) + 0.03,1);
+end
+
+% % Determine MLD using definition of \Delta \sigma = 0.03 kg/m3
+% for i = 1:101
+%     for j = 1:1
+%         %sigmaSurface(j) = sigma2D(1,j);
+%         if sigma2D(i,j) > sigma2D(1,j) + 0.03
+%             disp(i);
+%             break;
+%             MLD(j) = i;
+%         end
+%     end
+% end
+
+ax5 = figure;
+contourf(t_grid,p_grid,sigma2D,'LineColor','auto');
+hold on
+plot(t_grid(1,:),MLD);
+hold off
+% hold on
+% plot(t_grid,p_grid,sigma2D(10),'LineColor','red');
+% hold off
+set(gca,'Ydir','reverse')
+datetick('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral')));
+c = colorbar;
+c.Label.String = 'Potential Density Anomaly \sigma^\Theta (kg m^{-3})';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Potential Density Anomaly \sigma^\Theta: 1988 - 2021 (Eulerian)');
+
+exportgraphics(ax5,'figures/density-1988-2021_eulerianView.png');
