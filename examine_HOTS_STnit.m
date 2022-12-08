@@ -93,9 +93,25 @@ days = reshape(days,101,[]);
 pres = reshape(pressure,101,[]);
 
 [t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
+
+% Definitions of Mixed Layer Depth (MLD)
+% Birol Kara et al. (2000) suggest \Delta T = 0.8 K
+% de Boyer Montegut et al (2004) suggest \Delta T = 0.2 C or \Delta \sigma
+% = 0.03 kg/m3
+% Dong et al (2008) used the above method, so let's try that.
+
+MLDt = [];
+CTTEMP = fillmissing(CT2D(1,:),"previous");
+for j = 1:329
+    MLDt(j) = find(CT2D(:,j) < CTTEMP(j) - 0.2,1);
+end
+
 nb=100
+
 ax3 = figure;
 h=contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
+hold on
+plot(t_grid(1,:),MLDt,'LineWidth',1.5,'Color',[0 0 0]);
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
@@ -142,26 +158,11 @@ for j = 1:329
     MLD(j) = find(sigma2D(:,j) > sigmaTEMP(j) + 0.03,1);
 end
 
-% % Determine MLD using definition of \Delta \sigma = 0.03 kg/m3
-% for i = 1:101
-%     for j = 1:1
-%         %sigmaSurface(j) = sigma2D(1,j);
-%         if sigma2D(i,j) > sigma2D(1,j) + 0.03
-%             disp(i);
-%             break;
-%             MLD(j) = i;
-%         end
-%     end
-% end
-
 ax5 = figure;
 contourf(t_grid,p_grid,sigma2D,'LineColor','auto');
 hold on
-plot(t_grid(1,:),MLD,'LineWidth',2,'Color',[0 0 0]);
+plot(t_grid(1,:),MLD,'LineWidth',1.5,'Color',[0 0 0]);
 hold off
-% hold on
-% plot(t_grid,p_grid,sigma2D(10),'LineColor','red');
-% hold off
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral')));
