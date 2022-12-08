@@ -26,7 +26,7 @@ T(T==-9) = NaN;
 S(S==-9) = NaN;
 nitrate(nitrate==-9) = NaN;
 
-%% Calculate Conservative Temperature, Absolute Salinity, Density
+%% Calculate Conservative Temperature, Absolute Salinity, Density, Buoyancy
 
 lat = 22.75;
 SA = gsw_SA_from_SP(S,pressure,-158,lat);
@@ -175,21 +175,4 @@ exportgraphics(ax5,'figures/density-1988-2021_eulerianView.png');
 
 %% Buoyancy Time- and Depth-Series: Eulerian
 
-[N2,pmid] = gsw_Nsquared(SA2D,CT2D,pres,lat);
-
-[t_grid,pmid_grid] = meshgrid(datenum(days(1,:)),pmid(:,1));
-
-ax6 = figure;
-contourf(t_grid,pmid_grid,real(log10(N2)),'LineColor','auto');
-set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
-colormap(flipud(cbrewer2('Spectral',nb)));
-c = colorbar;
-c.Label.String = 'Buoyancy N^2 (s^{-2})';
-xlabel('Time');
-ylabel('Pressure [db]');
-title('Buoyancy N^2: 1988 - 2021 (Eulerian)');
-
-exportgraphics(ax6,'figures/buoyancy-1988-2021_eulerianView.png');
-
-% N22D = reshape(N2,101,[]);
+N22D = reshape(N2,101,[]);
