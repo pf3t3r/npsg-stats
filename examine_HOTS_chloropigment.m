@@ -118,8 +118,10 @@ nbins = 25;
 
 % Lagrangian
 [histFreqL,histXoutL] = hist(chloro_lang(2,:),nbins);
-[histFreq36L,histXout36L] = hist(chloro_lang(26,:),nbins);
-[histFreq62L,histXout62L] = hist(chloro_lang(45,:),nbins);
+[histFreq26L,histXout26L] = hist(chloro_lang(26,:),nbins);
+[histFreq45L,histXout45L] = hist(chloro_lang(45,:),nbins);
+[histFreq12L,histXout12L] = hist(chloro_lang(58,:),nbins);
+[histFreq50L,histXout50L] = hist(chloro_lang(77,:),nbins);
 
 ax4 = figure;
 sgtitle('Histograms of Concentration at Different Depths','FontSize',20);
@@ -146,8 +148,10 @@ title('Frequency of Log-Concentration (Eulerian)');
 subplot(2,2,3)
 bar(histXoutL, histFreqL/sum(histFreqL),'DisplayName','-100 db');
 hold on
-bar(histXout36L,histFreq36L/sum(histFreq36L),'DisplayName','-50 db');
-bar(histXout62L,histFreq62L/sum(histFreq62L),'DisplayName','-12 db');
+bar(histXout26L,histFreq26L/sum(histFreq26L),'DisplayName','-50 db');
+bar(histXout45L,histFreq45L/sum(histFreq45L),'DisplayName','-12 db');
+bar(histXout12L,histFreq12L/sum(histFreq12L),'DisplayName','+12 db');
+bar(histXout50L,histFreq50L/sum(histFreq50L),'DisplayName','+50 db');
 legend();
 xlabel('chloropigment (\mu g L^{-1})');
 ylabel('Frequency');
@@ -156,8 +160,10 @@ title('Frequency of Log-Concentration (Lagrangian)');
 subplot(2,2,4)
 bar(log(histXoutL), histFreqL/sum(histFreqL),'DisplayName','-100 db');
 hold on
-bar(log(histXout36L),histFreq36L/sum(histFreq36L),'DisplayName','-50 db');
-bar(log(histXout62L),histFreq62L/sum(histFreq62L),'DisplayName','-12 db');
+bar(log(histXout26L),histFreq26L/sum(histFreq26L),'DisplayName','-50 db');
+bar(log(histXout45L),histFreq45L/sum(histFreq45L),'DisplayName','-12 db');
+bar(log(histXout12L),histFreq12L/sum(histFreq12L),'DisplayName','+12 db');
+bar(log(histXout50L),histFreq50L/sum(histFreq50L),'DisplayName','+50 db');
 legend();
 xlabel('chloropigment (\mu g L^{-1})');
 ylabel('Frequency');
