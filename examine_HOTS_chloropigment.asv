@@ -177,20 +177,17 @@ title('Chloropigment: 1988 - 2021 (Lagrangian, Normalised)');
 
 exportgraphics(ax3a,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 
-%% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Lagrangian)
+%% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Eulerian)
 
 kurt_chl_lang = kurtosis(chloro_lang);
 skew_chl_lang = skewness(chloro_lang);
-
-% Again the normalised data exhibits the same kurtosis and skew as the
-% non-normalised data
-% kurt_chl_lang_n = kurtosis(chloro_lang_n);
-% skew_chl_lang_n = skewness(chloro_lang_n);
+kurt_chl_lang_n = kurtosis(chloro_lang_n);
+skew_chl_lang_n = skewness(chloro_lang_n);
 
 ax3b = figure;
 plot(t_grid(1,:),kurt_chl_lang,'DisplayName','Kurtosis');
 hold on
-% plot(t_grid(1,:),kurt_chl_lang_n,'DisplayName','Kurtosis (norm)');
+plot(t_grid(1,:),kurt_chl_lang_n,'DisplayName','Kurtosis (norm)');
 yline(3,':','DisplayName','Normal Distribution');
 hold off
 legend();
@@ -201,14 +198,11 @@ exportgraphics(ax3b,'figures/fluorescence_norm-1988-2021_lagrangianKurtosis.png'
 
 ax3c = figure;
 plot(t_grid(1,:),skew_chl_lang,'DisplayName','Skewness');
-% hold on
-% plot(t_grid(1,:),skew_chl_lang_n,'DisplayName','Skewness (norm)');
-% hold off
 legend();
 datetick('x','yyyy mmm','keeplimits');
 title('Skewness: Chloropigments, 1988-2021 (Lagrangian)');
 
-exportgraphics(ax3c,'figures/fluorescence_norm-1988-2021_lagrangianSkewness.png');
+exportgraphics(ax3c,'figures/fluorescence_norm-1988-2021_eulerianSkewness.png');
 
 %% Histograms at Depth
 
