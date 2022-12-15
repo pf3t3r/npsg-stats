@@ -17,8 +17,9 @@ day = data(:,2);
 pressure = data(:,3);
 chloro = data(:,4);
 
+% Set -9 = NaN; remove negative values
 chloro(chloro==-9) = NaN;
-
+chloro(chloro<0) = 0;
 %% Examine First Days of Data
 
 ax1 = figure;
@@ -74,6 +75,10 @@ ylabel('Depth [db]');
 title('Chloropigment: 1988 - 2021 (Eulerian, Normalised)');
 
 exportgraphics(ax2a,'figures/fluorescence_norm-1988-2021_eulerianView.png');
+
+% Test normalisation
+assert(max(max(chloro2D_n)) == 1); % Throws error if not equal to one
+assert(min(min(chloro2D_n)) == 0); % Throws error if not equal to zero
 
 %% Kurtosis and Skewness across depth for (normalised) chloropigment depth- and time-series (Eulerian)
 
