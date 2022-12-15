@@ -18,7 +18,7 @@ pressure = data(:,3);
 chloro = data(:,4);
 
 chloro(chloro==-9) = NaN;
-
+chloro(chloro<0) = 0;
 %% Examine First Days of Data
 
 ax1 = figure;
@@ -74,6 +74,11 @@ ylabel('Depth [db]');
 title('Chloropigment: 1988 - 2021 (Eulerian, Normalised)');
 
 exportgraphics(ax2a,'figures/fluorescence_norm-1988-2021_eulerianView.png');
+
+% Test max/min of normalised Chl
+maxChl = max(max(chloro2D_n)) % max is OK
+minChl = min(min(chloro2D_n)) % min = -0.0913, wtf
+% well the original data has some negatives!!!
 
 %% Kurtosis and Skewness across depth for (normalised) chloropigment depth- and time-series (Eulerian)
 
@@ -177,17 +182,20 @@ title('Chloropigment: 1988 - 2021 (Lagrangian, Normalised)');
 
 exportgraphics(ax3a,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 
-%% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Eulerian)
+%% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Lagrangian)
 
 kurt_chl_lang = kurtosis(chloro_lang);
 skew_chl_lang = skewness(chloro_lang);
-kurt_chl_lang_n = kurtosis(chloro_lang_n);
-skew_chl_lang_n = skewness(chloro_lang_n);
+
+% Again the normalised data exhibits the same kurtosis and skew as the
+% non-normalised data
+% kurt_chl_lang_n = kurtosis(chloro_lang_n);
+% skew_chl_lang_n = skewness(chloro_lang_n);
 
 ax3b = figure;
 plot(t_grid(1,:),kurt_chl_lang,'DisplayName','Kurtosis');
 hold on
-plot(t_grid(1,:),kurt_chl_lang_n,'DisplayName','Kurtosis (norm)');
+% plot(t_grid(1,:),kurt_chl_lang_n,'DisplayName','Kurtosis (norm)');
 yline(3,':','DisplayName','Normal Distribution');
 hold off
 legend();
@@ -198,11 +206,14 @@ exportgraphics(ax3b,'figures/fluorescence_norm-1988-2021_lagrangianKurtosis.png'
 
 ax3c = figure;
 plot(t_grid(1,:),skew_chl_lang,'DisplayName','Skewness');
+% hold on
+% plot(t_grid(1,:),skew_chl_lang_n,'DisplayName','Skewness (norm)');
+% hold off
 legend();
 datetick('x','yyyy mmm','keeplimits');
 title('Skewness: Chloropigments, 1988-2021 (Lagrangian)');
 
-exportgraphics(ax3c,'figures/fluorescence_norm-1988-2021_eulerianSkewness.png');
+exportgraphics(ax3c,'figures/fluorescence_norm-1988-2021_lagrangianSkewness.png');
 
 %% Histograms at Depth
 
