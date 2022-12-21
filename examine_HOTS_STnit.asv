@@ -33,6 +33,24 @@ SA = gsw_SA_from_SP(S,pressure,-158,lat);
 CT = gsw_CT_from_t(SA,T,pressure);
 sigma0 = gsw_sigma0(SA,CT);
 
+%% Reshape CT, SA, sigma0; create Hovmoeller Coordinates
+
+CT2D = reshape(CT,101,[]);
+SA2D = reshape(SA,101,[]);
+sigma2D = reshape(sigma0,101,[]);
+
+days = reshape(day + datetime(1988,09,30),101,[]);
+pres = reshape(pressure,101,[]);
+
+[t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
+time = datetime(t_grid(1,:),'ConvertFrom','datenum'); % for non-contour plots
+
+%% Remove Seasonality in CT, SA, sigma0
+
+CT_rm = movmean(CT2D,10,2,'omitnan');
+SA_rm = movmean(SA2D,10,2,'omitnan');
+sigma_rm = movmean(sigma2D,10,2,'omitnan');
+
 %% Examine First Days of Data for CT, SA, and sigma
 
 ax1 = figure;
@@ -84,24 +102,19 @@ exportgraphics(ax2,'figures/ctd-SA-CT.png');
 
 %% Conservative Temperature Pressure- and Time-Series (1988-2022): Eulerian View
 
-% Return to default view for Pressure- and time-series
-set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
-
-CT2D = reshape(CT,101,[]);
-days = day + datetime(1988,09,30);
-days = reshape(days,101,[]);
-pres = reshape(pressure,101,[]);
-
-[t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
+% New default for 2x1
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [9 2 32 24]);
 
 % Definitions of Mixed Layer Depth (MLD)
 % Birol Kara et al. (2000) suggest \Delta T = 0.8 K
 % de Boyer Montegut et al (2004) suggest \Delta T = 0.2 C or \Delta \sigma
 % = 0.03 kg/m3
 % Dong et al (2008) used the above method, so let's try that.
+% MLD should be defined with respect to a subsurface layer (Barone, 
+% Groeskamp). Thompson et al (2016) use 10m. (10m = level 6)
 
 MLDt = [];
-CTTEMP = fillmissing(CT2D(1,:),"previous");
+CTTEMP = fillmissing(CT2D(6,:),"previous");
 for j = 1:329
     MLDt(j) = find(CT2D(:,j) < CTTEMP(j) - 0.2,1);
 end
@@ -109,11 +122,12 @@ end
 nb=100
 
 ax3 = figure;
+subplot(2,1,1)
 h=contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
 hold on
-plot(t_grid(1,:),MLDt,'LineWidth',1.5,'Color',	[0 0 0]);
+plot(t_grid(1,:),MLDt,'LineWidth',1.5,'Color',[0 0 0]);
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'Conservative Temperature (C)';
@@ -121,24 +135,47 @@ xlabel('Time');
 ylabel('Pressure [db]');
 title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian)');
 
-exportgraphics(ax3,'figures/conservativeTemperature-1988-2021_eulerianView.png');
+subplot(2,1,2)
+h=contourf(t_grid,p_grid,CT_rm,linspace(16,28,nb),'LineColor','auto');
+% hold on
+% plot(t_grid(1,:),MLDt,'LineWidth',1.5,'Color',[0 0 0]);
+set(gca,'Ydir','reverse')
+datetickzoom('x','dd/mm/yyyy','keeplimits');
+d = colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Conservative Temperature (C)';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian) [12-mth running mean]');
 
-% figure
-% plot(sigma2d(50,:),)
+exportgraphics(ax3,'figures/conservativeTemperature-1988-2021_eulerianView.png');
+% exportgraphics(ax3a,'figures/conservativeTemperature-1988-2021_eulerianView_RM.png');
+
 %% Absolute Salinity Pressure- and Time-Series (1988-2022): Eulerian View
 
-SA2D = reshape(SA,101,[]);
-
 ax4 = figure;
+
+subplot(2,1,1)
 contourf(t_grid,p_grid,SA2D,linspace(34.6,35.6,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','dd/mm/yyyy','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'Absolute Salinity S_A (g kg^{-1})';
 xlabel('Time');
 ylabel('Pressure [db]');
 title('Absolute Salinity S_A: 1988 - 2021 (Eulerian)');
+
+subplot(2,1,2)
+contourf(t_grid,p_grid,SA_rm,linspace(34.6,35.6,nb),'LineColor','auto');
+set(gca,'Ydir','reverse')
+datetickzoom('x','dd/mm/yyyy','keeplimits');
+colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Absolute Salinity S_A (g kg^{-1})';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Absolute Salinity S_A: 1988 - 2021 (Eulerian) [12-mth running mean]');
 
 exportgraphics(ax4,'figures/absoluteSalinity-1988-2021_eulerianView.png');
 
@@ -150,21 +187,26 @@ exportgraphics(ax4,'figures/absoluteSalinity-1988-2021_eulerianView.png');
 % = 0.03 kg/m3
 % Dong et al (2008) used the above method, so let's try that.
 
-sigma2D = reshape(sigma0,101,[]);
-
 MLD = [];
-sigmaTEMP = fillmissing(sigma2D(1,:),"previous");
+sigmaTEMP = fillmissing(sigma2D(6,:),"previous");
+sigmaTEMP_rm = sigma_rm(6,:);
 for j = 1:329
-    MLD(j) = find(sigma2D(:,j) > sigmaTEMP(j) + 0.03,1);
+    MLD(j) = find(sigma2D(6:end,j) > sigmaTEMP(j) + 0.03,1);
+    MLD_rm(j) = find(sigma_rm(6:end,j) > sigmaTEMP_rm(j) + 0.03,1);
 end
+% Compensate for starting lower
+MLD = MLD + 5;
+MLD_rm = MLD_rm + 5;
 
 ax5 = figure;
-contourf(t_grid,p_grid,sigma2D,'LineColor','auto');
+
+subplot(2,1,1)
+contourf(t_grid,p_grid,sigma2D,linspace(22,25.5,nb),'LineColor','auto');
 hold on
 plot(t_grid(1,:),MLD,'LineWidth',1.5,'Color',[0 0 0]);
 hold off
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','dd/mm/yyyy','keeplimits');
 colormap(flipud(cbrewer2('Spectral')));
 c = colorbar;
 c.Label.String = 'Potential Density Anomaly \sigma^\Theta (kg m^{-3})';
@@ -172,18 +214,41 @@ xlabel('Time');
 ylabel('Pressure [db]');
 title('Potential Density Anomaly \sigma^\Theta: 1988 - 2021 (Eulerian)');
 
+subplot(2,1,2)
+contourf(t_grid,p_grid,sigma_rm,linspace(22,25.5,nb),'LineColor','auto');
+hold on
+plot(t_grid(1,:),MLD_rm,'LineWidth',1.5,'Color',[0 0 0]);
+hold off
+set(gca,'Ydir','reverse')
+datetickzoom('x','dd/mm/yyyy','keeplimits');
+colormap(flipud(cbrewer2('Spectral')));
+c = colorbar;
+c.Label.String = 'Potential Density Anomaly \sigma^\Theta (kg m^{-3})';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Potential Density Anomaly \sigma^\Theta: 1988 - 2021 (Eulerian) [12-mth running mean]');
+
 exportgraphics(ax5,'figures/density-1988-2021_eulerianView.png');
 
 %% Buoyancy Time- and Depth-Series: Eulerian
 
-[N2,pmid] = gsw_Nsquared(SA2D,CT2D,pres,lat);
+% Return to default view for Pressure- and time-series
+% set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
 
-[t_grid,pmid_grid] = meshgrid(datenum(days(1,:)),pmid(:,1));
+[N2,pmid] = gsw_Nsquared(SA2D,CT2D,pres,lat);
+[N2_rm,pmid_rm] = gsw_Nsquared(SA_rm,CT_rm,pres,lat);
+
+[tmid_grid,pmid_grid] = meshgrid(datenum(days(1,:)),pmid(:,1));
 
 ax6 = figure;
-contourf(t_grid,pmid_grid,real(log10(N2)),'LineColor','auto');
+
+subplot(2,1,1)
+contourf(tmid_grid,pmid_grid,real(log10(N2)),linspace(-8.5,-3,nb),'LineColor','auto');
+hold on
+plot(tmid_grid(1,:),MLD,'LineWidth',1.5,'Color',[0 0 0]);
+hold off
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','dd/mm/yyyy','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'Buoyancy N^2 (s^{-2})';
@@ -191,6 +256,73 @@ xlabel('Time');
 ylabel('Pressure [db]');
 title('Buoyancy N^2: 1988 - 2021 (Eulerian)');
 
+subplot(2,1,2)
+contourf(tmid_grid,pmid_grid,real(log10(N2_rm)),linspace(-8.5,-3,nb),'LineColor','auto');
+hold on
+plot(tmid_grid(1,:),MLD_rm,'LineWidth',1.5,'Color',[0 0 0]);
+hold off
+set(gca,'Ydir','reverse')
+datetickzoom('x','dd/mm/yyyy','keeplimits');
+colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Buoyancy N^2 (s^{-2})';
+xlabel('Time');
+ylabel('Pressure [db]');
+title('Buoyancy N^2: 1988 - 2021 (Eulerian) [12-mth running mean]');
+
 exportgraphics(ax6,'figures/buoyancy-1988-2021_eulerianView.png');
 
-% N22D = reshape(N2,101,[]);
+%% FFT on N2
+
+% L = t_grid(1,end)-t_grid(1,1); % Length of time series [days]
+% Fs = 1/30; % Approximate Sampling Frequency [per day]
+% f = Fs*(0:(L/2))/L;
+
+
+% Fill N2, calculate FFT
+for i = 1:100
+    N2filled(i,:) = fillmissing(N2(i,:),'previous');
+    y(i,:) = nufft(N2filled(i,:),tmid_grid(i,:));
+end
+
+meanN2fft = mean(y);
+
+n = length(time);
+f = (0:n-1)/n;
+
+ax7 = figure;
+plot(f,abs(y),'Color',[0.8 0.8 0.8],'HandleVisibility','off');
+hold on
+plot(f,abs(meanN2fft),'Color','red','DisplayName','Mean N^2 Across Depth');
+hold off
+legend();
+xlabel('Normalised Frequency');
+ylabel('Power Density (N^4) [s^{-4}]');
+title('FFT: N^2(p,t) at HOTS (1989-2021)');
+exportgraphics(ax7,'figures/buoyancy-1988-2021_fft.png');
+
+%% FFT on MLD
+
+
+% Fill N2, calculate FFT
+y_mld = nufft(MLD,tmid_grid(i,:));
+
+ax8 = figure;
+yyaxis left
+plot(f,abs(y_mld),'Color',[0.8 0.8 0.8],'DisplayName','Mixed Layer Depth');
+% plot(f,abs(y),'Color',[0.8 0.8 0.8]);
+xlabel('Normalised Frequency');
+ylabel('MLD: Power Density (p^2) [Pa^2]');
+hold on
+yyaxis right
+plot(f,abs(meanN2fft),'Color','red','DisplayName','Mean N^2 Across Depth');
+hold off
+legend();
+xlabel('Normalised Frequency');
+ylabel('N^2: Power Density (N^4) [s^{-4}]');
+title('FFT of MLD and depth-averaged N^2 (HOTS, 1989-2021)');
+exportgraphics(ax8,'figures/mld-1988-2021_fft.png');
+
+%% MLD and depth-averaged N^2 are correlated
+
+R = corrcoef(MLD,mean(N2));

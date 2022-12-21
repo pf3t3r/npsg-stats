@@ -43,6 +43,8 @@ days = reshape(days,101,[]);
 pres = reshape(pressure,101,[]);
 
 [t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
+time = datetime(t_grid(1,:),'ConvertFrom','datenum');
+
 
 ax2 = figure;
 contourf(t_grid,p_grid,chloro2D,0:0.14:1.4,'LineColor','auto');
@@ -85,27 +87,30 @@ assert(min(min(chloro2D_n)) == 0); % Throws error if not equal to zero
 kurt_chl = kurtosis(chloro2D);
 skew_chl = skewness(chloro2D);
 
+kurt_chl_rm = movmean(kurt_chl,10);
+skew_chl_rm = movmean(skew_chl,10);
 % The normalised data of course has the same kurtosis and skewness
 % kurt_chl_n = kurtosis(chloro2D_n);
 % skew_chl_n = skewness(chloro2D_n);
 
 ax2b = figure;
-plot(t_grid(1,:),kurt_chl,'DisplayName','Kurtosis');
+plot(time,kurt_chl,'DisplayName','Kurtosis');
 hold on
+plot(time,kurt_chl_rm,'DisplayName','~12mth running-mean (10-point centred moving average');
 % plot(t_grid(1,:),kurt_chl_n,'DisplayName','Kurtosis (Norm)');
 yline(3,':','DisplayName','Normal Distribution');
 hold off
 legend();
-datetick('x','yyyy mmm','keeplimits');
 title('Kurtosis: Chloropigments, 1988-2021 (Eulerian)');
 
 exportgraphics(ax2b,'figures/fluorescence_norm-1988-2021_eulerianKurtosis.png');
 
 ax2c = figure;
-plot(t_grid(1,:),skew_chl,'DisplayName','Skewness');
-% hold on
+plot(time,skew_chl,'DisplayName','Skewness');
+hold on
+plot(time,skew_chl_rm,'DisplayName','~12mth running mean (10-point centred moving average)');
+hold off
 % plot(t_grid(1,:),skew_chl_n,'DisplayName','Skewness (norm)');
-% hold off
 legend();
 datetick('x','yyyy mmm','keeplimits');
 title('Skewness: Chloropigments, 1988-2021 (Eulerian)');
@@ -185,7 +190,9 @@ exportgraphics(ax3a,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 %% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Lagrangian)
 
 kurt_chl_lang = kurtosis(chloro_lang);
+kurt_chl_lang_rm = movmean(kurt_chl_lang,10);
 skew_chl_lang = skewness(chloro_lang);
+skew_chl_lang_rm = movmean(skew_chl_lang,10);
 
 % Again the normalised data exhibits the same kurtosis and skew as the
 % non-normalised data
@@ -193,8 +200,9 @@ skew_chl_lang = skewness(chloro_lang);
 % skew_chl_lang_n = skewness(chloro_lang_n);
 
 ax3b = figure;
-plot(t_grid(1,:),kurt_chl_lang,'DisplayName','Kurtosis');
+plot(time,kurt_chl_lang,'DisplayName','Kurtosis');
 hold on
+plot(time,kurt_chl_lang_rm,'DisplayName','~12mth running mean (10-point centred moving average');
 % plot(t_grid(1,:),kurt_chl_lang_n,'DisplayName','Kurtosis (norm)');
 yline(3,':','DisplayName','Normal Distribution');
 hold off
@@ -205,10 +213,11 @@ title('Kurtosis: Chloropigments, 1988-2021 (Lagrangian)');
 exportgraphics(ax3b,'figures/fluorescence_norm-1988-2021_lagrangianKurtosis.png');
 
 ax3c = figure;
-plot(t_grid(1,:),skew_chl_lang,'DisplayName','Skewness');
-% hold on
+plot(time,skew_chl_lang,'DisplayName','Skewness');
+hold on
+plot(time,skew_chl_lang_rm,'DisplayName','~12mth running mean (10-point centred moving average)');
 % plot(t_grid(1,:),skew_chl_lang_n,'DisplayName','Skewness (norm)');
-% hold off
+hold off
 legend();
 datetick('x','yyyy mmm','keeplimits');
 title('Skewness: Chloropigments, 1988-2021 (Lagrangian)');
