@@ -98,8 +98,6 @@ ax2 = figure;
 gsw_SA_CT_plot(SA,CT,p_ref,isopycs,'\it{S}\rm_A - {\Theta} diagram');
 exportgraphics(ax2,'figures/ctd-SA-CT.png');
 
-% 'color',[1,1,1]
-
 %% Conservative Temperature Pressure- and Time-Series (1988-2022): Eulerian View
 
 % New default for 2x1
@@ -137,8 +135,6 @@ title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian)');
 
 subplot(2,1,2)
 h=contourf(t_grid,p_grid,CT_rm,linspace(16,28,nb),'LineColor','auto');
-% hold on
-% plot(t_grid(1,:),MLDt,'LineWidth',1.5,'Color',[0 0 0]);
 set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
@@ -198,6 +194,9 @@ end
 MLD = MLD + 5;
 MLD_rm = MLD_rm + 5;
 
+% Very broad trend
+MLD_10yr = movmean(MLD_rm,100);
+
 ax5 = figure;
 
 subplot(2,1,1)
@@ -218,6 +217,7 @@ subplot(2,1,2)
 contourf(t_grid,p_grid,sigma_rm,linspace(22,25.5,nb),'LineColor','auto');
 hold on
 plot(t_grid(1,:),MLD_rm,'LineWidth',1.5,'Color',[0 0 0]);
+plot(t_grid(1,:),MLD_10yr,'LineWidth',1.5,'Color',[0.3 0.3 0.3]);
 hold off
 set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
