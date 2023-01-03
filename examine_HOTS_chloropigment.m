@@ -9,7 +9,7 @@ set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
 set(0,'defaultAxesFontSize',16);
 
-%% Open data file and extract variables
+%% Open data file and extract variables; add Barone's routines to path
 data = importdata('data/hots-chloropigment.txt').data;
 
 crn = data(:,1);
@@ -20,6 +20,9 @@ chloro = data(:,4);
 % Set -9 = NaN; remove negative values
 chloro(chloro==-9) = NaN;
 chloro(chloro<0) = 0;
+
+addpath("baroneRoutines\");
+
 %% Examine First Days of Data
 
 ax1 = figure;
@@ -45,6 +48,8 @@ pres = reshape(pressure,101,[]);
 [t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
 time = datetime(t_grid(1,:),'ConvertFrom','datenum');
 
+save('datafiles\chloro',"chloro2D","pres","t_grid"',"p_grid","time");
+
 
 ax2 = figure;
 contourf(t_grid,p_grid,chloro2D,0:0.14:1.4,'LineColor','auto');
@@ -64,6 +69,7 @@ exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerianView.png');
 for j=1:329
     chloro2D_n(:,j) = chloro2D(:,j)/max(chloro2D(:,j));
 end
+save("datafiles\chloro.mat","chloro2D_n",'-append');
 
 ax2a = figure;
 contourf(t_grid,p_grid,chloro2D_n,'LineColor','auto');
