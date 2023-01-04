@@ -26,13 +26,35 @@ load("datafiles\chloro.mat");
 %% Try: hotFTPextract
 
 cruise = 210;
+filename = 'datafiles\ctd_iso' + string(cruise) + '.mat';
 
-% update the check to include cruise number in filename?
-if isfile("datafiles\ctd_iso.mat")
-    disp('CTD and ISO already created');
+if isfile(filename)
+    disp('CTD and ISO already created for that cruise');
 else
     disp('Extracting...');
     [ctd,iso] = hotFTPextract(cruise);
-    filename = 'datafiles\ctd_iso' + string(cruise);
     save(filename,"ctd","iso");
 end
+
+%% Try: RunMedian
+
+testDataRun = RunMedian(chloro2D(:,1),11);
+
+%% plot the above vs original
+figure
+plot(chloro2D(:,1),-p_grid(:,1));
+hold on
+plot(testDataRun,-p_grid(:,1));
+hold off
+
+%% Try: statsplot2
+
+[MLEp,KSp,nll] = statsplot2(chloro2D(1:100,1));
+
+%%
+clear MLEp KSp nll
+
+%% kstest
+
+h_norm = kstest(chloro2D(:,1));
+% if testh = 1, then it means that the distribution is normal (?)
