@@ -25,7 +25,7 @@ load("datafiles\chloro.mat");
 
 %% Try: hotFTPextract
 
-cruise = 300;
+cruise = 210;
 filename = 'datafiles\ctd_iso' + string(cruise) + '.mat';
 
 if isfile(filename)
@@ -36,26 +36,20 @@ else
     save(filename,"ctd","iso");
 end
 
+%% hotFTPextract: examine
+
+
 %% isopyncnal view of DCM
 % plot sig vs. f
 
-load(filename);
-
-% mean fluorescence for that cruise
-f_mean = mean(ctd.f,2,'omitnan');
-sig_mean = mean(ctd.sig,2,"omitnan");
-
+load("datafiles\ctd_iso210.mat");
 figureName = 'figures/isopycnal_DCM_' + string(cruise) + '.png';
 
 ax1 = figure;
-scatter(ctd.f,-ctd.sig,'Marker','.','MarkerEdgeColor',[0.6 0.6 0.6],'HandleVisibility','off');
-hold on
-plot(f_mean,-sig_mean,'Color','red','LineWidth',1.5,'DisplayName','Mean Fluorescence');
-hold off
-legend();
+plot(ctd.f,-ctd.sig,'Color',[0.3 0.3 0.3]);
 xlabel('Chloropigment [ug L^{-1}]');
 ylabel('Potential Density Anomaly \sigma_0 [kg m^{-3}]');
-title(sprintf('Isopycnal View of DCM: \\sigma_0 vs fluorescence (Cruise %s)',string(cruise)));
+title(sprintf('\\sigma_0 v%s',string(cruise)));
 exportgraphics(ax1,figureName);
 
 %% Try: RunMedian

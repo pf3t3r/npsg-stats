@@ -332,43 +332,16 @@ exportgraphics(ax8,'figures/mld-1988-2021_fft.png');
 
 %% Density vs chl
 
-% set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
-load("datafiles\chloro.mat");
 ax9 = figure;
 
-subplot(2,1,1)
-contourf(t_grid,-sigma_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
-% set(gca,'Ydir','reverse')
+% h=contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
+% hold on
+plot(t_grid,MLDt,'LineWidth',1.5,'Color',[0 0 0]);
+set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
-c.Label.String = 'Chloropigment (ug/L)';
-xlabel('Time');
-ylabel('Potential Density Anomaly $\sigma_0$');
-title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Sigma Coordinates)');
-
-subplot(2,1,2)
-contourf(t_grid,-p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
-% set(gca,'Ydir','reverse')
-datetickzoom('x','dd/mm/yyyy','keeplimits');
-d = colormap(flipud(cbrewer2('Spectral',nb)));
-c = colorbar;
-c.Label.String = 'Chloropigment (ug/L)';
+c.Label.String = 'Conservative Temperature (C)';
 xlabel('Time');
 ylabel('Pressure [db]');
-title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Pressure Coordinates)');
-
-exportgraphics(ax8,'figures/chl_sigmaCoords.png');
-
-% cm = get(gca,'Colormap');
-
-%% SA-CT with chl
-
-% for i=1:101
-%     for j=1:329
-%         colorSACT(i,j) = d(1);
-%     end
-% end
-
-figure
-scatter(SA2D,CT2D,'.','MarkerFaceColor',d(1));
+title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian)');
