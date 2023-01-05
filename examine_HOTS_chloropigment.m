@@ -93,8 +93,8 @@ assert(min(min(chloro2D_n)) == 0); % Throws error if not equal to zero
 kurt_chl = kurtosis(chloro2D);
 skew_chl = skewness(chloro2D);
 
-kurt_chl_rm = movmean(kurt_chl,10);
-skew_chl_rm = movmean(skew_chl,10);
+kurt_chl_rm = movmean(kurt_chl,10,'omitnan');
+skew_chl_rm = movmean(skew_chl,10,'omitnan');
 % The normalised data of course has the same kurtosis and skewness
 % kurt_chl_n = kurtosis(chloro2D_n);
 % skew_chl_n = skewness(chloro2D_n);
@@ -196,9 +196,9 @@ exportgraphics(ax3a,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 %% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Lagrangian)
 
 kurt_chl_lang = kurtosis(chloro_lang);
-kurt_chl_lang_rm = movmean(kurt_chl_lang,10);
+kurt_chl_lang_rm = movmean(kurt_chl_lang,10,'omitnan');
 skew_chl_lang = skewness(chloro_lang);
-skew_chl_lang_rm = movmean(skew_chl_lang,10);
+skew_chl_lang_rm = movmean(skew_chl_lang,10,'omitnan');
 
 % Again the normalised data exhibits the same kurtosis and skew as the
 % non-normalised data
@@ -294,3 +294,5 @@ ylabel('Frequency');
 title('Frequency of Log-Concentration (Lagrangian)');
 
 exportgraphics(ax4,'figures/hist_chloropig_selectDepths_1989-2021.png');
+
+%% 
