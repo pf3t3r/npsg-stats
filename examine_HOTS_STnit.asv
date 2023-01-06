@@ -306,14 +306,12 @@ exportgraphics(ax7,'figures/buoyancy-1988-2021_fft.png');
 
 %% FFT on MLD
 
-
 % Fill N2, calculate FFT
 y_mld = nufft(MLD,tmid_grid(i,:));
 
 ax8 = figure;
 yyaxis left
 plot(f,abs(y_mld),'Color',[0.8 0.8 0.8],'DisplayName','Mixed Layer Depth');
-% plot(f,abs(y),'Color',[0.8 0.8 0.8]);
 xlabel('Normalised Frequency');
 ylabel('MLD: Power Density (p^2) [Pa^2]');
 hold on
@@ -332,16 +330,62 @@ exportgraphics(ax8,'figures/mld-1988-2021_fft.png');
 
 %% Density vs chl
 
+load("datafiles\chloro.mat");
 ax9 = figure;
 
-% h=contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
-% hold on
-plot(t_grid,MLDt,'LineWidth',1.5,'Color',[0 0 0]);
-set(gca,'Ydir','reverse')
+subplot(2,1,1)
+contourf(t_grid,-sigma_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
+% set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
-c.Label.String = 'Conservative Temperature (C)';
+c.Label.String = 'Chloropigment (ug/L)';
+xlabel('Time');
+ylabel('Potential Density Anomaly $\sigma_0$');
+title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Sigma Coordinates)');
+
+subplot(2,1,2)
+contourf(t_grid,-p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
+datetickzoom('x','dd/mm/yyyy','keeplimits');
+d = colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Chloropigment (ug/L)';
 xlabel('Time');
 ylabel('Pressure [db]');
-title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian)');
+title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Pressure Coordinates)');
+
+exportgraphics(ax8,'figures/chl_sigmaCoords.png');
+
+%% SA-CT with Chl-a: discretize Chl-a data to map onto 100 colours from Hovmoeller Diagram
+testDisc = discretize(chloro2D_n,100);
+testDisc(isnan(testDisc)) = 101;
+d = [d;0 0 0];
+
+%% SA-CT with Chl-a: set up density coordinates
+
+SA_sig = linspace(min(min(SA2D))-0.1,max(max(SA2D))+0.1,nb);
+CT_sig = linspace(min(min(CT2D))-1,max(max(CT2D)),nb);
+[SA_sigg,CT_sigg] = meshgrid(SA_sig,CT_sig);
+sigma_lines = gsw_sigma0(SA_sigg,CT_sigg);
+
+%% SA-CT with Chl-a: Make the Diagram
+
+ax9 = figure;
+contour(SA_sigg,CT_sigg,sigma_lines,'k-','ShowText','on','LabelSpacing',800);
+hold on
+gscatter(SA2D,CT2D,d(testDisc(:,1),:),d,'.',8,'off');
+hold off
+xlabel('Absolute Salinity S_A [g kg^{-1}]');
+ylabel('Conservative Temperature \Theta [C]');
+exportgraphics(ax9,'figures/CT_SA_withChl.png');
+
+%%
+% SA_sig = linspace(min(min(SA2D)),max(max(SA2D)),nb);
+% CT_sig = linspace(min(min(CT2D)),max(max(CT2D)),nb);
+% [SA_sigg,CT_sigg] = meshgrid(SA_sig,CT_sig);
+% sigma_lines = gsw_sigma0(SA_sigg,CT_sigg);
+
+% cnt = linspace(min(min(sigma_lines)),max(max(sigma_lines)),nb);
+
+% figure
+% contour(SA_sigg,CT_sigg,sigma_lines,'k-','ShowText','on','LabelSpacing',800);

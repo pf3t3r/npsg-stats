@@ -148,7 +148,6 @@ ylabel('Pressure [db]');
 title('Conservative Temperature \Theta: 1988 - 2021 (Eulerian) [12-mth running mean]');
 
 exportgraphics(ax3,'figures/conservativeTemperature-1988-2021_eulerianView.png');
-% exportgraphics(ax3a,'figures/conservativeTemperature-1988-2021_eulerianView_RM.png');
 
 %% Absolute Salinity Pressure- and Time-Series (1988-2022): Eulerian View
 
@@ -277,11 +276,6 @@ exportgraphics(ax6,'figures/buoyancy-1988-2021_eulerianView.png');
 
 %% FFT on N2
 
-% L = t_grid(1,end)-t_grid(1,1); % Length of time series [days]
-% Fs = 1/30; % Approximate Sampling Frequency [per day]
-% f = Fs*(0:(L/2))/L;
-
-
 % Fill N2, calculate FFT
 for i = 1:100
     N2filled(i,:) = fillmissing(N2(i,:),'previous');
@@ -306,14 +300,12 @@ exportgraphics(ax7,'figures/buoyancy-1988-2021_fft.png');
 
 %% FFT on MLD
 
-
 % Fill N2, calculate FFT
 y_mld = nufft(MLD,tmid_grid(i,:));
 
 ax8 = figure;
 yyaxis left
 plot(f,abs(y_mld),'Color',[0.8 0.8 0.8],'DisplayName','Mixed Layer Depth');
-% plot(f,abs(y),'Color',[0.8 0.8 0.8]);
 xlabel('Normalised Frequency');
 ylabel('MLD: Power Density (p^2) [Pa^2]');
 hold on
@@ -332,13 +324,11 @@ exportgraphics(ax8,'figures/mld-1988-2021_fft.png');
 
 %% Density vs chl
 
-% set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
 load("datafiles\chloro.mat");
 ax9 = figure;
 
 subplot(2,1,1)
 contourf(t_grid,-sigma_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
-% set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
@@ -349,7 +339,6 @@ title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Sigma Coordinates)');
 
 subplot(2,1,2)
 contourf(t_grid,-p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
-% set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
@@ -360,15 +349,25 @@ title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Pressure Coordinates)');
 
 exportgraphics(ax8,'figures/chl_sigmaCoords.png');
 
-% cm = get(gca,'Colormap');
+%% SA-CT with Chl-a: discretize Chl-a data to map onto 100 colours from Hovmoeller Diagram
+testDisc = discretize(chloro2D_n,100);
+testDisc(isnan(testDisc)) = 101;
+d = [d;0 0 0];
 
-%% SA-CT with chl
+%% SA-CT with Chl-a: set up density coordinates
 
-% for i=1:101
-%     for j=1:329
-%         colorSACT(i,j) = d(1);
-%     end
-% end
+SA_sig = linspace(min(min(SA2D))-0.1,max(max(SA2D))+0.1,nb);
+CT_sig = linspace(min(min(CT2D))-1,max(max(CT2D)),nb);
+[SA_sigg,CT_sigg] = meshgrid(SA_sig,CT_sig);
+sigma_lines = gsw_sigma0(SA_sigg,CT_sigg);
 
-figure
-scatter(SA2D,CT2D,'.','MarkerFaceColor',d(1));
+%% SA-CT with Chl-a: Make the Diagram
+
+ax9 = figure;
+contour(SA_sigg,CT_sigg,sigma_lines,'k-','ShowText','on','LabelSpacing',800);
+hold on
+gscatter(SA2D,CT2D,d(testDisc(:,1),:),d,'.',8,'off');
+hold off
+xlabel('Absolute Salinity S_A [g kg^{-1}]');
+ylabel('Conservative Temperature \Theta [C]');
+exportgraphics(ax9,'figures/CT_SA_withChl.png');
