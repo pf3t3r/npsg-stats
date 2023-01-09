@@ -31,6 +31,8 @@ chloro1(chloro1<0) = 0; % remove negative values
 
 addpath("baroneRoutines\");
 
+nb = 100;
+
 %% Examine First Days of Data
 
 ax1 = figure;
@@ -101,30 +103,30 @@ copyPressure1(counterPression(1))
 
 % copyPressure1 = [copyPressure1(1:counterPression(1)),Nangroup1,copyPressure1(counterPression(1)+1:end)];
 
-% copytest = [copyPressure1(1:counterPression(1))',Nangroup1'];
+copytest = [copyPressure1(1:counterPression(1))',Nangroup1'];
 copytest = [copytest,copyPressure1(counterPression(1)+1:counterPression(2))'];
 copytest = [copytest,Nangroup2'];
 copytest = [copytest,copyPressure1(counterPression(2)+1:end)'];
 %     copyPressure1(counterPression(1)+1:counterPression(2)),Nangroup2,...
 %     copyPressure1(counterPression(2)+1:end)];
 
-chloro1_2D = reshape(chloro1,501,[]);
-days1 = day1 + datetime(1988,09,30);
-days1 = reshape(days1,501,[]);
+% chloro1_2D = reshape(chloro1,501,[]);
+% days1 = day1 + datetime(1988,09,30);
+% days1 = reshape(days1,501,[]);
 pres1 = reshape(copytest,501,[]);
 
 [t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
-[t1_grid,p1_grid] = meshgrid(datenum(days1(1,:)),pres1(:,1));
+% [t1_grid,p1_grid] = meshgrid(datenum(days1(1,:)),pres1(:,1));
 time = datetime(t_grid(1,:),'ConvertFrom','datenum');
-time1 = datetime(t_grid1(1,:),'ConvertFrom','datenum');
+% time1 = datetime(t_grid1(1,:),'ConvertFrom','datenum');
 
 save('datafiles\chloro',"chloro2D","pres","t_grid"',"p_grid","time");
 
 ax2 = figure;
-contourf(t_grid,p_grid,chloro2D,0:0.14:1.4,'LineColor','auto');
+contourf(t_grid,p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
-colormap(flipud(cbrewer2('Spectral')));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
@@ -141,10 +143,10 @@ end
 save("datafiles\chloro.mat","chloro2D_n",'-append');
 
 ax2a = figure;
-contourf(t_grid,p_grid,chloro2D_n,'LineColor','auto');
+contourf(t_grid,p_grid,chloro2D_n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
-colormap(flipud(cbrewer2('Spectral')));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM at each time';
 xlabel('Time');
@@ -231,10 +233,10 @@ end
 
 % Make a filled contour plot of the DCM in the Lagrangian perspective
 ax3 = figure;
-contourf(t_lang_grid,p_lang_grid,chloro_lang,0:0.14:1.4,'LineColor','auto');
+contourf(t_lang_grid,p_lang_grid,chloro_lang,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
-colormap(flipud(cbrewer2('Spectral')));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
@@ -250,10 +252,10 @@ for j=1:329
 end
 
 ax3a = figure;
-contourf(t_lang_grid,p_lang_grid,chloro_lang_n,'LineColor','auto');
+contourf(t_lang_grid,p_lang_grid,chloro_lang_n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
-colormap(flipud(cbrewer2('Spectral')));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
 xlabel('Time');
