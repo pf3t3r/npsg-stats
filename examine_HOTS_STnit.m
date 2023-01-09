@@ -15,13 +15,13 @@ set(0,'defaultAxesFontSize',16);
 %% Open data file and extract variables
 data = importdata('data/hots-T-S-nit.txt').data;
 
+% 200db
 crn = data(:,1);
 day = data(:,2);
 pressure = data(:,3);
 T = data(:,4);
 S = data(:,5);
 nitrate = data(:,6);
-
 T(T==-9) = NaN;
 S(S==-9) = NaN;
 nitrate(nitrate==-9) = NaN;
