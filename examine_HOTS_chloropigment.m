@@ -11,21 +11,30 @@ set(0,'defaultAxesFontSize',16);
 
 %% Open data file and extract variables; add Barone's routines to path
 data = importdata('data/hots-chloropigment.txt').data;
+data1 = importdata("data\hots-chl-T-S-nit-1000.txt").data;
 
+% 200db
 crn = data(:,1);
 day = data(:,2);
 pressure = data(:,3);
 chloro = data(:,4);
+chloro(chloro==-9) = NaN; % Set -9 = NaN;
+chloro(chloro<0) = 0; % remove negative values
 
-% Set -9 = NaN; remove negative values
-chloro(chloro==-9) = NaN;
-chloro(chloro<0) = 0;
+% 1000db
+crn1 = data1(:,1);
+day1 = data1(:,2);
+pressure1 = data1(:,3);
+chloro1 = data1(:,6);
+chloro1(chloro1==-9) = NaN; % Set -9 = NaN;
+chloro1(chloro1<0) = 0; % remove negative values
 
 addpath("baroneRoutines\");
 
 %% Examine First Days of Data
 
 ax1 = figure;
+subplot(1,2,1)
 plot(chloro(1:101),-pressure(1:101),'DisplayName','CRN 1: Nov 88');
 hold on
 plot(chloro(102:202),-pressure(102:202),'DisplayName','CRN 2: Dec 88');
@@ -34,22 +43,82 @@ hold off
 legend();
 ylabel('pressure [db]');
 xlabel('chloropigment (fluorescence) [ug/L]');
-title('CTD: chloropigment vs depth (HOTS 88/89)');
+title('CTD: chloropigment vs depth (HOTS 88/89) [200m]');
+
+subplot(1,2,2)
+plot(chloro1(1:501),-pressure1(1:501),'DisplayName','CRN 1: Nov 88');
+hold on
+plot(chloro1(502:1002),-pressure1(502:1002),'DisplayName','CRN 2: Dec 88');
+plot(chloro1(1003:1503),-pressure1(1003:1503),'DisplayName','CRN 3: Jan 89');
+hold off
+legend();
+ylabel('pressure [db]');
+xlabel('chloropigment (fluorescence) [ug/L]');
+title('CTD: chloropigment vs depth (HOTS 88/89) [1000m]');
 
 exportgraphics(ax1,'figures/ctd-day-1.png');
 
+%% ya no funciona
+% a=[1 2 3 5 6 7 9 10 13 14];
+% insertNanIndex = [0 diff(a)>1];
+% % insertValue = (1-insertNanIndex)./0;
+% insertValue = NaN(10,1);
+% b = [a(5) insertValue];
+% % b_tmp = [a(1) insertValue];
+% % b = b_tmp(:)';
+% b(isinf(b)) = [];
+
+
+
 %% Fluorescence Depth- and Time-Series (1988-2022): Eulerian View
 
+% Grid, reshape
 chloro2D = reshape(chloro,101,[]);
 days = day + datetime(1988,09,30);
 days = reshape(days,101,[]);
 pres = reshape(pressure,101,[]);
 
+% Find where CTD does not go to full depth, pad with NAN
+% CRN = 329 currently
+noOfZeroDbs = find(~pressure1);
+assert(length(noOfZeroDbs)==329);
+
+counter = 0;
+counterPression = [];
+for i=1:length(pressure1)-1
+    if diff(pressure1(i:i+1)) < 2 && diff(pressure1(i:i+1)) > -999
+        counter = counter + 1;
+        counterPression = [counterPression i];
+        disp(i);
+    end
+end
+
+% insert nans
+copyPressure1 = pressure1;
+Nangroup1 = NaN((1000-266)/2,1);
+Nangroup2 = NaN((1000-270)/2,1);
+copyPressure1(counterPression(1))
+
+% copyPressure1 = [copyPressure1(1:counterPression(1)),Nangroup1,copyPressure1(counterPression(1)+1:end)];
+
+% copytest = [copyPressure1(1:counterPression(1))',Nangroup1'];
+copytest = [copytest,copyPressure1(counterPression(1)+1:counterPression(2))'];
+copytest = [copytest,Nangroup2'];
+copytest = [copytest,copyPressure1(counterPression(2)+1:end)'];
+%     copyPressure1(counterPression(1)+1:counterPression(2)),Nangroup2,...
+%     copyPressure1(counterPression(2)+1:end)];
+
+chloro1_2D = reshape(chloro1,501,[]);
+days1 = day1 + datetime(1988,09,30);
+days1 = reshape(days1,501,[]);
+pres1 = reshape(copytest,501,[]);
+
 [t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
+[t1_grid,p1_grid] = meshgrid(datenum(days1(1,:)),pres1(:,1));
 time = datetime(t_grid(1,:),'ConvertFrom','datenum');
+time1 = datetime(t_grid1(1,:),'ConvertFrom','datenum');
 
 save('datafiles\chloro',"chloro2D","pres","t_grid"',"p_grid","time");
-
 
 ax2 = figure;
 contourf(t_grid,p_grid,chloro2D,0:0.14:1.4,'LineColor','auto');
