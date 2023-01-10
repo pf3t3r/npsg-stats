@@ -9,6 +9,30 @@ set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
 set(0,'defaultAxesFontSize',16);
 
+%% Simple Gaussian Model of DCM
+% Equation 2.1 from B. Barone (2009), based on Platt et al. (1988)
+
+C0 = 1; h = 10; zm = -110; sigma_ = 10;
+z = 0:-5:-200;
+
+Cz = C0 + (h/(sigma_*sqrt(2*pi)))*exp(-(z-zm).^2/2*sigma_.^2);
+
+
+
+%% Variation of above (Uitz et al, 2006)
+
+% s = slope of the background concentration
+s = -0.0001;
+
+CzU = C0 + s*z + (h/(sigma_*sqrt(2*pi)))*exp(-(z-zm).^2/2*sigma_.^2);
+
+figure;
+plot(Cz,z,'DisplayName','Platt et al. (1988)');
+hold on
+plot(CzU,z,'DisplayName','Uitz et al (2006)');
+hold off
+legend();
+
 %% Open data file and extract variables; add Barone's routines to path
 data = importdata('data/hots-chloropigment.txt').data;
 data1 = importdata("data\hots-chl-T-S-nit-1000.txt").data;
