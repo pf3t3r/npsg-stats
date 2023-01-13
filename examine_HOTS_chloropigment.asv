@@ -365,14 +365,13 @@ title('Chloropigment: 1988 - 2021 (Lagrangian)');
 
 exportgraphics(ax7,'figures/fluorescence-1988-2021_lagrangianView.png');
 
-ax7a = figure;
+ax7 = figure;
 contourf(t_lang_grid256,p_lang_grid256,chloro256_lang,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetick('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
-ylim([-110 110]);
 xlabel('Time');
 ylabel('Depth [db]');
 title('Chloropigment: 1988 - 2021 (Lagrangian) [256 db]');
@@ -383,7 +382,6 @@ exportgraphics(ax7a,'figures/fluorescence-1988-2021_lagrangian256.png');
 
 for j=1:329
     chloro_lang_n(:,j) = chloro_lang(:,j)/max(chloro_lang(:,j));
-    chloro256_lang_n(:,j) = chloro256_lang(:,j)/max(chloro256_lang(:,j));
 end
 
 ax8 = figure;
@@ -398,19 +396,6 @@ ylabel('Depth [db]');
 title('Chloropigment: 1988 - 2021 (Lagrangian, Normalised)');
 
 exportgraphics(ax8,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
-
-ax8a = figure;
-contourf(t_lang_grid256,p_lang_grid256,chloro256_lang_n,linspace(0,1.4,nb),'LineColor','auto');
-set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
-colormap(flipud(cbrewer2('Spectral',nb)));
-c = colorbar;
-c.Label.String = 'chloropigment, normalised relative to DCM';
-xlabel('Time');
-ylabel('Depth [db]');
-title('Chloropigment: 1988 - 2021 (Lagrangian, Normalised, 256 db)');
-
-exportgraphics(ax8a,'figures/fluorescence_norm-1988-2021_lagrangian256.png');
 
 %% Kurtosis and Skewness across depth for normalised chloropigment depth- and time-series (Lagrangian)
 
