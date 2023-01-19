@@ -514,4 +514,60 @@ title('Frequency of Log-Concentration (Lagrangian)');
 
 exportgraphics(ax11,'figures/hist_chloropig_selectDepths_1989-2021.png');
 
-%% 
+%% DCM Hovmoeller: Seasonality Removed
+
+chloro256_rm = movmean(chloro256,10,2,'omitnan');
+chloro256_lang_rm = movmean(chloro256_lang,10,2,'omitnan');
+
+ax12 = figure;
+contourf(t_lang_grid256,p_lang_grid256,chloro256_lang_rm,linspace(0,1.4,nb),'LineColor','auto');
+set(gca,'Ydir','reverse')
+datetick('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'chloropigment, seasonality removed';
+xlabel('Time');
+ylabel('Depth [db]');
+title('Chloropigment: 1988 - 2021 (Lagrangian, Seasonality Removed, 256 db)');
+
+exportgraphics(ax12,'figures/fluorescence_1988-2021_lagrangian256_seasonalityRemoved.png');
+
+ax13 = figure;
+contourf(t_lang_grid256,p_lang_grid256,chloro256_rm,linspace(0,1.4,nb),'LineColor','auto');
+set(gca,'Ydir','reverse')
+datetick('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'chloropigment, seasonality removed';
+xlabel('Time');
+ylabel('Depth [db]');
+title('Chloropigment: 1988 - 2021 (Eulerian, Seasonality Removed, 256 db)');
+
+exportgraphics(ax13,'figures/fluorescence_1988-2021_eulerian256_seasonalityRemoved.png');
+
+%% FFT on DCM
+
+% For now, run the weird FFT on the seasonally-averaged data. Maybe this
+% gives something interesting.
+
+% Maybe filling missing data not needed here.
+for i = 1:129
+    %chlorofilled(i,:) = fillmissing(chloro256_lang_rm(i,:),'previous');
+    y(i,:) = nufft(chloro256_lang_rm(i,:),t_grid_256(i,:));
+end
+
+meanChlorofft = mean(y);
+
+n = length(time);
+f = (0:n-1)/n;
+
+ax14 = figure;
+plot(f,abs(y),'Color',[0.8 0.8 0.8],'HandleVisibility','off');
+hold on
+plot(f,abs(meanChlorofft),'Color','red','DisplayName','Mean Chloropigment Across Depth');
+hold off
+legend();
+xlabel('Normalised Frequency');
+ylabel('Power Density (N^4) [s^{-4}]');
+title('FFT: chl-a(p,t) at HOTS (1989-2021)');
+exportgraphics(ax14,'figures/chla-1988-2021_fft.png');
