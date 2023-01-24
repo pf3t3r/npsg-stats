@@ -27,16 +27,22 @@ l_exp = log(pdf('exp',x,MLEp(5,1)));
 n = length(x);
 
 % Normal vs Log-normal
-l_nl = l_norm - l_logn;
-R_nl = sum(l_nl);
+l_nl = l_norm - l_logn; % PETER: each depth
+R_nl = sum(l_nl); % PETER: complete depth
 m_nl = mean(l_nl);
+disp(n);
+disp(m_nl);
 s_nl = std(l_nl);
+disp(s_nl);
 v_nl = sqrt(n)*m_nl/s_nl;
+disp(v_nl);
 p1_nl = cdf('norm',v_nl,0,1);
+disp(p1_nl);
 if p1_nl < 0.5
     p2_nl = 2*p1_nl;
 else p2_nl = 2*(1-p1_nl);
 end
+disp(p2_nl);
 % Normal vs Weibull
 l_nw = l_norm - l_wbl;
 R_nw = sum(l_nw);
@@ -138,6 +144,7 @@ else p2_ge = 2*(1-p1_ge);
 end
 
 rows_outputs = char('1. Normal-Log-normal','2. Normal-Weibull','3. Normal-Gamma','4. Normal-Exponential','5. Log-normal-Weibull','6. Log-normal-Gamma','7. Log-normal-Exponential','8. Weibull-Gamma','9. Weibull-Exponential','10. Gamma-Exponential');
+% l = [l_nl;l_nw;l_ng;l_ne;l_lw;l_lg;l_le;l_wg;l_we;l_ge]; % EDIT PETER: compare with R
 R = [R_nl;R_nw;R_ng;R_ne;R_lw;R_lg;R_le;R_wg;R_we;R_ge];
 p1 = [p1_nl;p1_nw;p1_ng;p1_ne;p1_lw;p1_lg;p1_le;p1_wg;p1_we;p1_ge];
 p2 = [p2_nl;p2_nw;p2_ng;p2_ne;p2_lw;p2_lg;p2_le;p2_wg;p2_we;p2_ge];
