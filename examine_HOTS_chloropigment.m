@@ -477,6 +477,7 @@ nbins = 25;
 [histFreq12L,histXout12L] = hist(chloro_lang(58,:),nbins);
 [histFreq50L,histXout50L] = hist(chloro_lang(77,:),nbins);
 
+% % UPDATE: hist(log)!!
 ax11 = figure;
 sgtitle('Histograms of Concentration at Different Depths','FontSize',20);
 subplot(2,2,1)

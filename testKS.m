@@ -52,7 +52,7 @@ timeNewL = time(:,[antiTickL]);
 
 %% Look
 
-depthMeasurements = 70;
+
 % MLEpArray = [];
 % for i=1:depthMeasurements
 %     disp(i);
@@ -61,16 +61,23 @@ depthMeasurements = 70;
 % end
 
 %%
+depthMeasurements = 129;
 clc;
+% Eulerian
 for i=1:depthMeasurements
     disp(i);
-    [~,KSp(:,i),nll(:,i)] = statsplot2(chloroNew(i,:),'noplot');
+    tmp = chloro(i,:);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [MLEp(:,:,i),KSp(:,i),nll(:,i)] = statsplot2(tmp,'noplot');
 end
+clear tmp;
 
-
+% Lagrangian
 for i=3:depthMeasurements
     disp(i);
-    [~,KSpL(:,i),nllL(:,i)] = statsplot2(chloroNewL(i,:),'noplot');
+    tmp = chloroL(i,:);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [~,KSpL(:,i),nllL(:,i)] = statsplot2(tmp,'noplot');
 end
 
 %%
@@ -78,12 +85,12 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 15
 
 ax1 = figure;
 subplot(1,2,1)
-plot(KSp(1,:),linspace(0,-2*depthMeasurements,70),'Color',[0 0 0],'DisplayName','Normal');
+plot(KSp(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(KSp(2,:),linspace(0,-2*depthMeasurements,70),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(KSp(3,:),linspace(0,-2*depthMeasurements,70),'Color','red','DisplayName','Weibull');
-plot(KSp(4,:),linspace(0,-2*depthMeasurements,70),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(KSp(5,:),linspace(0,-2*depthMeasurements,70),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(KSp(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(KSp(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(KSp(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(KSp(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
 xlabel('p-value');
@@ -91,12 +98,12 @@ ylabel('Depth [m]');
 title('Eulerian KS-Test');
 
 subplot(1,2,2)
-plot(KSpL(1,:),linspace(128,-128,70),'Color',[0 0 0],'DisplayName','Normal');
+plot(KSpL(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(KSpL(2,:),linspace(128,-128,70),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(KSpL(3,:),linspace(128,-128,70),'Color','red','DisplayName','Weibull');
-plot(KSpL(4,:),linspace(128,-128,70),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(KSpL(5,:),linspace(128,-128,70),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(KSpL(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(KSpL(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(KSpL(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(KSpL(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
 xlabel('p-value');
