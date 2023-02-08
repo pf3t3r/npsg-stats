@@ -347,15 +347,13 @@ end
 
 %%
 save('datafiles\chloro',"chloro2D","pres","t_grid"',"p_grid","time", ...
-    'chloro256_n','chloro256',...
+    'chloro256_n'...
     "t_grid_256","p_grid_256","time256");
 
 %%
 % Create meshgrid for time and pressure in Lagrangian view
 [t_lang_grid,p_lang_grid] = meshgrid(datenum(days(1,:)),pres(:,1)-100);
 [t_lang_grid256,p_lang_grid256] = meshgrid(datenum(days256(1,:)),pres256(:,1)-128);
-
-save('datafiles\chloro','p_lang_grid256','-append');
 
 %%
 % Make a filled contour plot of the DCM in the Lagrangian perspective
