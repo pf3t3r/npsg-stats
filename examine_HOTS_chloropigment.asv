@@ -7,7 +7,7 @@ close all; clc; clear;
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 28 12]);
-set(0,'defaultAxesFontSize',12);
+set(0,'defaultAxesFontSize',16);
 
 %% Open data file and extract variables; add Barone's routines to path
 data = importdata('data/hots-chloropigment.txt').data;
@@ -472,24 +472,19 @@ exportgraphics(ax10,'figures/fluorescence_norm-1988-2021_lagrangianSkewness.png'
 
 %% Histograms at Depth
 
-% set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 35 20]);
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 35 20]);
 nbins = 25; 
 
 
 %% redo hists more simply
 
-ax11 = figure;
+figure;
 subplot(2,2,1)
 histogram(chloro2D(6,:),nbins,'DisplayName','10 db');
 hold on
 histogram(chloro2D(36,:),nbins,'DisplayName','70 db');
 histogram(chloro2D(62,:),nbins,'DisplayName','122 db');
 hold off
-legend('Location','best');
-xlim([0 1.65]);
-xlabel('chloropigment (\mu g L^{-1})');
-ylabel('Frequency');
-title('Frequency of Concentration (Eulerian)');
 
 subplot(2,2,2)
 histogram(log(chloro2D(6,:)),nbins,'DisplayName','10 db');
@@ -497,41 +492,101 @@ hold on
 histogram(log(chloro2D(36,:)),nbins,'DisplayName','70 db');
 histogram(log(chloro2D(62,:)),nbins,'DisplayName','122 db');
 hold off
-legend('Location','best');
-xlim([-9 0.2]);
-xlabel('chloropigment (\mu g L^{-1})');
-ylabel('Frequency');
-title('Frequency of Log-Concentration (Eulerian)');
 
 subplot(2,2,3)
-histogram(chloro_lang(2,:),nbins,'DisplayName','-100 db');
+histogram(chloro_lang(2,:),nbins,'DisplayName','10 db');
 hold on
-histogram(chloro_lang(26,:),nbins,'DisplayName','-50 db');
-histogram(chloro_lang(45,:),nbins,'DisplayName','-12 db');
-histogram(chloro_lang(58,:),nbins,'DisplayName','+12 db');
-histogram(chloro_lang(77,:),nbins,'DisplayName','+50 db');
+histogram(chloro_lang(26,:),nbins,'DisplayName','10 db');
+histogram(chloro_lang(45,:),nbins,'DisplayName','10 db');
+histogram(chloro_lang(58,:),nbins,'DisplayName','10 db');
+histogram(chloro_lang(77,:),nbins,'DisplayName','10 db');
 hold off
-legend('Location','best');
-xlim([0 1.65]);
-xlabel('chloropigment (\mu g L^{-1})');
-ylabel('Frequency');
-title('Frequency of Concentration (Lagrangian)');
 
 subplot(2,2,4)
-histogram(log(chloro_lang(2,:)),nbins,'DisplayName','-100 db');
+histogram(log(chloro_lang(2,:)),nbins,'DisplayName','10 db');
 hold on
-histogram(log(chloro_lang(26,:)),nbins,'DisplayName','-50 db');
-histogram(log(chloro_lang(45,:)),nbins,'DisplayName','-12 db');
-histogram(log(chloro_lang(58,:)),nbins,'DisplayName','+12 db');
-histogram(log(chloro_lang(77,:)),nbins,'DisplayName','+50 db');
+histogram(log(chloro_lang(26,:)),nbins,'DisplayName','10 db');
+histogram(log(chloro_lang(45,:)),nbins,'DisplayName','10 db');
+histogram(log(chloro_lang(58,:)),nbins,'DisplayName','10 db');
+histogram(log(chloro_lang(77,:)),nbins,'DisplayName','10 db');
 hold off
-legend('Location','best');
-xlim([-9 0.2]);
-xlabel('chloropigment (\mu g L^{-1})');
-ylabel('Frequency');
-title('Frequency of Log-Concentration (Lagrangian)');
 
-exportgraphics(ax11,'figures/hist_chloropig_selectDepths_1989-2021.png');
+%%
+
+% Eulerian
+% [histFreq,histXout] = histogram(chloro2D(6,:),nbins);
+% histFreq = histogram(chloro2D(6,:),nbins);
+% [histFreq_log,histXout_log] = histogram(log(chloro2D(6,:)),nbins);
+% [histFreq36,histXout36] = histogram(chloro2D(36,:),nbins);
+% histFreq36 = histogram(chloro2D(36,:),nbins);
+% [histFreq36_log,histXout36_log] = histogram(log(chloro2D(36,:)),nbins);
+% [histFreq62,histXout62] = histogram(chloro2D(62,:),nbins);
+% [histFreq62_log,histXout62_log] = histogram(log(chloro2D(62,:)),nbins);
+
+% Lagrangian
+% [histFreqL,histXoutL] = histogram(chloro_lang(2,:),nbins);
+% [histFreqL_log,histXoutL_log] = histogram(log(chloro_lang(2,:)),nbins);
+% [histFreq26L,histXout26L] = histogram(chloro_lang(26,:),nbins);
+% [histFreq26L_log,histXout26L_log] = histogram(log(chloro_lang(26,:)),nbins);
+% [histFreq45L,histXout45L] = histogram(chloro_lang(45,:),nbins);
+% [histFreq45L_log,histXout45L_log] = histogram(log(chloro_lang(45,:)),nbins);
+% [histFreq12L,histXout12L] = histogram(chloro_lang(58,:),nbins);
+% [histFreq12L_log,histXout12L_log] = histogram(log(chloro_lang(58,:)),nbins);
+% [histFreq50L,histXout50L] = histogram(chloro_lang(77,:),nbins);
+% [histFreq50L_log,histXout50L_log] = histogram(log(chloro_lang(77,:)),nbins);
+
+% % UPDATE: hist(log)!!
+ax11 = figure;
+% sgtitle('Histograms of Concentration at Different Depths','FontSize',20);
+% subplot(2,2,1)
+% bar(histXout, histFreq/sum(histFreq),'DisplayName','10 db');
+% hold on
+% bar(histXout36,histFreq36/sum(histFreq36),'DisplayName','70 db');
+% bar(histXout62,histFreq62/sum(histFreq62),'DisplayName','122 db');
+% xlim([0 1.65]);
+% legend();
+% xlabel('chloropigment (\mu g L^{-1})');
+% ylabel('Frequency');
+% title('Frequency of Concentration (Eulerian)');
+% 
+% subplot(2,2,2)
+% bar(histXout_log, histFreq/sum(histFreq_log),'DisplayName','10 db');
+% hold on
+% bar(histXout36_log,histFreq36/sum(histFreq36_log),'DisplayName','70 db');
+% bar(histXout62_log,histFreq62/sum(histFreq62_log),'DisplayName','122 db');
+% xlim([-9 0.2]);
+% legend();
+% xlabel('chloropigment (\mu g L^{-1})');
+% ylabel('Frequency');
+% title('Frequency of Log-Concentration (Eulerian)');
+
+% subplot(2,2,3)
+% bar(histXoutL, histFreqL/sum(histFreqL),'DisplayName','-100 db');
+% hold on
+% bar(histXout26L,histFreq26L/sum(histFreq26L),'DisplayName','-50 db');
+% bar(histXout45L,histFreq45L/sum(histFreq45L),'DisplayName','-12 db');
+% bar(histXout12L,histFreq12L/sum(histFreq12L),'DisplayName','+12 db');
+% bar(histXout50L,histFreq50L/sum(histFreq50L),'DisplayName','+50 db');
+% xlim([0 1.65]);
+% legend();
+% xlabel('chloropigment (\mu g L^{-1})');
+% ylabel('Frequency');
+% title('Frequency of Log-Concentration (Lagrangian)');
+
+% subplot(2,2,4)
+% bar(histXoutL_log, histFreqL/sum(histFreqL_log),'DisplayName','-100 db');
+% hold on
+% bar(histXout26L_log,histFreq26L/sum(histFreq26L_log),'DisplayName','-50 db');
+% bar(histXout45L_log,histFreq45L/sum(histFreq45L_log),'DisplayName','-12 db');
+% bar(histXout12L_log,histFreq12L/sum(histFreq12L_log),'DisplayName','+12 db');
+% bar(histXout50L_log,histFreq50L/sum(histFreq50L_log),'DisplayName','+50 db');
+% xlim([-9 0.2]);
+% legend();
+% xlabel('chloropigment (\mu g L^{-1})');
+% ylabel('Frequency');
+% title('Frequency of Log-Concentration (Lagrangian)');
+% 
+% exportgraphics(ax11,'figures/hist_chloropig_selectDepths_1989-2021.png');
 
 %% DCM Hovmoeller: Seasonality Removed
 
