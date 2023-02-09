@@ -22,6 +22,6 @@ octave-workspace
 .autosave
 
 ##---------------------------------------------------
-## Remove automatically-generated PNG files
+## Ignore automatically-generated PNG files
 ##---------------------------------------------------
 *.png
