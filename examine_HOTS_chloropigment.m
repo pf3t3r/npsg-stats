@@ -193,7 +193,7 @@ save('datafiles\chloro',"chloro2D","pres","t_grid"',"p_grid","time",...
 ax2 = figure;
 contourf(t_grid,p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
@@ -206,7 +206,7 @@ exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerian.png');
 ax3 = figure;
 contourf(t_grid_256,p_grid_256,chloro256,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
@@ -236,7 +236,7 @@ assert(min(min(chloro256_n)) == 0); % Throws error if not equal to zero
 ax4 = figure;
 contourf(t_grid,p_grid,chloro2D_n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM at each time';
@@ -249,7 +249,7 @@ exportgraphics(ax4,'figures/fluorescence_norm-1988-2021_eulerianView.png');
 ax4a = figure;
 contourf(t_grid_256,p_grid_256,chloro256_n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM at each time';
@@ -288,7 +288,7 @@ plot(time,skew_chl_rm,'DisplayName','~12mth running mean (10-point centred movin
 hold off
 % plot(t_grid(1,:),skew_chl_n,'DisplayName','Skewness (norm)');
 legend();
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 title('Skewness: Chloropigments, 1988-2021 (Eulerian)');
 
 exportgraphics(ax6,'figures/fluorescence_norm-1988-2021_eulerianSkewness.png');
@@ -370,7 +370,7 @@ save('datafiles\chloro','p_lang_grid256','-append');
 ax7 = figure;
 contourf(t_lang_grid,p_lang_grid,chloro_lang,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
@@ -383,7 +383,7 @@ exportgraphics(ax7,'figures/fluorescence-1988-2021_lagrangianView.png');
 ax7a = figure;
 contourf(t_lang_grid256,p_lang_grid256,chloro256_lang,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
@@ -410,7 +410,7 @@ save('datafiles\chloro', 'chloro256_lang', 'p256_lang', ...
 ax8 = figure;
 contourf(t_lang_grid,p_lang_grid,chloro_lang_n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
@@ -423,7 +423,7 @@ exportgraphics(ax8,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 ax8a = figure;
 contourf(t_lang_grid256,p_lang_grid256,chloro256_lang_n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
@@ -453,7 +453,7 @@ plot(time,kurt_chl_lang_rm,'DisplayName','~12mth running mean (10-point centred 
 yline(3,':','DisplayName','Normal Distribution');
 hold off
 legend();
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 title('Kurtosis: Chloropigments, 1988-2021 (Lagrangian)');
 
 exportgraphics(ax9,'figures/fluorescence_norm-1988-2021_lagrangianKurtosis.png');
@@ -465,7 +465,7 @@ plot(time,skew_chl_lang_rm,'DisplayName','~12mth running mean (10-point centred 
 % plot(t_grid(1,:),skew_chl_lang_n,'DisplayName','Skewness (norm)');
 hold off
 legend();
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 title('Skewness: Chloropigments, 1988-2021 (Lagrangian)');
 
 exportgraphics(ax10,'figures/fluorescence_norm-1988-2021_lagrangianSkewness.png');
@@ -541,7 +541,7 @@ chloro256_lang_rm = movmean(chloro256_lang,10,2,'omitnan');
 ax12 = figure;
 contourf(t_lang_grid256,p_lang_grid256,chloro256_lang_rm,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, seasonality removed';
@@ -554,7 +554,7 @@ exportgraphics(ax12,'figures/fluorescence_1988-2021_lagrangian256_seasonalityRem
 ax13 = figure;
 contourf(t_lang_grid256,p_lang_grid256,chloro256_rm,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
-datetick('x','yyyy mmm','keeplimits');
+datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, seasonality removed';
