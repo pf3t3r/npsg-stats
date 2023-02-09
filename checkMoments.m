@@ -51,11 +51,12 @@ set(gca, 'YDir','reverse');
 xlim([0 4]); ylim([0 250]);
 title('Chloropigments Skewness');
 subplot(1,4,4)
-plot(kurtChloro,p);
+plot(kurtChloro-3,p);
 set(gca, 'YDir','reverse');
-xlim([0 15]);
+xlim([-1 15]);
 ylim([0 250]);
 title('Chloropigments Excess Kurtosis');
+sgtitle('Chloropigment Moments (Eulerian)');
 exportgraphics(ax1,'figures/moments-Eulerian_1988_2021.png');
 
 %% Lagrangian Moments
@@ -64,21 +65,22 @@ ax2 = figure;
 subplot(1,4,1)
 plot(medChloroL,p_lang);
 set(gca, 'YDir','reverse');
-ylim([-120 120]);
+ylim([-120 120]); xlim([0 1]);
 title('Chloropigments Median');
 subplot(1,4,2)
 plot(stdChloroL,p_lang);
 set(gca, 'YDir','reverse');
-ylim([-120 120]);
+ylim([-120 120]); xlim([0 0.2]);
 title('Chloropigments StD');
 subplot(1,4,3)
 plot(skewChloroL,p_lang);
 set(gca, 'YDir','reverse');
-ylim([-120 120]);
+ylim([-120 120]); xlim([0 5]);
 title('Chloropigments Skewness');
 subplot(1,4,4)
-plot(kurtChloroL,p_lang);
+plot(kurtChloroL-3,p_lang);
 set(gca, 'YDir','reverse');
-ylim([-120 120]);
+ylim([-120 120]); xlim([0 10]);
 title('Chloropigments Excess Kurtosis');
+sgtitle('Chloropigment Moments (Lagrangian)');
 exportgraphics(ax2,'figures/moments-Lagrangian_1988_2021.png');

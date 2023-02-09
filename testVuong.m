@@ -1,3 +1,4 @@
+%% Preamble
 clear; clc; close all;
 addpath("baroneRoutines\");
 
@@ -11,39 +12,20 @@ set(0,'defaultAxesFontSize',12);
 chloro = load("datafiles\chloro.mat"','chloro256_n').chloro256_n;
 time = load("datafiles\chloro.mat","time256").time256;
 
-%% Remove NaN or Zeros
+%% Calculate Vuong's Test Statistics
 
-tickyboi = [];
-antiTick = [];
-
-for i = 1:329
-    for j = 1:129
-        if (~any(chloro(j,i)))
-            tickyboi = [tickyboi i];
-            break;
-        else
-            antiTick = [antiTick i];
-            break;
-        end
-    end
-end
-
-%% Create Arrays of chl-a and time which have no zero or NaN data
-chloroNew = chloro(:,[antiTick]);
-timeNew = time(:,[antiTick]);
-
-%% Look
-
-R = []; p2 = [];
 depthMeasurements = 129;
+R = zeros(10,depthMeasurements);
+p2 = zeros(10,depthMeasurements);
 
 for i = 1:depthMeasurements
-%     disp(i);
-    [R(:,i),p2(:,i)] = bbvuong(chloroNew(i,:));
+    disp(i);
+    tmp = chloro(i,:);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [R(:,i),p2(:,i)] = bbvuong(tmp);
 end
 
-
-%% show
+%% Comparative Plot of Distributions according to Vuong's Test
 
 ax1 = figure;
 subplot(1,2,1)
