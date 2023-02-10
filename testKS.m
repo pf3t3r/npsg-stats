@@ -315,6 +315,5 @@ title('Exp');
 sgtitle('Change in KS Statistic based on excluding first one/three/five years');
 exportgraphics(ax4,'figures/ks-comparisonYearExclusions.png');
 
-
 %%
 clear mleE mleL i ax1 ax2 ax3 ax4;
