@@ -312,7 +312,7 @@ hold off
 legend('Location','best');
 title('Exp');
 
-sgtitle('Change in KS Statistic based on excluding first 3 or 5 years of data');
+sgtitle('Change in KS Statistic based on excluding first one/three/five years');
 exportgraphics(ax4,'figures/ks-comparisonYearExclusions.png');
 
 
