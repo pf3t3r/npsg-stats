@@ -548,7 +548,7 @@ c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
 xlabel('Time');
 ylabel('Depth [db]');
-title('Chloropigment (Normalised): Eulerian (1988 - 2021) [300 db]');
+title('Chloropigment (Normalised): Lagrangian (1988 - 2021) [300 db]');
 exportgraphics(ax8b,'figures/fluorescence_norm-1988-2021_lagrangian300.png');
 
 clear ax8 ax8a ax8b;
