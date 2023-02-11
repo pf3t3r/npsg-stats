@@ -10,15 +10,18 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 28
 set(0,'defaultAxesFontSize',12);
 
 %% Open data file and extract variables; add Barone's routines to path
+
+% Fluorescence Data
 data = importdata('data/hots-chloropigment.txt').data;
 data1 = importdata('data\hots-chl-T-S-nit-1000.txt').data;
 data256 = importdata('data\hots-chl-T-S-nit-256.txt').data;
 d_300 = importdata('data\hots-T-S-chl-nit-300.txt').data;
 
-%% Check Data for Completeness 
-% Do the CTDs go the full depth?
+% Bottle Data
+cpig_bot = importdata('data\hot-bottle.txt').data;
 
-% Check that for each cast the pressure goes down to the specified value
+%% Check CTD Data for Completeness 
+% Do they go full depth? Check that for each cast the pressure goes down to the specified value
 
 % 256 db
 noOfZeroDbs256 = find(~data256(:,3));
@@ -47,7 +50,7 @@ assert(length(noOfZeroDbs300)==327);
 noOf300Dbs300 = find(d_300(:,3) == 300);
 assert(length(noOf300Dbs300)==327);
 
-%% Extract values
+%% Extract CTD Data, Assign to Variables
 
 % 200db
 crn = data(:,1);
@@ -84,6 +87,14 @@ chloro1(chloro1<0) = 0; % remove negative values
 addpath("baroneRoutines\");
 
 nb = 100;
+
+%% Extract Bottle Data
+
+botPressure = cpig_bot(:,4);
+botChl = cpig_bot(:,5);
+
+% Grid Data
+
 
 %% Examine First Days of Data
 % Not really required. Can delete later.
@@ -126,10 +137,12 @@ nb = 100;
 
 %% Reshape into 2D Matrix: 200db
 
-chloro2D = reshape(chloro,101,[]);
-days = day + datetime(1988,09,30);
-days = reshape(days,101,[]);
-pres = reshape(pressure,101,[]);
+chloro200 = reshape(chloro,101,[]);
+days200 = day + datetime(1988,09,30);
+days200 = reshape(days200,101,[]);
+pres200 = reshape(pressure,101,[]);
+
+save('datafiles\chloro',"chloro200",'days200',"pres200");
 
 %% Reshape into 2D Matrix: 256db
 
@@ -138,12 +151,16 @@ days256 = day2 + datetime(1988,09,30);
 days256 = reshape(days256,129,[]);
 pres256 = reshape(pressure2,129,[]);
 
+save('datafiles\chloro',"chloro256",'days256',"pres256",'-append');
+
 %% Reshape into 2D Matrix: 300 db
 
 chloro300 = reshape(chloro3,151,[]);
 days300 = day3 + datetime(1988,09,30);
 days300 = reshape(days300,151,[]);
 pres300 = reshape(pres3,151,[]);
+
+save('datafiles\chloro',"chloro300",'days300',"pres300",'-append');
 
 %% Reshape into 2D Matrix: 1000db
 
@@ -187,25 +204,25 @@ pres300 = reshape(pres3,151,[]);
 
 %% Apply Gridding.
 
-[t_grid,p_grid] = meshgrid(datenum(days(1,:)),pres(:,1));
-time = datetime(t_grid(1,:),'ConvertFrom','datenum');
+[tgrid200,pgrid200] = meshgrid(datenum(days200(1,:)),pres200(:,1));
+time200 = datetime(tgrid200(1,:),'ConvertFrom','datenum');
 
-[t_grid_256,p_grid_256] = meshgrid(datenum(days256(1,:)),pres256(:,1));
-time256 = datetime(t_grid_256(1,:),'ConvertFrom','datenum');
+[tgrid256,pgrid256] = meshgrid(datenum(days256(1,:)),pres256(:,1));
+time256 = datetime(tgrid256(1,:),'ConvertFrom','datenum');
 
-[t_grid_300,p_grid_300] = meshgrid(datenum(days300(1,:)),pres300(:,1));
-time300 = datetime(t_grid_300(1,:),'ConvertFrom','datenum');
+[tgrid300,pgrid300] = meshgrid(datenum(days300(1,:)),pres300(:,1));
+time300 = datetime(tgrid300(1,:),'ConvertFrom','datenum');
 
-save('datafiles\chloro',"chloro2D","pres",...
-    "t_grid"',"p_grid","time",...
-    "t_grid_256","p_grid_256","time256",...
-    "t_grid_300","p_grid_300","time300");
+save('datafiles\chloro',...
+    "tgrid200"',"pgrid200","time200",...
+    "tgrid256","pgrid256","time256",...
+    "tgrid300","pgrid300","time300",'-append');
 
 %% Chloropigment: Eulerian Hovmoeller (1988-2022) [200, 256,  db]
 
 % 200 db
 ax2 = figure;
-contourf(t_grid,p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid200,pgrid200,chloro200,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -219,7 +236,7 @@ exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerian.png');
 
 % 256 db
 ax3 = figure;
-contourf(t_grid_256,p_grid_256,chloro256,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid256,pgrid256,chloro256,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -233,7 +250,7 @@ exportgraphics(ax3,'figures/fluorescence-1988-2021_256_eulerian.png');
 
 % 300 db
 ax3a = figure;
-contourf(t_grid_300,p_grid_300,chloro300,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid300,pgrid300,chloro300,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -248,31 +265,31 @@ exportgraphics(ax3a,'figures/fluorescence-1988-2021_300_eulerian.png');
 clear ax2 ax3 ax3a;
 %% Chloropigment (Normalised), Eulerian Hovmoeller (1988-2020)
 
-chloro2D_n = zeros(101,329);
-chloro256_n = zeros(129,329);
-chloro300_n = zeros(151,327);
+chloro200n = zeros(101,329);
+chloro256n = zeros(129,329);
+chloro300n = zeros(151,327);
 
 for j=1:329
-    chloro2D_n(:,j) = chloro2D(:,j)/max(chloro2D(:,j));
-    chloro256_n(:,j) = chloro256(:,j)/max(chloro256(:,j));
+    chloro200n(:,j) = chloro200(:,j)/max(chloro200(:,j));
+    chloro256n(:,j) = chloro256(:,j)/max(chloro256(:,j));
 end
 for k=1:327
-    chloro300_n(:,k) = chloro300(:,k)/max(chloro300(:,k));
+    chloro300n(:,k) = chloro300(:,k)/max(chloro300(:,k));
 end
 
-save("datafiles\chloro.mat","chloro2D_n",'chloro256_n','chloro300_n','-append');
+save("datafiles\chloro.mat","chloro200n",'chloro256n','chloro300n','-append');
 clear j k;
 
 % Test that values were normalised properly
-assert(max(max(chloro2D_n)) == 1); % Throws error if not equal to one
-assert(min(min(chloro2D_n)) == 0); % Throws error if not equal to zero
-assert(max(max(chloro256_n)) == 1); % Throws error if not equal to one
-assert(min(min(chloro256_n)) == 0); % Throws error if not equal to zero
-assert(max(max(chloro300_n)) == 1); % Throws error if not equal to one
-assert(min(min(chloro300_n)) == 0); % Throws error if not equal to zero
+assert(max(max(chloro200n)) == 1); % Throws error if not equal to one
+assert(min(min(chloro200n)) == 0); % Throws error if not equal to zero
+assert(max(max(chloro256n)) == 1); % Throws error if not equal to one
+assert(min(min(chloro256n)) == 0); % Throws error if not equal to zero
+assert(max(max(chloro300n)) == 1); % Throws error if not equal to one
+assert(min(min(chloro300n)) == 0); % Throws error if not equal to zero
 
 ax4 = figure;
-contourf(t_grid,p_grid,chloro2D_n,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid200,pgrid200,chloro200n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -285,7 +302,7 @@ title('Chloropigment: 1988 - 2021 (Eulerian, Normalised)');
 exportgraphics(ax4,'figures/fluorescence_norm-1988-2021_eulerianView.png');
 
 ax4a = figure;
-contourf(t_grid_256,p_grid_256,chloro256_n,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid256,pgrid256,chloro256n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -298,7 +315,7 @@ title('Chloropigment: 1988 - 2021 (Eulerian, Normalised) [256 db]');
 exportgraphics(ax4a,'figures/fluorescence_norm-1988-2021_eulerian256.png');
 
 ax4b = figure;
-contourf(t_grid_300,p_grid_300,chloro300_n,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid300,pgrid300,chloro300n,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -348,12 +365,13 @@ clear ax4 ax4a ax4b;
 
 %% Reformulate Eulerian Data into Lagrangian View
 
-val = zeros(1,329); idx = zeros(1,329); 
+val200 = zeros(1,329); idx200 = zeros(1,329); 
 val256 = zeros(1,329); idx256 = zeros(1,329);
+val300 = zeros(1,327); idx300 = zeros(1,327);
 
 % Find the DCM
 for i=1:329
-    [val(i),idx(i)] = max(chloro2D(:,i)); % 200 db
+    [val200(i),idx200(i)] = max(chloro200(:,i)); % 200 db
     [val256(i),idx256(i)] = max(chloro256(:,i));
 end
 for j=1:327
@@ -361,100 +379,111 @@ for j=1:327
 end
 clear i j;
 
-p_lang = zeros(101,329);
-p256_lang = zeros(129,329);
-p300_lang = zeros(151,327);
+pres200l = zeros(101,329);
+pres256l = zeros(129,329);
+pres300l = zeros(151,327);
 
 % Put pressure in terms of DCM
 for i = 1:329
-    p_lang(:,i) = pres(:,i) - pres(idx(i),i);
-    p256_lang(:,i) = pres256(:,i) - pres256(idx256(i),i);
+    pres200l(:,i) = pres200(:,i) - pres200(idx200(i),i);
+    pres256l(:,i) = pres256(:,i) - pres256(idx256(i),i);
 end
 for j = 1:327
-    p300_lang(:,j) = pres300(:,j) - pres300(idx300(j),j);
+    pres300l(:,j) = pres300(:,j) - pres300(idx300(j),j);
 end
 clear i j;
 
+save("datafiles\chloro.mat",'pres200l',"pres256l","pres300l",'-append');
+
+%%
 % Put fluorescence in terms of DCM
 % Shift the original fluorescence data such that the DCM is centred
-chloro_lang = zeros(101,329);
-midpt = 51;
-offset = midpt - idx;
+chloro200l = zeros(101,329);
+midpt200 = 51;
+offset200 = midpt200 - idx200;
 
-chloro256_lang = zeros(129,329);
+chloro256l = zeros(129,329);
 midpt256 = 65;
 offset256 = midpt256 - idx256;
 
-chloro300_lang = zeros(151,327);
+chloro300l = zeros(151,327);
 midpt300 = 76;
 offset300 = midpt300 - idx300;
 
 % 200 db
 for i = 1:329
-    chloro_lang(:,i) = circshift(chloro2D(:,i),offset(i));
-    if offset(i) > -1 && offset(i) < 40
+    chloro200l(:,i) = circshift(chloro200(:,i),offset200(i));
+    if offset200(i) > -1 && offset200(i) < 40
         disp(i);
-        chloro_lang(1:offset(i),i) = NaN;
-    elseif offset(i) == -1
-        chloro_lang(end,i) = NaN;
-    elseif offset(i) < -1 && offset(i) > -40
+        chloro200l(1:offset200(i),i) = NaN;
+    elseif offset200(i) == -1
+        chloro200l(end,i) = NaN;
+    elseif offset200(i) < -1 && offset200(i) > -40
         disp(i);
-        chloro_lang((end+offset(i)):end,i) = NaN;
-    elseif abs(offset(i)) > 40
-        chloro_lang(:,i) = NaN;
+        chloro200l((end+offset200(i)):end,i) = NaN;
+    elseif abs(offset200(i)) > 40
+        chloro200l(:,i) = NaN;
     end
 end
 
 % 256 db
 for i = 1:329
-    chloro256_lang(:,i) = circshift(chloro256(:,i),offset256(i));
+    chloro256l(:,i) = circshift(chloro256(:,i),offset256(i));
     if offset256(i) > -1 && offset256(i) < 40
         disp(i);
-        chloro256_lang(1:offset256(i),i) = NaN;
+        chloro256l(1:offset256(i),i) = NaN;
     elseif offset256(i) == -1
-        chloro256_lang(end,i) = NaN;
+        chloro256l(end,i) = NaN;
     elseif offset256(i) < -1 && offset256(i) > -40
         disp(i);
-        chloro256_lang((end+offset256(i)):end,i) = NaN;
+        chloro256l((end+offset256(i)):end,i) = NaN;
     elseif abs(offset256(i)) > 40
-        chloro256_lang(:,i) = NaN;
+        chloro256l(:,i) = NaN;
     end
 end
 
 % 300 db
 for i = 1:327
-    chloro300_lang(:,i) = circshift(chloro300(:,i),offset300(i));
+    chloro300l(:,i) = circshift(chloro300(:,i),offset300(i));
     if offset300(i) > -1 && offset300(i) < 40
         disp(i);
-        chloro300_lang(1:offset300(i),i) = NaN;
+        chloro300l(1:offset300(i),i) = NaN;
     elseif offset300(i) == -1
-        chloro300_lang(end,i) = NaN;
+        chloro300l(end,i) = NaN;
     elseif offset300(i) < -1 && offset300(i) > -40
         disp(i);
-        chloro300_lang((end+offset300(i)):end,i) = NaN;
+        chloro300l((end+offset300(i)):end,i) = NaN;
     elseif abs(offset300(i)) > 40
-        chloro300_lang(:,i) = NaN;
+        chloro300l(:,i) = NaN;
     end
 end
 
+save("datafiles\chloro.mat",'chloro200l',"chloro256l","chloro300l",'-append');
+
+
 %%
-save('datafiles\chloro',"chloro2D","pres","t_grid"',"p_grid","time", ...
-    'chloro256_n','chloro256',...
-    "t_grid_256","p_grid_256","time256");
+% save('datafiles\chloro', ...
+%     "chloro200","pres200","t_grid"',"pgrid_200","time200", ...
+%     'chloro256n','chloro256',...
+%     "tgrid_256","pgrid_256","time256");
 
 %%
 % Create meshgrid for time and pressure in Lagrangian view
-[t_lang_grid,p_lang_grid] = meshgrid(datenum(days(1,:)),pres(:,1)-100);
-[t_lang_grid256,p_lang_grid256] = meshgrid(datenum(days256(1,:)),pres256(:,1)-128);
-[t_lang_grid300,p_lang_grid300] = meshgrid(datenum(days300(1,:)),pres300(:,1)-150);
+[tgrid200l,pgrid200l] = meshgrid(datenum(days200(1,:)),pres200(:,1)-100);
+[tgrid256l,pgrid256l] = meshgrid(datenum(days256(1,:)),pres256(:,1)-128);
+[tgrid300l,pgrid300l] = meshgrid(datenum(days300(1,:)),pres300(:,1)-150);
 
-save('datafiles\chloro','p_lang_grid256','-append');
+save('datafiles\chloro',...
+    'tgrid200l','pgrid200l',...
+    'tgrid256l','pgrid256l',...
+    'tgrid300l','pgrid300l',...
+    'pgrid256l','-append');
 
 %% Chloropigment: Lagrangian Hovmoeller (1988-2022)
 
 % 200 db
 ax7 = figure;
-contourf(t_lang_grid,p_lang_grid,chloro_lang,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid200l,pgrid200l,chloro200l,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -467,7 +496,7 @@ exportgraphics(ax7,'figures/fluorescence-1988-2021_lagrangianView.png');
 
 % 256 db
 ax7a = figure;
-contourf(t_lang_grid256,p_lang_grid256,chloro256_lang,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid256l,pgrid256l,chloro256l,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -481,7 +510,7 @@ exportgraphics(ax7a,'figures/fluorescence-1988-2021_lagrangian256.png');
 
 % 300 db
 ax7b = figure;
-contourf(t_lang_grid300,p_lang_grid300,chloro300_lang,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid300l,pgrid300l,chloro300l,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -496,25 +525,26 @@ exportgraphics(ax7b,'figures/fluorescence-1988-2021_lagrangian300.png');
 clear ax7 ax7a ax7b;
 %% Chloropigment (Normalised): Lagrangian Hovmoeller (1988-2022)
 
-chloro_lang_n = zeros(101,329);
-chloro256_lang_n = zeros(129,329);
-chloro300_lang_n = zeros(151,327);
+chloro200nl = zeros(101,329);
+chloro256nl = zeros(129,329);
+chloro300nl = zeros(151,327);
 
 for j=1:329
-    chloro_lang_n(:,j) = chloro_lang(:,j)/max(chloro_lang(:,j));
-    chloro256_lang_n(:,j) = chloro256_lang(:,j)/max(chloro256_lang(:,j));
+    chloro200nl(:,j) = chloro200l(:,j)/max(chloro200l(:,j));
+    chloro256nl(:,j) = chloro256l(:,j)/max(chloro256l(:,j));
 end
 for j=1:327
-    chloro300_lang_n(:,j) = chloro300_lang(:,j)/max(chloro300_lang(:,j));
+    chloro300nl(:,j) = chloro300l(:,j)/max(chloro300l(:,j));
 end
 clear j;
 
-save('datafiles\chloro', 'chloro256_lang', 'p256_lang', ...
-    'chloro256_lang_n','-append');
+save('datafiles\chloro',...
+    'chloro200nl','chloro256nl','chloro300nl', ...
+    '-append');
 
 % 200 db
 ax8 = figure;
-contourf(t_lang_grid,p_lang_grid,chloro_lang_n,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid200l,pgrid200l,chloro200nl,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -527,7 +557,7 @@ exportgraphics(ax8,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 
 % 256 db
 ax8a = figure;
-contourf(t_lang_grid256,p_lang_grid256,chloro256_lang_n,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid256l,pgrid256l,chloro256nl,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -540,7 +570,7 @@ exportgraphics(ax8a,'figures/fluorescence_norm-1988-2021_lagrangian256.png');
 
 % 300 db
 ax8b = figure;
-contourf(t_lang_grid300,p_lang_grid300,chloro300_lang_n,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid300l,pgrid300l,chloro300nl,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -597,10 +627,10 @@ nbins = 25;
 
 ax11 = figure;
 subplot(2,2,1)
-histogram(chloro2D(6,:),nbins,'DisplayName','10 db');
+histogram(chloro200(6,:),nbins,'DisplayName','10 db');
 hold on
-histogram(chloro2D(36,:),nbins,'DisplayName','70 db');
-histogram(chloro2D(62,:),nbins,'DisplayName','122 db');
+histogram(chloro200(36,:),nbins,'DisplayName','70 db');
+histogram(chloro200(62,:),nbins,'DisplayName','122 db');
 hold off
 legend('Location','best');
 xlim([0 1.65]);
@@ -609,10 +639,10 @@ ylabel('Frequency');
 title('Frequency of Concentration (Eulerian)');
 
 subplot(2,2,2)
-histogram(log(chloro2D(6,:)),nbins,'DisplayName','10 db');
+histogram(log(chloro200(6,:)),nbins,'DisplayName','10 db');
 hold on
-histogram(log(chloro2D(36,:)),nbins,'DisplayName','70 db');
-histogram(log(chloro2D(62,:)),nbins,'DisplayName','122 db');
+histogram(log(chloro200(36,:)),nbins,'DisplayName','70 db');
+histogram(log(chloro200(62,:)),nbins,'DisplayName','122 db');
 hold off
 legend('Location','best');
 xlim([-9 0.2]);
@@ -621,12 +651,12 @@ ylabel('Frequency');
 title('Frequency of Log-Concentration (Eulerian)');
 
 subplot(2,2,3)
-histogram(chloro_lang(2,:),nbins,'DisplayName','-100 db');
+histogram(chloro200l(2,:),nbins,'DisplayName','-100 db');
 hold on
-histogram(chloro_lang(26,:),nbins,'DisplayName','-50 db');
-histogram(chloro_lang(45,:),nbins,'DisplayName','-12 db');
-histogram(chloro_lang(58,:),nbins,'DisplayName','+12 db');
-histogram(chloro_lang(77,:),nbins,'DisplayName','+50 db');
+histogram(chloro200l(26,:),nbins,'DisplayName','-50 db');
+histogram(chloro200l(45,:),nbins,'DisplayName','-12 db');
+histogram(chloro200l(58,:),nbins,'DisplayName','+12 db');
+histogram(chloro200l(77,:),nbins,'DisplayName','+50 db');
 hold off
 legend('Location','best');
 xlim([0 1.65]);
@@ -635,12 +665,12 @@ ylabel('Frequency');
 title('Frequency of Concentration (Lagrangian)');
 
 subplot(2,2,4)
-histogram(log(chloro_lang(2,:)),nbins,'DisplayName','-100 db');
+histogram(log(chloro200l(2,:)),nbins,'DisplayName','-100 db');
 hold on
-histogram(log(chloro_lang(26,:)),nbins,'DisplayName','-50 db');
-histogram(log(chloro_lang(45,:)),nbins,'DisplayName','-12 db');
-histogram(log(chloro_lang(58,:)),nbins,'DisplayName','+12 db');
-histogram(log(chloro_lang(77,:)),nbins,'DisplayName','+50 db');
+histogram(log(chloro200l(26,:)),nbins,'DisplayName','-50 db');
+histogram(log(chloro200l(45,:)),nbins,'DisplayName','-12 db');
+histogram(log(chloro200l(58,:)),nbins,'DisplayName','+12 db');
+histogram(log(chloro200l(77,:)),nbins,'DisplayName','+50 db');
 hold off
 legend('Location','best');
 xlim([-9 0.2]);
@@ -654,10 +684,10 @@ clear ax11;
 %% DCM Hovmoeller: Seasonality Removed
 
 chloro256_rm = movmean(chloro256,10,2,'omitnan');
-chloro256_lang_rm = movmean(chloro256_lang,10,2,'omitnan');
+chloro256_lang_rm = movmean(chloro256l,10,2,'omitnan');
 
 ax12 = figure;
-contourf(t_lang_grid256,p_lang_grid256,chloro256_lang_rm,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid256l,pgrid256l,chloro256_lang_rm,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -670,7 +700,7 @@ title('Chloropigment: 1988 - 2021 (Lagrangian, Seasonality Removed, 256 db)');
 exportgraphics(ax12,'figures/fluorescence_1988-2021_lagrangian256_seasonalityRemoved.png');
 
 ax13 = figure;
-contourf(t_lang_grid256,p_lang_grid256,chloro256_rm,linspace(0,1.4,nb),'LineColor','auto');
+contourf(tgrid256l,pgrid256l,chloro256_rm,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
@@ -693,12 +723,12 @@ y = zeros(129,329);
 % Maybe filling missing data not needed here.
 for i = 1:129
     %chlorofilled(i,:) = fillmissing(chloro256_lang_rm(i,:),'previous');
-    y(i,:) = nufft(chloro256_lang_rm(i,:),t_grid_256(i,:));
+    y(i,:) = nufft(chloro256_lang_rm(i,:),tgrid256(i,:));
 end
 
 meanChlorofft = mean(y);
 
-n = length(time);
+n = length(time200);
 f = (0:n-1)/n;
 
 ax14 = figure;
@@ -712,6 +742,7 @@ ylabel('Power Density (N^4) [s^{-4}]');
 title('FFT: chl-a(p,t) at HOTS (1989-2021)');
 exportgraphics(ax14,'figures/chla-1988-2021_fft.png');
 clear ax14;
+
 %% Simple Gaussian Model of DCM: Platt et al (1988)
 % Equation 2.1 from B. Barone (2009), based on Platt et al. (1988)
 
@@ -728,11 +759,11 @@ CzU = C0 + s*z + (h/(sigma_*sqrt(2*pi)))*exp(-(z-zm).^2/2*sigma_.^2);
 
 %% DCM Model Plot
 
-figure;
-plot(Cz,z,'DisplayName','Platt et al. (1988)');
-hold on
-plot(CzU,z,'DisplayName','Uitz et al (2006)');
-plot(chloro(1:101),-pressure(1:101),'DisplayName','Day One CTD');
-plot(chloro(102:202),-pressure(102:202),'DisplayName','Day Two CTD');
-hold off
-legend();
+% figure;
+% plot(Cz,z,'DisplayName','Platt et al. (1988)');
+% hold on
+% plot(CzU,z,'DisplayName','Uitz et al (2006)');
+% plot(chloro(1:101),-pressure(1:101),'DisplayName','Day One CTD');
+% plot(chloro(102:202),-pressure(102:202),'DisplayName','Day Two CTD');
+% hold off
+% legend();

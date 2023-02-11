@@ -10,7 +10,7 @@ set(0,'defaultAxesFontSize',10);
 
 %% Load Data
 chloro = load("datafiles\chloro.mat"','chloro256').chloro256;
-chloroL = load("datafiles\chloro.mat"','chloro256_lang').chloro256_lang;
+chloroL = load("datafiles\chloro.mat"','chloro256l').chloro256l;
 time = load("datafiles\chloro.mat","time256").time256;
 
 %% Calculate the Kolmogorov-Smirnov Statistic for Chloropigment
@@ -315,5 +315,144 @@ title('Exp');
 sgtitle('Change in KS Statistic based on excluding first one/three/five years');
 exportgraphics(ax4,'figures/ks-comparisonYearExclusions.png');
 
+%% Compare KS for two subsets: 1988 - 2001 and 2001 - 2021
+
+% We compare these subsets because they represent different fluorometers.
+
+mleEi = zeros(5,2,depthMeasurements);
+ksEi = zeros(5,depthMeasurements);
+nllEi = zeros(5,depthMeasurements);
+mleLi = zeros(5,2,depthMeasurements);
+ksLi = zeros(5,depthMeasurements);
+nllLi = zeros(5,depthMeasurements);
+mleEii = zeros(5,2,depthMeasurements);
+ksEii = zeros(5,depthMeasurements);
+nllEii = zeros(5,depthMeasurements);
+mleLii = zeros(5,2,depthMeasurements);
+ksLii = zeros(5,depthMeasurements);
+nllLii = zeros(5,depthMeasurements);
+
+% 1988-2001 Eulerian
+for i = 1:depthMeasurements
+    disp(i);
+    tmp = chloro(i,1:128);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [mleEi(:,:,i),ksEi(:,i),nllEi(:,i)] = statsplot2(tmp,'noplot');
+end
+clear tmp;
+
+% 1988-2001 Lagrangian
+for i = 1:depthMeasurements
+    disp(i);
+    tmp = chloroL(i,1:128);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [mleLi(:,:,i),ksLi(:,i),nllLi(:,i)] = statsplot2(tmp,'noplot');
+end
+
+% 2001-2021 Eulerian
+for i = 1:depthMeasurements
+    disp(i);
+    tmp = chloro(i,129:end);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [mleEii(:,:,i),ksEii(:,i),nllEii(:,i)] = statsplot2(tmp,'noplot');
+end
+clear tmp;
+
+% 2001-2021 Lagrangian
+for i = 1:depthMeasurements
+    disp(i);
+    tmp = chloroL(i,129:end);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [mleLii(:,:,i),ksLii(:,i),nllLii(:,i)] = statsplot2(tmp,'noplot');
+end
+
+% Eulerian
+ax5 = figure;
+subplot(1,2,1)
+plot(ksEi(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksEi(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksEi(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksEi(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksEi(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Eulerian');
+
+% Lagrangian
+subplot(1,2,2)
+plot(ksLi(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksLi(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksLi(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksLi(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksLi(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Lagrangian');
+sgtitle('KS Test (1988-2001)');
+exportgraphics(ax5,'figures/ks_88_01.png');
+
+ax6 = figure;
+% Eulerian
+subplot(1,2,1)
+plot(ksEii(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksEii(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksEii(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksEii(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksEii(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Eulerian');
+
+% Lagrangian
+subplot(1,2,2)
+plot(ksLii(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksLii(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksLii(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksLii(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksLii(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Lagrangian');
+sgtitle('KS Test (2001-2021)')
+exportgraphics(ax6,'figures/ks_01_21.png');
+
+%% Plot difference of 1988-2001 and 2001-2021 p-values
+
+ax7 = figure;
+subplot(1,2,1)
+plot(ksEii(1,:)-ksEi(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksEii(2,:)-ksEi(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksEii(3,:)-ksEi(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksEii(4,:)-ksEi(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksEii(5,:)-ksEi(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','blue','DisplayName','Exp');
+hold off
+legend();
+title('Eulerian');
+subplot(1,2,2)
+plot(ksLii(1,:)-ksLi(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksLii(2,:)-ksLi(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksLii(3,:)-ksLi(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksLii(4,:)-ksLi(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksLii(5,:)-ksLi(5,:),linspace(128,-128,depthMeasurements),'Color','blue','DisplayName','Exp');
+hold off
+legend();
+title('Lagrangian');
+sgtitle('Change in p-value from 1988-2001 to 2001-2021');
+exportgraphics(ax7,'figures/ks_01_21_comparison.png');
+
 %%
-clear mleE mleL i ax1 ax2 ax3 ax4;
+clear mleE mleL i ax1 ax2 ax3 ax4 ax5 ax6 ax7;
