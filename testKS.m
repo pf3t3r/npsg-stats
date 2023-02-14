@@ -454,5 +454,208 @@ title('Lagrangian');
 sgtitle('Change in p-value from 1988-2001 to 2001-2021');
 exportgraphics(ax7,'figures/ks_01_21_comparison.png');
 
+%% Seasonal KS
+
+% chloroSpring = 
+% yourtimetable.Season = discretize(mod(month(test1.Time), 12), 0:3:12, 'categorical', {'winter', 'spring', 'summer', 'autumn'});
+%the mod is to bring december as first month
+
+% Give numerical ID to each month
+timeByMonth = discretize(month(time),12);
+
+% Find ID for each season in the timeseries
+winter = [];
+spring = [];
+summer = [];
+autumn = [];
+
+for i=1:329
+    if timeByMonth(i) == 12 || timeByMonth(i) <= 2
+        winter = [winter i];
+    elseif timeByMonth(i) >= 3 && timeByMonth(i) <= 5
+        spring = [spring i];
+    elseif timeByMonth(i) >= 6 && timeByMonth(i) <= 8
+        summer = [summer i];
+    else
+        autumn = [autumn i];
+    end
+end
+
+%% Apply KS to seasonal data
+
+% Try Eulerian first.
+ksE_winter = zeros(5,depthMeasurements);
+ksE_spring = zeros(5,depthMeasurements);
+ksE_summer = zeros(5,depthMeasurements);
+ksE_autumn = zeros(5,depthMeasurements);
+
+% Try Lagrangian later.
+ksL_winter = zeros(5,depthMeasurements);
+ksL_spring = zeros(5,depthMeasurements);
+ksL_summer = zeros(5,depthMeasurements);
+ksL_autumn = zeros(5,depthMeasurements);
+
+% Eulerian
+for i = 1:depthMeasurements
+    disp(i);
+    tmp = chloro(i,winter);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [~,ksE_winter(:,i),~] = statsplot2(tmp,'noplot');
+    tmp2 = chloro(i,spring);
+    tmp2(isnan(tmp2) | tmp2<=0) = [];
+    [~,ksE_spring(:,i),~] = statsplot2(tmp2,'noplot');
+    tmp3 = chloro(i,summer);
+    tmp3(isnan(tmp3) | tmp3<=0) = [];
+    [~,ksE_summer(:,i),~] = statsplot2(tmp3,'noplot');
+    tmp4 = chloro(i,autumn);
+    tmp4(isnan(tmp4) | tmp4<=0) = [];
+    [~,ksE_autumn(:,i),~] = statsplot2(tmp4,'noplot');
+end
+clear tmp;
+
+
+% Lagrangian
+for i = 1:depthMeasurements
+    disp(i);
+    tmp = chloroL(i,winter);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    [~,ksL_winter(:,i),~] = statsplot2(tmp,'noplot');
+    tmp2 = chloroL(i,spring);
+    tmp2(isnan(tmp2) | tmp2<=0) = [];
+    [~,ksL_spring(:,i),~] = statsplot2(tmp2,'noplot');
+    tmp3 = chloroL(i,summer);
+    tmp3(isnan(tmp3) | tmp3<=0) = [];
+    [~,ksL_summer(:,i),~] = statsplot2(tmp3,'noplot');
+    tmp4 = chloroL(i,autumn);
+    tmp4(isnan(tmp4) | tmp4<=0) = [];
+    [~,ksL_autumn(:,i),~] = statsplot2(tmp4,'noplot');
+end
+
+%% Plot the seasonal KS for Eulerian
+ax8 = figure;
+% Eulerian
+
+% WINTER
+subplot(1,4,1)
+plot(ksE_winter(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksE_winter(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_winter(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksE_winter(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksE_winter(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Winter (DJF)');
+
+% SPRING
+subplot(1,4,2)
+plot(ksE_spring(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksE_spring(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_spring(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksE_spring(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksE_spring(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Spring (MAM)');
+
+% SUMMER
+subplot(1,4,3)
+plot(ksE_summer(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksE_summer(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_summer(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksE_summer(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksE_summer(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Summer (JJA)');
+
+% AUTUMN
+subplot(1,4,4)
+plot(ksE_autumn(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksE_autumn(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_autumn(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksE_autumn(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksE_autumn(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Autumn (SON)');
+
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1988-2021)');
+exportgraphics(ax8,'figures/ks_seasonal_eulerian.png');
+
+%% Plot the seasonal KS for Lagrangian
+ax9 = figure;
+% Lagrangian
+
+% WINTER
+subplot(1,4,1)
+plot(ksL_winter(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksL_winter(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_winter(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksL_winter(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksL_winter(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Winter (DJF)');
+
+% SPRING
+subplot(1,4,2)
+plot(ksL_spring(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksL_spring(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_spring(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksL_spring(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksE_spring(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Spring (MAM)');
+
+% SUMMER
+subplot(1,4,3)
+plot(ksL_summer(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksL_summer(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_summer(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksL_summer(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksL_summer(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Summer (JJA)');
+
+% AUTUMN
+subplot(1,4,4)
+plot(ksL_autumn(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+hold on
+plot(ksL_autumn(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_autumn(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
+plot(ksL_autumn(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
+% plot(ksL_autumn(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+hold off
+legend();
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Autumn (SON)');
+
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1988-2021)');
+exportgraphics(ax9,'figures/ks_seasonal_lagrangian.png');
+
 %%
-clear mleE mleL i ax1 ax2 ax3 ax4 ax5 ax6 ax7;
+clear mleE mleL i ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9;
