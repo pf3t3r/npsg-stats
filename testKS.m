@@ -456,10 +456,6 @@ exportgraphics(ax7,'figures/ks_01_21_comparison.png');
 
 %% Seasonal KS
 
-% chloroSpring = 
-% yourtimetable.Season = discretize(mod(month(test1.Time), 12), 0:3:12, 'categorical', {'winter', 'spring', 'summer', 'autumn'});
-%the mod is to bring december as first month
-
 % Give numerical ID to each month
 timeByMonth = discretize(month(time),12);
 
@@ -469,7 +465,8 @@ spring = [];
 summer = [];
 autumn = [];
 
-for i=1:329
+% Change start date to i=12. This represent starting KS in 1989 October.
+for i=12:329
     if timeByMonth(i) == 12 || timeByMonth(i) <= 2
         winter = [winter i];
     elseif timeByMonth(i) >= 3 && timeByMonth(i) <= 5
@@ -531,131 +528,133 @@ for i = 1:depthMeasurements
     [~,ksL_autumn(:,i),~] = statsplot2(tmp4,'noplot');
 end
 
-%% Plot the seasonal KS for Eulerian
+%% Seasonal KS: Eulerian Figures
+
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 2 25 18]);
+
 ax8 = figure;
-% Eulerian
-
 % WINTER
 subplot(1,4,1)
-plot(ksE_winter(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_winter(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
 hold on
-plot(ksE_winter(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_winter(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_winter(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksE_winter(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_winter(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_winter(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_winter(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca, 'YDir','reverse');
+legend('Location','best');
+ylim([0 250]);
 xlabel('p-value');
-ylabel('Depth [m]');
+ylabel('Pressure [db]');
 title('Winter (DJF)');
 
 % SPRING
 subplot(1,4,2)
-plot(ksE_spring(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_spring(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
 hold on
-plot(ksE_spring(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_spring(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_spring(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksE_spring(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_spring(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_spring(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_spring(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca, 'YDir','reverse');
+ylim([0 250]);
 xlabel('p-value');
-ylabel('Depth [m]');
+ylabel('Pressure [db]');
 title('Spring (MAM)');
 
 % SUMMER
 subplot(1,4,3)
-plot(ksE_summer(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_summer(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
 hold on
-plot(ksE_summer(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_summer(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_summer(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksE_summer(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_summer(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_summer(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_summer(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca, 'YDir','reverse');
+ylim([0 250]);
 xlabel('p-value');
-ylabel('Depth [m]');
+ylabel('Pressure [db]');
 title('Summer (JJA)');
 
 % AUTUMN
 subplot(1,4,4)
-plot(ksE_autumn(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_autumn(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksE_autumn(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_autumn(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_autumn(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksE_autumn(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_autumn(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_autumn(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_autumn(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca, 'YDir','reverse');
+ylim([0 250]);
 xlabel('p-value');
-ylabel('Depth [m]');
+ylabel('Pressure [db]');
 title('Autumn (SON)');
 
-sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1988-2021)');
-exportgraphics(ax8,'figures/ks_seasonal_eulerian.png');
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1989-2021)');
+exportgraphics(ax8,'figures/ks_seasonal_eulerian_89.png');
 
-%% Plot the seasonal KS for Lagrangian
+%% Seasonal KS: Lagrangian Figures
+
 ax9 = figure;
-% Lagrangian
-
 % WINTER
 subplot(1,4,1)
-plot(ksL_winter(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_winter(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_winter(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_winter(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_winter(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksL_winter(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL_winter(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_winter(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_winter(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+legend('Location','best');
+set(gca, 'YDir','reverse');
+ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Winter (DJF)');
 
 % SPRING
 subplot(1,4,2)
-plot(ksL_spring(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_spring(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_spring(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_spring(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_spring(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksE_spring(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
-hold off
-legend();
+plot(ksL_spring(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_spring(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_spring(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+hold 
+set(gca, 'YDir','reverse');
+ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Spring (MAM)');
 
 % SUMMER
 subplot(1,4,3)
-plot(ksL_summer(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_summer(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_summer(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_summer(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_summer(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksL_summer(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL_summer(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_summer(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_summer(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca, 'YDir','reverse');
+ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Summer (JJA)');
 
 % AUTUMN
 subplot(1,4,4)
-plot(ksL_autumn(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_autumn(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_autumn(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_autumn(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_autumn(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksL_autumn(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL_autumn(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_autumn(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_autumn(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca, 'YDir','reverse');
+ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Autumn (SON)');
 
-sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1988-2021)');
-exportgraphics(ax9,'figures/ks_seasonal_lagrangian.png');
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1989-2021)');
+exportgraphics(ax9,'figures/ks_seasonal_lagrangian_89.png');
 
 %%
 clear mleE mleL i ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9;
