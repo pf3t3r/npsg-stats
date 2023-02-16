@@ -16,6 +16,8 @@ time = load("datafiles\chloro.mat","time256").time256;
 %% Calculate the Kolmogorov-Smirnov Statistic for Chloropigment
 
 depthMeasurements = 129;
+eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
+lagrangianDepth = linspace(-128,128,depthMeasurements);
 
 mleE = zeros(5,2,depthMeasurements);
 ksE = zeros(5,depthMeasurements);
@@ -47,27 +49,29 @@ end
 ax1 = figure;
 % Eulerian
 subplot(1,2,1)
-plot(ksE(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE(1,:),eulerianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksE(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksE(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE(2,:),eulerianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE(3,:),eulerianDepth,'Color','red','DisplayName','Weibull');
+plot(ksE(4,:),eulerianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksE(5,:),eulerianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Eulerian KS-Test');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksL(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL(1,:),lagrangianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksL(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksL(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL(2,:),lagrangianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL(3,:),lagrangianDepth,'Color','red','DisplayName','Weibull');
+plot(ksL(4,:),lagrangianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksL(5,:),lagrangianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
+set(gca,'YDir','reverse');
 legend();
 xlabel('p-value');
 ylabel('Depth [m]');
@@ -110,28 +114,30 @@ end
 ax2 = figure;
 % Eulerian
 subplot(1,2,1)
-plot(ksE_3(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_3(1,:),eulerianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksE_3(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_3(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_3(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksE_3(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_3(2,:),eulerianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_3(3,:),eulerianDepth,'Color','red','DisplayName','Weibull');
+plot(ksE_3(4,:),eulerianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksE_3(5,:),eulerianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Eulerian KS-Test (excl. 1988 - 1991 Jul)');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksL_3(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_3(1,:),lagrangianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksL_3(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_3(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_3(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksL_3(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL_3(2,:),lagrangianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_3(3,:),lagrangianDepth,'Color','red','DisplayName','Weibull');
+plot(ksL_3(4,:),lagrangianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksL_3(5,:),lagrangianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Lagrangian KS-Test (excl. 1988 - 1991 Jul)');
@@ -173,28 +179,30 @@ ax3 = figure;
 
 % Eulerian
 subplot(1,2,1)
-plot(ksE_5(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_5(1,:),eulerianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksE_5(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_5(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_5(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksE_5(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_5(2,:),eulerianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_5(3,:),eulerianDepth,'Color','red','DisplayName','Weibull');
+plot(ksE_5(4,:),eulerianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksE_5(5,:),eulerianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Eulerian KS-Test (excl. 1988 - 1991 Jul)');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksL_5(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_5(1,:),lagrangianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksL_5(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_5(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_5(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksL_5(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL_5(2,:),lagrangianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_5(3,:),lagrangianDepth,'Color','red','DisplayName','Weibull');
+plot(ksL_5(4,:),lagrangianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksL_5(5,:),lagrangianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Lagrangian KS-Test (excl. 1988 - 1993 Sep)');
@@ -237,13 +245,14 @@ ax4 = figure;
 
 % Eulerian
 subplot(1,2,1)
-plot(ksE_1(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE_1(1,:),eulerianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksE_1(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE_1(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksE_1(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksE_1(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE_1(2,:),eulerianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksE_1(3,:),eulerianDepth,'Color','red','DisplayName','Weibull');
+plot(ksE_1(4,:),eulerianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksE_1(5,:),eulerianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
+set(gca,'YDir','reverse');
 legend();
 xlabel('p-value');
 ylabel('Depth [m]');
@@ -251,13 +260,14 @@ title('Eulerian KS-Test (excl. 1988 - 1989 Oct)');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksL_1(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL_1(1,:),lagrangianDepth,'Color',[0 0 0],'DisplayName','Normal');
 hold on
-plot(ksL_1(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL_1(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksL_1(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksL_1(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL_1(2,:),lagrangianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
+plot(ksL_1(3,:),lagrangianDepth,'Color','red','DisplayName','Weibull');
+plot(ksL_1(4,:),lagrangianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
+plot(ksL_1(5,:),lagrangianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
+set(gca,'YDir','reverse');
 legend();
 xlabel('p-value');
 ylabel('Depth [m]');
@@ -269,48 +279,49 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 27
 
 % Eulerian
 ax4 = figure;
-subplot(1,5,1)
-plot(ksE_1(1,:)-ksE(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','89 Oct -');
+subplot(1,4,1)
+plot(ksE_1(1,:)-ksE(1,:),eulerianDepth,'DisplayName','89 Oct -');
 hold on
-plot(ksE_3(1,:)-ksE(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','91 Jul -');
-plot(ksE_5(1,:)-ksE(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'LineStyle','--','DisplayName','93 Feb -');
+plot(ksE_3(1,:)-ksE(1,:),eulerianDepth,'DisplayName','91 Jul -');
+plot(ksE_5(1,:)-ksE(1,:),eulerianDepth,'LineStyle','--','DisplayName','93 Feb -');
 hold off
-legend('Location','best');
+set(gca,'YDir','reverse');
 title('Normal');
 
-subplot(1,5,2)
-plot(ksE_1(2,:)-ksE(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','89 Oct -');
+subplot(1,4,2)
+plot(ksE_1(2,:)-ksE(2,:),eulerianDepth,'DisplayName','89 Oct -');
 hold on
-plot(ksE_3(2,:)-ksE(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','91 Jul -');
-plot(ksE_5(2,:)-ksE(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'LineStyle','--','DisplayName','93 Feb -');
+plot(ksE_3(2,:)-ksE(2,:),eulerianDepth,'DisplayName','91 Jul -');
+plot(ksE_5(2,:)-ksE(2,:),eulerianDepth,'LineStyle','--','DisplayName','93 Feb -');
 hold off
-legend('Location','best');
+set(gca,'YDir','reverse');
 title('Lognormal');
 
-subplot(1,5,3)
-plot(ksE_1(3,:)-ksE(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','89 Oct -');hold on
-plot(ksE_3(3,:)-ksE(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','91 Jul -');
-plot(ksE_5(3,:)-ksE(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'LineStyle','--','DisplayName','93 Feb -');hold off
-legend('Location','best');
+subplot(1,4,3)
+plot(ksE_1(3,:)-ksE(3,:),eulerianDepth,'DisplayName','89 Oct -');hold on
+plot(ksE_3(3,:)-ksE(3,:),eulerianDepth,'DisplayName','91 Jul -');
+plot(ksE_5(3,:)-ksE(3,:),eulerianDepth,'LineStyle','--','DisplayName','93 Feb -');hold off
+set(gca,'YDir','reverse');
 title('Weibull');
 
-subplot(1,5,4)
-plot(ksE_1(4,:)-ksE(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','89 Oct -');
+subplot(1,4,4)
+plot(ksE_1(4,:)-ksE(4,:),eulerianDepth,'DisplayName','89 Oct -');
 hold on
-plot(ksE_3(4,:)-ksE(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','91 Jul -');
-plot(ksE_5(4,:)-ksE(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'LineStyle','--','DisplayName','93 Feb -');
+plot(ksE_3(4,:)-ksE(4,:),eulerianDepth,'DisplayName','91 Jul -');
+plot(ksE_5(4,:)-ksE(4,:),eulerianDepth,'LineStyle','--','DisplayName','93 Feb -');
 hold off
+set(gca,'YDir','reverse');
 legend('Location','best');
 title('Gamma');
 
-subplot(1,5,5)
-plot(ksE_1(5,:)-ksE(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','89 Oct -');
-hold on
-plot(ksE_3(5,:)-ksE(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'DisplayName','91 Jul -');
-plot(ksE_5(5,:)-ksE(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'LineStyle','--','DisplayName','93 Feb -');
-hold off
-legend('Location','best');
-title('Exp');
+% subplot(1,5,5)
+% plot(ksE_1(5,:)-ksE(5,:),eulerianDepth,'DisplayName','89 Oct -');
+% hold on
+% plot(ksE_3(5,:)-ksE(5,:),eulerianDepth,'DisplayName','91 Jul -');
+% plot(ksE_5(5,:)-ksE(5,:),eulerianDepth,'LineStyle','--','DisplayName','93 Feb -');
+% hold off
+% set(gca,'YDir','reverse');
+% title('Exp');
 
 sgtitle('Change in KS Statistic based on excluding first one/three/five years');
 exportgraphics(ax4,'figures/ks-comparisonYearExclusions.png');
@@ -366,31 +377,33 @@ for i = 1:depthMeasurements
     [mleLii(:,:,i),ksLii(:,i),nllLii(:,i)] = statsplot2(tmp,'noplot');
 end
 
+%%
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [7 2 16 18]);
+
 % Eulerian
 ax5 = figure;
 subplot(1,2,1)
-plot(ksEi(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksEi(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEi(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksEi(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksEi(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksEi(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksEi(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEi(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEi(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca,'YDir','reverse');
+legend('Location','best');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Eulerian');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksLi(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksLi(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksLi(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksLi(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksLi(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksLi(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksLi(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLi(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLi(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Lagrangian');
@@ -400,28 +413,27 @@ exportgraphics(ax5,'figures/ks_88_01.png');
 ax6 = figure;
 % Eulerian
 subplot(1,2,1)
-plot(ksEii(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksEii(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEii(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksEii(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksEii(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksEii(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksEii(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEii(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEii(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca,'YDir','reverse');
+legend('Location','best');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Eulerian');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksLii(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksLii(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksLii(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksLii(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksLii(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksLii(5,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksLii(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLii(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLii(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Lagrangian');
@@ -432,24 +444,23 @@ exportgraphics(ax6,'figures/ks_01_21.png');
 
 ax7 = figure;
 subplot(1,2,1)
-plot(ksEii(1,:)-ksEi(1,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksEii(1,:)-ksEi(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEii(2,:)-ksEi(2,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksEii(3,:)-ksEi(3,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksEii(4,:)-ksEi(4,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksEii(5,:)-ksEi(5,:),linspace(0,-2*depthMeasurements,depthMeasurements),'Color','blue','DisplayName','Exp');
+plot(ksEii(2,:)-ksEi(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEii(3,:)-ksEi(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEii(4,:)-ksEi(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca,'YDir','reverse');
+legend('Location','best');
 title('Eulerian');
 subplot(1,2,2)
-plot(ksLii(1,:)-ksLi(1,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'DisplayName','Normal');
+plot(ksLii(1,:)-ksLi(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksLii(2,:)-ksLi(2,:),linspace(128,-128,depthMeasurements),'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksLii(3,:)-ksLi(3,:),linspace(128,-128,depthMeasurements),'Color','red','DisplayName','Weibull');
-plot(ksLii(4,:)-ksLi(4,:),linspace(128,-128,depthMeasurements),'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksLii(5,:)-ksLi(5,:),linspace(128,-128,depthMeasurements),'Color','blue','DisplayName','Exp');
+plot(ksLii(2,:)-ksLi(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLii(3,:)-ksLi(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLii(4,:)-ksLi(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend();
+set(gca,'YDir','reverse');
 title('Lagrangian');
 sgtitle('Change in p-value from 1988-2001 to 2001-2021');
 exportgraphics(ax7,'figures/ks_01_21_comparison.png');
@@ -535,11 +546,11 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 2 25
 ax8 = figure;
 % WINTER
 subplot(1,4,1)
-plot(ksE_winter(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_winter(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
 hold on
-plot(ksE_winter(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
-plot(ksE_winter(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksE_winter(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_winter(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_winter(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_winter(4,:),eulerianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca, 'YDir','reverse');
 legend('Location','best');
@@ -550,11 +561,11 @@ title('Winter (DJF)');
 
 % SPRING
 subplot(1,4,2)
-plot(ksE_spring(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_spring(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
 hold on
-plot(ksE_spring(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
-plot(ksE_spring(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksE_spring(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_spring(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_spring(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_spring(4,:),eulerianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca, 'YDir','reverse');
 ylim([0 250]);
@@ -564,11 +575,11 @@ title('Spring (MAM)');
 
 % SUMMER
 subplot(1,4,3)
-plot(ksE_summer(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_summer(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.2,'MarkerSize',4);
 hold on
-plot(ksE_summer(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
-plot(ksE_summer(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksE_summer(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_summer(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.2,'MarkerSize',4);
+plot(ksE_summer(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_summer(4,:),eulerianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca, 'YDir','reverse');
 ylim([0 250]);
@@ -578,11 +589,11 @@ title('Summer (JJA)');
 
 % AUTUMN
 subplot(1,4,4)
-plot(ksE_autumn(1,:),linspace(0,2*depthMeasurements,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_autumn(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksE_autumn(2,:),linspace(0,2*depthMeasurements,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksE_autumn(3,:),linspace(0,2*depthMeasurements,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksE_autumn(4,:),linspace(0,2*depthMeasurements,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_autumn(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_autumn(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_autumn(4,:),eulerianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca, 'YDir','reverse');
 ylim([0 250]);
@@ -598,11 +609,11 @@ exportgraphics(ax8,'figures/ks_seasonal_eulerian_89.png');
 ax9 = figure;
 % WINTER
 subplot(1,4,1)
-plot(ksL_winter(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_winter(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_winter(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksL_winter(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksL_winter(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksL_winter(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_winter(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_winter(4,:),lagrangianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 legend('Location','best');
 set(gca, 'YDir','reverse');
@@ -613,11 +624,11 @@ title('Winter (DJF)');
 
 % SPRING
 subplot(1,4,2)
-plot(ksL_spring(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_spring(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_spring(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksL_spring(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksL_spring(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksL_spring(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_spring(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_spring(4,:),lagrangianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold 
 set(gca, 'YDir','reverse');
 ylim([-120 120]);
@@ -627,11 +638,11 @@ title('Spring (MAM)');
 
 % SUMMER
 subplot(1,4,3)
-plot(ksL_summer(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_summer(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_summer(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksL_summer(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksL_summer(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksL_summer(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_summer(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_summer(4,:),lagrangianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca, 'YDir','reverse');
 ylim([-120 120]);
@@ -641,11 +652,11 @@ title('Summer (JJA)');
 
 % AUTUMN
 subplot(1,4,4)
-plot(ksL_autumn(1,:),linspace(-128,128,depthMeasurements),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_autumn(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL_autumn(2,:),linspace(-128,128,depthMeasurements),'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksL_autumn(3,:),linspace(-128,128,depthMeasurements),'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksL_autumn(4,:),linspace(-128,128,depthMeasurements),'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ksL_autumn(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_autumn(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_autumn(4,:),lagrangianDepth,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca, 'YDir','reverse');
 ylim([-120 120]);
