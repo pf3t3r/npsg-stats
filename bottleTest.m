@@ -10,37 +10,54 @@ set(0,'defaultAxesFontSize',10);
 
 %% Load bottle data
 chlBotData = importdata('data/hotbot-88_21.txt').data;
+% start from 90 with chl, also for hplc
 bottlePressure = chlBotData(:,4);
 bottleChl = chlBotData(:,5);
 
 %% Bin fluorometric chl-a in 5 db intervals
 % ... such that central value of each bin is 5,10,15,etc.
-botbot = bottlePressure(bottlePressure>2.4);
 
-binnedPressure = discretize(botbot,2.5:5:202.5);
+% first discard any values taken above 2.5 db...
+botbot = bottlePressure>2.4;
+bottlePressure = bottlePressure(botbot);
+bottleChl = bottleChl(botbot);
+bottlePressure(1:300) = [];
+bottleChl(1:300) = [];
+
+% ...then bin in 5 db intervals
+% binnedPressure = discretize(bottlePressure,2.5:5:202.5);
 
 % Find no. of measurements at each depth
-histSet = zeros(40,1);
+noOfMeasurementsPerDepth = NaN(40,1);
+ksEb = NaN(5,40);
 x = 5:5:200;
-n = length(botbot);
-for i = 1:40
-    tmp = 0;
-    for j = 1:n
-        if binnedPressure(j) == i
-            tmp = tmp+1;
-        end
-    end
-    histSet(i) = tmp;
-    clear tmp;
+for i = 25:25
+    ind_tmp = bottlePressure>=(x(i)-2.5) & bottlePressure<(x(i)+2.5);
+    noOfMeasurementsPerDepth(i) = sum(ind_tmp);
+    [~,ksEb(:,i),~] = statsplot2(bottleChl(ind_tmp));
+    clear ind_tmp;
 end
+%n = length(bottlePressure);
+% for i = 1:40
+%     tmp = 0;
+%     for j = 1:n
+%         if binnedPressure(j) == i
+%             tmp = tmp+1;
+%         end
+%     end
+%     noOfMeasurementsPerDepth(i) = tmp;
+%     clear tmp;
+% end
 
+% Plot the no. of measurements per depth in a vertical histogram
 ax1 = figure;
-barh(x,histSet,'HandleVisibility','off');
+barh(x,noOfMeasurementsPerDepth,'HandleVisibility','off');
 xline(100,'r-','DisplayName','Threshold');
 set(gca,'YDir','reverse');
 legend('Location','best');
 title('Fluorometric Chl-a: no. of observations at each depth class (Eulerian)');
 exportgraphics(ax1,'figures/bottleObsPerDepth.png');
+
 %% Separate bottle measurements into distinct 'casts'
 % % find start and end of bottle 'cast'
 % botcaststart = 1;
@@ -121,36 +138,38 @@ exportgraphics(ax1,'figures/bottleObsPerDepth.png');
 %% Bin the separated casts
 % pBinned = discretize(pBotCasts2,2.5:5:202.5);
 
-%% sort by pressure
+%% Sort the binned pressure by depth
 
-[B,I] = sort(binnedPressure);
-sortedChl = bottleChl(I);
+% [sortedBinnedPressure,id_sort] = sort(binnedPressure);
+
+% Sort chl-a as done for p 
+% sortedChl = bottleChl(id_sort);
 
 %%
 % figure;
-% plot(sortedChl,B,'r.');
+% plot(sortedChl,sortedBinnedPressure,'r.');
 % set(gca,'YDir','reverse');
 
-%% find start/end of level
-endOfLevel = [0];
-for i = 1:9939-1
-    if B(i+1) > B(i)
-        endOfLevel = [endOfLevel i];
-    end
-end
+%% find start/end of each depth level
+% endOfLevel = [0];
+% for i = 1:9939-1
+%     if sortedBinnedPressure(i+1) > sortedBinnedPressure(i)
+%         endOfLevel = [endOfLevel i];
+%     end
+% end
 
 %% KS for Eulerian
 
-n = length(histSet);
+% n = length(noOfMeasurementsPerDepth);
 
-ksEb = zeros(5,n);
-for i = 1:39
-    disp(i);
-    tmp = sortedChl(endOfLevel(i)+1:endOfLevel(i+1));
-    tmp(isnan(tmp) | tmp<=0) = [];
-    [~,ksEb(:,i),~] = statsplot2(tmp,'noplot');
-end
-clear tmp;
+% ksEb = zeros(5,n);
+% for i = 20:20
+%     disp(i);
+%     tmp = sortedChl(endOfLevel(i)+1:endOfLevel(i+1));
+%     tmp(isnan(tmp) | tmp<=0) = [];
+%     [~,ksEb(:,i),~] = statsplot2(tmp);
+% end
+% clear tmp;
 
 %% KS figure
 
