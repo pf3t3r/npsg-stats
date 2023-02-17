@@ -34,15 +34,14 @@ for i = 1:40
     clear tmp;
 end
 
-figure;
+ax1 = figure;
 barh(x,histSet,'HandleVisibility','off');
 xline(100,'r-','DisplayName','Threshold');
 set(gca,'YDir','reverse');
 legend('Location','best');
 title('Fluorometric Chl-a: no. of observations at each depth class (Eulerian)');
-
+exportgraphics(ax1,'figures/bottleObsPerDepth.png');
 %% Separate bottle measurements into distinct 'casts'
-
 % % find start and end of bottle 'cast'
 % botcaststart = 1;
 % botcastend = [];
@@ -63,7 +62,6 @@ title('Fluorometric Chl-a: no. of observations at each depth class (Eulerian)');
 % maxCast = max(castLength);
 
 %% plot above
-% 
 % % Save the casts
 % chlBotCasts = nan([maxCast,1662]);
 % pBotCasts = nan([maxCast,1662]);
@@ -123,7 +121,7 @@ title('Fluorometric Chl-a: no. of observations at each depth class (Eulerian)');
 %% Bin the separated casts
 % pBinned = discretize(pBotCasts2,2.5:5:202.5);
 
-%% sort the pressure
+%% sort by pressure
 
 [B,I] = sort(binnedPressure);
 sortedChl = bottleChl(I);
@@ -157,17 +155,16 @@ clear tmp;
 %% KS figure
 
 % Eulerian
-% figure;
-figure;
+ax2 = figure;
 plot(ksEb(1,:),x,'Color',[0 0 0],'DisplayName','Normal');
 hold on
 plot(ksEb(2,:),x,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
 plot(ksEb(3,:),x,'Color','red','DisplayName','Weibull');
 plot(ksEb(4,:),x,'Color','red','LineStyle','--','DisplayName','Gamma');
-% plot(ksEb(5,:),x,'Color','red','LineStyle',':','DisplayName','Exp');
 hold off
 set(gca,'YDir','reverse');
 legend();
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Eulerian KS-Test');
+exportgraphics(ax2,'figures/ks_bottle_88-21.png');
