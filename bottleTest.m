@@ -16,27 +16,31 @@ bottleChl = chlBotData(:,5);
 
 %% Bin fluorometric chl-a in 5 db intervals
 % ... such that central value of each bin is 5,10,15,etc.
-
 % first discard any values taken above 2.5 db...
 botbot = bottlePressure>2.4;
+
 bottlePressure = bottlePressure(botbot);
 bottleChl = bottleChl(botbot);
-bottlePressure(1:300) = [];
-bottleChl(1:300) = [];
+
+% Remove again or? - FOR NOW
+% bottlePressure(1:300) = [];
+% bottleChl(1:300) = [];
 
 % ...then bin in 5 db intervals
-% binnedPressure = discretize(bottlePressure,2.5:5:202.5);
+binnedPressure = discretize(bottlePressure,2.5:5:202.5);
 
+% I DO NOT UNDERSTAND THIS.
 % Find no. of measurements at each depth
 noOfMeasurementsPerDepth = NaN(40,1);
 ksEb = NaN(5,40);
 x = 5:5:200;
-for i = 25:25
+for i = 1:40
     ind_tmp = bottlePressure>=(x(i)-2.5) & bottlePressure<(x(i)+2.5);
     noOfMeasurementsPerDepth(i) = sum(ind_tmp);
     [~,ksEb(:,i),~] = statsplot2(bottleChl(ind_tmp));
-    clear ind_tmp;
+%     clear ind_tmp;
 end
+
 %n = length(bottlePressure);
 % for i = 1:40
 %     tmp = 0;
