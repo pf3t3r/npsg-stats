@@ -11,6 +11,10 @@ set(0,'defaultAxesFontSize',10);
 bottlePressure = importdata('data/hotbot-88_21.txt').data(:,4);
 bottleChl = importdata('data/hotbot-88_21.txt').data(:,5);
 
+% To use only data from 1990 on, uncomment the following:
+% bottlePressure = importdata('data\hotbot-90_21.txt').data(:,4);
+% bottleChl = importdata('data\hotbot-90_21.txt').data(:,5);
+
 %% Clean Data
 
 % Remove bottles taken at pressures below 2.5 db (within ~2.5 m of surface)
@@ -31,7 +35,7 @@ n = max(binnedPressure);
 
 %% Visualise
 
-figure;
+ax1 = figure;
 subplot(1,2,1)
 plot(bottleChl,bottlePressure,'r.','MarkerSize',4);
 xlabel('chl-a [ug/L]'); ylabel('Pressure [db]');
@@ -41,6 +45,7 @@ plot(bottleChl,binnedPressure,'b.','MarkerSize',4);
 xlabel('chl-a [ug/L]'); ylabel('Pressure [bin #]');
 set(gca,'YDir','reverse'); title('Binned Data');
 sgtitle('Fluorometric chl-a concentration (bottle data, 1988-2021)');
+exportgraphics(ax1,'figures/bottleChlaBinning.png');
 
 %% Apply KS Test to chl-a across all pressures
 
@@ -59,7 +64,7 @@ end
 
 x = linspace(5,200,n);
 
-figure;
+ax2 = figure;
 subplot(1,2,1)
 barh(measPerDepth);
 hold on
@@ -82,3 +87,5 @@ legend('Location','best');
 xlabel('p-value');
 ylabel('Pressure [db]');
 title('Eulerian KS-Test');
+
+exportgraphics(ax2,'figures/bottleChlaEulerian.png');
