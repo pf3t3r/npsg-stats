@@ -19,12 +19,26 @@ time = load('datafiles\chloro.mat','days300').days300;
 cpigE_3m = mean(cpigE(:,1:30),2,"omitnan");
 cpigE_300m = mean(cpigE(:,31:end),2,"omitnan");
 
+%% Calculate the standard deviation
+
+cpigE_3sd = std(cpigE(:,1:30),0,2,"omitnan");
+cpigE_300sd = std(cpigE(:,31:end),0,2,"omitnan");
+
 %% Plot
 
+curve3a = cpigE_3m + cpigE_3sd;
+curve3b = cpigE_3m - cpigE_3sd;
+curve300a = cpigE_300m + cpigE_300sd;
+curve300b = cpigE_300m - cpigE_300sd;
+
 ax1 = figure;
-plot(cpigE_3m,pE,'DisplayName','1988-1991 mean');
+plot(cpigE_3m,pE,'DisplayName','1988-1991 mean','Color','red','LineWidth',3);
 hold on
-plot(cpigE_300m,pE,'DisplayName','1991-2021 mean');
+plot(curve3a,pE,'DisplayName','1988-1991 STD','Color','red','LineStyle','--');
+plot(curve3b,pE,'DisplayName','1988-1991 STD','Color','red','LineStyle','--','HandleVisibility','off');
+plot(cpigE_300m,pE,'DisplayName','1991-2021 mean','Color','blue','LineWidth',3);
+plot(curve300a,pE,'DisplayName','1988-1991 STD','Color','blue','LineStyle','--','HandleVisibility','off');
+plot(curve300b,pE,'DisplayName','1988-1991 STD','Color','blue','LineStyle','--');
 hold off
 set(gca,'Ydir','reverse');
 legend('Location','best');
