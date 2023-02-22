@@ -51,15 +51,15 @@ exportgraphics(ax1,'figures/bottleChlaBinning.png');
 
 ksEb = nan(5,40);
 measPerDepth = [];
-for i = 1:n
+for i = 20:20
     % find chl-a concentrations chla_i at binned pressure i
     chla_i = bottleChl(binnedPressure==i);
     % apply KS test to chla_i
     if length(chla_i) > 1
-        [~,ksEb(:,i),~] = statsplot2(chla_i,'noplot');
+        [~,ksEb(:,i),~] = statsplot2(chla_i);
     end
     measPerDepth = [measPerDepth length(chla_i)];
-    clear chla_i;
+    %clear chla_i;
 end
 
 x = linspace(5,200,n);
@@ -89,3 +89,15 @@ ylabel('Pressure [db]');
 title('Eulerian KS-Test');
 
 exportgraphics(ax2,'figures/bottleChlaEulerian.png');
+
+%% Inspect for bimodality
+
+ax3 = figure;
+histfit(chla_i,[],'normal');
+hold on
+histfit(chla_i,[],'lognormal');
+histfit(chla_i,[],'weibull');
+histfit(chla_i,[],'gamma');
+legend();
+
+exportgraphics(ax3,'figures/bottleLevelBimodality.png');
