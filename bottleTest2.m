@@ -51,7 +51,7 @@ exportgraphics(ax1,'figures/bottleChlaBinning.png');
 
 ksEb = nan(5,40);
 measPerDepth = [];
-for i = 20:20
+for i = 1:n
     % find chl-a concentrations chla_i at binned pressure i
     chla_i = bottleChl(binnedPressure==i);
     % apply KS test to chla_i
