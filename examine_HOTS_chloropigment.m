@@ -66,7 +66,7 @@ day2 = data256(:,2);
 pressure2 = data256(:,3);
 chloro2 = data256(:,6);
 chloro2(chloro2==-9) = NaN; % Set -9 = NaN;
-chloro2(chloro2<0) = 0; % set negative values = 0
+chloro2(chloro2<0) = NaN; % set negative values = NAN!!
 
 % 300 db
 crn3 = d_300(:,1);

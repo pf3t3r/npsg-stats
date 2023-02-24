@@ -19,77 +19,118 @@ depthMeasurements = 129;
 eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
 lagrangianDepth = linspace(-128,128,depthMeasurements);
 
-mleE = zeros(5,2,depthMeasurements);
 ksE = zeros(5,depthMeasurements);
-nllE = zeros(5,depthMeasurements);
-
-mleL = zeros(5,2,depthMeasurements);
 ksL = zeros(5,depthMeasurements);
-nllL = zeros(5,depthMeasurements);
+
+% 12:329 = 1989 Oct -> 2021 Dec (complete - first year)
+% 12:196 = 1989 Oct -> 2007 Dec (BB's PhD)
 
 % Eulerian
 for i = 1:depthMeasurements
     disp(i);
-    tmp = chloro(i,:);
+    tmp = chloro(i,12:196);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleE(:,:,i),ksE(:,i),nllE(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksE(:,i),~] = statsplot2(tmp,'noplot');
+    [h(i),p(i)] = lillietest(chloro(i,12:196));
+    [~,pln(i)] = lillietest(log(tmp));
+    [~,pwbl(i)] = lillietest(log(tmp),"Distr","ev");
 end
 clear tmp;
 
 % Lagrangian
 for i = 1:depthMeasurements
     disp(i);
-    tmp = chloroL(i,:);
+    tmp = chloroL(i,12:196);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleL(:,:,i),ksL(:,i),nllL(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksL(:,i),~] = statsplot2(tmp,'noplot');
 end
 
+%% fi
+axa = figure;
+plot(ksE(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','KS','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(p,eulerianDepth,'DisplayName','Lillie');
+ylim([0 250]);
+set(gca,'YDir','reverse');
+legend();
+title('Goodness of Fit for a normal distribution (Eulerian)');
+exportgraphics(axa,'figures/ks-vs-lillie_norm.png');
+
+axb = figure;
+plot(ksE(2,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','KS','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(pln,eulerianDepth,'DisplayName','Lillie');
+ylim([0 250]);
+set(gca,'YDir','reverse');
+legend();
+title('Goodness of Fit for a lognormal distribution (Eulerian)');
+exportgraphics(axb,'figures/ks-vs-lillie_logn.png');
+
+axc = figure;
+plot(ksE(3,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','KS','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(pwbl,eulerianDepth,'DisplayName','Lillie');
+ylim([0 250]);
+set(gca,'YDir','reverse');
+legend();
+title('Goodness of Fit for a weibull distribution (Eulerian)');
+exportgraphics(axc,'figures/ks-vs-lillie_weib.png');
+
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 9 15]);
+axd = figure;
+plot(p,eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(pln,eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(pwbl,eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+hold off
+ylim([0 250]);
+xlim([0 0.8]);
+set(gca,'YDir','reverse');
+legend();
+title('Lillie Test for Goodness of Fit');
+exportgraphics(axd,'figures/lillie_n_ln_wbl.png');
+
 %% Plot the KS Statistic vs Depth for Five Distributions
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 15 15]);
 
 ax1 = figure;
 % Eulerian
 subplot(1,2,1)
-plot(ksE(1,:),eulerianDepth,'Color',[0 0 0],'DisplayName','Normal');
+plot(ksE(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksE(2,:),eulerianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksE(3,:),eulerianDepth,'Color','red','DisplayName','Weibull');
-plot(ksE(4,:),eulerianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksE(5,:),eulerianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksE(2,:),eulerianDepth,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 legend();
+ylim([0 250]);
 set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Eulerian KS-Test');
+title('Eulerian KS-Test (89-07)');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksL(1,:),lagrangianDepth,'Color',[0 0 0],'DisplayName','Normal');
+plot(ksL(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksL(2,:),lagrangianDepth,'Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal');
-plot(ksL(3,:),lagrangianDepth,'Color','red','DisplayName','Weibull');
-plot(ksL(4,:),lagrangianDepth,'Color','red','LineStyle','--','DisplayName','Gamma');
-plot(ksL(5,:),lagrangianDepth,'Color','red','LineStyle',':','DisplayName','Exp');
+plot(ksL(2,:),lagrangianDepth,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 legend();
+ylim([-130 130]);
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Lagrangian KS-Test');
-exportgraphics(ax1,'figures/ks-EulAndLag_1988_2021.png');
+title('Lagrangian KS-Test (89-07)');
+exportgraphics(ax1,'figures/ks-EulAndLag_1989_2007.png');
 
 %% Is there a difference in KS if we exclude the first three years?
 
 % Exclude September 1988 up to July 1991
 
-mleE_3 = zeros(5,2,depthMeasurements);
 ksE_3 = zeros(5,depthMeasurements);
-nllE_3 = zeros(5,depthMeasurements);
-
-mleL_3 = zeros(5,2,depthMeasurements);
 ksL_3 = zeros(5,depthMeasurements);
-nllL_3 = zeros(5,depthMeasurements);
-
 newStartingPt = 28;
 
 % Eulerian
@@ -97,7 +138,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloro(i,newStartingPt:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleE_3(:,:,i),ksE_3(:,i),nllE_3(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksE_3(:,i),~] = statsplot2(tmp,'noplot');
 end
 clear tmp;
 
@@ -106,7 +147,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloroL(i,newStartingPt:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleL_3(:,:,i),ksL_3(:,i),nllL_3(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksL_3(:,i),~] = statsplot2(tmp,'noplot');
 end
 
 %% Plot the KS Statistic vs Depth for Five Distributions (excl. 1988-1991)
@@ -146,14 +187,8 @@ exportgraphics(ax2,'figures/ks-EulAndLag_1988_2021_excl3.png');
 
 % Exclude September 1988 up to September 1993
 
-mleE_5 = zeros(5,2,depthMeasurements);
 ksE_5 = zeros(5,depthMeasurements);
-nllE_5 = zeros(5,depthMeasurements);
-
-mleL_5 = zeros(5,2,depthMeasurements);
 ksL_5 = zeros(5,depthMeasurements);
-nllL_5 = zeros(5,depthMeasurements);
-
 newStartingPt = 45;
 
 % Eulerian
@@ -161,7 +196,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloro(i,newStartingPt:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleE_5(:,:,i),ksE_5(:,i),nllE_5(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksE_5(:,i),~] = statsplot2(tmp,'noplot');
 end
 clear tmp;
 
@@ -170,7 +205,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloroL(i,newStartingPt:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleL_5(:,:,i),ksL_5(:,i),nllL_5(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksL_5(:,i),~] = statsplot2(tmp,'noplot');
 end
 
 %% Plot the KS Statistic vs Depth for Five Distributions (excl. 1988-1991)
@@ -212,14 +247,8 @@ exportgraphics(ax3,'figures/ks-EulAndLag_1988_2021_excl5.png');
 
 % Exclude September 1988 up to October 1989
 
-mleE_1 = zeros(5,2,depthMeasurements);
 ksE_1 = zeros(5,depthMeasurements);
-nllE_1 = zeros(5,depthMeasurements);
-
-mleL_1 = zeros(5,2,depthMeasurements);
 ksL_1 = zeros(5,depthMeasurements);
-nllL_1 = zeros(5,depthMeasurements);
-
 newStartingPt = 12;
 
 % Eulerian
@@ -227,7 +256,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloro(i,newStartingPt:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleE_1(:,:,i),ksE_1(:,i),nllE_1(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksE_1(:,i),~] = statsplot2(tmp,'noplot');
 end
 clear tmp;
 
@@ -236,7 +265,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloroL(i,newStartingPt:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleL_1(:,:,i),ksL_1(:,i),nllL_1(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksL_1(:,i),~] = statsplot2(tmp,'noplot');
 end
 
 %% Plot the KS Statistic vs Depth for Five Distributions (excl. 1988-1989)
@@ -314,41 +343,24 @@ set(gca,'YDir','reverse');
 legend('Location','best');
 title('Gamma');
 
-% subplot(1,5,5)
-% plot(ksE_1(5,:)-ksE(5,:),eulerianDepth,'DisplayName','89 Oct -');
-% hold on
-% plot(ksE_3(5,:)-ksE(5,:),eulerianDepth,'DisplayName','91 Jul -');
-% plot(ksE_5(5,:)-ksE(5,:),eulerianDepth,'LineStyle','--','DisplayName','93 Feb -');
-% hold off
-% set(gca,'YDir','reverse');
-% title('Exp');
-
 sgtitle('Change in KS Statistic based on excluding first one/three/five years');
 exportgraphics(ax4,'figures/ks-comparisonYearExclusions.png');
 
-%% Compare KS for two subsets: 1988 - 2001 and 2001 - 2021
+%% Compare KS for two eras: 1988 - 2001 and 2001 - 2021
 
 % We compare these subsets because they represent different fluorometers.
 
-mleEi = zeros(5,2,depthMeasurements);
-ksEi = zeros(5,depthMeasurements);
-nllEi = zeros(5,depthMeasurements);
-mleLi = zeros(5,2,depthMeasurements);
-ksLi = zeros(5,depthMeasurements);
-nllLi = zeros(5,depthMeasurements);
-mleEii = zeros(5,2,depthMeasurements);
-ksEii = zeros(5,depthMeasurements);
-nllEii = zeros(5,depthMeasurements);
-mleLii = zeros(5,2,depthMeasurements);
-ksLii = zeros(5,depthMeasurements);
-nllLii = zeros(5,depthMeasurements);
+ksE_era1 = zeros(5,depthMeasurements);
+ksL_era1 = zeros(5,depthMeasurements);
+ksE_era2 = zeros(5,depthMeasurements);
+ksL_era2 = zeros(5,depthMeasurements);
 
 % 1988-2001 Eulerian
 for i = 1:depthMeasurements
     disp(i);
     tmp = chloro(i,1:128);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleEi(:,:,i),ksEi(:,i),nllEi(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksE_era1(:,i),~] = statsplot2(tmp,'noplot');
 end
 clear tmp;
 
@@ -357,7 +369,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloroL(i,1:128);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleLi(:,:,i),ksLi(:,i),nllLi(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksL_era1(:,i),~] = statsplot2(tmp,'noplot');
 end
 
 % 2001-2021 Eulerian
@@ -365,7 +377,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloro(i,129:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleEii(:,:,i),ksEii(:,i),nllEii(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksE_era2(:,i),~] = statsplot2(tmp,'noplot');
 end
 clear tmp;
 
@@ -374,7 +386,7 @@ for i = 1:depthMeasurements
     disp(i);
     tmp = chloroL(i,129:end);
     tmp(isnan(tmp) | tmp<=0) = [];
-    [mleLii(:,:,i),ksLii(:,i),nllLii(:,i)] = statsplot2(tmp,'noplot');
+    [~,ksLii(:,i),~] = statsplot2(tmp,'noplot');
 end
 
 %%
@@ -383,11 +395,11 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [7 2 16
 % Eulerian
 ax5 = figure;
 subplot(1,2,1)
-plot(ksEi(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_era1(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEi(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksEi(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksEi(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_era1(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_era1(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_era1(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 legend('Location','best');
@@ -397,11 +409,11 @@ title('Eulerian');
 
 % Lagrangian
 subplot(1,2,2)
-plot(ksLi(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_era1(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksLi(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksLi(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksLi(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksL_era1(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL_era1(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL_era1(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 xlabel('p-value');
@@ -413,11 +425,11 @@ exportgraphics(ax5,'figures/ks_88_01.png');
 ax6 = figure;
 % Eulerian
 subplot(1,2,1)
-plot(ksEii(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_era2(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEii(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksEii(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksEii(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_era2(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_era2(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_era2(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 legend('Location','best');
@@ -444,21 +456,21 @@ exportgraphics(ax6,'figures/ks_01_21.png');
 
 ax7 = figure;
 subplot(1,2,1)
-plot(ksEii(1,:)-ksEi(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_era2(1,:)-ksE_era1(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEii(2,:)-ksEi(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksEii(3,:)-ksEi(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksEii(4,:)-ksEi(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksE_era2(2,:)-ksE_era1(2,:),eulerianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksE_era2(3,:)-ksE_era1(3,:),eulerianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksE_era2(4,:)-ksE_era1(4,:),eulerianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 legend('Location','best');
 title('Eulerian');
 subplot(1,2,2)
-plot(ksLii(1,:)-ksLi(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLii(1,:)-ksL_era1(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksLii(2,:)-ksLi(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksLii(3,:)-ksLi(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksLii(4,:)-ksLi(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksLii(2,:)-ksL_era1(2,:),lagrangianDepth,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLii(3,:)-ksL_era1(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLii(4,:)-ksL_era1(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 title('Lagrangian');
@@ -476,8 +488,9 @@ spring = [];
 summer = [];
 autumn = [];
 
-% Change start date to i=12. This represent starting KS in 1989 October.
-for i=12:329
+% 12:139 = 1989 Oct -> 2021 Dec (complete - first year)
+% 12:196 = 1989 Oct -> 2007 Dec (BB's PhD)
+for i=12:196
     if timeByMonth(i) == 12 || timeByMonth(i) <= 2
         winter = [winter i];
     elseif timeByMonth(i) >= 3 && timeByMonth(i) <= 5
@@ -520,7 +533,6 @@ for i = 1:depthMeasurements
     [~,ksE_autumn(:,i),~] = statsplot2(tmp4,'noplot');
 end
 clear tmp;
-
 
 % Lagrangian
 for i = 1:depthMeasurements
@@ -601,8 +613,8 @@ xlabel('p-value');
 ylabel('Pressure [db]');
 title('Autumn (SON)');
 
-sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1989-2021)');
-exportgraphics(ax8,'figures/ks_seasonal_eulerian_89.png');
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1989-2007)');
+exportgraphics(ax8,'figures/ks_seasonal_eulerian_89-07.png');
 
 %% Seasonal KS: Lagrangian Figures
 
@@ -664,8 +676,8 @@ xlabel('p-value');
 ylabel('Depth [m]');
 title('Autumn (SON)');
 
-sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1989-2021)');
-exportgraphics(ax9,'figures/ks_seasonal_lagrangian_89.png');
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1989-2007)');
+exportgraphics(ax9,'figures/ks_seasonal_lagrangian_89-07.png');
 
 %%
-clear mleE mleL i ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9;
+clear i ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9;
