@@ -418,13 +418,6 @@ end
 
 save("datafiles\chloro.mat",'chloro200l',"chloro256l","chloro300l",'-append');
 
-
-%%
-% save('datafiles\chloro', ...
-%     "chloro200","pres200","t_grid"',"pgrid_200","time200", ...
-%     'chloro256n','chloro256',...
-%     "tgrid_256","pgrid_256","time256");
-
 %%
 % Create meshgrid for time and pressure in Lagrangian view
 [tgrid200l,pgrid200l] = meshgrid(datenum(days200(1,:)),pres200(:,1)-100);

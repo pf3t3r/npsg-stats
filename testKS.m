@@ -19,8 +19,8 @@ depthMeasurements = 129;
 eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
 lagrangianDepth = linspace(-128,128,depthMeasurements);
 
-ksE = zeros(5,depthMeasurements);
-ksL = zeros(5,depthMeasurements);
+ksE = NaN(5,depthMeasurements);
+ksL = NaN(5,depthMeasurements);
 
 % 12:329 = 1989 Oct -> 2021 Dec (complete - first year)
 % 12:196 = 1989 Oct -> 2007 Dec (BB's PhD)
@@ -28,7 +28,7 @@ ksL = zeros(5,depthMeasurements);
 % Eulerian
 for i = 1:depthMeasurements
     disp(i);
-    tmp = chloro(i,12:196);
+    tmp = chloro(i,12:329);
     tmp(isnan(tmp) | tmp<=0) = [];
     [~,ksE(:,i),~] = statsplot2(tmp,'noplot');
     [h(i),p(i)] = lillietest(chloro(i,12:196));
@@ -40,7 +40,7 @@ clear tmp;
 % Lagrangian
 for i = 1:depthMeasurements
     disp(i);
-    tmp = chloroL(i,12:196);
+    tmp = chloroL(i,12:329);
     tmp(isnan(tmp) | tmp<=0) = [];
     [~,ksL(:,i),~] = statsplot2(tmp,'noplot');
 end
@@ -54,7 +54,7 @@ ylim([0 250]);
 set(gca,'YDir','reverse');
 legend();
 title('Goodness of Fit for a normal distribution (Eulerian)');
-exportgraphics(axa,'figures/ks-vs-lillie_norm.png');
+exportgraphics(axa,'figures/ks-vs-lillie_norm_89-21.png');
 
 axb = figure;
 plot(ksE(2,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','KS','LineWidth',1.4,'MarkerSize',4);
@@ -64,7 +64,7 @@ ylim([0 250]);
 set(gca,'YDir','reverse');
 legend();
 title('Goodness of Fit for a lognormal distribution (Eulerian)');
-exportgraphics(axb,'figures/ks-vs-lillie_logn.png');
+exportgraphics(axb,'figures/ks-vs-lillie_logn_89-21.png');
 
 axc = figure;
 plot(ksE(3,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','KS','LineWidth',1.4,'MarkerSize',4);
@@ -74,7 +74,7 @@ ylim([0 250]);
 set(gca,'YDir','reverse');
 legend();
 title('Goodness of Fit for a weibull distribution (Eulerian)');
-exportgraphics(axc,'figures/ks-vs-lillie_weib.png');
+exportgraphics(axc,'figures/ks-vs-lillie_weib_89-21.png');
 
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 9 15]);
 axd = figure;
@@ -88,7 +88,7 @@ xlim([0 0.8]);
 set(gca,'YDir','reverse');
 legend();
 title('Lillie Test for Goodness of Fit');
-exportgraphics(axd,'figures/lillie_n_ln_wbl.png');
+exportgraphics(axd,'figures/lillie_n_ln_wbl_89-21.png');
 
 %% Plot the KS Statistic vs Depth for Five Distributions
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 15 15]);
@@ -107,7 +107,7 @@ ylim([0 250]);
 set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Eulerian KS-Test (89-07)');
+title('Eulerian KS-Test (89-21)');
 
 % Lagrangian
 subplot(1,2,2)
@@ -122,8 +122,8 @@ legend();
 ylim([-130 130]);
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Lagrangian KS-Test (89-07)');
-exportgraphics(ax1,'figures/ks-EulAndLag_1989_2007.png');
+title('Lagrangian KS-Test (89-21)');
+exportgraphics(ax1,'figures/ks-EulAndLag_1989_2021.png');
 
 %% Is there a difference in KS if we exclude the first three years?
 
@@ -488,14 +488,14 @@ spring = [];
 summer = [];
 autumn = [];
 
-% 12:139 = 1989 Oct -> 2021 Dec (complete - first year)
+% 12:329 = 1989 Oct -> 2021 Dec (complete - first year)
 % 12:196 = 1989 Oct -> 2007 Dec (BB's PhD)
-for i=12:196
-    if timeByMonth(i) == 12 || timeByMonth(i) <= 2
+for i=12:329
+    if timeByMonth(i) <= 3
         winter = [winter i];
-    elseif timeByMonth(i) >= 3 && timeByMonth(i) <= 5
+    elseif timeByMonth(i) >= 4 && timeByMonth(i) <= 6
         spring = [spring i];
-    elseif timeByMonth(i) >= 6 && timeByMonth(i) <= 8
+    elseif timeByMonth(i) >= 7 && timeByMonth(i) <= 9
         summer = [summer i];
     else
         autumn = [autumn i];
@@ -569,7 +569,7 @@ legend('Location','best');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
-title('Winter (DJF)');
+title('Winter (JFM)');
 
 % SPRING
 subplot(1,4,2)
@@ -583,7 +583,7 @@ set(gca, 'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
-title('Spring (MAM)');
+title('Spring (AMJ)');
 
 % SUMMER
 subplot(1,4,3)
@@ -597,7 +597,7 @@ set(gca, 'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
-title('Summer (JJA)');
+title('Summer (JAS)');
 
 % AUTUMN
 subplot(1,4,4)
@@ -611,10 +611,10 @@ set(gca, 'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
-title('Autumn (SON)');
+title('Autumn (OND)');
 
-sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1989-2007)');
-exportgraphics(ax8,'figures/ks_seasonal_eulerian_89-07.png');
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Eulerian (1989-2021)');
+exportgraphics(ax8,'figures/ks_seasonal_eulerian_89-21.png');
 
 %% Seasonal KS: Lagrangian Figures
 
@@ -632,7 +632,7 @@ set(gca, 'YDir','reverse');
 ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Winter (DJF)');
+title('Winter (JFM)');
 
 % SPRING
 subplot(1,4,2)
@@ -646,7 +646,7 @@ set(gca, 'YDir','reverse');
 ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Spring (MAM)');
+title('Spring (AMJ)');
 
 % SUMMER
 subplot(1,4,3)
@@ -660,7 +660,7 @@ set(gca, 'YDir','reverse');
 ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Summer (JJA)');
+title('Summer (JAS)');
 
 % AUTUMN
 subplot(1,4,4)
@@ -674,10 +674,10 @@ set(gca, 'YDir','reverse');
 ylim([-120 120]);
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Autumn (SON)');
+title('Autumn (OND)');
 
-sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1989-2007)');
-exportgraphics(ax9,'figures/ks_seasonal_lagrangian_89-07.png');
+sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1989-2021)');
+exportgraphics(ax9,'figures/ks_seasonal_lagrangian_89-21.png');
 
 %%
 clear i ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9;
