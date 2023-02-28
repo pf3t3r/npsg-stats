@@ -120,16 +120,16 @@ for j = 1:329
     MLDt(j) = find(CT2D(:,j) < CTTEMP(j) - 0.2,1);
 end
 
-nb=100
+nb=100;
 
 ax3 = figure;
 subplot(2,1,1)
-h=contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
+contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
 hold on
 plot(t_grid(1,:),MLDt,'LineWidth',1.5,'Color',[0 0 0]);
 set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
-d = colormap(flipud(cbrewer2('Spectral',nb)));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'Conservative Temperature (C)';
 xlabel('Time');
@@ -140,7 +140,7 @@ subplot(2,1,2)
 h=contourf(t_grid,p_grid,CT_rm,linspace(16,28,nb),'LineColor','auto');
 set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
-d = colormap(flipud(cbrewer2('Spectral',nb)));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'Conservative Temperature (C)';
 xlabel('Time');
@@ -325,12 +325,12 @@ exportgraphics(ax8,'figures/mld-1988-2021_fft.png');
 %% Density vs chl
 
 load("datafiles\chloro.mat");
-ax9 = figure;
+ax8 = figure;
 
 subplot(2,1,1)
-contourf(t_grid,-sigma_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
+contourf(t_grid,-sigma_grid,chloro200,linspace(0,1.4,nb),'LineColor','auto');
 datetickzoom('x','dd/mm/yyyy','keeplimits');
-d = colormap(flipud(cbrewer2('Spectral',nb)));
+colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'Chloropigment (ug/L)';
 xlabel('Time');
@@ -338,7 +338,7 @@ ylabel('Potential Density Anomaly $\sigma_0$');
 title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Sigma Coordinates)');
 
 subplot(2,1,2)
-contourf(t_grid,-p_grid,chloro2D,linspace(0,1.4,nb),'LineColor','auto');
+contourf(t_grid,-p_grid,chloro200,linspace(0,1.4,nb),'LineColor','auto');
 datetickzoom('x','dd/mm/yyyy','keeplimits');
 d = colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
@@ -350,7 +350,7 @@ title('Chloropigment (ug/L): 1988 - 2021 (Eulerian, Pressure Coordinates)');
 exportgraphics(ax8,'figures/chl_sigmaCoords.png');
 
 %% SA-CT with Chl-a: discretize Chl-a data to map onto 100 colours from Hovmoeller Diagram
-testDisc = discretize(chloro2D_n,100);
+testDisc = discretize(chloro200n,100);
 testDisc(isnan(testDisc)) = 101;
 d = [d;0 0 0];
 

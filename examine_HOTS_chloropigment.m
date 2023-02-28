@@ -57,32 +57,32 @@ crn = data(:,1);
 day = data(:,2);
 pressure = data(:,3);
 chloro = data(:,4);
-chloro(chloro==-9) = NaN; % Set -9 = NaN;
-chloro(chloro<0) = 0; % set negative values = 0
+chloro(chloro==-9 | chloro<0) = NaN; % Set -9 and negatives = NaN;
+% chloro(chloro<0) = NaN; % set negative values = 0
 
 % 256db
 crn2 = data256(:,1);
 day2 = data256(:,2);
 pressure2 = data256(:,3);
 chloro2 = data256(:,6);
-chloro2(chloro2==-9) = NaN; % Set -9 = NaN;
-chloro2(chloro2<0) = NaN; % set negative values = NAN!!
+chloro2(chloro2==-9 | chloro2<0) = NaN; % Set -9 and negatives = NaN;
+% chloro2(chloro2<0) = NaN; % set negative values = NAN!!
 
 % 300 db
 crn3 = d_300(:,1);
 day3 = d_300(:,2);
 pres3 = d_300(:,3);
 chloro3 = d_300(:,6);
-chloro3(chloro3==-9) = NaN; % Set -9 = NaN;
-chloro3(chloro3<0) = 0; % set negative values = 0
+chloro3(chloro3==-9 | chloro3<0) = NaN; % Set -9 and negatives = NaN;
+% chloro3(chloro3<0) = NaN; % set negative values = NaN
 
 % 1000db
 crn1 = data1(:,1);
 day1 = data1(:,2);
 pressure1 = data1(:,3);
 chloro1 = data1(:,6);
-chloro1(chloro1==-9) = NaN; % Set -9 = NaN;
-chloro1(chloro1<0) = 0; % remove negative values
+chloro1(chloro1==-9 | chloro1<0) = NaN; % Set -9 and negatives = NaN;
+% chloro1(chloro1<0) = NaN; % remove negative values
 
 addpath("baroneRoutines\");
 
@@ -92,48 +92,6 @@ nb = 100;
 
 botPressure = cpig_bot(:,4);
 botChl = cpig_bot(:,5);
-
-% Grid Data
-
-
-%% Examine First Days of Data
-% Not really required. Can delete later.
-
-% ax1 = figure;
-% subplot(1,3,1)
-% plot(chloro(1:101),-pressure(1:101),'DisplayName','CRN 1: Nov 88');
-% hold on
-% plot(chloro(102:202),-pressure(102:202),'DisplayName','CRN 2: Dec 88');
-% plot(chloro(203:303),-pressure(203:303),'DisplayName','CRN 3: Jan 89');
-% hold off
-% legend('Location','best');
-% ylabel('pressure [db]');
-% xlabel('chl [ug/L]');
-% title('chl(p) [200db]');
-% 
-% subplot(1,3,2)
-% plot(chloro1(1:501),-pressure1(1:501),'DisplayName','CRN 1: Nov 88');
-% hold on
-% plot(chloro1(502:1002),-pressure1(502:1002),'DisplayName','CRN 2: Dec 88');
-% plot(chloro1(1003:1503),-pressure1(1003:1503),'DisplayName','CRN 3: Jan 89');
-% hold off
-% legend('Location','best');
-% ylabel('pressure [db]');
-% xlabel('chl [ug/L]');
-% title('chl(p) [1000db]');
-% 
-% subplot(1,3,3)
-% plot(chloro2(1:129),-pressure2(1:129),'DisplayName','CRN 1: Nov 88');
-% hold on
-% plot(chloro2(130:258),-pressure2(130:258),'DisplayName','CRN 2: Dec 88');
-% plot(chloro2(259:387),-pressure2(259:387),'DisplayName','CRN 3: Jan 89');
-% hold off
-% legend('Location','best');
-% ylabel('pressure [db]');
-% xlabel('chl [ug/L]');
-% title('chl(p) [256db]');
-% 
-% exportgraphics(ax1,'figures/ctd-day-1.png');
 
 %% Reshape into 2D Matrix: 200db
 
@@ -202,7 +160,7 @@ save('datafiles\chloro',"chloro300",'days300',"pres300",'-append');
 % % days1 = reshape(days1,501,[]);
 % pres1 = reshape(copytest,501,[]);
 
-%% Apply Gridding.
+%% Create meshgrids
 
 [tgrid200,pgrid200] = meshgrid(datenum(days200(1,:)),pres200(:,1));
 time200 = datetime(tgrid200(1,:),'ConvertFrom','datenum');
@@ -218,7 +176,7 @@ save('datafiles\chloro',...
     "tgrid256","pgrid256","time256",...
     "tgrid300","pgrid300","time300",'-append');
 
-%% Chloropigment: Eulerian Hovmoeller (1988-2022) [200, 256,  db]
+%% Chloropigment: Eulerian Hovmoeller (1988-2022) [200, 256, 300 db]
 
 % 200 db
 ax2 = figure;
@@ -363,7 +321,7 @@ clear ax4 ax4a ax4b;
 % exportgraphics(ax6,'figures/fluorescence_norm-1988-2021_eulerianSkewness.png');
 
 
-%% Reformulate Eulerian Data into Lagrangian View
+%% Initialise Lagrangian View
 
 val200 = zeros(1,329); idx200 = zeros(1,329); 
 val256 = zeros(1,329); idx256 = zeros(1,329);
