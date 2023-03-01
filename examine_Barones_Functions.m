@@ -13,9 +13,9 @@ addpath("baroneRoutines\");
 
 %% Try Barone's Functions: bbvuong
 
-load("datafiles\chloro.mat");
+load("datafiles\chloro.mat","chloro200",'pgrid200');
 
-[testR,testp2] = bbvuong(chloro2D(1:100,1));
+[testR,testp2] = bbvuong(chloro200(1:100,1));
 % normal dist fits best here....
 
 % [testR_t,testp2_t] = bbvuong(chloro2D(50,:));
@@ -60,23 +60,23 @@ exportgraphics(ax1,figureName);
 
 %% Try: RunMedian
 
-testDataRun = RunMedian(chloro2D(:,1),11);
+testDataRun = RunMedian(chloro200(:,1),11);
 
 %% plot the above vs original
 figure
-plot(chloro2D(:,1),-p_grid(:,1));
+plot(chloro200(:,1),-pgrid200(:,1));
 hold on
-plot(testDataRun,-p_grid(:,1));
+plot(testDataRun,-pgrid200(:,1));
 hold off
 
 %% Try: statsplot2
 
-[MLEp,KSp,nll] = statsplot2(chloro2D(1:100,1));
+[MLEp,KSp,nll] = statsplot2(chloro200(1:100,1));
 
 %%
 clear MLEp KSp nll
 
 %% kstest
 
-h_norm = kstest(chloro2D(:,1));
+h_norm = kstest(chloro200(:,1));
 % if testh = 1, then it means that the distribution is normal (?)

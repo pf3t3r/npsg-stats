@@ -679,5 +679,65 @@ title('Autumn (OND)');
 sgtitle('Kolmogorov-Smirnov Test: Seasonal, Lagrangian (1989-2021)');
 exportgraphics(ax9,'figures/ks_seasonal_lagrangian_89-21.png');
 
+%% KS Test: stuff Benedetto just found!
+
+% Eulerian
+eulerianData = load('datafiles\hot_1773.mat');
+fluoE = eulerianData.FLS_hot_1773(2:end,2:end);
+pE = eulerianData.FLS_hot_1773(2:end,1);
+ks_allcastE = nan(5,130);
+for i = 1:130
+    disp(i);
+    tmp = fluoE(i,:);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    if length(tmp) > 2 
+        [~,ks_allcastE(:,i),~] = statsplot2(tmp,'noplot');
+    end
+end
+
+% Lagrangian
+lagrangianData = load('datafiles\lagr_1758.mat');
+fluoL = lagrangianData.FLS_lagr_1758(2:end,2:end);
+pL = lagrangianData.FLS_lagr_1758(2:end,1);
+ks_allcastL = nan(5,221);
+for i = 1:221
+    disp(i);
+    tmp = fluoL(i,:);
+    tmp(isnan(tmp) | tmp<=0) = [];
+    if length(tmp) > 2 
+        [~,ks_allcastL(:,i),~] = statsplot2(tmp,'noplot');
+    end
+end
+
+%% Plot Lagrangian of 1758 profiles
+
+ax10 = figure;
+subplot(1,2,1)
+plot(ks_allcastE(1,:),pE,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4)
+hold on
+plot(ks_allcastE(2,:),pE,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ks_allcastE(3,:),pE,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ks_allcastE(4,:),pE,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+hold off
+ylim([0 250]);
+set(gca,'YDir','reverse');
+
+title('Eulerian')
+
+subplot(1,2,2)
+plot(ks_allcastL(1,:),p1,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4)
+hold on
+plot(ks_allcastL(2,:),p1,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ks_allcastL(3,:),p1,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ks_allcastL(4,:),p1,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+hold off
+ylim([-125 125]);
+set(gca,'YDir','reverse');
+title('Lagrangian');
+
+ax10.Position = [3 3 20 15];
+sgtitle('Yearly Kolmogorov-Smirnov Test');
+exportgraphics(ax10,'figures/ks_89-07_allCasts.png');
+
 %%
-clear i ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9;
+clear i axa axb axc axd ax1 ax2 ax3 ax4 ax5 ax6 ax7 ax8 ax9 ax10;
