@@ -25,3 +25,4 @@ octave-workspace
 ## Ignore automatically-generated PNG files
 ##---------------------------------------------------
 *.png
+datafiles/ctd_iso_master.mat
