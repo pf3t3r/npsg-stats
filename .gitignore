@@ -26,3 +26,5 @@ octave-workspace
 ##---------------------------------------------------
 *.png
 datafiles/ctd_iso_master.mat
+datafiles/ctd_iso_ALL.mat
+datafiles/ctd_iso_master2.mat
