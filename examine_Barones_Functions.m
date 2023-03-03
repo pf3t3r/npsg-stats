@@ -7,15 +7,15 @@ close all; clc; clear;
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
-set(0,'defaultAxesFontSize',16);
+set(0,'defaultAxesFontSize',12);
 
 addpath("baroneRoutines\");
 
 %% Try Barone's Functions: bbvuong
 
-load("datafiles\chloro.mat","chloro200",'pgrid200');
-
-[testR,testp2] = bbvuong(chloro200(1:100,1));
+% load("datafiles\chloro.mat","chloro200",'pgrid200');
+% 
+% [testR,testp2] = bbvuong(chloro200(1:100,1));
 % normal dist fits best here....
 
 % [testR_t,testp2_t] = bbvuong(chloro2D(50,:));
@@ -25,35 +25,52 @@ load("datafiles\chloro.mat","chloro200",'pgrid200');
 
 %% Try: hotFTPextract
 
-cruise = 300;
-filename = 'datafiles\ctd_iso' + string(cruise) + '.mat';
-
-if isfile(filename)
-    disp('CTD and ISO already created for that cruise');
-else
-    disp('Extracting...');
-    [ctd,iso] = hotFTPextract(cruise);
-    save(filename,"ctd","iso");
-end
+% cruise = 300;
+% filename = 'datafiles\ctd_iso' + string(cruise) + '.mat';
+% 
+% if isfile(filename)
+%     disp('CTD and ISO already created for that cruise');
+% else
+%     disp('Extracting...');
+%     [ctd,iso] = hotFTPextract(cruise);
+%     save(filename,"ctd","iso");
+% end
 
 %% Can I save multiple cruises easily?
-filename = 'datafiles/ctd_iso_master';
 
+% process broke after cruise 240 so extract 241-329 now... merge later
+% filename = 'datafiles/ctd_iso_master2';
+% 
 cruises = 329;
 missingCruises = [21,207];
 cruisesRecorded = linspace(1,cruises,cruises);
 cruisesRecorded(missingCruises) = [];
+clear cruises missingCruises;
+% 
+% cruisesRemaining = cruisesRecorded(239:end);
 
-for i = cruisesRecorded
-    [ctd(i),iso(i)] = hotFTPextract(i);
-    save(filename,"ctd","iso");
-    disp(i);
-end
+%% don't run again
+
+% dontRun = 0;
+% 
+% if dontRun == 0
+%     for i = cruisesRemaining
+%         [ctd(i),iso(i)] = hotFTPextract(i);
+%         save(filename,"ctd","iso");
+%         disp(i);
+%     end
+% else
+%     disp('already calculated..');
+% end
 
 % No need to run this again!
 
+% save('datafiles/ctd_iso_ALL','ctd','iso');
+
 %% So let's extract the fluorescence and group them by casts
 % also let's extract the pcm
+
+load('datafiles\ctd_iso_ALL.mat');
 
 f = [];
 t = [];
@@ -74,21 +91,62 @@ depthMeasurements = 129;
 eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
 lagrangianDepth = linspace(-128,128,depthMeasurements);
 
-%% Convert Eulerian f into Lagrangian coordinates
+%%
+% figure
+% plot(f_e(:,3109:3112),eulerianDepth,'b-','DisplayName','June 26 2008');
+% hold on
+% plot(f_e(:,3113:3121),eulerianDepth,'r--','DisplayName','July 26 2008');
+% hold off
+% legend();
+% set(gca,"YDir","reverse");
 
-% First remove columns where CM = NaN
+%% remove casts for which the pressure of the CM is NAN
+% (where the CM could not be found)
+
 f_copy = f;
+
 p_copy = pcm;
-f_copy(:,isnan(pcm)) = [];
 p_copy(isnan(pcm)) = [];
 
+f_copy(:,isnan(pcm)) = [];
 f_e = f_copy(1:129,:);
-f_lag = NaN(129,length(p_copy));
+
+%% flag (visually for now) casts with abnormally large values
+clc;
+for i = 1:4380
+%     if mean(f_e(:,i)) > 0.4
+%         disp(i);
+%     end
+    for j = 1:129
+        if f_e(j,i) > 2
+            disp(i);
+        end
+    end
+end
+
+%% Remove flagged (visually confirmed) casts
+
+dodgyCasts = [18 248 253 666 667 668 669 ...
+    1213 1214 1215 1216 1217 1218 1219 1220 1221 1222 1223 1224 ...
+    2124 2371 2434 2599 2610 2626 2898 2918 2926 2979 ...
+    3110 3133 3560 3561];
+f_er = f_e;
+f_er(:,dodgyCasts) = [];
+
+%%
+figure
+plot(f_er,eulerianDepth,'Color',[0.6 0.6 0.6]);
+set(gca,"YDir","reverse");
+
+%% Convert Eulerian f into Lagrangian coordinates
+
+% move lag stuff to after removal of flagged data
+f_lag = NaN(129,length(f_er(1,:)));
 offset = floor(0.5*(129 - p_copy));
 
 %%
-for i = 1:length(p_copy)
-    f_lag(:,i) = circshift(f_e(:,i),offset(i));
+for i = 1:length(f_er(1,:))
+    f_lag(:,i) = circshift(f_er(:,i),offset(i));
     if offset(i) > -1 && offset(i) < 40
         disp(i);
         f_lag(1:offset(i),i) = NaN;
@@ -104,45 +162,19 @@ end
 
 %%
 figure
-plot(f_e(:,1224),eulerianDepth);
-set(gca,"YDir","reverse");
+plot(f_lag,lagrangianDepth);
 
-%% test for dodgy fluorescence
-clc;
-for i = 1:4380
-%     if mean(f_e(:,i)) > 0.4
-%         disp(i);
-%     end
-    for j = 2:129
-        if f_e(j,i) > 2
-            disp(i);
-        end
-    end
-end
-
-%% Eulerian Fluorescence with dodgy casts removed
-
-dodgyCasts = [18 248 253 666 667 668 669 ...
-    1213 1214 1215 1216 1217 1218 1219 1220 1221 1222 1223 1224 ...
-    2124 2371 2610 2979 ...
-    3110 3133 3560 3561];
-f_er = f_e;
-f_er(:,dodgyCasts) = [];
-
-%%
-figure
-plot(f_er,eulerianDepth,'Color',[0.6 0.6 0.6]);
-set(gca,"YDir","reverse");
-%%
-figure
-plot(f_lag(:,1:4000),lagrangianDepth);
+%% check crn and cast of suspicious casts
+% load('C:\Users\pfarrell\OneDrive - NIOZ\Documenten\GitHub\PhD-chloro\datafiles\ctd_iso_master.mat');
+% 
+% test = datetime(ctd(10).date(1),'ConvertFrom','datenum');
 
 %% Let's try KS Test on f
 
 % Eulerian
 for i = 1:depthMeasurements
     disp(i);
-    tmp = f(i,:);
+    tmp = f_er(i,:);
     tmp(isnan(tmp)) = [];
     [~,ksE(:,i),~] = statsplot2(tmp,'noplot');
 end
@@ -159,8 +191,10 @@ clear tmp;
 
 %% Plot the above
 ax = figure;
+ax.Position = [3 3 20 15];
+
 % Eulerian
-% subplot(1,2,1)
+subplot(1,2,1)
 plot(ksE(1,:),eulerianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
 plot(ksE(2,:),eulerianDepth,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
@@ -172,30 +206,46 @@ ylim([0 250]);
 set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
-title('Eulerian KS-Test (89-21)');
-ax.Position = [3 3 20 15];
+title('Eulerian');
 
+% Lagrangian
+subplot(1,2,2)
+plot(ksL(1,:),lagrangianDepth,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksL(2,:),lagrangianDepth,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksL(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksL(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+legend();
+ylim([-125 125]);
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylabel('Depth [m]');
+title('Lagrangian');
+
+sgtitle('Kolmogorov-Smirnov Test (1989-2021)');
+exportgraphics(ax,'figures/ks_allCast_89-21.png');
 %% isopyncnal view of DCM
 % plot sig vs. f
 
-load(filename);
-
-% mean fluorescence for that cruise
-f_mean = mean(ctd.f,2,'omitnan');
-sig_mean = mean(ctd.sig,2,"omitnan");
-
-figureName = 'figures/isopycnal_DCM_' + string(cruise) + '.png';
-
-ax1 = figure;
-scatter(ctd.f,-ctd.sig,'Marker','.','MarkerEdgeColor',[0.6 0.6 0.6],'HandleVisibility','off');
-hold on
-plot(f_mean,-sig_mean,'Color','red','LineWidth',1.5,'DisplayName','Mean Fluorescence');
-hold off
-legend();
-xlabel('Chloropigment [ug L^{-1}]');
-ylabel('Potential Density Anomaly \sigma_0 [kg m^{-3}]');
-title(sprintf('Isopycnal View of DCM: \\sigma_0 vs fluorescence (Cruise %s)',string(cruise)));
-exportgraphics(ax1,figureName);
+% load(filename);
+% 
+% % mean fluorescence for that cruise
+% f_mean = mean(ctd.f,2,'omitnan');
+% sig_mean = mean(ctd.sig,2,"omitnan");
+% 
+% figureName = 'figures/isopycnal_DCM_' + string(cruise) + '.png';
+% 
+% ax1 = figure;
+% scatter(ctd.f,-ctd.sig,'Marker','.','MarkerEdgeColor',[0.6 0.6 0.6],'HandleVisibility','off');
+% hold on
+% plot(f_mean,-sig_mean,'Color','red','LineWidth',1.5,'DisplayName','Mean Fluorescence');
+% hold off
+% legend();
+% xlabel('Chloropigment [ug L^{-1}]');
+% ylabel('Potential Density Anomaly \sigma_0 [kg m^{-3}]');
+% title(sprintf('Isopycnal View of DCM: \\sigma_0 vs fluorescence (Cruise %s)',string(cruise)));
+% exportgraphics(ax1,figureName);
 
 %% Try: RunMedian
 
