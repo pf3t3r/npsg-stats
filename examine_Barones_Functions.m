@@ -124,6 +124,8 @@ for i = 1:4380
     end
 end
 
+flagged = f_e(:,[2434 2599 2626 2898 2918 2926]);
+save('datafiles\flagged.mat',"flagged");
 %% Remove flagged (visually confirmed) casts
 
 dodgyCasts = [18 248 253 666 667 668 669 ...
