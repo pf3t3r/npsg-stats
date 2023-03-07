@@ -6,7 +6,7 @@ close all; clc; clear;
 % Set Figure Parameters
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
-set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [5 5 40 15]);
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 29 15]);
 set(0,'defaultAxesFontSize',12);
 
 addpath("baroneRoutines\");
@@ -227,6 +227,45 @@ title('Lagrangian');
 
 sgtitle('Kolmogorov-Smirnov Test (1989-2021)');
 exportgraphics(ax,'figures/ks_allCast_89-21.png');
+
+%% histfit practice
+
+for i = 1:129
+    text = 'lvl' + string(i);
+    savefileName = 'figures/lvlBylvl/hist_' + text + '.png';
+
+    tmp = f_er(i,:);
+    tmp(isnan(tmp)) = [];
+
+    text = figure;
+    [~,ksE(:,i),~] = statsplot2_pf(tmp,100,i);
+
+    exportgraphics(text,savefileName);
+end
+
+%%
+
+% test = makedist("Normal",mean(tmp),std(tmp));
+pd = makedist('Normal','mu',mean(tmp),'sigma',std(tmp));
+pd2 = makedist('Lognormal','mu',mean(log(tmp)),'sigma',std(log(tmp)));
+% pd3 = makedist('Weibull',);
+% x = (mean(tmp)-5*std(tmp)):(mean(tmp)+5*std(tmp));
+% y = pdf(pd, x);
+
+figure;
+% histogram(tmp);
+% hold on
+yyaxis left;
+plot(pd);
+hold on
+plot(pd2);
+yyaxis right;
+histogram(tmp);
+hold off
+% hold off
+legend();
+
+
 %% isopyncnal view of DCM
 % plot sig vs. f
 
@@ -251,14 +290,14 @@ exportgraphics(ax,'figures/ks_allCast_89-21.png');
 
 %% Try: RunMedian
 
-testDataRun = RunMedian(chloro200(:,1),11);
+% testDataRun = RunMedian(chloro200(:,1),11);
 
 %% plot the above vs original
-figure
-plot(chloro200(:,1),-pgrid200(:,1));
-hold on
-plot(testDataRun,-pgrid200(:,1));
-hold off
+% figure
+% plot(chloro200(:,1),-pgrid200(:,1));
+% hold on
+% plot(testDataRun,-pgrid200(:,1));
+% hold off
 
 %% Try: statsplot2
 
@@ -267,5 +306,5 @@ hold off
 
 %% Try kstest
 
-h_norm = kstest(chloro200(:,1));
+% h_norm = kstest(chloro200(:,1));
 % if testh = 1, then it means that the distribution is normal (?)
