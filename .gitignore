@@ -29,3 +29,7 @@ datafiles/ctd_iso_master.mat
 datafiles/ctd_iso_ALL.mat
 datafiles/ctd_iso_master2.mat
 *.2up
+datafiles/f_all.mat
+datafiles/flagged.mat
+datafiles/flagged.mat
+datafiles/flagged.mat

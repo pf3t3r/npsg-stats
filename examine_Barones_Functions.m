@@ -111,6 +111,9 @@ p_copy(isnan(pcm)) = [];
 f_copy(:,isnan(pcm)) = [];
 f_e = f_copy(1:129,:);
 
+t_copy = t;
+t_copy(isnan(pcm)) = [];
+
 %% flag (visually for now) casts with abnormally large values
 clc;
 for i = 1:4380
@@ -134,6 +137,8 @@ dodgyCasts = [18 248 253 666 667 668 669 ...
     3110 3133 3560 3561];
 f_er = f_e;
 f_er(:,dodgyCasts) = [];
+t_copy(dodgyCasts) = [];
+save('datafiles\f_all.mat',"f_er","t_copy");
 
 %%
 figure
@@ -161,6 +166,10 @@ for i = 1:length(f_er(1,:))
         f_lag(:,i) = NaN;
     end
 end
+
+save('datafiles\f_all.mat',"f_lag",'-append');
+
+save('datafiles\f_all.mat',"t_copy",'-append');
 
 %%
 figure
@@ -230,18 +239,18 @@ exportgraphics(ax,'figures/ks_allCast_89-21.png');
 
 %% histfit practice
 
-for i = 1:129
-    text = 'lvl' + string(i);
-    savefileName = 'figures/lvlBylvl/hist_' + text + '.png';
-
-    tmp = f_er(i,:);
-    tmp(isnan(tmp)) = [];
-
-    text = figure;
-    [~,ksE(:,i),~] = statsplot2_pf(tmp,100,i);
-
-    exportgraphics(text,savefileName);
-end
+% for i = 1:129
+%     text = 'lvl' + string(i);
+%     savefileName = 'figures/lvlBylvl/hist_' + text + '.png';
+% 
+%     tmp = f_er(i,:);
+%     tmp(isnan(tmp)) = [];
+% 
+%     text = figure;
+%     [~,ksE(:,i),~] = statsplot2_pf(tmp,100,i);
+% 
+%     exportgraphics(text,savefileName);
+% end
 
 %%
 
