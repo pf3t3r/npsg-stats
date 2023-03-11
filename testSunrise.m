@@ -60,7 +60,7 @@ f_en = f_e(:,nightCastIDs);
 f_ln = f_l(:,nightCastIDs);
 t_n = t(nightCastIDs);
 
-
+save("datafiles\nightCast.mat","nightCastIDs");
 %% KS night time: calculate
 
 % Eulerian
@@ -90,7 +90,7 @@ eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
 lagrangianDepth = linspace(-128,128,depthMeasurements);
 
 ax = figure;
-ax.Position = [3 3 20 15];
+ax.Position = [3 3 13 15];
 
 % Eulerian
 subplot(1,2,1)
@@ -122,5 +122,5 @@ xlabel('p-value');
 ylabel('Depth [m]');
 title('Lagrangian');
 
-sgtitle('Kolmogorov-Smirnov Test: night-time casts (1989-2021)');
+sgtitle('KS on night casts (p coords, 89-21)');
 exportgraphics(ax,'figures/ks_night_89-21.png');

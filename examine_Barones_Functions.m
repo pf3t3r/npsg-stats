@@ -202,7 +202,7 @@ clear tmp;
 
 %% Plot the above
 ax = figure;
-ax.Position = [3 3 20 15];
+ax.Position = [3 3 13 15];
 
 % Eulerian
 subplot(1,2,1)
@@ -228,13 +228,14 @@ plot(ksL(3,:),lagrangianDepth,'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksL(4,:),lagrangianDepth,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 legend();
+xlim([0 1]);
 ylim([-125 125]);
 set(gca,'YDir','reverse');
 xlabel('p-value');
 ylabel('Depth [m]');
 title('Lagrangian');
 
-sgtitle('Kolmogorov-Smirnov Test (1989-2021)');
+sgtitle('KS on all casts (p coords, 89-21)');
 exportgraphics(ax,'figures/ks_allCast_89-21.png');
 
 %% histfit practice
