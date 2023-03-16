@@ -184,6 +184,151 @@ title('Lagrangian');
 sgtitle('Kolmogorov Smirnov test: Cruise Average, 89-21');
 exportgraphics(ax,'figures/ks_newInclIsopyc.png');
 
+%% Night Time
+
+lat = 22.75; lon = -158; 
+rs = nan(329,31,2);
+rsMean = nan(329,2);
+
+for i = 1:329
+    datetimeStruct(i).date = datetime(ctd(i).date,'ConvertFrom','datenum');
+end
+
+for i = 1:329
+    for j = 1:length(datetimeStruct(i).date)
+        [tmp,~,~,~,~,~] = suncycle(lat,lon,datetimeStruct(i).date(j));
+        tmp = tmp - 10;
+        for k = 1:2
+            if tmp(k) < 0
+                tmp(k) = tmp(k) + 24;
+            end
+        end
+        rs(i,j,:) = tmp;
+    end
+    rsMean(i,1) = mean(rs(i,:,1),'omitnan');
+    rsMean(i,2) = mean(rs(i,:,2),'omitnan');
+end
+
+rs2 = hours(rsMean);
+rs2.Format = 'hh:mm';
+% rs2 = rs2(cruisesRecorded,:);
+% rs2(colsToRemove,:) = [];
+
+%% cast at night or not
+
+% reconvert to decimal hour for comparison
+sunrise = hours(rs2(:,1));
+sunset = hours(rs2(:,2));
+
+for i = 1:329
+    dayFrac = rem(datenum([ctd(i).date]),1);
+    datetimeStruct(i).castTime = dayFrac*24;
+end
+
+datetimeStruct(i).nightID = [];
+for i = cruisesRecorded
+    for j = 1:length(datetimeStruct(i).date)
+        if datetimeStruct(i).castTime(j) < sunrise(i)
+            tmp = j;
+            datetimeStruct(i).nightID = [datetimeStruct(i).nightID tmp];
+        end
+    end
+end
+
+meanIsoFN = [];
+meanEulFN = [];
+
+for i = cruisesRecorded
+    tmpIN = iso(i).f(:,datetimeStruct(i).nightID);
+    tmpIN = mean(tmpIN,2,'omitnan');
+    meanIsoFN = [meanIsoFN tmpIN];
+    tmpEN = ctd(i).f(:,datetimeStruct(i).nightID);
+    tmpEN = mean(tmpEN,2,"omitnan");
+    meanEulFN = [meanEulFN tmpEN];
+end
+
+meanIsoFN(meanIsoFN<0) = nan;
+meanEulFN(meanEulFN<0) = nan;
+
+%% NIGHT
+
+% Isopycnal Eulerian
+for i = 1:129
+    disp(i);
+    tmp = meanIsoFN(i,:);
+    tmp(isnan(tmp)) = [];
+    [~,ksIsoFN(:,i),~] = statsplot2(tmp,'noplot');
+end
+
+% Eulerian
+for i = 1:129
+    disp(i);
+    tmp = meanEulFN(i,:);
+    tmp(isnan(tmp)) = [];
+    [~,ksEulFN(:,i),~] = statsplot2(tmp,'noplot');
+end
+clear tmp;
+
+
+% % Lagrangian
+% for i = 1:129
+%     disp(i);
+%     tmp = meanLagFN(i,:);
+%     tmp(isnan(tmp)) = [];
+%     [~,ksLagF(:,i),~] = statsplot2(tmp,'noplot');
+% end
+% clear tmp;
+
+%%
+ax2 = figure;
+
+% Isopycnal Eulerian
+subplot(1,3,1)
+plot(ksIsoFN(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksIsoFN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksIsoFN(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksIsoFN(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+legend('Location','best');
+set(gca,'YDir','reverse');
+ylim([0 250]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Isopycnal Eulerian');
+
+% Eulerian
+subplot(1,3,2)
+plot(ksEulFN(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEulFN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEulFN(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEulFN(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([0 250]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Eulerian');
+
+% Lagrangian
+% subplot(1,3,3)
+% plot(ksLagF(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+% hold on
+% plot(ksLagF(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+% plot(ksLagF(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+% plot(ksLagF(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+% hold off
+% set(gca,'YDir','reverse');
+% xlabel('p-value');
+% ylim([-125 125]);
+% ylabel('Pressure [db]');
+% title('Lagrangian');
+
+sgtitle('Kolmogorov Smirnov: Night Time Cruise Average, 89-21');
+exportgraphics(ax2,'figures/ks_newInclIsopycNight.png');
+
+
 %% MAYBE I should use the 'dodgy cast' removal part here ...
 % 1. All those casts which have NaN as the pressure at the DCM, and
 % 2. All those casts that were flagged for having anomalously large mean
