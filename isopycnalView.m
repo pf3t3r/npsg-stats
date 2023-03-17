@@ -67,6 +67,31 @@ meanEulF(meanEulF<0) = nan;
 figure; plot(meanIsoF,[iso.sig]); set(gca,'YDir','reverse');
 xlabel('Mean Fluorescence'); ylabel('Isopycnal Layer');
 %% Lagrangian Conversion 
+% this is incorrect I should not shift it this way
+
+% first shift each individual cast
+% inputs = offset, EulerianData, 
+
+for i = cruisesRecorded
+    tmp = iso(i).f(1:129,:);
+    isoL(i).f = tmp;
+end
+
+for j = cruisesRecorded
+    for i = 1:length(isoL(j).f(1,:))
+        tmp = isoL(j).f(:,i);
+        [~,isoL(j).dcmID(i)] = max([isoL(j).f(:,i)]);
+        isoL(j).offset(i) = 65 - isoL(j).dcmID(i);
+        if isnan(isoL(j).offset(i))
+            disp('i');
+        else
+            isoL(j).fL(:,i) = convertLagrangian(tmp,isoL(j).offset(i),329);
+        end
+        isoL(j).fLMean = mean(isoL(j).fL,2,'omitnan');
+    end
+end
+
+%%
 
 for i = cruisesRecorded
     meanFcm(i) = mean([ctd(i).fcm],2,'omitnan');
@@ -86,19 +111,19 @@ offset = 65 - round(p_copy/2);
 tmp = f_copy(1:129,:);
 meanLagF = nan(size(tmp));
 
-for i = 1:length(offset)
-    disp(i);
-    meanLagF(:,i) = circshift(tmp(:,i),offset(i));
-    if offset(i) > -1 && offset(i) < 40
-        meanLagF(1:offset(i),i) = NaN;
-    elseif offset(i) == -1
-        meanLagF(end,i) = NaN;
-    elseif offset(i) < -1 && offset(i) > -40
-        meanLagF((end+offset(i)):end,i) = NaN;
-    elseif abs(offset(i)) > 40
-        meanLagF(:,i) = NaN;
-    end
-end
+% for i = 1:length(offset)
+%     disp(i);
+%     meanLagF(:,i) = circshift(tmp(:,i),offset(i));
+%     if offset(i) > -1 && offset(i) < 40
+%         meanLagF(1:offset(i),i) = NaN;
+%     elseif offset(i) == -1
+%         meanLagF(end,i) = NaN;
+%     elseif offset(i) < -1 && offset(i) > -40
+%         meanLagF((end+offset(i)):end,i) = NaN;
+%     elseif abs(offset(i)) > 40
+%         meanLagF(:,i) = NaN;
+%     end
+% end
 
 %% Figures
 % Isopycnal Eulerian
@@ -120,6 +145,7 @@ clear tmp;
 
 
 % Lagrangian
+% incorrect
 for i = 1:129
     disp(i);
     tmp = meanLagF(i,:);
