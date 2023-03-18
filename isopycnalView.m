@@ -73,12 +73,17 @@ xlabel('Mean Fluorescence'); ylabel('Isopycnal Layer');
 % inputs = offset, EulerianData, 
 
 for i = cruisesRecorded
+    % isopycnal
     tmp = iso(i).f(1:129,:);
     isoL(i).f = tmp;
+    % pressure
+    tmp2 = ctd(i).f(1:129,:);
+    ctdL(i).f = tmp2;
 end
 
 for j = cruisesRecorded
-    for i = 1:length(isoL(j).f(1,:))
+    for i = 1:length(isoL(j).f(1,:)) % same length ctd and iso
+        % iso
         tmp = isoL(j).f(:,i);
         [~,isoL(j).dcmID(i)] = max([isoL(j).f(:,i)]);
         isoL(j).offset(i) = 65 - isoL(j).dcmID(i);
@@ -88,6 +93,17 @@ for j = cruisesRecorded
             isoL(j).fL(:,i) = convertLagrangian(tmp,isoL(j).offset(i),329);
         end
         isoL(j).fLMean = mean(isoL(j).fL,2,'omitnan');
+
+        % ctd
+        tmp2 = ctdL(j).f(:,i);
+        [~,ctdL(j).dcmID(i)] = max([ctdL(j).f(:,i)]);
+        ctdL(j).offset(i) = 65 - ctdL(j).dcmID(i);
+        if isnan(ctdL(j).offset(i))
+            disp('i');
+        else
+            ctdL(j).fL(:,i) = convertLagrangian(tmp,ctdL(j).offset(i),329);
+        end
+        ctdL(j).fLMean = mean(ctdL(j).fL,2,'omitnan');
     end
 end
 
@@ -125,7 +141,7 @@ meanLagF = nan(size(tmp));
 %     end
 % end
 
-%% Figures
+%% Calculate KS
 % Isopycnal Eulerian
 for i = 1:129
     disp(i);
@@ -144,13 +160,25 @@ end
 clear tmp;
 
 
-% Lagrangian
-% incorrect
+% Isopycnal Lagrangian
+fLag = [isoL.fLMean];
+fLag(fLag<0) = nan;
 for i = 1:129
     disp(i);
-    tmp = meanLagF(i,:);
+    tmp = fLag(i,:);
     tmp(isnan(tmp)) = [];
     [~,ksLagF(:,i),~] = statsplot2(tmp,'noplot');
+end
+clear tmp;
+
+% Lagrangian
+fLagP = [ctdL.fLMean];
+fLagP(fLagP<0) = nan;
+for i = 1:129
+    disp(i);
+    tmp = fLagP(i,:);
+    tmp(isnan(tmp)) = [];
+    [~,ksLagFP(:,i),~] = statsplot2(tmp,'noplot');
 end
 clear tmp;
 
@@ -165,7 +193,7 @@ clear tmp;
 ax = figure;
 
 % Isopycnal Eulerian
-subplot(1,3,1)
+subplot(1,4,1)
 plot(ksIsoF(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
 plot(ksIsoF(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
@@ -180,7 +208,7 @@ ylabel('Pressure [db]');
 title('Isopycnal Eulerian');
 
 % Eulerian
-subplot(1,3,2)
+subplot(1,4,2)
 plot(ksEulF(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
 plot(ksEulF(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
@@ -193,13 +221,27 @@ xlabel('p-value');
 ylabel('Pressure [db]');
 title('Eulerian');
 
-% Lagrangian
-subplot(1,3,3)
+% Isopycnal Lagrangian
+subplot(1,4,3)
 plot(ksLagF(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
 plot(ksLagF(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksLagF(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksLagF(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Isopycnal Lagrangian');
+
+% Lagrangian
+subplot(1,4,4)
+plot(ksLagFP(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLagFP(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLagFP(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLagFP(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 set(gca,'YDir','reverse');
 xlabel('p-value');
@@ -263,6 +305,8 @@ end
 
 meanIsoFN = [];
 meanEulFN = [];
+meanIsoLFN = [];
+meanLFN = [];
 
 for i = cruisesRecorded
     tmpIN = iso(i).f(:,datetimeStruct(i).nightID);
@@ -271,10 +315,18 @@ for i = cruisesRecorded
     tmpEN = ctd(i).f(:,datetimeStruct(i).nightID);
     tmpEN = mean(tmpEN,2,"omitnan");
     meanEulFN = [meanEulFN tmpEN];
+    tmpILN = isoL(i).fL(:,datetimeStruct(i).nightID);
+    tmpILN = mean(tmpILN,2,'omitnan');
+    meanIsoLFN = [meanIsoLFN tmpILN];
+    tmpLN = ctdL(i).fL(:,datetimeStruct(i).nightID);
+    tmpLN = mean(tmpLN,2,'omitnan');
+    meanLFN = [meanLFN tmpLN];
 end
 
 meanIsoFN(meanIsoFN<0) = nan;
 meanEulFN(meanEulFN<0) = nan;
+meanIsoLFN(meanIsoLFN<0) = nan;
+meanLFN(meanLFN<0) = nan;
 
 %% NIGHT
 
@@ -296,20 +348,30 @@ end
 clear tmp;
 
 
-% % Lagrangian
-% for i = 1:129
-%     disp(i);
-%     tmp = meanLagFN(i,:);
-%     tmp(isnan(tmp)) = [];
-%     [~,ksLagF(:,i),~] = statsplot2(tmp,'noplot');
-% end
-% clear tmp;
+% Isopycnal Lagrangian
+for i = 1:129
+    disp(i);
+    tmp = meanIsoLFN(i,:);
+    tmp(isnan(tmp)) = [];
+    [~,ksLagIsoFN(:,i),~] = statsplot2(tmp,'noplot');
+end
+clear tmp;
 
-%%
+% Lagrangian
+for i = 1:129
+    disp(i);
+    tmp = meanLFN(i,:);
+    tmp(isnan(tmp)) = [];
+    [~,ksLagFN(:,i),~] = statsplot2(tmp,'noplot');
+end
+clear tmp;
+
+
+%% NIGHT
 ax2 = figure;
 
 % Isopycnal Eulerian
-subplot(1,3,1)
+subplot(1,4,1)
 plot(ksIsoFN(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
 plot(ksIsoFN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
@@ -324,7 +386,7 @@ ylabel('Pressure [db]');
 title('Isopycnal Eulerian');
 
 % Eulerian
-subplot(1,3,2)
+subplot(1,4,2)
 plot(ksEulFN(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
 plot(ksEulFN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
@@ -337,19 +399,33 @@ xlabel('p-value');
 ylabel('Pressure [db]');
 title('Eulerian');
 
+% Isopycnal Lagrangian
+subplot(1,4,3)
+plot(ksLagIsoFN(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLagIsoFN(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLagIsoFN(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLagIsoFN(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Isopycnal Lagrangian');
+
 % Lagrangian
-% subplot(1,3,3)
-% plot(ksLagF(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksLagF(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksLagF(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksLagF(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% set(gca,'YDir','reverse');
-% xlabel('p-value');
-% ylim([-125 125]);
-% ylabel('Pressure [db]');
-% title('Lagrangian');
+subplot(1,4,4)
+plot(ksLagFN(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLagFN(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLagFN(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLagFN(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Lagrangian');
 
 sgtitle('Kolmogorov Smirnov: Night Time Cruise Average, 89-21');
 exportgraphics(ax2,'figures/ks_newInclIsopycNight.png');
