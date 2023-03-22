@@ -1,6 +1,9 @@
 function [winter,spring,summer,autumn] = splitBySeasons(X,n)
 %splitBySeasons split time array X of length n by seasons
-%   Detailed explanation goes here
+% INPUT: time vector X of length n
+% OUTPUT: save ID of vector X that corresponds to winter, spring, summer,
+% or autumn respectively.
+
 timeByMonth = month(X);
 
 winter = nan; spring = nan; summer = nan; autumn = nan;

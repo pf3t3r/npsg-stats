@@ -1,6 +1,6 @@
 function ksVals = getKS(X,n,interval)
-%getKS Intermediary function to call statsplot2 with optional subselection
-%of an input vector.
+%getKS is an intermediate function that call statsplot2 with an optional
+% subselection of an input vector.
 % INPUT: X = input 2D vector on which Kolmogorov Smirnov test is to be
 % applied; n = depth [dbar]; interval = optional subselection, e.g. to only
 % look at casts taken in a particular season

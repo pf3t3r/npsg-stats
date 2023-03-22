@@ -481,8 +481,7 @@ time = load("datafiles\chloro.mat","time256").time256;
 % exportgraphics(ax7,'figures/ks_01_21_comparison.png');
 
 %% Seasonal KS
-% Need to apply this night time
-
+% Need to apply this night time -> done in nightTimeKs.m
 
 % Give numerical ID to each month
 timeByMonth = discretize(month(time),12);
