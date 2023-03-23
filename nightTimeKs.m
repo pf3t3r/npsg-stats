@@ -105,39 +105,6 @@ for j = cruisesRecorded
 end
 
 clear tmp2;
-%% 
-
-% for i = cruisesRecorded
-%     meanFcm(i) = mean([ctd(i).fcm],2,'omitnan');
-%     meanPcm(i) = round(mean([ctd(i).pcm],2,'omitnan'));
-% end
-
-% Step (1)
-% f_copy = meanEp;
-% p_copy = meanPcm(cruisesRecorded);
-% colsToRemove = find(isnan(p_copy));
-
-% p_copy(colsToRemove) = [];
-% f_copy(:,colsToRemove) = [];
-
-% offset = 65 - round(p_copy/2);
-
-% tmp = f_copy(1:129,:);
-% meanLagF = nan(size(tmp));
-
-% for i = 1:length(offset)
-%     disp(i);
-%     meanLagF(:,i) = circshift(tmp(:,i),offset(i));
-%     if offset(i) > -1 && offset(i) < 40
-%         meanLagF(1:offset(i),i) = NaN;
-%     elseif offset(i) == -1
-%         meanLagF(end,i) = NaN;
-%     elseif offset(i) < -1 && offset(i) > -40
-%         meanLagF((end+offset(i)):end,i) = NaN;
-%     elseif abs(offset(i)) > 40
-%         meanLagF(:,i) = NaN;
-%     end
-% end
 
 %% Calculate KS
 
@@ -306,7 +273,7 @@ meanLiN(meanLiN<=0) = nan;
 meanLpN(meanLpN<=0) = nan;
 
 clear j tmpEN tmpILN tmpIN tmpLN tmp;
-
+save('datafiles\lagrangianData.mat','isoL');
 %% NIGHT
 
 ksEiN = getKS(meanEiN,129);     % Isopycnal Eulerian
@@ -398,6 +365,7 @@ ksEpN_f2 = getKS(meanEpN(:,b),129);     % Eulerian
 ksLiN_f2 = getKS(meanLiN(:,b),129);     % Isopycnal Lagrangian
 ksLpN_f2 = getKS(meanLpN(:,b),129);     % Lagrangian
 
+clear a b;
 %% Figures: Night 89-01
 ax2a = figure;
 
@@ -551,6 +519,7 @@ for i = cruisesRecorded
 end
 
 clear i tmp;
+save('datafiles\lagrangianData.mat','ctdL','-append');
 
 %% KS NIGHT Seasonal
 % These routines may take ~10-20s per season.
