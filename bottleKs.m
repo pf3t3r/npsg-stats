@@ -11,18 +11,21 @@ set(0,'defaultAxesFontSize',10);
 bottlePressure = importdata('data/hotbot-88_21.txt').data(:,4);
 bottleChl = importdata('data/hotbot-88_21.txt').data(:,5);
 botid = importdata('data/hotbot-88_21.txt').data(:,1);
+timeA = importdata('data/hotbot-88_21.txt').data(:,2); % mmddyy
 
 % Remove bottles taken at pressures below 2.5 db (within ~2.5 m of surface)
 idRm = bottlePressure > 2.5;
 bottlePressure = bottlePressure(idRm);
 bottleChl = bottleChl(idRm);
 botid = botid(idRm);
+timeA = timeA(idRm);
 
 % Remove bottles where chl-a concentration = 0
 idZero = bottleChl == 0;
 bottlePressure = bottlePressure(~idZero);
 bottleChl = bottleChl(~idZero);
 botid = botid(~idZero);
+timeA = timeA(~idZero);
 
 % Save cruise number (CRN) of each bottle - needed for Lagrangian analysis
 tmp = num2str(botid);
@@ -40,8 +43,32 @@ end
 bottlePressure = bottlePressure(1:id329);
 bottleChl = bottleChl(1:id329);
 botid = botid(1:id329);
+timeA = timeA(1:id329);
 
 clear idRm idZero id329 i;
+
+%% time transformation
+
+timeA(timeA==-9) = 0;
+tTest2 = num2str(timeA,'%06d');
+tTest3 = tTest2(:,5:6); %year
+tTest3a = str2num(tTest3);
+tTest4 = tTest2(:,3:4); %dd
+tTest5 = tTest2(:,1:2); %mm
+tTest6 = [];
+tTest6 = [tTest3 tTest5 tTest4];
+tTest7 = str2num(tTest6);
+tTest8 = datetime(tTest7,'ConvertFrom','yyyymmdd');
+tTest9 = num2str(19*ones(3256,1));
+tTest10 = num2str(20*ones(9792-3256,1));
+tTest11 = [tTest9; tTest10];
+tTest12 = [tTest11 tTest3];
+tTest13 = [tTest12 tTest5 tTest4];
+tTest14 = str2num(tTest13);
+tTest14(tTest14==19000000) = NaN;
+tTest14(tTest14==20000000) = NaN;
+tTest15 = datetime(tTest14,'ConvertFrom','yyyymmdd');
+tIme = tTest15;
 %% Bin Pressure
 
 pBin5 = discretize(bottlePressure,2.5:5:202.5);
@@ -198,25 +225,41 @@ dcmP = dcmP(str2double(tCRN));
 
 tChlaByCrn = nan(112,319);
 tPByCrn = nan(112,319);
+tTime = NaT(112,319);
 for i = 1:318
     tChlaByCrn(1:(tBotId(i+1)-tBotId(i)),i) = bottleChl(tBotId(i):(tBotId(i+1)-1));
     tPByCrn(1:(tBotId(i+1)-tBotId(i)),i) = bottlePressure(tBotId(i):(tBotId(i+1)-1));
+    tTime(1:(tBotId(i+1)-tBotId(i)),i) = tIme(tBotId(i):(tBotId(i+1)-1));
 end
 tChlaByCrn(1:(9793-tBotId(319)),319) = bottleChl(tBotId(319):9792);
 tPByCrn(1:(9793-tBotId(319)),319) = bottlePressure(tBotId(319):9792);
+tTime(1:(9793-tBotId(319)),319) = tIme(tBotId(319):9792);
 
 for i = 1:319
     pL(:,i) = tPByCrn(:,i) - dcmP(i);
 end
 
 pLBin10 = round(pL,-1);
-% test3 = discretize(test1,-155:10:155);
 
-% test3 = max(max(pLBin10));
-% test4 = min(min(pLBin10));
 pL_Range = min(min(pLBin10)):10:max(max(pLBin10));
 
 clear bottleCRN ctdL tBotId tCRN;
+
+%% Hov
+
+nb = 100;
+ax4 = figure;
+contourf(datenum(tTime),tPByCrn,tChlaByCrn,linspace(0,max(max(tChlaByCrn)),nb),'LineColor','auto');
+set(gca,'YDir','reverse');
+datetickzoom('x','yyyy mmm','keeplimits');
+colormap(flipud(cbrewer2('Spectral',nb)));
+c = colorbar;
+c.Label.String = 'Chlorophyll a [{\mu}mol/kg]';
+xlabel('Time');
+ylabel('Pressure [dbar]');
+title('Bottle Chlorophyll a: Eulerian (1988-2021)');
+
+exportgraphics(ax4,'figures/hov_botChla.png');
 
 %%
 
@@ -255,7 +298,7 @@ clear i;
 
 %% figure this KS shit
 
-ax4 = figure;
+ax5 = figure;
 
 subplot(1,2,1)
 histogram(pLBin10);
@@ -280,8 +323,8 @@ ylabel('Pressure [db]');
 title('KS Test');
 
 sgtitle('Kolmogorov Smirnov Test: Lagrangian Bottle Chl-a');
-exportgraphics(ax4,'figures/ksBotLag10db.png');
-clear ax4;
+exportgraphics(ax5,'figures/ksBotLag10db.png');
+clear ax4 ax5;
 
 %% Inspect for bimodality
 
