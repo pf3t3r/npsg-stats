@@ -254,7 +254,7 @@ set(gca,'YDir','reverse');
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
-c.Label.String = 'Chlorophyll a [{\mu}mol/kg]';
+c.Label.String = 'Chlorophyll a [{\mu}g/L]';
 xlabel('Time');
 ylabel('Pressure [dbar]');
 title('Bottle Chlorophyll a: Eulerian (1988-2021)');

@@ -114,10 +114,10 @@ set(gca,'YDir','reverse');
 datetickzoom('x','yyyy mmm','keeplimits');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
-c.Label.String = 'particulate carbon [{\mu}mol/kg]';
+c.Label.String = 'Particulate Carbon [{\mu}mol/kg]';
 xlabel('Time');
 ylabel('Pressure [dbar]');
-title('Particulate Carbon: Eulerian (1989-2020)');
+title('Bottle Particulate Carbon: Eulerian (1989-2020)');
 
 exportgraphics(ax1,'figures/hov_partC.png');
 %% KS
