@@ -1,10 +1,8 @@
-% Most of this code is based on a faulty assumption, i.e. that the
-% Kolomogorov-Smirnov Test may be applied to fluorescence given in
-% isopycnal coordinates. But the isopycnals are defined only per cruise:
-% between cruises, they change. Therefore the KS results are incorrect. So
-% I will go thru this and remove this, and replace it with a proper
-% approach whereby I find cruise average fluorescence on isopycnal
-% coordinates but apply the KS test in pressure coordinates.
+% This file will apply the Kolmogorov-Smirnov test to time- and
+% depth-series of chl a from CTD fluorometry and bottle data. We will use
+% only data from night-time casts (to remove the effect of
+% non-photochemical quenching) and from after 2001 (specifically, from HOT
+% cruise 130, when the current fluorometer was first used).
 
 close all; clc; clear;
 set(groot,'defaultAxesXGrid','on');
@@ -13,8 +11,7 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 29
 set(0,'defaultAxesFontSize',11);
 addpath("baroneRoutines\");
 
-%%
-% this is OK, just loading variables...
+%% Load variables
 
 iso = load('datafiles\ctd_iso_master2.mat').iso;
 ctd = load('datafiles\ctd_iso_master2.mat').ctd;
@@ -25,28 +22,7 @@ cruisesRecorded = linspace(1,cruises,cruises);
 cruisesRecorded(missingCruises) = [];
 clear cruises missingCruises;
 
-%%
-% 
-% sig = [];
-% f_iso = [];
-% t_iso = [];
-% pcm = [];
-% for i = cruisesRecorded
-%     tmpF = iso(i).f;
-%     tmpT = ctd(i).date;
-%     tmpPCM = ctd(i).pcm;
-%     tmpS = iso(i).sig;
-%     f_iso = [f_iso tmpF];
-%     t_iso = [t_iso tmpT];
-%     pcm = [pcm tmpPCM];
-%     sig = [sig tmpS];
-% end
-% clear tmpF tmpT tmpPCM tmpS i;
-% t_iso = datetime(t_iso,'ConvertFrom','datenum');
-% 
-% f_iso(f_iso < 0) = NaN;
-
-%% test this
+%% Find (Eulerian) cruise-averaged fluorescence
 
 meanEi = [];
 meanEp = [];
@@ -67,7 +43,7 @@ meanEp(meanEp<0) = nan;
 figure; plot(meanEi,[iso.sig]); set(gca,'YDir','reverse');
 xlabel('Mean Fluorescence'); ylabel('Isopycnal Layer');
 
-%% Lagrangian Conversion 
+%% Find cruise-averaged fluorescence in Lagrangian coordinates
 
 for i = cruisesRecorded
     % isopycnal
@@ -901,8 +877,8 @@ clear ax6 h_leg;
 % incorrect
 % sig_lag = sig(65) - sig(1:129);
 % 
-% ax = figure;
-% ax.Position = [3 3 13 15];
+% axX = figure;
+% axX.Position = [3 3 13 15];
 % 
 % % Eulerian
 % subplot(1,2,1)
@@ -935,7 +911,8 @@ clear ax6 h_leg;
 % title('Lagrangian');
 % 
 % sgtitle('KS on all casts (isopycnal, 89-21)');
-% exportgraphics(ax,'figures/ks_iso_allCast.png');
+% exportgraphics(axX,'figures/ks_iso_allCast.png');
+% clear axX;
 
 %% NIGHT CASTS only
 % %% Eul + Lag Night Cast: Calculate KS
