@@ -6,6 +6,11 @@ set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 set(0,'defaultAxesFontSize',10);
 
+%% Need dates from CTD to match bottles to DCM
+ctd = load('datafiles\ctd_iso_master2.mat').ctd;
+datectd_HT = datetime([ctd.date],'ConvertFrom','datenum')';
+datectd_UT = datectd_HT + hours(10);
+
 %% Load and Clean Bottle Data
 
 bottlePressure = importdata('data/hotbot-88_21.txt').data(:,4);
@@ -69,6 +74,119 @@ tTest14(tTest14==19000000) = NaN;
 tTest14(tTest14==20000000) = NaN;
 tTest15 = datetime(tTest14,'ConvertFrom','yyyymmdd');
 tIme = tTest15;
+
+%% find cruise no.
+
+ttBotIdString = num2str(botid);
+ttCRN = str2num(ttBotIdString(:,1:3));
+ttBottleCast = str2num(ttBotIdString(:,6:8)); % 100 => nan
+
+for i = 1:329
+    ttData2(i).cast = nan;
+    ttData2(i).pL = nan;
+end
+
+for i = 1:329
+    tmp = ttBottleCast(ttCRN==i);
+    tmp2 = bottlePressure(ttCRN==i);
+    tmp3 = bottleChl(ttCRN==i);    
+    tmp2(tmp==100) = [];
+    tmp3(tmp==100) = [];
+    tmp(tmp==100) = []; % this order is important!
+    tmp = unique(tmp);
+    ttData2(i).cast = tmp;
+    ttData2(i).pE = tmp2;
+    ttData2(i).chla = tmp3;
+    if isempty(ttData2(i).cast)
+        ttData2(i).cast = nan;
+    end
+    if isempty(ttData2(i).chla)
+        ttData2(i).chla = nan;
+    end
+    if isempty(ttData2(i).pE)
+        ttData2(i).pE = nan;
+    end
+end
+
+% Rewrite manually because here first cast = 3.
+ttData2(34).cast = [9;10;14];
+
+% for i = 1:329
+%     tmp = ctd(i).pcm;
+%     %disp(i);
+%     if ~isnan(ttData2(i).cast)
+%         ttData2(i).pcm = tmp(ttData2(i).cast);
+%     end
+%     if isempty(ttData2(i).pcm)
+%         ttData2(i).pcm = nan;
+%     end
+%     if ~isnan(ttData2(i).pcm)
+%         ttData2(i).pL = ttData2(i).pE - ttData2(i).pcm;
+%         ttData2(i).pLbin = round(ttData2(i).pL,-1);
+%     end
+%     if isempty(ttData2(i).pLbin)
+%         ttData2(i).pLbin = nan;
+%     end
+% end
+
+tttest = [];
+tttest2 = [];
+
+% for i = 1:329
+%     tmp = ttData2(i).pLbin;
+%     tmp2 = ttData2(i).chla;
+%     disp(i);
+% %     for j = length() % continue later, fix pL
+%     tttest = [tttest; tmp];
+%     tttest2 = [tttest2; tmp2];
+% end
+% clear tmp tmp2;
+
+% tttRange = unique(tttest);
+% tttRange = tttRange(1:21);
+% 
+% for i = 1:length(tttRange)
+%     tmp = tttest2(tttest==tttRange(i));
+%     tmp(isnan(tmp)) = [];
+%     [~,tttksVals(:,i),~] = statsplot2(tmp,'noplot');
+% end
+
+% axA = figure;
+% 
+% subplot(1,2,1)
+% histogram(tttest);
+% xlim([-150 150]);
+% yline(100);
+% set(gca,'XDir','reverse');
+% set(gca,'view',[-90 90]);
+% set(gca,'XAxisLocation','top');
+% xlabel('Lagrangian Depth [dbar]');
+% title('No. of Observations')
+
+% subplot(1,2,2)
+% plot(tttksVals(1,:),tttRange,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+% hold on
+% plot(tttksVals(2,:),tttRange,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+% plot(tttksVals(3,:),tttRange,'xr-','DisplayName','Weibull','MarkerSize',4);
+% plot(tttksVals(4,:),tttRange,'r.--','DisplayName','Gamma','MarkerSize',4);
+% hold off
+% grid minor;
+% ylim([-150 150]);
+% set(gca,'YDir','reverse');
+% legend('Location','best');
+% xlabel('p-value');
+% ylabel('Pressure [db]');
+% title('KS Test');
+% 
+% sgtitle('Kolmogorov Smirnov Test: Lagrangian Bottle Chl-a');
+% exportgraphics(axA,'figures/ks_NEWLAGBOT.png');
+% clear axA;
+
+
+% for i = 1:329
+% end
+% pLBin10 = round(pL,-1);
+
 %% Bin Pressure
 
 pBin5 = discretize(bottlePressure,2.5:5:202.5);
@@ -129,18 +247,20 @@ hold on
 xline(100);
 hold off
 set(gca,'YDir','reverse');
+set(gca,'XDir','reverse');
+set(gca,'YAxisLocation','right');
 ylim([0 40]);
 set(gca,"YTick",1:1:40,"YTickLabel",depth5)
 title('No. of Observations');
 
 for i = 1:40
     if obsPerLevel_E5(i) < 100
-        ksEb5(:,i) = 0; % assign 0 instead of NaN b/c plot looks nicer :P
+        ksEb5(:,i) = nan; % assign 0 instead of NaN b/c plot looks nicer :P
     end
 end
 for i = 1:20
     if obsPerLevel_E10(i) < 100
-        ksEb10(:,i) = 0; % assign 0 instead of NaN b/c plot looks nicer :P
+        ksEb10(:,i) = nan; % assign 0 instead of NaN b/c plot looks nicer :P
     end
 end
 
@@ -160,7 +280,7 @@ ylabel('Pressure [db]');
 title('KS Test');
 
 sgtitle('Kolmogorov Smirnov Test: Eulerian Bottle chl-a [5 dbar bins]');
-exportgraphics(ax2,'figures/ks_bottle5dbar.png');
+exportgraphics(ax2,'figures/ks_bottleEulerian5db.png');
 clear ax2;
 
 %%
@@ -172,6 +292,8 @@ hold on
 xline(100);
 hold off
 set(gca,'YDir','reverse');
+set(gca,'XDir','reverse');
+set(gca,'YAxisLocation','right');
 ylim([0.5 20]);
 set(gca,"YTick",1:1:20,"YTickLabel",depth10)
 title('No. of Observations');
@@ -192,7 +314,7 @@ ylabel('Pressure [db]');
 title('KS Test');
 
 sgtitle('Kolmogorov Smirnov Test: Eulerian Bottle chl-a [10 dbar bins]');
-exportgraphics(ax3,'figures/ks_bottle10dbar.png');
+exportgraphics(ax3,'figures/ks_bottleEulerian10db.png');
 clear ax3;
 
 %% Lagrangian Bottle
@@ -204,10 +326,12 @@ clear ax3;
 
 ctdL = load("datafiles\lagrangianData.mat").ctdL;
 
+% here I save the DCM for each cruise, but I need the DCM per cast...
 for i = 1:329
     tmp = ctdL(i).dcmID;
     tmp(tmp==1) = nan;
-    dcmP(i) = 2*round(mean(tmp,'omitnan'));
+    ctdL(i).dcmP = 2*tmp;
+    dcmPcrn(i) = 2*round(mean(tmp,'omitnan')); %cruise-avg dcm
 end
 
 % bottlePressure - dcmP = lagP
@@ -221,7 +345,7 @@ for i = 2:9792
 end
 
 
-dcmP = dcmP(str2double(tCRN));
+dcmPcrn = dcmPcrn(str2double(tCRN));
 
 tChlaByCrn = nan(112,319);
 tPByCrn = nan(112,319);
@@ -236,7 +360,7 @@ tPByCrn(1:(9793-tBotId(319)),319) = bottlePressure(tBotId(319):9792);
 tTime(1:(9793-tBotId(319)),319) = tIme(tBotId(319):9792);
 
 for i = 1:319
-    pL(:,i) = tPByCrn(:,i) - dcmP(i);
+    pL(:,i) = tPByCrn(:,i) - dcmPcrn(i);
 end
 
 pLBin10 = round(pL,-1);
@@ -291,17 +415,21 @@ ksLb10 = getKS(chla_levels,31);
 
 for i = 1:31
     if obsPerLevel_L(i) < 100
-        ksLb10(:,i) = 0; %again 0, not NaN, for nicer plot
+        ksLb10(:,i) = NaN; %again 0, not NaN, for nicer plot
     end
 end
 clear i;
 
 %% figure this KS shit
 
+pL_Range2 = pL_Range + 5;
+
 ax5 = figure;
 
 subplot(1,2,1)
 histogram(pLBin10);
+xlim([-150 150]);
+yline(100);
 set(gca,'XDir','reverse');
 set(gca,'view',[-90 90]);
 set(gca,'XAxisLocation','top');
@@ -309,13 +437,14 @@ xlabel('Lagrangian Depth [dbar]');
 title('No. of Observations')
 
 subplot(1,2,2)
-plot(ksLb10(1,:),pL_Range,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLb10(1,:),pL_Range2,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksLb10(2,:),pL_Range,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksLb10(3,:),pL_Range,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksLb10(4,:),pL_Range,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksLb10(2,:),pL_Range2,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLb10(3,:),pL_Range2,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLb10(4,:),pL_Range2,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 grid minor;
+ylim([-150 150]);
 set(gca,'YDir','reverse');
 legend('Location','best');
 xlabel('p-value');
