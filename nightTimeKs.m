@@ -801,6 +801,318 @@ sgtitle('Kolmogorov Smirnov: Lagrangian (Pressure Avg) Night, 89-21');
 exportgraphics(ax6,'figures/ks_seasonal_LpN.png');
 clear ax6 h_leg;
 
+%% F2 ssnl
+% Run seasonal analysis using the 'new' fluorometer F2 only, i.e. from 2001
+% to 2021.
+
+b = 131:329;
+
+f2winVals = winVals - 131; f2sprVals = sprVals - 131;
+f2sumVals = sumVals - 131; f2autVals = autVals - 131;
+f2winVals(f2winVals<0) = [];
+f2sprVals(f2sprVals<0) = [];
+f2sumVals(f2sumVals<0) = [];
+f2autVals(f2autVals<=0) = [];
+
+% WINTER
+ksEiNwF2 = getKS(meanEiN(:,b),129,f2winVals);    % Eulerian Isopycnal
+ksEpNwF2 = getKS(meanEpN(:,b),129,f2winVals);    % Eulerian Pressure
+ksLiNwF2 = getKS(meanLiN(:,b),129,f2winVals);    % Lagrangian Isopycnal
+ksLpNwF2 = getKS(meanLpN(:,b),129,f2winVals);    % Lagrangian Pressure
+
+% SPRING
+ksEiNspF2 = getKS(meanEiN(:,b),129,f2sprVals);      % Eulerian Isopycnal
+ksEpNspF2 = getKS(meanEpN(:,b),129,f2sprVals);      % Eulerian Pressure
+ksLiNspF2 = getKS(meanLiN(:,b),129,f2sprVals);      % Lagrangian Isopycnal
+ksLpNspF2 = getKS(meanLpN(:,b),129,f2sprVals);      % Lagrangian Pressure
+
+% SUMMER
+ksEiNsuF2 = getKS(meanEiN(:,b),129,f2sumVals);      % Eulerian Isopycnal
+ksEpNsuF2 = getKS(meanEpN(:,b),129,f2sumVals);      % Eulerian Pressure
+ksLiNsuF2 = getKS(meanLiN(:,b),129,f2sumVals);      % Lagrangian Isopycnal
+ksLpNsuF2 = getKS(meanLpN(:,b),129,f2sumVals);      % Lagrangian Pressure
+
+% AUTUMN
+ksEiNaF2 = getKS(meanEiN(:,b),129,f2autVals);      % Eulerian Isopycnal
+ksEpNaF2 = getKS(meanEpN(:,b),129,f2autVals);      % Eulerian Pressure
+% ksLiNaF2 = getKS(meanIsoLFN(:,b),129,f2autVals);     % Lagrangian Isopycnal
+ksLpNaF2 = getKS(meanLpN(:,b),129,f2autVals);        % Lagrangian Pressure
+
+%% F2 Eulerian/Isopycnal/Night (EiN)
+
+ax7 = figure;
+
+% WINTER
+subplot(1,4,1)
+plot(ksEiNwF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEiNwF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEiNwF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEiNwF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([0 250]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Winter');
+
+% SPRING
+subplot(1,4,2)
+plot(ksEiNspF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEiNspF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEiNspF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEiNspF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([0 250]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Spring');
+
+% SUMMER
+subplot(1,4,3)
+plot(ksEiNsuF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEiNsuF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEiNsuF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEiNsuF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+h_leg = legend('Location','best');
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([0 250]);
+ylabel('Pressure [db]');
+title('Summer');
+
+% AUTUMN
+subplot(1,4,4)
+plot(ksEiNaF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEiNaF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEiNaF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEiNaF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([0 250]);
+ylabel('Pressure [db]');
+title('Autumn');
+
+% Make legend transparent
+h_leg.BoxFace.ColorType='truecoloralpha';
+h_leg.BoxFace.ColorData=uint8(255*[1 1 1 0.75]');
+
+sgtitle('Kolmogorov Smirnov: Eulerian Isopycnal Night, 01-21');
+exportgraphics(ax7,'figures/ks_F2_seasonal_EiN.png');
+clear ax7;
+
+%% F2 Eulerian/Pressure/Night (EpN)
+
+ax8 = figure;
+
+% WINTER
+subplot(1,4,1)
+plot(ksEpNwF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEpNwF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEpNwF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEpNwF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([0 250]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Winter');
+
+% SPRING
+subplot(1,4,2)
+plot(ksEpNspF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEpNspF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEpNspF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEpNspF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([0 250]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Spring');
+
+% SUMMER
+subplot(1,4,3)
+plot(ksEpNsuF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEpNsuF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEpNsuF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEpNsuF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+h_leg = legend('Location','best');
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([0 250]);
+ylabel('Pressure [db]');
+title('Summer');
+
+% AUTUMN
+subplot(1,4,4)
+plot(ksEpNaF2(1,:),[ctd(1).p(1:129)],'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEpNaF2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEpNaF2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEpNaF2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([0 250]);
+ylabel('Pressure [db]');
+title('Autumn');
+
+% Make legend transparent
+h_leg.BoxFace.ColorType='truecoloralpha';
+h_leg.BoxFace.ColorData=uint8(255*[1 1 1 0.75]');
+
+sgtitle('Kolmogorov Smirnov: Eulerian (Pressure Coord) Night, 01-21');
+exportgraphics(ax8,'figures/ks_F2_seasonal_EpN.png');
+clear ax8;
+
+%% F2 Lagrangian/Isopycnal/Night (LiN)
+
+ax9 = figure;
+
+% WINTER
+subplot(1,4,1)
+plot(ksLiNwF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLiNwF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLiNwF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLiNwF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([-125 125]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Winter');
+
+% SPRING
+subplot(1,4,2)
+plot(ksLiNspF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLiNspF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLiNspF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLiNspF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([-125 125]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Spring');
+
+% SUMMER
+subplot(1,4,3)
+plot(ksLiNsuF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLiNsuF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLiNsuF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLiNsuF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+h_leg = legend('Location','best');
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Summer');
+
+% AUTUMN - error calculating this, check back later
+% subplot(1,4,4)
+% plot(ksLiNaF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+% hold on
+% plot(ksLiNaF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+% plot(ksLiNaF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+% plot(ksLiNaF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+% hold off
+% set(gca,'YDir','reverse');
+% xlabel('p-value');
+% ylim([-125 125]);
+% ylabel('Pressure [db]');
+% title('Autumn');
+
+% Make legend transparent
+h_leg.BoxFace.ColorType='truecoloralpha';
+h_leg.BoxFace.ColorData=uint8(255*[1 1 1 0.75]');
+
+sgtitle('Kolmogorov Smirnov: Lagrangian (Isopycnal Avg) Night, 01-21');
+exportgraphics(ax9,'figures/ks_F2_seasonal_LiN.png');
+clear ax9;
+
+%% Lagrangian/Pressure/Night (LpN)
+
+ax10 = figure;
+
+% WINTER
+subplot(1,4,1)
+plot(ksLpNwF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLpNwF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLpNwF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLpNwF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([-125 125]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Winter');
+
+% SPRING
+subplot(1,4,2)
+plot(ksLpNspF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLpNspF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLpNspF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLpNspF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+ylim([-125 125]);
+xlabel('p-value');
+ylabel('Pressure [db]');
+title('Spring');
+
+% SUMMER
+subplot(1,4,3)
+plot(ksLpNsuF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLpNsuF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLpNsuF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLpNsuF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+h_leg = legend('Location','best');
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Summer');
+
+subplot(1,4,4)
+plot(ksLpNaF2(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksLpNaF2(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksLpNaF2(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksLpNaF2(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Autumn');
+
+% Make legend transparent
+h_leg.BoxFace.ColorType='truecoloralpha';
+h_leg.BoxFace.ColorData=uint8(255*[1 1 1 0.75]');
+
+sgtitle('Kolmogorov Smirnov: Lagrangian (Pressure Avg) Night, 01-21');
+exportgraphics(ax10,'figures/ks_F2_seasonal_LpN.png');
+clear ax10 h_leg;
+
 %% MAYBE I should use the 'dodgy cast' removal part here ...
 % 1. All those casts which have NaN as the pressure at the DCM, and
 % 2. All those casts that were flagged for having anomalously large mean
