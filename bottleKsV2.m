@@ -1,5 +1,5 @@
 clear; clc; close all;
-addpath("baroneRoutines\");
+addpath("baroneRoutines\"); 
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);

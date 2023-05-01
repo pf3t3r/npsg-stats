@@ -264,7 +264,12 @@ for i = 1:20
     end
 end
 
+% remove nan KS values for Eulerian 5dbar
+ksEb5_f = ksEb5;
+ksEb5_f = ksEb5_f(:,~all(isnan(ksEb5_f)));
+depth5_f = depth5([1 2 3 5 9 12 15 17 19 20 21 23 25 27 30 35]);
 
+ksEb5 = ksEb5_f; depth5 = depth5_f;
 subplot(1,2,2)
 plot(ksEb5(1,:),depth5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
@@ -284,6 +289,12 @@ exportgraphics(ax2,'figures/ks_bottleEulerian5db.png');
 clear ax2;
 
 %%
+
+% remove nan KS values for Eulerian 10dbar
+ksEb10_f = ksEb10;
+ksEb10_f = ksEb10_f(:,~all(isnan(ksEb10_f)));
+depth10_f = depth10([1 2 3 4 5 6 8 9 10 11 12 13 14 15 18]);
+ksEb10 = ksEb10_f; depth10 = depth10_f;
 
 ax3 = figure;
 subplot(1,2,1)
