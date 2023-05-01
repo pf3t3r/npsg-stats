@@ -329,6 +329,45 @@ clear ax2;
 
 a = 1:130; b = 131:329;
 
+% Mean fluorescence: F1 vs F2 (EI)
+mmEiN_f1 = mean(meanEiN(:,a),2,'omitnan');
+mmEiN_f2 = mean(meanEiN(:,b),2,'omitnan');
+ax2aa = figure;
+subplot(2,2,1)
+plot(mmEiN_f1,0:2:1000,'DisplayName','F1'); hold on;
+plot(mmEiN_f2,0:2:1000,'DisplayName','F2'); hold off; 
+xlabel('[chl] [{\mu}gL^{-1}]'); ylabel('Pressure [dbar]');
+set(gca,'YDir','reverse'); title('Eulerian (Isopycnal)');
+
+mmEpN_f1 = mean(meanEpN(:,a),2,'omitnan');
+mmEpN_f2 = mean(meanEpN(:,b),2,'omitnan');
+subplot(2,2,2)
+plot(mmEpN_f1,0:2:1000,'DisplayName','F1'); hold on;
+plot(mmEpN_f2,0:2:1000,'DisplayName','F2'); hold off;
+legend('Location','best');
+xlabel('[chl] [{\mu}gL^{-1}]'); ylabel('Pressure [dbar]');
+set(gca,'YDir','reverse'); title('Eulerian (Pressure)');
+
+mmLiN_f1 = mean(meanLiN(:,a),2,'omitnan');
+mmLiN_f2 = mean(meanLiN(:,b),2,'omitnan');
+subplot(2,2,3)
+plot(mmLiN_f1,-128:2:128,'DisplayName','F1'); hold on;
+plot(mmLiN_f2,-128:2:128,'DisplayName','F2'); hold off;
+xlabel('[chl] [{\mu}gL^{-1}]'); ylabel('Pressure [dbar]');
+set(gca,'YDir','reverse'); title('Lagrangian (Isopycnal)');
+
+mmLpN_f1 = mean(meanLpN(:,a),2,'omitnan');
+mmLpN_f2 = mean(meanLpN(:,b),2,'omitnan');
+subplot(2,2,4)
+plot(mmLpN_f1,-128:2:128,'DisplayName','F1'); hold on;
+plot(mmLpN_f2,-128:2:128,'DisplayName','F2'); hold off;
+xlabel('[chl] [{\mu}gL^{-1}]'); ylabel('Pressure [dbar]');
+set(gca,'YDir','reverse'); title('Lagrangian (Pressure)');
+
+sgtitle('F1 vs F2: Average Fluorescence');
+exportgraphics(ax2aa,'figures/avgFluo_f1Vsf2.png');
+%% F1 vs F2: Find KS
+
 % Night 89-01 (fluorometer f1)
 ksEiN_f1 = getKS(meanEiN(:,a),129);     % Isopycnal Eulerian
 ksEpN_f1 = getKS(meanEpN(:,a),129);     % Eulerian

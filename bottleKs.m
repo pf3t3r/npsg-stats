@@ -269,15 +269,17 @@ ksEb5_f = ksEb5;
 ksEb5_f = ksEb5_f(:,~all(isnan(ksEb5_f)));
 depth5_f = depth5([1 2 3 5 9 12 15 17 19 20 21 23 25 27 30 35]);
 
-ksEb5 = ksEb5_f; depth5 = depth5_f;
+ksEb5 = ksEb5_f;
+% depth5 = depth5_f;
 subplot(1,2,2)
-plot(ksEb5(1,:),depth5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEb5(1,:),depth5_f,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEb5(2,:),depth5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksEb5(3,:),depth5,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksEb5(4,:),depth5,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksEb5(2,:),depth5_f,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEb5(3,:),depth5_f,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEb5(4,:),depth5_f,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 grid minor;
+ylim([0 200]);
 set(gca,'YDir','reverse');
 legend('Location','best');
 xlabel('p-value');
@@ -294,7 +296,8 @@ clear ax2;
 ksEb10_f = ksEb10;
 ksEb10_f = ksEb10_f(:,~all(isnan(ksEb10_f)));
 depth10_f = depth10([1 2 3 4 5 6 8 9 10 11 12 13 14 15 18]);
-ksEb10 = ksEb10_f; depth10 = depth10_f;
+ksEb10 = ksEb10_f;
+% depth10 = depth10_f;
 
 ax3 = figure;
 subplot(1,2,1)
@@ -310,11 +313,11 @@ set(gca,"YTick",1:1:20,"YTickLabel",depth10)
 title('No. of Observations');
 
 subplot(1,2,2)
-plot(ksEb10(1,:),depth10,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEb10(1,:),depth10_f,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
 hold on
-plot(ksEb10(2,:),depth10,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksEb10(3,:),depth10,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksEb10(4,:),depth10,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ksEb10(2,:),depth10_f,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEb10(3,:),depth10_f,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEb10(4,:),depth10_f,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 ylim([0 195]);
 grid minor;
