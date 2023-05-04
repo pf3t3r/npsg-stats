@@ -329,6 +329,21 @@ clear ax2;
 
 a = 1:130; b = 131:329;
 
+% mean PCM for F2, night time only
+for i = 1:length(b)
+    tmpMeanPcm(i) = mean([ctd(i).pcm(datetimeStruct(i).nightID)],'omitnan');
+    tmpSTD(i) = std([ctd(i).pcm(datetimeStruct(i).nightID)]);
+end
+ttMeanPcm = round(mean(tmpMeanPcm,'omitnan'));
+ttSTD = mean(tmpSTD,'omitnan');
+
+% sig-pcm
+[tmp,tmpId] = max(meanEiN);
+tmpId(tmpId==1) = NaN;
+tmpStdSig = 2*std(tmpId,'omitnan');
+tmpMeanP_SigCm = 2*(mean(tmpId,'omitnan'));
+clear tmp;
+
 % Mean fluorescence: F1 vs F2 (EI)
 mmEiN_f1 = mean(meanEiN(:,a),2,'omitnan');
 mmEiN_f2 = mean(meanEiN(:,b),2,'omitnan');
@@ -455,8 +470,11 @@ hold on
 plot(ksEiN_f2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEiN_f2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEiN_f2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(tmpMeanP_SigCm,'Color',[0.6 0.6 0.6],'LineWidth',5,'alpha',0.5,'DisplayName','Mean DCM');
+yline(tmpMeanP_SigCm+tmpStdSig,'g-','LineWidth',2,'DisplayName','SD');
+yline(tmpMeanP_SigCm-tmpStdSig,'g-','LineWidth',2,'HandleVisibility','off');
 hold off
-legend('Location','best');
+legend('Location','southoutside');
 set(gca,'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
@@ -470,6 +488,9 @@ hold on
 plot(ksEpN_f2(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpN_f2(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpN_f2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(ttMeanPcm,'Color',[0.6 0.6 0.6],'LineWidth',5,'alpha',0.5,'DisplayName','Mean DCM');
+yline(ttMeanPcm+ttSTD,'g-','LineWidth',2,'DisplayName','SD');
+yline(ttMeanPcm-ttSTD,'g-','LineWidth',2,'DisplayName','SD');
 hold off
 set(gca,'YDir','reverse');
 ylim([0 250]);
