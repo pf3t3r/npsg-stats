@@ -1,4 +1,4 @@
-function [pb5,pb10,X_out,n5,n10,testboi] = funshit(p,X,botid)
+function [pb5,pb10,X_out,n5,n10,testboi] = cleanAndBin(p,X,botid)
 %funshit
 % p = pressure [dbar]
 % X = concentration of substance you want to measure
@@ -26,6 +26,8 @@ for i = 1:length(p)
     if bottleCRN(i) > 329
         id329 = i - 1;
         break;
+    else
+        id329 = length(p);
     end
 end
 
