@@ -112,7 +112,7 @@ for i = 1:length(trange)
 end
 clear tmp;
 
-%%
+%% Chlorophyll a (Regular Method): Lagrangian 10 dbar
 
 ax1 = figure;
 subplot(1,2,1)
@@ -152,7 +152,7 @@ sgtitle('Kolmogorov Smirnov Test: Lagrangian Bottle chl-a [10 dbar bins] (88-21)
 exportgraphics(ax1,'figures/ks_bottleLagrangian10db.png');
 
 clear ax1;
-%% Do same but for 88-07
+%% Chlorophyll a (Regular Method): Lagrangian 10 dbar: 88-07
 
 % time = importdata('data/hotbot-88_21.txt').data(:,2);
 % clear time;
