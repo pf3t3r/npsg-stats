@@ -1,13 +1,18 @@
-function [ks, obs, depth2] = ksOfBinnedCon(X, p, binning)
-%funshit2 find the KS statistc
+function [ks, obs, depth2] = ksOfBinnedCon(X, p, binning, threshold)
+%ksOfBinnedCon find the KS statistic
 % INPUTS:
 % X = substance concentration,
 % p = binned pressure [dbar]
-% n = length of data set
+% binning = range of depths to bin values (default=10)
+% threshold = no. of values needed for us to consider results (default=100)
 % OUTPUTS: 
 % ks = KS test for five distributions 
 % obs = observations per depth
 % depth2 = array of depths above threshold (=100)
+
+if nargin <4
+    threshold = 100;
+end
 
 if nargin <3
     binning = 10;
@@ -34,7 +39,7 @@ for i = 1:n
 end
 
 for i = 1:n
-    if obs(i) < 100
+    if obs(i) < threshold
         ks(:,i) = nan;        
     end
 end

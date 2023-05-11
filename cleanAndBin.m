@@ -1,5 +1,5 @@
-function [pb5,pb10,X_out,n5,n10,testboi] = cleanAndBin(p,X,botid)
-%funshit
+function [pb5,pb10,X_out,n5,n10] = cleanAndBin(p,X,botid)
+%cleanAndBin
 % p = pressure [dbar]
 % X = concentration of substance you want to measure
 % botid = bottle ID

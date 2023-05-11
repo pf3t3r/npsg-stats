@@ -10,6 +10,7 @@ set(0,'defaultAxesFontSize',10);
 crn = nan(329,1);
 cast = nan(329,31);
 pcm = nan(329,31);
+tdate = nan(329,31);
 
 ctd = load('datafiles\ctd_iso_ALL.mat').ctd;
 for i = 1:329

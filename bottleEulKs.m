@@ -122,7 +122,7 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 [ksSyn5, obsSyn5, dSyn5] = ksOfBinnedCon(synOut,pb5_syn,5);          % 5 dbar / Synechococcus
 [ksSyn10, obsSyn10, dSyn10] = ksOfBinnedCon(synOut,pb10_syn,10);     % 10 dbar / Synechococcus
 
-[ksPic5, obsPic5, dPic5] = ksOfBinnedCon(picOut,pb5_pic,5);          % 5 dbar / Pico-Eukaryotes
+% [ksPic5, obsPic5, dPic5] = ksOfBinnedCon(picOut,pb5_pic,5);          % 5 dbar / Pico-Eukaryotes
 [ksPic10, obsPic10, dPic10] = ksOfBinnedCon(picOut,pb10_pic,10);     % 10 dbar / Pico-Eukaryotes
 
 %% Chlorophyll a (regular method): Eulerian 5 dbar
@@ -877,39 +877,39 @@ clear ax22;
 %%% wip picoeu
 %% Pico-eukaryotes: Eulerian 5 dbar 
 
-ax23 = figure;
-subplot(1,2,1)
-barh(obsPic5);
-hold on
-xline(100);
-hold off
-set(gca,'YDir','reverse');
-set(gca,'XDir','reverse');
-set(gca,'YAxisLocation','right');
-ylim([0.5 40]);
-set(gca,"YTick",1:1:40,"YTickLabel",depth5)
-title('No. of Observations');
+% ax23 = figure;
+% subplot(1,2,1)
+% barh(obsPic5);
+% hold on
+% xline(100);
+% hold off
+% set(gca,'YDir','reverse');
+% set(gca,'XDir','reverse');
+% set(gca,'YAxisLocation','right');
+% ylim([0.5 40]);
+% set(gca,"YTick",1:1:40,"YTickLabel",depth5)
+% title('No. of Observations');
+% 
+% subplot(1,2,2)
+% plot(ksPic5(1,:),dPic5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+% hold on
+% plot(ksPic5(2,:),dPic5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+% plot(ksPic5(3,:),dPic5,'xr-','DisplayName','Weibull','MarkerSize',4);
+% plot(ksPic5(4,:),dPic5,'r.--','DisplayName','Gamma','MarkerSize',6);
+% hold off
+% ylim([0 195]);
+% grid minor;
+% set(gca,'YDir','reverse');
+% legend('Location','best');
+% xlabel('p-value');
+% ylabel('Pressure [db]');
+% title('Kolmogorov Smirnov Test');
+% 
+% sgtitle('Pico-Eukaryotes: Eulerian Bottle, 5 dbar bin');
+% exportgraphics(ax23,'figures/ks_PicEulerian5db.png');
+% clear ax23;
 
-subplot(1,2,2)
-plot(ksPic5(1,:),dPic5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-hold on
-plot(ksPic5(2,:),dPic5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ksPic5(3,:),dPic5,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ksPic5(4,:),dPic5,'r.--','DisplayName','Gamma','MarkerSize',6);
-hold off
-ylim([0 195]);
-grid minor;
-set(gca,'YDir','reverse');
-legend('Location','best');
-xlabel('p-value');
-ylabel('Pressure [db]');
-title('Kolmogorov Smirnov Test');
-
-sgtitle('Pico-Eukaryotes: Eulerian Bottle, 5 dbar bin');
-exportgraphics(ax23,'figures/ks_PicEulerian5db.png');
-clear ax23;
-
-%% Synechococcus: Eulerian 10 dbar
+%% Pico Eukaryotes: Eulerian 10 dbar
 
 ax24 = figure;
 subplot(1,2,1)
