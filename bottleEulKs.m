@@ -53,6 +53,11 @@ p_pho = importdata('data/parP_88-21.txt').data(:,4);
 pho = importdata('data/parP_88-21.txt').data(:,5);
 id_pho = importdata('data/parP_88-21.txt').data(:,1);
 
+% Particulate Phosphorus - after 2011
+p_pho11 = importdata('data/parP_11-21.txt').data(:,4);
+pho11 = importdata('data/parP_11-21.txt').data(:,5);
+id_pho11 = importdata('data/parP_11-21.txt').data(:,1);
+
 % Heterotrophic Bacteria
 id_het = importdata('data/hetBac_05-21.txt').data(:,1);
 p_het = importdata('data/hetBac_05-21.txt').data(:,4);
@@ -83,6 +88,7 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 [pb5_parc,pb10_parc,parcOut,n5_parc,n10_parc] = cleanAndBin(p_parc,parc,id_parc);               % Particulate Carbon
 [pb5_nit,pb10_nit,nitOut,n5_nit,n10_nit] = cleanAndBin(p_nit,nit,id_nit);                       % Particulate Nitrogen
 [pb5_pho,pb10_pho,phoOut,n5_pho,n10_pho] = cleanAndBin(p_pho,pho,id_pho);                       % Particulate Phosphorus
+[pb5_pho11,pb10_pho11,phoOut11,n5_pho11,n10_pho11] = cleanAndBin(p_pho11,pho11,id_pho11);                       % Particulate Phosphorus (11-21)
 [pb5_het,pb10_het,hetOut,n5_het,n10_het] = cleanAndBin(p_het,het,id_het);                       % Heterotrophic Bacteria
 [pb5_pro,pb10_pro,proOut,n5_pro,n10_pro] = cleanAndBin(p_pro,pro,id_pro);                       % Prochlorococcus
 [pb5_syn,pb10_syn,synOut,n5_syn,n10_syn] = cleanAndBin(p_syn,syn,id_syn);                       % Synechococcus
@@ -112,6 +118,9 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 
 [ksPho5, obsPho5, dPho5] = ksOfBinnedCon(phoOut,pb5_pho,5);          % 5 dbar / Particulate Phosphorus
 [ksPho10, obsPho10, dPho10] = ksOfBinnedCon(phoOut,pb10_pho,10);     % 10 dbar / Particulate Phosphorus
+
+[ksPho5_11, obsPho5_11, dPho5_11] = ksOfBinnedCon(phoOut11,pb5_pho11,5);          % 5 dbar / Particulate Phosphorus 11-21
+[ksPho10_11, obsPho10_11, dPho10_11] = ksOfBinnedCon(phoOut11,pb10_pho11,10);     % 10 dbar / Particulate Phosphorus 11-21
 
 [ksHet5, obsHet5, dHet5] = ksOfBinnedCon(hetOut,pb5_het,5);          % 5 dbar / Heterotrophic Bacteria
 [ksHet10, obsHet10, dHet10] = ksOfBinnedCon(hetOut,pb10_het,10);     % 10 dbar / Heterotrophic Bacteria

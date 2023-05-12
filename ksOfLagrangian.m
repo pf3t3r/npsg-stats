@@ -1,10 +1,13 @@
-function [bottleArray,trange,chl,pB,ks,obsPerBin,tid] = ksOfLagrangian(id,p,dcmArray,X) %X,dcmArray)
+function [bottleArray,trange,chl,pB,ks,obsPerBin] = ksOfLagrangian(id,p,dcmArray,X,Ltid) %X,dcmArray)
 %funShit3 quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
 % id: bottle ID
 % p = pressure
+% dcmArray = shows where the DCM is
 % X = bottle concentration
+% Ltid = not sure how this works but hey it works...
+% OUTPUTS:
 
 CRN = str2num(id(:,1:3)); 
 cast = str2num(id(:,6:8));
@@ -32,7 +35,7 @@ end
 
 tPcm = nan(length(p),1);
 tPcm(1:tid(1)-1) = dcmArray(dcmArrayRowNo(1),3);
-for i = 2:669
+for i = 2:Ltid
     tPcm(tid(i):tid(i+1)-1) = dcmArray(dcmArrayRowNo(i),3);
 end
 
@@ -52,8 +55,8 @@ trange = tmin:10:tmax;
 
 chl = bottleArray(:,7);
 pB = bottleArray(:,6);
-ks = nan(5,41);
-obsPerBin = nan(1,41);
+ks = nan(5,length(trange));
+obsPerBin = nan(1,length(trange));
 
 for i = 1:length(trange)
     tmp = chl(pB==trange(i));
@@ -66,7 +69,7 @@ for i = 1:length(trange)
     end
 end
 
-for i = 1:41
+for i = 1:length(trange)
     if obsPerBin(i) < 100
         ks(:,i) = nan;
     end
