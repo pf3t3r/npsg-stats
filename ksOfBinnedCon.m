@@ -30,8 +30,10 @@ end
 for i = 1:n
     % find concentration X_i at binned pressure i
     X_i = X(p==i);
-    % apply KS test to chla_i
-    if length(X_i) > 1
+    % apply KS test to X_i
+    % change limit below to >3 to fix error with picoeu -> may change other
+    % results
+    if length(X_i) > 3
         [~,ks(:,i),~] = statsplot2(X_i,'noplot');
     end
     obs(i) = length(X_i);
