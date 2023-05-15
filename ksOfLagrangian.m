@@ -1,4 +1,4 @@
-function [bottleArray,trange,chl,pB,ks,obsPerBin] = ksOfLagrangian(id,p,dcmArray,X,Ltid) %X,dcmArray)
+function [trange,ks,obsPerBin] = ksOfLagrangian(id,p,dcmArray,X,Ltid,threshold)
 %funShit3 quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
@@ -8,6 +8,18 @@ function [bottleArray,trange,chl,pB,ks,obsPerBin] = ksOfLagrangian(id,p,dcmArray
 % X = bottle concentration
 % Ltid = not sure how this works but hey it works...
 % OUTPUTS:
+% bottleArray = not needed anymore, to remove
+% trange = depths where sufficient measurements are present
+% chl = also not used??
+% pB = binned pressure, also not used?
+% ks = Kolmogorov-Smirnov Statistic (p value). High p-value indicates that
+% the given distribution fits the data better.
+% obsPerBin = no. of observations in a particular depth bin. 
+
+
+if nargin < 6
+    threshold = 100;
+end
 
 CRN = str2num(id(:,1:3)); 
 cast = str2num(id(:,6:8));
@@ -70,7 +82,7 @@ for i = 1:length(trange)
 end
 
 for i = 1:length(trange)
-    if obsPerBin(i) < 100
+    if obsPerBin(i) < threshold
         ks(:,i) = nan;
     end
 end
