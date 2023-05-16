@@ -29,7 +29,7 @@ else
 end
 
 subplot(1,2,1)
-barh(obs);
+barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
 hold off
@@ -40,11 +40,16 @@ set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
 
 subplot(1,2,2)
-plot(ks(1,:),tr,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',2,'MarkerSize',4);
 hold on
-plot(ks(2,:),tr,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ks(3,:),tr,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ks(4,:),tr,'r.--','DisplayName','Gamma','MarkerSize',4);
+plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',2,'MarkerSize',4);
+plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',2,'MarkerSize',4);
+plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',2,'MarkerSize',4);
+% plot(ks(1,:),tr,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+% hold on
+% plot(ks(2,:),tr,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+% plot(ks(3,:),tr,'xr-','DisplayName','Weibull','MarkerSize',4);
+% plot(ks(4,:),tr,'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
 grid minor;
 ylim(limits);

@@ -22,6 +22,9 @@ cruisesRecorded = linspace(1,cruises,cruises);
 cruisesRecorded(missingCruises) = [];
 clear cruises missingCruises;
 
+mlds = load('datafiles\MLD.mat').MLD;
+mldt = load('datafiles\MLD.mat').MLDt;
+
 %% Find (Eulerian) cruise-averaged fluorescence
 
 meanEi = [];
@@ -111,7 +114,6 @@ plot(ksEi(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','Display
 plot(ksEi(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEi(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend('Location','best');
 set(gca,'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
@@ -125,7 +127,9 @@ hold on
 plot(ksEp(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEp(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEp(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(mean(mlds),'Color',[0.4 0.4 0.4],'LineWidth',3,'DisplayName','Average MLD');
 hold off
+legend('Location','best');
 set(gca,'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
@@ -228,6 +232,8 @@ for i = cruisesISO
     tmpEN = ctd(i).f(:,datetimeStruct(i).nightID);
     tmpEN = mean(tmpEN,2,"omitnan");
     meanEpN(:,i) = tmpEN;
+    tmpMldEpN = ctd(i).mld003(datetimeStruct(i).nightID);
+    meanMldEpN = mean(tmpMldEpN);
     tmpLN = ctdL(i).fL(:,datetimeStruct(i).nightID);
     tmpLN = mean(tmpLN,2,'omitnan');
     meanLpN(:,i) = tmpLN;
@@ -268,7 +274,6 @@ plot(ksEiN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','Displa
 plot(ksEiN(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEiN(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend('Location','best');
 set(gca,'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
@@ -282,8 +287,10 @@ hold on
 plot(ksEpN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpN(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpN(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(meanMldEpN,'LineWidth',3,'Color',[0.4 0.4 0.4],'DisplayName','Mean Nighttime MLD');
 hold off
 set(gca,'YDir','reverse');
+legend('Location','best');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
@@ -328,6 +335,16 @@ clear ax2;
 % 131:329.
 
 a = 1:130; b = 131:329;
+
+for i = a
+    tmpMldEpN_f1 = ctd(i).mld003(datetimeStruct(i).nightID);
+    meanMldEpN_f1 = mean(tmpMldEpN_f1);
+end
+
+for i = b
+    tmpMldEpN_f2 = ctd(i).mld003(datetimeStruct(i).nightID);
+    meanMldEpN_f2 = mean(tmpMldEpN_f2);
+end
 
 % mean PCM for F2, night time only
 for i = 1:length(b)
@@ -407,7 +424,6 @@ plot(ksEiN_f1(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','Dis
 plot(ksEiN_f1(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEiN_f1(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
 hold off
-legend('Location','best');
 set(gca,'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
@@ -421,8 +437,10 @@ hold on
 plot(ksEpN_f1(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpN_f1(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpN_f1(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(meanMldEpN_f1,'LineWidth',3,'Color',[0.4 0.4 0.4],'DisplayName','Mean MLD (F1)');
 hold off
 set(gca,'YDir','reverse');
+legend('Location','best');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
@@ -474,7 +492,6 @@ yline(tmpMeanP_SigCm,'Color',[0.6 0.6 0.6],'LineWidth',5,'alpha',0.5,'DisplayNam
 yline(tmpMeanP_SigCm+tmpStdSig,'g-','LineWidth',2,'DisplayName','SD');
 yline(tmpMeanP_SigCm-tmpStdSig,'g-','LineWidth',2,'HandleVisibility','off');
 hold off
-legend('Location','southoutside');
 set(gca,'YDir','reverse');
 ylim([0 250]);
 xlabel('p-value');
@@ -491,8 +508,10 @@ plot(ksEpN_f2(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4
 yline(ttMeanPcm,'Color',[0.6 0.6 0.6],'LineWidth',5,'alpha',0.5,'DisplayName','Mean DCM');
 yline(ttMeanPcm+ttSTD,'g-','LineWidth',2,'DisplayName','SD');
 yline(ttMeanPcm-ttSTD,'g-','LineWidth',2,'DisplayName','SD');
+yline(meanMldEpN_f2,'DisplayName','Mean MLD (F2)','LineWidth',3,'Color',[0.4 0.4 0.4]);
 hold off
 set(gca,'YDir','reverse');
+legend('Location','southoutside');
 ylim([0 250]);
 xlabel('p-value');
 ylabel('Pressure [db]');
@@ -559,6 +578,12 @@ save('datafiles\lagrangianData.mat','ctdL','-append');
 
 %% KS NIGHT Seasonal
 % These routines may take ~10-20s per season.
+
+% MLD by season
+meanMldWin = mean(mlds(winVals));
+meanMldSpr = mean(mlds(sprVals));
+meanMldSum = mean(mlds(sumVals));
+meanMldAut = mean(mlds(autVals));
 
 % WINTER
 ksEiNw = getKS(meanEiN,129,winVals);    % Isopycnal Eulerian
@@ -666,6 +691,7 @@ hold on
 plot(ksEpNw(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpNw(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpNw(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(meanMldWin,'Color',[0.4 0.4 0.4],'LineWidth',3,'DisplayName','Mean Winter MLD');
 hold off
 set(gca,'YDir','reverse');
 ylim([0 250]);
@@ -680,6 +706,7 @@ hold on
 plot(ksEpNsp(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpNsp(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpNsp(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(meanMldSpr,'Color',[0.4 0.4 0.4],'LineWidth',3,'DisplayName','Mean Spring MLD');
 hold off
 set(gca,'YDir','reverse');
 ylim([0 250]);
@@ -694,6 +721,7 @@ hold on
 plot(ksEpNsu(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpNsu(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpNsu(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(meanMldSum,'Color',[0.4 0.4 0.4],'LineWidth',3,'DisplayName','Mean Summer MLD');
 hold off
 h_leg = legend('Location','best');
 set(gca,'YDir','reverse');
@@ -709,6 +737,7 @@ hold on
 plot(ksEpNa(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
 plot(ksEpNa(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpNa(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
+yline(meanMldAut,'Color',[0.4 0.4 0.4],'LineWidth',3,'DisplayName','Mean Autumn MLD');
 hold off
 set(gca,'YDir','reverse');
 xlabel('p-value');

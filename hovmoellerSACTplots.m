@@ -232,6 +232,7 @@ title('Potential Density Anomaly \sigma^\Theta: 1988 - 2021 (Eulerian) [12-mth r
 
 exportgraphics(ax5,'figures/density-1988-2021_eulerianView.png');
 
+save datafiles\MLD.mat MLD MLDt;
 %% Buoyancy Time- and Depth-Series: Eulerian
 
 % Return to default view for Pressure- and time-series

@@ -29,11 +29,13 @@ bottleArray = [CRN cast p];
 
 t = rmmissing(unique(bottleArray(:,1:2),"rows"));
 
-dcmArrayRowNo = []; x = 1;
+dcmArrayRowNo = [];
+
 for i = 1:length(dcmArray(:,1))
-    if dcmArray(i,1:2) == t(x,1:2)
-        dcmArrayRowNo = [dcmArrayRowNo i];
-        x = x + 1;
+    for x = 1:length(t)
+        if dcmArray(i,1:2) == t(x,1:2) 
+            dcmArrayRowNo = [dcmArrayRowNo i];
+        end
     end
 end
 
@@ -47,7 +49,10 @@ end
 
 tPcm = nan(length(p),1);
 tPcm(1:tid(1)-1) = dcmArray(dcmArrayRowNo(1),3);
-for i = 2:Ltid
+tPcm(tid(end):end) = dcmArray(dcmArrayRowNo(end),3);
+
+for i = 2:Ltid-2
+    disp(i);
     tPcm(tid(i):tid(i+1)-1) = dcmArray(dcmArrayRowNo(i),3);
 end
 

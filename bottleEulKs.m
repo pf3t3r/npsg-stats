@@ -119,8 +119,8 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 [ksPho5, obsPho5, dPho5] = ksOfBinnedCon(phoOut,pb5_pho,5);          % 5 dbar / Particulate Phosphorus
 [ksPho10, obsPho10, dPho10] = ksOfBinnedCon(phoOut,pb10_pho,10);     % 10 dbar / Particulate Phosphorus
 
-[ksPho5_11, obsPho5_11, dPho5_11] = ksOfBinnedCon(phoOut11,pb5_pho11,5);          % 5 dbar / Particulate Phosphorus 11-21
-[ksPho10_11, obsPho10_11, dPho10_11] = ksOfBinnedCon(phoOut11,pb10_pho11,10);     % 10 dbar / Particulate Phosphorus 11-21
+[ksPho5_11, obsPho5_11, dPho5_11] = ksOfBinnedCon(phoOut11,pb5_pho11,5,75);          % 5 dbar / Particulate Phosphorus 11-21
+[ksPho10_11, obsPho10_11, dPho10_11] = ksOfBinnedCon(phoOut11,pb10_pho11,10,75);     % 10 dbar / Particulate Phosphorus 11-21
 
 [ksHet5, obsHet5, dHet5] = ksOfBinnedCon(hetOut,pb5_het,5);          % 5 dbar / Heterotrophic Bacteria
 [ksHet10, obsHet10, dHet10] = ksOfBinnedCon(hetOut,pb10_het,10);     % 10 dbar / Heterotrophic Bacteria
@@ -138,361 +138,71 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 
 ax1 = figure;
 plotKs(d5,ks5,obs5,0,40,true);
-
-% subplot(1,2,1)
-% barh(obs5);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0 40]);
-% set(gca,"YTick",1:1:40,"YTickLabel",depth5)
-% title('No. of Observations');
-
-% subplot(1,2,2)
-% plot(ks5(1,:),d5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ks5(2,:),d5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ks5(3,:),d5,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ks5(4,:),d5,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% grid minor;
-% ylim([0 200]);
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('Regular Method: [chl a] (Eulerian Bottle, 5 dbar bin)');
-exportgraphics(ax1,'figures/ks_bottleEulerian5db.png');
-clear ax1;
+exportgraphics(ax1,'figures/ks_bottleEulerian5db.png'); clear ax1;
 
 %% HPLC Chlorophyll a: Eulerian 5 dbar
 
 ax2 = figure;
 plotKs(dHp5,ksHp5,obsHp5,0,40,true);
-
-% subplot(1,2,1)
-% barh(obsHp5);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0 40]);
-% set(gca,"YTick",1:1:40,"YTickLabel",depth5)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksHp5(1,:),dHp5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksHp5(2,:),dHp5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksHp5(3,:),dHp5,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksHp5(4,:),dHp5,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% grid minor;
-% ylim([0 200]);
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('HPLC Method: [chl a] (Eulerian Bottle, 5 dbar bin)');
-exportgraphics(ax2,'figures/ks_HplcBottleEulerian5db.png');
-clear ax2;
+exportgraphics(ax2,'figures/ks_HplcBottleEulerian5db.png'); clear ax2;
 
 %% Chlorophyll a: Eulerian 10 dbar
 
 ax3 = figure;
 plotKs(d10,ks10,obs10,0.5,20.5,true);
-
-% subplot(1,2,1)
-% barh(obs10);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 20]);
-% set(gca,"YTick",1:1:20,"YTickLabel",depth10)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ks10(1,:),d10,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ks10(2,:),d10,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ks10(3,:),d10,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ks10(4,:),d10,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('Regular Method: [chl a] (Eulerian Bottle, 10 dbar bin)');
-exportgraphics(ax3,'figures/ks_bottleEulerian10db.png');
-clear ax3;
+exportgraphics(ax3,'figures/ks_bottleEulerian10db.png'); clear ax3;
 
 %% HPLC Chlorophyll a: Eulerian 10 dbar
 
 ax4 = figure;
 plotKs(dHp10,ksHp10,obsHp10,0.5,20.5,true);
-
-% subplot(1,2,1)
-% barh(obsHp10);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 20]);
-% set(gca,"YTick",1:1:20,"YTickLabel",depth10)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksHp10(1,:),dHp10,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksHp10(2,:),dHp10,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksHp10(3,:),dHp10,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksHp10(4,:),dHp10,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('HPLC Method: [chl a] (Eulerian Bottle, 10 dbar bin)');
-exportgraphics(ax4,'figures/ks_HplcBottleEulerian10db.png');
-clear ax4;
+exportgraphics(ax4,'figures/ks_HplcBottleEulerian10db.png'); clear ax4;
 
 %% ATP: Eulerian 5 dbar 
 
 ax5 = figure;
 plotKs(dAtp5,ksAtp5,obsAtp5,0,40,true);
-
-% subplot(1,2,1)
-% barh(obsAtp5);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 40]);
-% set(gca,"YTick",1:1:40,"YTickLabel",depth5)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksAtp5(1,:),dAtp5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksAtp5(2,:),dAtp5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksAtp5(3,:),dAtp5,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksAtp5(4,:),dAtp5,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('ATP: Eulerian Bottle, 5 dbar bin');
-exportgraphics(ax5,'figures/ks_AtpEulerian5db.png');
-clear ax5;
+exportgraphics(ax5,'figures/ks_AtpEulerian5db.png'); clear ax5;
 
 %% ATP: Eulerian 10 dbar
 
 ax6 = figure;
 plotKs(dAtp10,ksAtp10,obsAtp10,0.5,20.5,true);
-
-% subplot(1,2,1)
-% barh(obsAtp10);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 20]);
-% set(gca,"YTick",1:1:20,"YTickLabel",depth10)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksAtp10(1,:),dAtp10,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksAtp10(2,:),dAtp10,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksAtp10(3,:),dAtp10,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksAtp10(4,:),dAtp10,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('ATP: Eulerian Bottle, 10 dbar bin');
-exportgraphics(ax6,'figures/ks_AtpEulerian10db.png');
-clear ax6;
+exportgraphics(ax6,'figures/ks_AtpEulerian10db.png'); clear ax6;
 
 %% HPLC Monovinyl Chlorophyll a: Eulerian 5 dbar 
 
 ax7 = figure;
 plotKs(dCmo5,ksCmo5,obsCmo5,0,40,true);
-
-% subplot(1,2,1)
-% barh(obsCmo5);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 40]);
-% set(gca,"YTick",1:1:40,"YTickLabel",depth5)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksCmo5(1,:),dCmo5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksCmo5(2,:),dCmo5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksCmo5(3,:),dCmo5,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksCmo5(4,:),dCmo5,'r.--','DisplayName','Gamma','MarkerSize',6);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('HPLC Monovinyl Chlorophyll a: Eulerian Bottle, 5 dbar bin');
-exportgraphics(ax7,'figures/ks_CmoEulerian5db.png');
-clear ax7;
+exportgraphics(ax7,'figures/ks_CmoEulerian5db.png'); clear ax7;
 
 %% HPLC Monovinyl Chlorophyll a: Eulerian 10 dbar
 
 ax8 = figure;
 plotKs(dCmo10,ksCmo10,obsCmo10,0.5,20.5,true);
-
-% subplot(1,2,1)
-% barh(obsCmo10);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 20]);
-% set(gca,"YTick",1:1:20,"YTickLabel",depth10)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksCmo10(1,:),dCmo10,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksCmo10(2,:),dCmo10,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksCmo10(3,:),dCmo10,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksCmo10(4,:),dCmo10,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('HPLC Monovinyl Chlorophyll a: Eulerian Bottle, 10 dbar bin');
-exportgraphics(ax8,'figures/ks_CmoEulerian10db.png');
-clear ax8;
+exportgraphics(ax8,'figures/ks_CmoEulerian10db.png'); clear ax8;
 
 %% HPLC Divinyl Chlorophyll a: Eulerian 5 dbar 
 
 ax9 = figure;
 plotKs(dCdi5,ksCdi5,obsCdi5,0,40,true);
-
-% subplot(1,2,1)
-% barh(obsCdi5);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 40]);
-% set(gca,"YTick",1:1:40,"YTickLabel",depth5)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksCdi5(1,:),dCdi5,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksCdi5(2,:),dCdi5,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksCdi5(3,:),dCdi5,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksCdi5(4,:),dCdi5,'r.--','DisplayName','Gamma','MarkerSize',6);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('HPLC Divinyl Chlorophyll a: Eulerian Bottle, 5 dbar bin');
-exportgraphics(ax9,'figures/ks_CdiEulerian5db.png');
-clear ax9;
+exportgraphics(ax9,'figures/ks_CdiEulerian5db.png'); clear ax9;
 
 %% HPLC Divinyl Chlorophyll a: Eulerian 10 dbar
 
 ax10 = figure;
 plotKs(dCdi10,ksCdi10,obsCdi10,0.5,20.5,true);
-
-% subplot(1,2,1)
-% barh(obsCdi10);
-% hold on
-% xline(100);
-% hold off
-% set(gca,'YDir','reverse');
-% set(gca,'XDir','reverse');
-% set(gca,'YAxisLocation','right');
-% ylim([0.5 20]);
-% set(gca,"YTick",1:1:20,"YTickLabel",depth10)
-% title('No. of Observations');
-% 
-% subplot(1,2,2)
-% plot(ksCdi10(1,:),dCdi10,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksCdi10(2,:),dCdi10,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksCdi10(3,:),dCdi10,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksCdi10(4,:),dCdi10,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% ylim([0 195]);
-% grid minor;
-% set(gca,'YDir','reverse');
-% legend('Location','best');
-% xlabel('p-value');
-% ylabel('Pressure [db]');
-% title('Kolmogorov Smirnov Test');
-
 sgtitle('HPLC Divinyl Chlorophyll a: Eulerian Bottle, 10 dbar bin');
-exportgraphics(ax10,'figures/ks_CdiEulerian10db.png');
-clear ax10;
+exportgraphics(ax10,'figures/ks_CdiEulerian10db.png'); clear ax10;
 
 %% Particulate Carbon: Eulerian 5 dbar 
 
@@ -529,12 +239,22 @@ plotKs(dPho5,ksPho5,obsPho5,0,40,true);
 sgtitle('Particulate Phosphorus: Eulerian Bottle, 5 dbar bin');
 exportgraphics(ax15,'figures/ks_PhoEulerian5db.png'); clear ax15;
 
+ax15a = figure;
+plotKs(dPho5_11,ksPho5_11,obsPho5_11,0,40,true);
+sgtitle('Particulate Phosphorus: Eulerian Bottle, Threshold=75, 5 dbar bin (2011-2021)');
+exportgraphics(ax15a,'figures/ks_PhoEulerian5db_11-21thr75.png'); clear ax15a;
+
 %% Particulate Phosphorus: Eulerian 10 dbar
 
 ax16 = figure;
 plotKs(dPho10,ksPho10,obsPho10,0.5,20.5,true);
 sgtitle('Particulate Phosphorus: Eulerian Bottle, 10 dbar bin');
 exportgraphics(ax16,'figures/ks_PhoEulerian10db.png'); clear ax16;
+
+ax16a = figure;
+plotKs(dPho10_11,ksPho10_11,obsPho10_11,0.5,20.5,true);
+sgtitle('Particulate Phosphorus: Eulerian Bottle, Threshold=75, 10 dbar bin (2011-2021)');
+exportgraphics(ax16a,'figures/ks_PhoEulerian10db_11-21thr75.png'); clear ax16a;
 
 %% Heterotrophic Bacteria: Eulerian 5 dbar 
 
