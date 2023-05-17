@@ -1,4 +1,4 @@
-function [trange,ks,obsPerBin] = ksOfLagrangian(id,p,dcmArray,X,Ltid,threshold)
+function [trange,ks,obsPerBin,Sk] = ksOfLagrangian(id,p,dcmArray,X,Ltid,threshold)
 %funShit3 quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
@@ -83,6 +83,7 @@ for i = 1:length(trange)
     if length(tmp) > 3
         disp(i);
         [~,ks(:,i),~] = statsplot2(tmp,'noplot');
+        Sk(i) = skewness(tmp);
     end
 end
 

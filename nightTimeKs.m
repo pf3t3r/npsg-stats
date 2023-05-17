@@ -97,6 +97,13 @@ ksEp = getKS(meanEp,129);       % Eulerian
 ksLi = getKS(meanLi,129);       % Isopycnal Lagrangian
 ksLp = getKS(meanLp,129);       % Lagrangian
 
+%% Bin the means
+
+% edges = 0:10:250;
+% p = ctd(1).p(1:129,:);
+% test2 = meanEp(1:129,:);
+% test = discretize([ctd(1).p(1:129,:)],edges);
+
 %%
 
 % The following figures show the KS test results for single cruise-averaged
@@ -234,6 +241,8 @@ for i = cruisesISO
     meanEpN(:,i) = tmpEN;
     tmpMldEpN = ctd(i).mld003(datetimeStruct(i).nightID);
     meanMldEpN = mean(tmpMldEpN);
+    tmpDcm = ctd(i).pcm(datetimeStruct(i).nightID);
+    tmpMeanDcm(i) = mean(tmpDcm,'omitnan');
     tmpLN = ctdL(i).fL(:,datetimeStruct(i).nightID);
     tmpLN = mean(tmpLN,2,'omitnan');
     meanLpN(:,i) = tmpLN;
@@ -263,6 +272,10 @@ ksEpN = getKS(meanEpN,129);     % Eulerian
 ksLiN = getKS(meanLiN,129);     % Isopycnal Lagrangian
 ksLpN = getKS(meanLpN,129);     % Lagrangian
 
+%% mean dcm night
+
+meanDcmYrly = mean(tmpMeanDcm,'omitnan');
+
 %% NIGHT
 ax2 = figure;
 
@@ -288,6 +301,7 @@ plot(ksEpN(2,:),[ctd(1).p(1:129)],'+--','Color',[0 0 0],'LineStyle','--','Displa
 plot(ksEpN(3,:),[ctd(1).p(1:129)],'xr-','DisplayName','Weibull','MarkerSize',4);
 plot(ksEpN(4,:),[ctd(1).p(1:129)],'r.--','DisplayName','Gamma','MarkerSize',4);
 yline(meanMldEpN,'LineWidth',3,'Color',[0.4 0.4 0.4],'DisplayName','Mean Nighttime MLD');
+yline(meanDcmYrly,'LineWidth',3,'Color',[0.7 0.7 0.7],'DisplayName','Mean DCM');
 hold off
 set(gca,'YDir','reverse');
 legend('Location','best');

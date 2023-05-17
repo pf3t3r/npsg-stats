@@ -104,42 +104,42 @@ pic = importdata('data\picoeu_05-21.txt').data(:,5);
 %% 3. Apply Kolmogorov Smirnov Test to Bottle Concentrations
 
 % Default Threshold (=100)
-[trChla,ksChla,obsChla] = ksOfLagrangian(idChla,pChla,dcm,chla,669);                        % chla (regular method)
+[trChla,ksChla,obsChla,skChla] = ksOfLagrangian(idChla,pChla,dcm,chla,669);                        % chla (regular method)
 b = 1:5890;
-[trChla07,ksChla07,obsChla07] = ksOfLagrangian(idChla(b,:),pChla(b),dcm(b,:),chla(b),407);  % chla (regular method), 1988-2007
-[trHplc,ksHplc,obsHplc] = ksOfLagrangian(idHplc,pHplc,dcm,hplc,317);                        % chla (HPLC method)
-[trCmo,ksCmo,obsCmo] = ksOfLagrangian(idCmo,pCmo,dcm,cmo,271);                              % HPLC Chlorophyll a (Monovinyl)
-[trCdi,ksCdi,obsCdi] = ksOfLagrangian(idCdi,pCdi,dcm,cdi,271);                              % HPLC Chlorophyll a (Divinyl)
-[trCar,ksCar,obsCar] = ksOfLagrangian(idCar,pCar,dcm,car,332);                              % Particulate Carbon
-[trNit,ksNit,obsNit] = ksOfLagrangian(idNit,pNit,dcm,nit,333);                              % Particulate Nitrogen
-[trPho,ksPho,obsPho] = ksOfLagrangian(idPho,pPho,dcm,pho,331);                              % Particulate Phosphorus
-[trPho11,ksPho11,obsPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                  % Particulate Phosphorus (11-21)
-[trAtp,ksAtp,obsAtp] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318);                              % ATP
-[trHet,ksHet,obsHet] = ksOfLagrangian(idHet,pHet,dcm,het,245);                              % Heterotrophic Bacteria
-[trPro,ksPro,obsPro] = ksOfLagrangian(idPro,pPro,dcm,pro,147);                              % Prochlorococcus
-[trSyn,ksSyn,obsSyn] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147);                              % Synechococcus
-[trPic,ksPic,obsPic] = ksOfLagrangian(idPic,pPic,dcm,pic,147);                              % Picoeukaryotes
+[trChla07,ksChla07,obsChla07,skChla07] = ksOfLagrangian(idChla(b,:),pChla(b),dcm(b,:),chla(b),407);  % chla (regular method), 1988-2007
+[trHplc,ksHplc,obsHplc,skHplc] = ksOfLagrangian(idHplc,pHplc,dcm,hplc,317);                        % chla (HPLC method)
+[trCmo,ksCmo,obsCmo,skCmo] = ksOfLagrangian(idCmo,pCmo,dcm,cmo,271);                              % HPLC Chlorophyll a (Monovinyl)
+[trCdi,ksCdi,obsCdi,skCdi] = ksOfLagrangian(idCdi,pCdi,dcm,cdi,271);                              % HPLC Chlorophyll a (Divinyl)
+[trCar,ksCar,obsCar,skCar] = ksOfLagrangian(idCar,pCar,dcm,car,332);                              % Particulate Carbon
+[trNit,ksNit,obsNit,skNit] = ksOfLagrangian(idNit,pNit,dcm,nit,333);                              % Particulate Nitrogen
+[trPho,ksPho,obsPho,skPho] = ksOfLagrangian(idPho,pPho,dcm,pho,331);                              % Particulate Phosphorus
+[trPho11,ksPho11,obsPho11,skPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                  % Particulate Phosphorus (11-21)
+[trAtp,ksAtp,obsAtp,skAtp] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318);                              % ATP
+[trHet,ksHet,obsHet,skHet] = ksOfLagrangian(idHet,pHet,dcm,het,245);                              % Heterotrophic Bacteria
+[trPro,ksPro,obsPro,skPro] = ksOfLagrangian(idPro,pPro,dcm,pro,147);                              % Prochlorococcus
+[trSyn,ksSyn,obsSyn,skSyn] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147);                              % Synechococcus
+[trPic,ksPic,obsPic,skPic] = ksOfLagrangian(idPic,pPic,dcm,pic,147);                              % Picoeukaryotes
 
 % Lower Threshold (=50)
-[trPro50,ksPro50,obsPro50] = ksOfLagrangian(idPro,pPro,dcm,pro,147,50);                     % Prochlorococcus
-[trSyn50,ksSyn50,obsSyn50] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,50);                     % Synechococcus
-[trPic50,ksPic50,obsPic50] = ksOfLagrangian(idPic,pPic,dcm,pic,147,50);                     % Picoeukaryotes
+[trPro50,ksPro50,obsPro50,skPro50] = ksOfLagrangian(idPro,pPro,dcm,pro,147,50);                     % Prochlorococcus
+[trSyn50,ksSyn50,obsSyn50,skSyn50] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,50);                     % Synechococcus
+[trPic50,ksPic50,obsPic50,skPic50] = ksOfLagrangian(idPic,pPic,dcm,pic,147,50);                     % Picoeukaryotes
 
 % Alternative thresholds 'A'
 % Based on adding ~20% new observed points
 % Not including regular method chla.
-[trHplcA,ksHplcA,obsHplcA] = ksOfLagrangian(idHplc,pHplc,dcm,hplc,317,76);                  % chla (HPLC method)
-[trCmoA,ksCmoA,obsCmoA] = ksOfLagrangian(idCmo,pCmo,dcm,cmo,271,71);                        % HPLC Chlorophyll a (Monovinyl)
-[trCdiA,ksCdiA,obsCdiA] = ksOfLagrangian(idCdi,pCdi,dcm,cdi,271,68);                        % HPLC Chlorophyll a (Divinyl)
-[trCarA,ksCarA,obsCarA] = ksOfLagrangian(idCar,pCar,dcm,car,332,76);                        % Particulate Carbon
-[trNitA,ksNitA,obsNitA] = ksOfLagrangian(idNit,pNit,dcm,nit,333,76);                        % Particulate Nitrogen
-[trPhoA,ksPhoA,obsPhoA] = ksOfLagrangian(idPho,pPho,dcm,pho,331,63);                        % Particulate Phosphorus
+[trHplcA,ksHplcA,obsHplcA,skHplcA] = ksOfLagrangian(idHplc,pHplc,dcm,hplc,317,76);                  % chla (HPLC method)
+[trCmoA,ksCmoA,obsCmoA,skCmoA] = ksOfLagrangian(idCmo,pCmo,dcm,cmo,271,71);                        % HPLC Chlorophyll a (Monovinyl)
+[trCdiA,ksCdiA,obsCdiA,skCdiA] = ksOfLagrangian(idCdi,pCdi,dcm,cdi,271,68);                        % HPLC Chlorophyll a (Divinyl)
+[trCarA,ksCarA,obsCarA,skCarA] = ksOfLagrangian(idCar,pCar,dcm,car,332,76);                        % Particulate Carbon
+[trNitA,ksNitA,obsNitA,skNitA] = ksOfLagrangian(idNit,pNit,dcm,nit,333,76);                        % Particulate Nitrogen
+[trPhoA,ksPhoA,obsPhoA,skPhoA] = ksOfLagrangian(idPho,pPho,dcm,pho,331,63);                        % Particulate Phosphorus
 % [trPho11,ksPho11,obsPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                 % Particulate Phosphorus (11-21)
-[trAtpA,ksAtpA,obsAtpA] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318,70);                        % ATP
-[trHetA,ksHetA,obsHetA] = ksOfLagrangian(idHet,pHet,dcm,het,245,78);                        % Heterotrophic Bacteria
-[trProA,ksProA,obsProA] = ksOfLagrangian(idPro,pPro,dcm,pro,147,46);                        % Prochlorococcus
-[trSynA,ksSynA,obsSynA] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,48);                        % Synechococcus
-[trPicA,ksPicA,obsPicA] = ksOfLagrangian(idPic,pPic,dcm,pic,147,46);                        % Picoeukaryotes
+[trAtpA,ksAtpA,obsAtpA,skAtpA] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318,70);                        % ATP
+[trHetA,ksHetA,obsHetA,skHetA] = ksOfLagrangian(idHet,pHet,dcm,het,245,78);                        % Heterotrophic Bacteria
+[trProA,ksProA,obsProA,skProA] = ksOfLagrangian(idPro,pPro,dcm,pro,147,46);                        % Prochlorococcus
+[trSynA,ksSynA,obsSynA,skSynA] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,48);                        % Synechococcus
+[trPicA,ksPicA,obsPicA,skPicA] = ksOfLagrangian(idPic,pPic,dcm,pic,147,46);                        % Picoeukaryotes
 
 %% 4. Plot the KS Statistics for each Bottle Concentration Time Series
 % All of the following results are DCM-centred (Lagrangian), binned to 10
@@ -149,158 +149,158 @@ b = 1:5890;
 %% 4.a.i. Chlorophyll a (Regular Method)
 
 ax1 = figure;
-plotKs(trChla,ksChla,obsChla,10,35,false);
+plotKs(trChla,ksChla,obsChla,skChla,10,35,false);
 sgtitle('Kolmogorov Smirnov Test: Lagrangian Bottle chl-a [10 dbar bins] (88-21)');
 exportgraphics(ax1,'figures/ks_bottleLagrangian10db.png'); clear ax1;
 
 %% 4.a.ii. Chlorophyll a (Regular Method): 88-07
 
 ax2 = figure;
-plotKs(trChla07,ksChla07,obsChla07,10,35,false);
+plotKs(trChla07,ksChla07,obsChla07,skChla07,10,35,false);
 sgtitle('Kolmogorov Smirnov Test: Lagrangian Bottle chl-a [10 dbar bins] (88-07)');
 exportgraphics(ax2,'figures/ks_bottleLagrangian10db07.png'); clear ax2;
 
 %% 4.b. HPLC Chlorophyll a
 
 ax3 = figure;
-plotKs(trHplc,ksHplc,obsHplc,1,26,false);
+plotKs(trHplc,ksHplc,obsHplc,skHplc,1,26,false);
 sgtitle('HPLC Method: [chl a] (Lagrangian, 10 dbar bin)');
 exportgraphics(ax3,'figures/ks_HplcLag.png'); clear ax3;
 
 % Alternative Threshold
 ax3a = figure;
-plotKs(trHplcA,ksHplcA,obsHplcA,1,26,false,76);
+plotKs(trHplcA,ksHplcA,obsHplcA,skHplcA,1,26,false,76);
 sgtitle('HPLC Method: [chl a] (Lagrangian, 10 dbar, Threshold = 76)');
 exportgraphics(ax3a,'figures/ks_HplcLagA.png'); clear ax3a;
 
 %% 4.c. HPLC Monovinyl Chlorophyll a
 
 ax4 = figure;
-plotKs(trCmo,ksCmo,obsCmo,1,26,false);
+plotKs(trCmo,ksCmo,obsCmo,skCmo,1,26,false);
 sgtitle('HPLC Monovinyl Chlorophyll a (Lagrangian, 10 dbar bin)');
 exportgraphics(ax4,'figures/ks_CmoLag.png'); clear ax4;
 
 % Alternative Threshold
 ax4a = figure;
-plotKs(trCmoA,ksCmoA,obsCmoA,1,26,false,71);
+plotKs(trCmoA,ksCmoA,obsCmoA,skCmoA,1,26,false,71);
 sgtitle('HPLC Monovinyl Chlorophyll a (Lagrangian, 10 dbar, Threshold = 71)');
 exportgraphics(ax4a,'figures/ks_CmoLagA.png'); clear ax4a;
 
 %% 4.d. HPLC Divinyl Chlorophyll a
 
 ax5 = figure;
-plotKs(trCdi,ksCdi,obsCdi,1,26,false);
+plotKs(trCdi,ksCdi,obsCdi,skCdi,1,26,false);
 sgtitle('HPLC Divinyl Chlorophyll a (Lagrangian, 10 dbar bin)');
 exportgraphics(ax5,'figures/ks_CdiLag.png'); clear ax5;
 
 % Alternative Threshold
 ax5a = figure;
-plotKs(trCdiA,ksCdiA,obsCdiA,1,26,false,68);
+plotKs(trCdiA,ksCdiA,obsCdiA,skCdiA,1,26,false,68);
 sgtitle('HPLC Divinyl Chlorophyll a (Lagrangian, 10 dbar, Threshold = 68)');
 exportgraphics(ax5a,'figures/ks_CdiLagA.png'); clear ax5a;
 
 %% 4.e. Particulate Carbon
 
 ax6 = figure;
-plotKs(trCar,ksCar,obsCar,3,28,false);
+plotKs(trCar,ksCar,obsCar,skCar,3,28,false);
 sgtitle('Particulate Carbon (Lagrangian, 10 dbar bin)');
 exportgraphics(ax6,'figures/ks_CarLag.png'); clear ax6;
 
 % Alternative Threshold
 ax6a = figure;
-plotKs(trCarA,ksCarA,obsCarA,3,28,false,76);
+plotKs(trCarA,ksCarA,obsCarA,skCarA,3,28,false,76);
 sgtitle('Particulate Carbon (Lagrangian, 10 dbar, Threshold = 76)');
 exportgraphics(ax6a,'figures/ks_CarLagA.png'); clear ax6a;
 
 %% 4.f. Particulate Nitrogen
 
 ax7 = figure;
-plotKs(trNit,ksNit,obsNit,3,28,false);
+plotKs(trNit,ksNit,obsNit,skNit,3,28,false);
 sgtitle('Particulate Nitrogen (Lagrangian, 10 dbar bin)');
 exportgraphics(ax7,'figures/ks_NitLag.png'); clear ax7;
 
 ax7a = figure;
-plotKs(trNitA,ksNitA,obsNitA,3,28,false,76);
+plotKs(trNitA,ksNitA,obsNitA,skNitA,3,28,false,76);
 sgtitle('Particulate Nitrogen (Lagrangian, 10 dbar, Threshold = 76)');
 exportgraphics(ax7a,'figures/ks_NitLag.png'); clear ax7a;
 
 %% 4.g. Particulate Phosphorus
 
 ax8 = figure;
-plotKs(trPho,ksPho,obsPho,3,28,false);
+plotKs(trPho,ksPho,obsPho,skPho,3,28,false);
 sgtitle('Particulate Phosphorus (Lagrangian, 10 dbar bin)');
 exportgraphics(ax8,'figures/ks_PhoLag.png'); clear ax8;
 
 ax8a = figure;
-plotKs(trPho11,ksPho11,obsPho11,3,28,false);
+plotKs(trPho11,ksPho11,obsPho11,skPho11,3,28,false);
 sgtitle('Particulate Phosphorus (Lagrangian, 10 dbar bin, 2011-2021)');
 exportgraphics(ax8a,'figures/ks_PhoLag11.png'); clear ax8a;
 
 ax8b = figure;
-plotKs(trPhoA,ksPhoA,obsPhoA,3,28,false,63);
+plotKs(trPhoA,ksPhoA,obsPhoA,skPhoA,3,28,false,63);
 sgtitle('Particulate Phosphorus (Lagrangian, 10 dbar, Threshold = 63)');
 exportgraphics(ax8b,'figures/ks_PhoLagA.png'); clear ax8b;
 
 %% 4.h. Heterotrophic Bacteria
 
 ax9 = figure;
-plotKs(trHet,ksHet,obsHet,1,26,false);
+plotKs(trHet,ksHet,obsHet,skHet,1,26,false);
 sgtitle('Heterotrophic Bacteria (Lagrangian, 10 dbar bin)');
 exportgraphics(ax9,'figures/ks_HetLag.png'); clear ax9;
 
 ax9a = figure;
-plotKs(trHetA,ksHetA,obsHetA,1,26,false,78);
+plotKs(trHetA,ksHetA,obsHetA,skHetA,1,26,false,78);
 sgtitle('Heterotrophic Bacteria (Lagrangian, 10 dbar, Threshold = 78)');
 exportgraphics(ax9a,'figures/ks_HetLagA.png'); clear ax9a;
 
 %% 4.i. Prochlorococcus
 
 ax10 = figure;
-plotKs(trPro,ksPro,obsPro,1,26,false);
+plotKs(trPro,ksPro,obsPro,skPro,1,26,false);
 sgtitle('Prochlorococcus (Lagrangian, 10 dbar bin)');
 exportgraphics(ax10,'figures/ks_ProLag.png'); clear ax10;
 
 ax10a = figure;
-plotKs(trPro50,ksPro50,obsPro50,1,26,false,50);
+plotKs(trPro50,ksPro50,obsPro50,skPro50,1,26,false,50);
 sgtitle('Prochlorococcus (Lagrangian, 10 dbar bin, Threshold = 50)');
 exportgraphics(ax10a,'figures/ks_ProLag50.png'); clear ax10a;
 
 ax10b = figure;
-plotKs(trProA,ksProA,obsProA,1,26,false,46);
+plotKs(trProA,ksProA,obsProA,skProA,1,26,false,46);
 sgtitle('Prochlorococcus (Lagrangian, 10 dbar, Threshold = 46)');
 exportgraphics(ax10b,'figures/ks_ProLagA.png'); clear ax10b;
 
 %% 4.j. Synechococcus
 
 ax11 = figure;
-plotKs(trSyn,ksSyn,obsSyn,1,26,false);
+plotKs(trSyn,ksSyn,obsSyn,skSyn,1,26,false);
 sgtitle('Synechococcus (Lagrangian, 10 dbar)');
 exportgraphics(ax11,'figures/ks_SynLag.png'); clear ax11;
 
 ax11a = figure;
-plotKs(trSyn50,ksSyn50,obsSyn50,1,26,false,50);
+plotKs(trSyn50,ksSyn50,obsSyn50,skSyn50,1,26,false,50);
 sgtitle('Synechococcus (Lagrangian, 10 dbar, Threshold = 50)');
 exportgraphics(ax11a,'figures/ks_SynLag50.png'); clear ax11a;
 
 ax11b = figure;
-plotKs(trSynA,ksSynA,obsSynA,1,26,false,48);
+plotKs(trSynA,ksSynA,obsSynA,skSynA,1,26,false,48);
 sgtitle('Synechococcus (Lagrangian, 10 dbar, Threshold = 48)');
 exportgraphics(ax11b,'figures/ks_SynLagA.png'); clear ax11b;
 
 %% 4.k. Picoeukaryotes
 
 ax12 = figure;
-plotKs(trPic,ksPic,obsPic,1,26,false);
+plotKs(trPic,ksPic,obsPic,skPic,1,26,false);
 sgtitle('Picoeukaryotes (Lagrangian, 10 dbar)');
 exportgraphics(ax12,'figures/ks_PicLag.png'); clear ax12;
 
 ax12a = figure;
-plotKs(trPic50,ksPic50,obsPic50,1,26,false,50);
+plotKs(trPic50,ksPic50,obsPic50,skPic50,1,26,false,50);
 sgtitle('Picoeukaryotes (Lagrangian, 10 dbar, Threshold = 50)');
 exportgraphics(ax12a,'figures/ks_PicLag50.png'); clear ax12a;
 
 ax12b = figure;
-plotKs(trPicA,ksPicA,obsPicA,1,26,false,46);
+plotKs(trPicA,ksPicA,obsPicA,skPicA,1,26,false,46);
 sgtitle('Picoeukaryotes (Lagrangian, 10 dbar, Threshold = 46)');
 exportgraphics(ax12b,'figures/ks_PicLagA.png'); clear ax12b;
 
@@ -308,11 +308,11 @@ exportgraphics(ax12b,'figures/ks_PicLagA.png'); clear ax12b;
 %% 4.l. ATP
 
 ax13 = figure;
-plotKs(trAtp,ksAtp,obsAtp,2,27,false);
+plotKs(trAtp,ksAtp,obsAtp,skAtp,2,27,false);
 sgtitle('ATP (Lagrangian, 10 dbar)');
 exportgraphics(ax13,'figures/ks_AtpLag.png'); clear ax13;
 
 ax13a = figure;
-plotKs(trAtpA,ksAtpA,obsAtpA,2,27,false,70);
+plotKs(trAtpA,ksAtpA,obsAtpA,skAtpA,2,27,false,70);
 sgtitle('ATP (Lagrangian, 10 dbar, Threshold = 70)');
 exportgraphics(ax13a,'figures/ks_AtpLagA.png'); clear ax13a;
