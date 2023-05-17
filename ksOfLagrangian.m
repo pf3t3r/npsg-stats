@@ -75,6 +75,8 @@ pB = bottleArray(:,6);
 ks = nan(5,length(trange));
 obsPerBin = nan(1,length(trange));
 
+Sk = nan(1,length(trange));
+
 for i = 1:length(trange)
     tmp = chl(pB==trange(i));
     tmp(tmp<=0) = nan;
