@@ -1,17 +1,17 @@
-function [] = plotKs(tr,ks,obs,sk,obsLimA,obsLimB,EulLan,threshold)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold)
 %plotKs
 % INPUT: 
 % OUTPUT: 
 
-if nargin < 8
+if nargin < 9
     threshold = 100;
 end
 
-if nargin < 7
+if nargin < 8
     EulLan = true;
 end
 
-if nargin < 5
+if nargin < 6
     obsLimA = 1;
     obsLimB = length(tr);
 end
@@ -28,7 +28,7 @@ else
     ytix = tr;
 end
 
-subplot(1,3,1)
+subplot(1,4,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
@@ -40,7 +40,7 @@ ylabel('Pressure [db]');
 set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
 
-subplot(1,3,2)
+subplot(1,4,2)
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -61,10 +61,16 @@ xlabel('p-value');
 % ylabel('Pressure [db]');
 title('KS Test');
 
-subplot(1,3,3)
+subplot(1,4,3)
 plot(sk,tr,'Color','#a6cee3','LineWidth',2);
 set(gca,'YDir','reverse');
 title('Skewness');
+ylim(limits);
+
+subplot(1,4,4)
+plot(ku,tr,'Color','#a6cee3','LineWidth',2);
+set(gca,'YDir','reverse');
+title('Kurtosis');
 ylim(limits);
 
 end

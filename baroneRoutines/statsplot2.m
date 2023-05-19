@@ -1,4 +1,4 @@
-function [MLEp,KSp,nll] = statsplot2(x,nc)
+function [MLEp,KSp,nll,c95] = statsplot2(x,nc)
 %
 %
 % function [MLEp,KSp,nll] = statsplot2(x)
