@@ -1,4 +1,4 @@
-function [MLEp,KSp,nll,c95] = statsplot2(x,nc)
+function [MLEp,KSp,nll,c95,SD] = statsplot2(x,nc)
 %
 %
 % function [MLEp,KSp,nll] = statsplot2(x)
@@ -37,16 +37,20 @@ end
 MLEp = NaN*ones(5,2);
 KSp = NaN*ones(5,1);
 nll = NaN*ones(5,1);
-% Finding MLE coefficients
+% Finding MLE coefficients - modified for outputting c95 (Peter)
 [MLEp(1,:),c95] = mle(x,'distribution','norm');
 if sum(x<=0) == 0
-    [MLEp(2,:),c95] = mle(x,'distribution','logn');
-    [MLEp(3,:),c95] = mle(x,'distribution','wbl');
-    [MLEp(4,:),c95] = mle(x,'distribution','gamma');
-    [MLEp(5,1),c95] = mle(x,'distribution','exp');
+    [MLEp(2,:),~] = mle(x,'distribution','logn');
+    [MLEp(3,:),~] = mle(x,'distribution','wbl');
+    [MLEp(4,:),~] = mle(x,'distribution','gamma');
+    [MLEp(5,1),~] = mle(x,'distribution','exp');
 else MLEp(2,:) = [NaN NaN];
     display('Can''t compute MLE parameters for Lognormal, Weibull, Gamma and Exponential distribution. Negative or zero values in input vector.')
 end
+
+% added by peter, 220523, output SD for norm and logn
+SD = [MLEp(1,2) MLEp(2,2)];
+
 % Compute cdfs for MLE distributions
 x_cdf = linspace(min(x)-2*std(x),max(x)+2*std(x),2000);
 y_cdf_norm = cdf('norm',x_cdf,MLEp(1,1),MLEp(1,2));

@@ -96,43 +96,43 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 
 %% Apply KS Test to chl-a across all pressures
 
-[ks5, obs5, d5, sk5, ku5] = ksOfBinnedCon(chl_Out,pBin5,5);                    % 5 dbar / Chlorophyll a (Regular Method)
-[ks10, obs10, d10, sk10, ku10] = ksOfBinnedCon(chl_Out,pBin10,10);               % 10 dbar / Chlorophyll a (Regular Method)
-[ksHp5, obsHp5, dHp5, skHp5, kuHp5] = ksOfBinnedCon(chlOut_hplc,pb5_hplc,5);       % 5 dbar / HPLC Chlorophyll a
-[ksHp10, obsHp10, dHp10, skHp10, kuHp10] = ksOfBinnedCon(chlOut_hplc,pb10_hplc,10);  % 10 dbar / HPLC Chlorophyll a
+[ks5, obs5, d5, sk5, ku5, sd5, c95_5] = ksOfBinnedCon(chl_Out,pBin5,5);                    % 5 dbar / Chlorophyll a (Regular Method)
+[ks10, obs10, d10, sk10, ku10, sd10, c95_10] = ksOfBinnedCon(chl_Out,pBin10,10);               % 10 dbar / Chlorophyll a (Regular Method)
+[ksHp5, obsHp5, dHp5, skHp5, kuHp5, sdHp5, c95hp5] = ksOfBinnedCon(chlOut_hplc,pb5_hplc,5);       % 5 dbar / HPLC Chlorophyll a
+[ksHp10, obsHp10, dHp10, skHp10, kuHp10, sdHp10, c95hp10] = ksOfBinnedCon(chlOut_hplc,pb10_hplc,10);  % 10 dbar / HPLC Chlorophyll a
 
-[ksAtp5, obsAtp5, dAtp5, skAtp5, kuAtp5] = ksOfBinnedCon(atpOut,pb5_atp,5);          % 5 dbar / ATP
-[ksAtp10, obsAtp10, dAtp10, skAtp10, kuAtp10] = ksOfBinnedCon(atpOut,pb10_atp,10);     % 10 dbar / ATP
+[ksAtp5, obsAtp5, dAtp5, skAtp5, kuAtp5, sdAtp5, c95atp5] = ksOfBinnedCon(atpOut,pb5_atp,5);          % 5 dbar / ATP
+[ksAtp10, obsAtp10, dAtp10, skAtp10, kuAtp10, sdAtp10, c95atp10] = ksOfBinnedCon(atpOut,pb10_atp,10);     % 10 dbar / ATP
 
-[ksCmo5, obsCmo5, dCmo5, skCmo5, kuCmo5] = ksOfBinnedCon(cmoOut,pb5_cmo,5);          % 5 dbar / HPLC Monovinyl Chlorophyll a
-[ksCmo10, obsCmo10, dCmo10, skCmo10, kuCmo10] = ksOfBinnedCon(cmoOut,pb10_cmo,10);     % 10 dbar / HPLC Monovinyl Chlorophyll a
+[ksCmo5, obsCmo5, dCmo5, skCmo5, kuCmo5, sdCmo5, c95cmo5] = ksOfBinnedCon(cmoOut,pb5_cmo,5);          % 5 dbar / HPLC Monovinyl Chlorophyll a
+[ksCmo10, obsCmo10, dCmo10, skCmo10, kuCmo10, sdCmo10, c95cmo10] = ksOfBinnedCon(cmoOut,pb10_cmo,10);     % 10 dbar / HPLC Monovinyl Chlorophyll a
 
-[ksCdi5, obsCdi5, dCdi5, skCdi5, kuCdi5] = ksOfBinnedCon(cdiOut,pb5_cdi,5);          % 5 dbar / HPLC Divinyl Chlorophyll a
-[ksCdi10, obsCdi10, dCdi10, skCdi10, kuCdi10] = ksOfBinnedCon(cdiOut,pb10_cdi,10);     % 10 dbar / HPLC Divinyl Chlorophyll a
+[ksCdi5, obsCdi5, dCdi5, skCdi5, kuCdi5, sdCdi5, c95cdi5] = ksOfBinnedCon(cdiOut,pb5_cdi,5);          % 5 dbar / HPLC Divinyl Chlorophyll a
+[ksCdi10, obsCdi10, dCdi10, skCdi10, kuCdi10, sdCdi10, c95cdi10] = ksOfBinnedCon(cdiOut,pb10_cdi,10);     % 10 dbar / HPLC Divinyl Chlorophyll a
 
-[ksParc5, obsParc5, dParc5, skParc5, kuParc5] = ksOfBinnedCon(parcOut,pb5_parc,5);     % 5 dbar / Particulate Carbon
-[ksParc10, obsParc10, dParc10, skParc10, kuParc10] = ksOfBinnedCon(parcOut,pb10_parc,10);% 10 dbar / Particulate Carbon
+[ksParc5, obsParc5, dParc5, skParc5, kuParc5, sdParc5, c95parc5] = ksOfBinnedCon(parcOut,pb5_parc,5);     % 5 dbar / Particulate Carbon
+[ksParc10, obsParc10, dParc10, skParc10, kuParc10, sdParc10, c95parc10] = ksOfBinnedCon(parcOut,pb10_parc,10);% 10 dbar / Particulate Carbon
 
-[ksNit5, obsNit5, dNit5, skNit5, kuNit5] = ksOfBinnedCon(nitOut,pb5_nit,5);          % 5 dbar / Particulate Nitrogen
-[ksNit10, obsNit10, dNit10, skNit10, kuNit10] = ksOfBinnedCon(nitOut,pb10_nit,10);     % 10 dbar / Particulate Nitrogen
+[ksNit5, obsNit5, dNit5, skNit5, kuNit5, sdNit5, c95nit5] = ksOfBinnedCon(nitOut,pb5_nit,5);          % 5 dbar / Particulate Nitrogen
+[ksNit10, obsNit10, dNit10, skNit10, kuNit10, sdNit10, c95nit10] = ksOfBinnedCon(nitOut,pb10_nit,10);     % 10 dbar / Particulate Nitrogen
 
-[ksPho5, obsPho5, dPho5, skPho5, kuPho5] = ksOfBinnedCon(phoOut,pb5_pho,5);          % 5 dbar / Particulate Phosphorus
-[ksPho10, obsPho10, dPho10, skPho10, kuPho10] = ksOfBinnedCon(phoOut,pb10_pho,10);     % 10 dbar / Particulate Phosphorus
+[ksPho5, obsPho5, dPho5, skPho5, kuPho5, sdPho5, c95pho5] = ksOfBinnedCon(phoOut,pb5_pho,5);          % 5 dbar / Particulate Phosphorus
+[ksPho10, obsPho10, dPho10, skPho10, kuPho10, sdPho10, c95pho10] = ksOfBinnedCon(phoOut,pb10_pho,10);     % 10 dbar / Particulate Phosphorus
 
-[ksPho5_11, obsPho5_11, dPho5_11, skPho5_11, kuPho5_11] = ksOfBinnedCon(phoOut11,pb5_pho11,5,75);          % 5 dbar / Particulate Phosphorus 11-21
-[ksPho10_11, obsPho10_11, dPho10_11, skPho10_11, kuPho10_11] = ksOfBinnedCon(phoOut11,pb10_pho11,10,75);     % 10 dbar / Particulate Phosphorus 11-21
+[ksPho5_11, obsPho5_11, dPho5_11, skPho5_11, kuPho5_11, sdPho5_11, c95pho5_11] = ksOfBinnedCon(phoOut11,pb5_pho11,5,75);          % 5 dbar / Particulate Phosphorus 11-21
+[ksPho10_11, obsPho10_11, dPho10_11, skPho10_11, kuPho10_11, sdPho10_11, c95pho10_11] = ksOfBinnedCon(phoOut11,pb10_pho11,10,75);     % 10 dbar / Particulate Phosphorus 11-21
 
-[ksHet5, obsHet5, dHet5, skHet5, kuHet5] = ksOfBinnedCon(hetOut,pb5_het,5);          % 5 dbar / Heterotrophic Bacteria
-[ksHet10, obsHet10, dHet10, skHet10, kuHet10] = ksOfBinnedCon(hetOut,pb10_het,10);     % 10 dbar / Heterotrophic Bacteria
+[ksHet5, obsHet5, dHet5, skHet5, kuHet5, sdHet5, c95het5] = ksOfBinnedCon(hetOut,pb5_het,5);          % 5 dbar / Heterotrophic Bacteria
+[ksHet10, obsHet10, dHet10, skHet10, kuHet10, sdHet10, c95het10] = ksOfBinnedCon(hetOut,pb10_het,10);     % 10 dbar / Heterotrophic Bacteria
 
-[ksPro5, obsPro5, dPro5, skPro5, kuPro5] = ksOfBinnedCon(proOut,pb5_pro,5);          % 5 dbar / Prochlorococcus
-[ksPro10, obsPro10, dPro10, skPro10, kuPro10] = ksOfBinnedCon(proOut,pb10_pro,10);     % 10 dbar / Prochlorococcus
+[ksPro5, obsPro5, dPro5, skPro5, kuPro5, sdPro5, c95Pro5] = ksOfBinnedCon(proOut,pb5_pro,5);          % 5 dbar / Prochlorococcus
+[ksPro10, obsPro10, dPro10, skPro10, kuPro10, sdPro10, c95Pro10] = ksOfBinnedCon(proOut,pb10_pro,10);     % 10 dbar / Prochlorococcus
 
-[ksSyn5, obsSyn5, dSyn5, skSyn5, kuSyn5] = ksOfBinnedCon(synOut,pb5_syn,5);          % 5 dbar / Synechococcus
-[ksSyn10, obsSyn10, dSyn10, skSyn10, kuSyn10] = ksOfBinnedCon(synOut,pb10_syn,10);     % 10 dbar / Synechococcus
+[ksSyn5, obsSyn5, dSyn5, skSyn5, kuSyn5, sdSyn5, c95syn5] = ksOfBinnedCon(synOut,pb5_syn,5);          % 5 dbar / Synechococcus
+[ksSyn10, obsSyn10, dSyn10, skSyn10, kuSyn10, sdSyn10, c95syn10] = ksOfBinnedCon(synOut,pb10_syn,10);     % 10 dbar / Synechococcus
 
-[ksPic5, obsPic5, dPic5, skPic5, kuPic5] = ksOfBinnedCon(picOut,pb5_pic,5);          % 5 dbar / Pico-Eukaryotes
-[ksPic10, obsPic10, dPic10, skPic10, kuPic10] = ksOfBinnedCon(picOut,pb10_pic,10);     % 10 dbar / Pico-Eukaryotes
+[ksPic5, obsPic5, dPic5, skPic5, kuPic5, sdPic5, c95pic5] = ksOfBinnedCon(picOut,pb5_pic,5);          % 5 dbar / Pico-Eukaryotes
+[ksPic10, obsPic10, dPic10, skPic10, kuPic10, sdPic10, c95pic10] = ksOfBinnedCon(picOut,pb10_pic,10);     % 10 dbar / Pico-Eukaryotes
 
 %% Chlorophyll a (regular method): Eulerian 5 dbar
 
@@ -312,6 +312,70 @@ plotKs(dPic10,ksPic10,obsPic10,skPic10,kuPic10,0.5,20.5,true);
 sgtitle('Pico-Eukaryotes: Eulerian Bottle, 10 dbar bin');
 exportgraphics(ax24,'figures/ks_PicEulerian10db.png'); clear ax24;
 
+%% Show the STD Fraction visually
+
+norm = 5; logn = 6;
+
+xax = 1:1:20;
+figure
+subplot(2,1,1)
+scatter(sd10(:,norm),d10,'DisplayName','[chl a] (fluo.)','Marker','+');
+hold on
+scatter(sdHp10(:,norm),dHp10,'DisplayName','[chl a] (HPLC)','Marker','+');
+scatter(sdAtp10(:,norm),dAtp10,'DisplayName','ATP','Marker','+');
+scatter(sdCmo10(:,norm),dCmo10,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+scatter(sdCdi10(:,norm),dCdi10,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+scatter(sdParc10(:,norm),dParc10,'DisplayName','Particulate Carbon','Marker','+');
+scatter(sdNit10(:,norm),dNit10,'DisplayName','Particulate Nitrogen','Marker','+');
+scatter(sdPho10(:,norm),dPho10,'DisplayName','Particulate Phosphorus');
+scatter(sdHet10(:,norm),dHet10,'DisplayName','Heterotrophic Bacteria ');
+scatter(sdPro10(:,norm),dPro10,'DisplayName','Prochlorococcus');
+scatter(sdSyn10(:,norm),dSyn10,'DisplayName','Synechococcus');
+hold off
+xlim([0.995 1.00]);
+legend('Location','bestoutside'); set(gca,'YDir','reverse');
+h = title('$\frac{\sigma_{mle}}{\sigma_{data}}$ normal','Interpreter','latex');
+h.FontSize=30;
+
+% tmpY = 5:10:200;
+subplot(2,1,2)
+scatter(sd10(:,logn),d10,'DisplayName','[chl a] (fluo.)','Marker','+');
+hold on
+scatter(sdHp10(:,logn),dHp10,'DisplayName','[chl a] (HPLC)','Marker','+');
+scatter(sdAtp10(:,logn),dAtp10,'DisplayName','ATP','Marker','+');
+scatter(sdCmo10(:,logn),dCmo10,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+scatter(sdCdi10(:,logn),dCdi10,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+scatter(sdParc10(:,logn),dParc10,'DisplayName','Particulate Carbon','Marker','+');
+scatter(sdNit10(:,logn),dNit10,'DisplayName','Particulate Nitrogen','Marker','+');
+scatter(sdPho10(:,logn),dPho10,'DisplayName','Particulate Phosphorus');
+scatter(sdHet10(:,logn),dHet10,'DisplayName','Heterotrophic Bacteria ');
+scatter(sdPro10(:,logn),dPro10,'DisplayName','Prochlorococcus');
+scatter(sdSyn10(:,logn),dSyn10,'DisplayName','Synechococcus');
+hold off
+legend('Location','bestoutside'); set(gca,'YDir','reverse');
+h = title('$\frac{\sigma_{mle}}{\sigma_{data}}$ lognormal','Interpreter','latex');
+h.FontSize=30;
+
+
+%% Show STD versus each other
+
+figure
+scatter(sd10(:,1),sd10(:,3),'+','DisplayName','[chl a] (fluo.)');
+hold on
+scatter(sdHp10(:,1),sdHp10(:,3),'+','DisplayName','[chl a] (HPLC)');
+scatter(sdAtp10(:,1),sdAtp10(:,3),'+','DisplayName','ATP');
+scatter(sdCmo10(:,1),sdCmo10(:,3),'+','DisplayName','HPLC Monovinyl Chl');
+scatter(sdCdi10(:,1),sdCdi10(:,3),'+','DisplayName','HPLC Divinyl Chl');
+scatter(sdParc10(:,1),sdParc10(:,3),'+','DisplayName','Particulate Carbon');
+scatter(sdNit10(:,1),sdNit10(:,3),'+','DisplayName','Particulate Nitrogen');
+scatter(sdPho10(:,1),sdPho10(:,3),'o','DisplayName','Particulate Phosphorus');
+scatter(sdHet10(:,1),sdHet10(:,3),'o','DisplayName','Heterotrophic Bacteria');
+scatter(sdPro10(:,1),sdPro10(:,3),'o','DisplayName','Prochlorococcus');
+scatter(sdSyn10(:,1),sdSyn10(:,3),'o','DisplayName','Synechococcus');
+plot(1:1:100,1:1:100,':','DisplayName','slope = 1','Color',[0.6 0.6 0.6]);
+hold off
+legend('Location','bestoutside');
+xlabel('STD (MLE)'); ylabel('STD (data)');
 %% Hov -> works, just commented
 
 % nb = 100;

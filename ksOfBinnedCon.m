@@ -1,4 +1,4 @@
-function [ks, obs, depth2, Sk, ku] = ksOfBinnedCon(X, p, binning, threshold)
+function [ks, obs, depth2, Sk, ku, sd, c95] = ksOfBinnedCon(X, p, binning, threshold)
 %ksOfBinnedCon find the KS statistic
 % INPUTS:
 % X = substance concentration,
@@ -9,6 +9,10 @@ function [ks, obs, depth2, Sk, ku] = ksOfBinnedCon(X, p, binning, threshold)
 % ks = KS test for five distributions 
 % obs = observations per depth
 % depth2 = array of depths above threshold (=100)
+% Sk = skewness
+% ku = kurtosis
+% sd = standard deviation (3 x n). 1: STD of mle (norm); 2: STD of data
+% (norm); 3: stdMle/stdData (norm)
 
 if nargin <4
     threshold = 100;
@@ -34,9 +38,15 @@ for i = 1:n
     % change limit below to >3 to fix error with picoeu -> may change other
     % results
     if length(X_i) > 3
-        [~,ks(:,i),~] = statsplot2(X_i,'noplot');
+        [~,ks(:,i),~,tmpC95,tmpMle] = statsplot2(X_i,'noplot');
+        disp(size(tmpC95));
         Sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
+        tmpDat = [std(X_i) std(log(X_i))];
+        tmpComp = [tmpMle(1)/tmpDat(1) tmpMle(2)/tmpDat(2)];
+        sd(i,:) = [tmpMle(1) tmpMle(2) tmpDat(1) tmpDat(2) tmpComp(1) tmpComp(2)];
+        c95(i,1:2) = tmpC95(1,:);
+        c95(i,3:4) = tmpC95(2,:);
     end
     obs(i) = length(X_i);
     clear X_i;
@@ -47,6 +57,8 @@ for i = 1:n
         ks(:,i) = nan;   
         Sk(i) = nan;
         ku(i) = nan;
+        sd(i,:) = nan;
+        c95(i,:) = nan;
     end
 end
 
@@ -59,6 +71,8 @@ end
 depth2 = depth(tmp);
 Sk = Sk(tmp);
 ku = ku(tmp);
+sd = sd(tmp,:);
+c95 = c95(tmp,:);
 
 ks = ks(:,~all(isnan(ks)));
 
