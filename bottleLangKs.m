@@ -104,26 +104,26 @@ pic = importdata('data\picoeu_05-21.txt').data(:,5);
 %% 3. Apply Kolmogorov Smirnov Test to Bottle Concentrations
 
 % Default Threshold (=100)
-[trChla,ksChla,obsChla,skChla,kuChla] = ksOfLagrangian(idChla,pChla,dcm,chla,669);                        % chla (regular method)
+[trChla,ksChla,obsChla,skChla,kuChla,sdChla,c95chla,muChla] = ksOfLagrangian(idChla,pChla,dcm,chla,669);                        % chla (regular method)
 b = 1:5890;
-[trChla07,ksChla07,obsChla07,skChla07,kuChla07] = ksOfLagrangian(idChla(b,:),pChla(b),dcm(b,:),chla(b),407);  % chla (regular method), 1988-2007
-[trHplc,ksHplc,obsHplc,skHplc,kuHplc] = ksOfLagrangian(idHplc,pHplc,dcm,hplc,317);                        % chla (HPLC method)
-[trCmo,ksCmo,obsCmo,skCmo,kuCmo] = ksOfLagrangian(idCmo,pCmo,dcm,cmo,271);                              % HPLC Chlorophyll a (Monovinyl)
-[trCdi,ksCdi,obsCdi,skCdi,kuCdi] = ksOfLagrangian(idCdi,pCdi,dcm,cdi,271);                              % HPLC Chlorophyll a (Divinyl)
-[trCar,ksCar,obsCar,skCar,kuCar] = ksOfLagrangian(idCar,pCar,dcm,car,332);                              % Particulate Carbon
-[trNit,ksNit,obsNit,skNit,kuNit] = ksOfLagrangian(idNit,pNit,dcm,nit,333);                              % Particulate Nitrogen
-[trPho,ksPho,obsPho,skPho,kuPho] = ksOfLagrangian(idPho,pPho,dcm,pho,331);                              % Particulate Phosphorus
-[trPho11,ksPho11,obsPho11,skPho11,kuPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                  % Particulate Phosphorus (11-21)
-[trAtp,ksAtp,obsAtp,skAtp,kuAtp] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318);                              % ATP
-[trHet,ksHet,obsHet,skHet,kuHet] = ksOfLagrangian(idHet,pHet,dcm,het,245);                              % Heterotrophic Bacteria
-[trPro,ksPro,obsPro,skPro,kuPro] = ksOfLagrangian(idPro,pPro,dcm,pro,147);                              % Prochlorococcus
-[trSyn,ksSyn,obsSyn,skSyn,kuSyn] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147);                              % Synechococcus
-[trPic,ksPic,obsPic,skPic,kuPic] = ksOfLagrangian(idPic,pPic,dcm,pic,147);                              % Picoeukaryotes
+[trChla07,ksChla07,obsChla07,skChla07,kuChla07,sdChla07,c95chla07,muChla07] = ksOfLagrangian(idChla(b,:),pChla(b),dcm(b,:),chla(b),407);  % chla (regular method), 1988-2007
+[trHplc,ksHplc,obsHplc,skHplc,kuHplc,sdHplc,c95hplc,muHplc] = ksOfLagrangian(idHplc,pHplc,dcm,hplc,317);                        % chla (HPLC method)
+[trCmo,ksCmo,obsCmo,skCmo,kuCmo,sdCmo,c95cmo,muCmo] = ksOfLagrangian(idCmo,pCmo,dcm,cmo,271);                              % HPLC Chlorophyll a (Monovinyl)
+[trCdi,ksCdi,obsCdi,skCdi,kuCdi,sdCdi,c95cdi,muCdi] = ksOfLagrangian(idCdi,pCdi,dcm,cdi,271);                              % HPLC Chlorophyll a (Divinyl)
+[trCar,ksCar,obsCar,skCar,kuCar,sdCar,c95car,muCar] = ksOfLagrangian(idCar,pCar,dcm,car,332);                              % Particulate Carbon
+[trNit,ksNit,obsNit,skNit,kuNit,sdNit,c95nit,muNit] = ksOfLagrangian(idNit,pNit,dcm,nit,333);                              % Particulate Nitrogen
+[trPho,ksPho,obsPho,skPho,kuPho,sdPho,c95pho,muPho] = ksOfLagrangian(idPho,pPho,dcm,pho,331);                              % Particulate Phosphorus
+[trPho11,ksPho11,obsPho11,skPho11,kuPho11,sdPho11,c95pho11,muPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                  % Particulate Phosphorus (11-21)
+[trAtp,ksAtp,obsAtp,skAtp,kuAtp,sdAtp,c95atp,muAtp] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318);                              % ATP
+[trHet,ksHet,obsHet,skHet,kuHet,sdHet,c95het,muHet] = ksOfLagrangian(idHet,pHet,dcm,het,245);                              % Heterotrophic Bacteria
+[trPro,ksPro,obsPro,skPro,kuPro,sdPro,c95pro,muPro] = ksOfLagrangian(idPro,pPro,dcm,pro,147);                              % Prochlorococcus
+[trSyn,ksSyn,obsSyn,skSyn,kuSyn,sdSyn,c95syn,muSyn] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147);                              % Synechococcus
+[trPic,ksPic,obsPic,skPic,kuPic,sdPic,c95pic,muPic] = ksOfLagrangian(idPic,pPic,dcm,pic,147);                              % Picoeukaryotes
 
 % Lower Threshold (=50)
-[trPro50,ksPro50,obsPro50,skPro50,kuPro50] = ksOfLagrangian(idPro,pPro,dcm,pro,147,50);                     % Prochlorococcus
-[trSyn50,ksSyn50,obsSyn50,skSyn50,kuSyn50] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,50);                     % Synechococcus
-[trPic50,ksPic50,obsPic50,skPic50,kuPic50] = ksOfLagrangian(idPic,pPic,dcm,pic,147,50);                     % Picoeukaryotes
+[trPro50,ksPro50,obsPro50,skPro50,kuPro50,sdPro50,c95pro50,muPro50] = ksOfLagrangian(idPro,pPro,dcm,pro,147,50);                     % Prochlorococcus
+[trSyn50,ksSyn50,obsSyn50,skSyn50,kuSyn50,sdSyn50,c95syn50,muSyn50] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,50);                     % Synechococcus
+[trPic50,ksPic50,obsPic50,skPic50,kuPic50,sdPic50,c95pic50,muPic50] = ksOfLagrangian(idPic,pPic,dcm,pic,147,50);                     % Picoeukaryotes
 
 % Alternative thresholds 'A'
 % Based on adding ~20% new observed points
@@ -316,3 +316,155 @@ ax13a = figure;
 plotKs(trAtpA,ksAtpA,obsAtpA,skAtpA,kuAtpA,2,27,false,70);
 sgtitle('ATP (Lagrangian, 10 dbar, Threshold = 70)');
 exportgraphics(ax13a,'figures/ks_AtpLagA.png'); clear ax13a;
+
+%% 5.1 Visualise mean
+
+norm = 5; logn = 6;
+
+xax = 1:1:20;
+ax14 = figure;
+subplot(2,1,1)
+scatter(muChla(:,norm),trChla,'DisplayName','[chl a] (fluo.)','Marker','+');
+hold on
+scatter(muHplc(:,norm),trHplc,'DisplayName','[chl a] (HPLC)','Marker','+');
+scatter(muAtp(:,norm),trAtp,'DisplayName','ATP','Marker','+');
+scatter(muCmo(:,norm),trCmo,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+scatter(muCdi(:,norm),trCdi,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+scatter(muCar(:,norm),trCar,'DisplayName','Particulate Carbon','Marker','+');
+scatter(muNit(:,norm),trNit,'DisplayName','Particulate Nitrogen','Marker','+');
+scatter(muPho(:,norm),trPho,'DisplayName','Particulate Phosphorus');
+scatter(muHet(:,norm),trHet,'DisplayName','Heterotrophic Bacteria ');
+scatter(muPro(:,norm),trPro,'DisplayName','Prochlorococcus');
+scatter(muSyn(:,norm),trSyn,'DisplayName','Synechococcus');
+hold off
+xlim([0.995 1.00]);
+legend('Location','bestoutside'); set(gca,'YDir','reverse');
+h = title('$\frac{\mu_{mle}}{\mu_{data}}$ normal','Interpreter','latex');
+h.FontSize=30;
+
+% tmpY = 5:10:200;
+subplot(2,1,2)
+scatter(muChla(:,logn),trChla,'DisplayName','[chl a] (fluo.)','Marker','+');
+hold on
+scatter(muHplc(:,logn),trHplc,'DisplayName','[chl a] (HPLC)','Marker','+');
+scatter(muAtp(:,logn),trAtp,'DisplayName','ATP','Marker','+');
+scatter(muCmo(:,logn),trCmo,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+scatter(muCdi(:,logn),trCdi,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+scatter(muCar(:,logn),trCar,'DisplayName','Particulate Carbon','Marker','+');
+scatter(muNit(:,logn),trNit,'DisplayName','Particulate Nitrogen','Marker','+');
+scatter(muPho(:,logn),trPho,'DisplayName','Particulate Phosphorus');
+scatter(muHet(:,logn),trHet,'DisplayName','Heterotrophic Bacteria ');
+scatter(muPro(:,logn),trPro,'DisplayName','Prochlorococcus');
+scatter(muSyn(:,logn),trSyn,'DisplayName','Synechococcus');
+hold off
+legend('Location','bestoutside'); set(gca,'YDir','reverse');
+h = title('$\frac{\mu_{mle}}{\mu_{data}}$ lognormal','Interpreter','latex');
+h.FontSize=30;
+
+sgtitle('Data vs. MLE: Lagrangian Mean');
+exportgraphics(ax14,'figures/meanCompLag.png'); clear ax14;
+
+
+%% 5.2 Visualise STD
+% By definition, the standard deviation of the Lagrangian should be zero,
+% so really these figures shouldn't show anything.
+
+norm = 5; logn = 6;
+
+colormap("parula");
+
+xax = 1:1:20;
+ax15 = figure;
+subplot(2,1,1)
+scatter(sdChla(:,norm),trChla,'DisplayName','[chl a] (fluo.)','Marker','+');
+hold on
+scatter(sdHplc(:,norm),trHplc,'DisplayName','[chl a] (HPLC)','Marker','+');
+scatter(sdAtp(:,norm),trAtp,'DisplayName','ATP','Marker','+');
+scatter(sdCmo(:,norm),trCmo,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+scatter(sdCdi(:,norm),trCdi,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+scatter(sdCar(:,norm),trCar,'DisplayName','Particulate Carbon','Marker','+');
+scatter(sdNit(:,norm),trNit,'DisplayName','Particulate Nitrogen','Marker','+');
+scatter(sdPho(:,norm),trPho,'DisplayName','Particulate Phosphorus');
+scatter(sdHet(:,norm),trHet,'DisplayName','Heterotrophic Bacteria ');
+scatter(sdPro(:,norm),trPro,'DisplayName','Prochlorococcus');
+scatter(sdSyn(:,norm),trSyn,'DisplayName','Synechococcus');
+hold off
+xlim([0.995 1.00]);
+legend('Location','bestoutside'); set(gca,'YDir','reverse');
+h = title('$\frac{\sigma_{mle}}{\sigma_{data}}$ normal','Interpreter','latex');
+h.FontSize=30;
+
+% tmpY = 5:10:200;
+subplot(2,1,2)
+scatter(sdChla(:,logn),trChla,'DisplayName','[chl a] (fluo.)','Marker','+');
+hold on
+scatter(sdHplc(:,logn),trHplc,'DisplayName','[chl a] (HPLC)','Marker','+');
+scatter(sdAtp(:,logn),trAtp,'DisplayName','ATP','Marker','+');
+scatter(sdCmo(:,logn),trCmo,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+scatter(sdCdi(:,logn),trCdi,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+scatter(sdCar(:,logn),trCar,'DisplayName','Particulate Carbon','Marker','+');
+scatter(sdNit(:,logn),trNit,'DisplayName','Particulate Nitrogen','Marker','+');
+scatter(sdPho(:,logn),trPho,'DisplayName','Particulate Phosphorus');
+scatter(sdHet(:,logn),trHet,'DisplayName','Heterotrophic Bacteria ');
+scatter(sdPro(:,logn),trPro,'DisplayName','Prochlorococcus');
+scatter(sdSyn(:,logn),trSyn,'DisplayName','Synechococcus');
+hold off
+xlim([0.995 1.00]);
+legend('Location','bestoutside'); set(gca,'YDir','reverse');
+h = title('$\frac{\sigma_{mle}}{\sigma_{data}}$ lognormal','Interpreter','latex');
+h.FontSize=30;
+
+sgtitle('Data vs. MLE: Lagrangian STD');
+exportgraphics(ax15,'figures/stdCompLag.png'); clear ax15;
+
+
+%% Visualise mean and error
+
+meanMle = 1;
+
+ax16 = figure;
+subplot(2,2,1)
+errorbar(muChla(:,meanMle),trChla,muChla(:,meanMle)-c95chla(:,1),c95chla(:,2)-muChla(:,meanMle),'horizontal');
+set(gca,'YDir','reverse');
+xlabel('ug/kg'); title('Fluoro Chl a');
+
+subplot(2,2,2)
+errorbar(muHplc(:,meanMle),trHplc,muHplc(:,meanMle)-c95hplc(:,1),c95hplc(:,2)-muHplc(:,meanMle),'horizontal');
+set(gca,'YDir','reverse');
+xlabel('ng/kg'); title('HPLC Chl a');
+
+subplot(2,2,3)
+errorbar(muAtp(:,meanMle),trAtp,muAtp(:,meanMle)-c95atp(:,1),c95atp(:,2)-muAtp(:,meanMle),'horizontal');
+set(gca,'YDir','reverse');
+xlabel('units'); title('ATP');
+
+subplot(2,2,4)
+errorbar(muCmo(:,meanMle),trCmo,muCmo(:,meanMle)-c95cmo(:,1),c95cmo(:,2)-muCmo(:,meanMle),'horizontal');
+set(gca,'YDir','reverse');
+xlabel('units'); title('Monovinyl Chl a');
+
+exportgraphics(ax16,'figures/stdCompLag.png'); clear ax16;
+
+
+% scatter(muChla(:,meanMle),trChla,'DisplayName','[chl a] (fluo.)','Marker','+');
+% hold on
+% scatter(c95chla(:,1),trChla);
+% scatter(c95chla(:,2),trChla);
+
+% scatter(muHplc(:,meanMle),trHplc,'DisplayName','[chl a] (HPLC)','Marker','+');
+% scatter(muAtp(:,meanMle),trAtp,'DisplayName','ATP','Marker','+');
+% scatter(muCmo(:,meanMle),trCmo,'DisplayName','[chl a] (HPLC Monovinyl)','Marker','+');
+% scatter(muCdi(:,meanMle),trCdi,'DisplayName','[chl a] (HPLC Divinyl)','Marker','+');
+% scatter(muCar(:,meanMle),trCar,'DisplayName','Particulate Carbon','Marker','+');
+% scatter(muNit(:,meanMle),trNit,'DisplayName','Particulate Nitrogen','Marker','+');
+% scatter(muPho(:,meanMle),trPho,'DisplayName','Particulate Phosphorus');
+% scatter(muHet(:,meanMle),trHet,'DisplayName','Heterotrophic Bacteria ');
+% scatter(muPro(:,meanMle),trPro,'DisplayName','Prochlorococcus');
+% scatter(muSyn(:,meanMle),trSyn,'DisplayName','Synechococcus');
+% hold off
+
+% xlim([0.995 1.00]);
+% legend('Location','best');
+% % set(gca,'YDir','reverse');
+% h = title('$\sigma_{mle}$ normal','Interpreter','latex');
+% h.FontSize=15;
