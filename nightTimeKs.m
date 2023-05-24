@@ -620,7 +620,7 @@ ksLpNsu = getKS(meanLpN,129,sumVals);        % Lagrangian
 % AUTUMN
 ksEiNa = getKS(meanEiN,129,autVals);      % Isopycnal Eulerian
 ksEpNa = getKS(meanEpN,129,autVals);      % Eulerian
-% ksLiNa = getKS(meanIsoLFN,129,autVals);     % Isopycnal Lagrangian
+% ksLiNa = getKS(meanLiN,129,autVals);     % Isopycnal Lagrangian
 ksLpNa = getKS(meanLpN,129,autVals);        % Lagrangian
 
 %% SEASONAL KS FIGURES (night time)
@@ -815,18 +815,18 @@ ylabel('Pressure [db]');
 title('Summer');
 
 % AUTUMN - error calculating this, check back later
-% subplot(1,4,4)
-% plot(ksLiNa(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksEpNa(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksEpNa(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksEpNa(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% set(gca,'YDir','reverse');
-% xlabel('p-value');
-% ylim([-125 125]);
-% ylabel('Pressure [db]');
-% title('Autumn');
+subplot(1,4,4)
+plot(ksLiNa(1,:),[ctd(1).p(1:129)]-129,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
+hold on
+plot(ksEpNa(2,:),[ctd(1).p(1:129)]-129,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ksEpNa(3,:),[ctd(1).p(1:129)]-129,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ksEpNa(4,:),[ctd(1).p(1:129)]-129,'r.--','DisplayName','Gamma','MarkerSize',4);
+hold off
+set(gca,'YDir','reverse');
+xlabel('p-value');
+ylim([-125 125]);
+ylabel('Pressure [db]');
+title('Autumn');
 
 % Make legend transparent
 h_leg.BoxFace.ColorType='truecoloralpha';
@@ -938,7 +938,7 @@ ksLpNsuF2 = getKS(meanLpN(:,b),129,f2sumVals);      % Lagrangian Pressure
 % AUTUMN
 ksEiNaF2 = getKS(meanEiN(:,b),129,f2autVals);      % Eulerian Isopycnal
 ksEpNaF2 = getKS(meanEpN(:,b),129,f2autVals);      % Eulerian Pressure
-% ksLiNaF2 = getKS(meanIsoLFN(:,b),129,f2autVals);     % Lagrangian Isopycnal
+ksLiNaF2 = getKS(meanIsoLFN(:,b),129,f2autVals);     % Lagrangian Isopycnal
 ksLpNaF2 = getKS(meanLpN(:,b),129,f2autVals);        % Lagrangian Pressure
 
 %% F2 Eulerian/Isopycnal/Night (EiN)

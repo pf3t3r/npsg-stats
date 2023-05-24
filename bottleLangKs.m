@@ -85,9 +85,9 @@ idAtp = num2str(importdata('data\atp_88-21.txt').data(:,1));
 pAtp = importdata('data\atp_88-21.txt').data(:,4);
 atp = importdata('data\atp_88-21.txt').data(:,5);
 
-idHet = num2str(importdata('data\hetBac_90-21.txt').data(:,1));
-pHet = importdata('data\hetBac_90-21.txt').data(:,4);
-het = importdata('data\hetBac_90-21.txt').data(:,5);
+idHet = num2str(importdata('data\hetBac_05-21.txt').data(:,1));
+pHet = importdata('data\hetBac_05-21.txt').data(:,4);
+het = importdata('data\hetBac_05-21.txt').data(:,5);
 
 idPro = num2str(importdata('data\prochl_05-21.txt').data(:,1));
 pPro = importdata('data\prochl_05-21.txt').data(:,4);
@@ -113,9 +113,9 @@ b = 1:5890;
 [trCar,ksCar,obsCar,skCar,kuCar,sdCar,c95car,muCar] = ksOfLagrangian(idCar,pCar,dcm,car,332);                              % Particulate Carbon
 [trNit,ksNit,obsNit,skNit,kuNit,sdNit,c95nit,muNit] = ksOfLagrangian(idNit,pNit,dcm,nit,333);                              % Particulate Nitrogen
 [trPho,ksPho,obsPho,skPho,kuPho,sdPho,c95pho,muPho] = ksOfLagrangian(idPho,pPho,dcm,pho,331);                              % Particulate Phosphorus
-[trPho11,ksPho11,obsPho11,skPho11,kuPho11,sdPho11,c95pho11,muPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                  % Particulate Phosphorus (11-21)
+% [trPho11,ksPho11,obsPho11,skPho11,kuPho11,sdPho11,c95pho11,muPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                  % Particulate Phosphorus (11-21)
 [trAtp,ksAtp,obsAtp,skAtp,kuAtp,sdAtp,c95atp,muAtp] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318);                              % ATP
-[trHet,ksHet,obsHet,skHet,kuHet,sdHet,c95het,muHet] = ksOfLagrangian(idHet,pHet,dcm,het,245);                              % Heterotrophic Bacteria
+[trHet,ksHet,obsHet,skHet,kuHet,sdHet,c95het,muHet] = ksOfLagrangian(idHet,pHet,dcm,het,147);                              % Heterotrophic Bacteria
 [trPro,ksPro,obsPro,skPro,kuPro,sdPro,c95pro,muPro] = ksOfLagrangian(idPro,pPro,dcm,pro,147);                              % Prochlorococcus
 [trSyn,ksSyn,obsSyn,skSyn,kuSyn,sdSyn,c95syn,muSyn] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147);                              % Synechococcus
 [trPic,ksPic,obsPic,skPic,kuPic,sdPic,c95pic,muPic] = ksOfLagrangian(idPic,pPic,dcm,pic,147);                              % Picoeukaryotes
@@ -134,9 +134,9 @@ b = 1:5890;
 [trCarA,ksCarA,obsCarA,skCarA,kuCarA] = ksOfLagrangian(idCar,pCar,dcm,car,332,76);                        % Particulate Carbon
 [trNitA,ksNitA,obsNitA,skNitA,kuNitA] = ksOfLagrangian(idNit,pNit,dcm,nit,333,76);                        % Particulate Nitrogen
 [trPhoA,ksPhoA,obsPhoA,skPhoA,kuPhoA] = ksOfLagrangian(idPho,pPho,dcm,pho,331,63);                        % Particulate Phosphorus
-% [trPho11,ksPho11,obsPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,90);                 % Particulate Phosphorus (11-21)
+[trPho11,ksPho11,obsPho11,skPho11,kuPho11] = ksOfLagrangian(idPho11,pPho11,dcm,pho11,50);                 % Particulate Phosphorus (11-21)
 [trAtpA,ksAtpA,obsAtpA,skAtpA,kuAtpA] = ksOfLagrangian(idAtp,pAtp,dcm,atp,318,70);                        % ATP
-[trHetA,ksHetA,obsHetA,skHetA,kuHetA] = ksOfLagrangian(idHet,pHet,dcm,het,245,78);                        % Heterotrophic Bacteria
+[trHetA,ksHetA,obsHetA,skHetA,kuHetA] = ksOfLagrangian(idHet,pHet,dcm,het,147,46);                        % Heterotrophic Bacteria
 [trProA,ksProA,obsProA,skProA,kuProA] = ksOfLagrangian(idPro,pPro,dcm,pro,147,46);                        % Prochlorococcus
 [trSynA,ksSynA,obsSynA,skSynA,kuSynA] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,48);                        % Synechococcus
 [trPicA,ksPicA,obsPicA,skPicA,kuPicA] = ksOfLagrangian(idPic,pPic,dcm,pic,147,46);                        % Picoeukaryotes
@@ -249,8 +249,8 @@ sgtitle('Heterotrophic Bacteria (Lagrangian, 10 dbar bin)');
 exportgraphics(ax9,'figures/ks_HetLag.png'); clear ax9;
 
 ax9a = figure;
-plotKs(trHetA,ksHetA,obsHetA,skHetA,kuHetA,1,26,false,78);
-sgtitle('Heterotrophic Bacteria (Lagrangian, 10 dbar, Threshold = 78)');
+plotKs(trHetA,ksHetA,obsHetA,skHetA,kuHetA,1,26,false,46);
+sgtitle('Heterotrophic Bacteria (Lagrangian, 10 dbar, Threshold = 46)');
 exportgraphics(ax9a,'figures/ks_HetLagA.png'); clear ax9a;
 
 %% 4.i. Prochlorococcus
