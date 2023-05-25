@@ -15,7 +15,9 @@ end
 for i = 1:n
     tmp = X(i,interval);
     tmp(isnan(tmp)) = [];
-    [~,ksVals(:,i),~] = statsplot2(tmp,'noplot');
+    if length(tmp) > 3
+        [~,ksVals(:,i),~] = statsplot2(tmp,'noplot');
+    end
 end
 clear tmp;
 
