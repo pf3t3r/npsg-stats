@@ -256,6 +256,27 @@ plotKs(dPho10_11,ksPho10_11,obsPho10_11,skPho10_11,kuPho10_11,0.5,20.5,true,75);
 sgtitle('Particulate Phosphorus: Eulerian Bottle, Threshold=75, 10 dbar bin (2011-2021)');
 exportgraphics(ax16a,'figures/ks_PhoEulerian10db_11-21thr75.png'); clear ax16a;
 
+%% plotting xx example
+
+axTest = figure;
+subplot(1,4,3)
+plot(skPho10,dPho10,'Color','#1f78b4');
+tAx = gca;
+set(tAx,'YDir','reverse');
+tAx2 = axes('position', get(tAx, 'position')); % Create a new axes in the same position as the first one, overlaid on top
+plot(kuPho10,dPho10,'Color','#33a02c');
+set(tAx2, 'ylim', get(tAx, 'ylim'), 'color', 'none'); % Set y limits same as original axes, and make background transparent
+set(tAx2,'XAxisLocation','top');
+ylabel(tAx, 'Contour y-values');
+xlabel(tAx,'skew','Color','#1f78b4');
+xlabel(tAx2,'kurt','Color','#33a02c');
+set(tAx2,'YTickLabel',[]);
+set(tAx,'XColor','#1f78b4');
+set(tAx2,'XColor','#33a02c');
+set(tAx2,'YDir','reverse');
+
+% clear axTest tAx tAx2;
+
 %% Heterotrophic Bacteria: Eulerian 5 dbar 
 
 ax17 = figure;
