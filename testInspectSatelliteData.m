@@ -72,12 +72,134 @@ limB = 9109;
 
 randSam = datasample(squeeze(chl(1,1,:)),1000);
 % tmp = zonMerMeanChla(limA:limB);
-tmp = randSam;
+tmp = squeeze(chl(6,6,:));
+% tmp = randSam;
 tmp(isnan(tmp)) = [];
 
-tmp = movmean(tmp,10);
+% tmp = movmean(tmp,10);
 
 figure;
 [mle,ks,~,~,~,~] = statsplot2(tmp);
 
 % clear tmp;
+
+%% Sensitivity Analysis
+
+sampleNo = [100 250 500 1000 1500 2000];
+movMean = [1 3 4 5 6 7 8];
+mnKsS = nan(6,7,5);
+
+if(exist("datafiles\pvalueSensitivityTest.mat","file"))
+    disp('Loading...')
+    load('pvalueSensitivityTest.mat', 'mnKsS');
+else
+    for i = 1:length(sampleNo)
+        disp(i);
+        for j = 1:length(movMean)
+            for k = 1:10
+                randSam = datasample(squeeze(chl(6,6,:)),sampleNo(i));
+                randSam(isnan(randSam)) = [];
+                randSam = movmean(randSam,movMean(j));
+                [~,ksS(k,:),~,~,~,~] = statsplot2(randSam);
+            end    
+            mnKsS(i,j,:) = mean(ksS);
+        end
+    end
+    save datafiles/pvalueSensitivityTest.mat mnKsS;
+end
+
+
+%% Sensitivity Analysis: Sample No. vs p-value (no moving mean)
+
+figure;
+plot(sampleNo,mnKsS(:,1,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,1,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,1,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,1,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+legend();
+ylabel('p-value'); xlabel('sample no.');
+title('Station Aloha Surface Chl a: KS Test p-value vs. sample no.');
+
+%% Sensitivity Analysis: Including smoothing
+
+figure;
+subplot(1,7,1)
+plot(sampleNo,mnKsS(:,1,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,1,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,1,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,1,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+% legend();
+ylabel('p-value'); xlabel('sample no.');
+title('no smoothing');
+
+subplot(1,7,2)
+plot(sampleNo,mnKsS(:,2,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,2,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,2,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,2,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+% legend();
+ylabel('p-value'); xlabel('sample no.');
+title('smoothed','window = 3');
+
+subplot(1,7,3)
+plot(sampleNo,mnKsS(:,3,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,3,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,3,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,3,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+% legend();
+ylabel('p-value'); xlabel('sample no.');
+title('smoothed','window = 4')
+
+subplot(1,7,4)
+plot(sampleNo,mnKsS(:,4,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,4,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,4,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,4,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+% legend();
+ylabel('p-value'); xlabel('sample no.');
+title('smoothed','window = 5');
+
+subplot(1,7,5)
+plot(sampleNo,mnKsS(:,5,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,5,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,5,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,5,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+% legend();
+ylabel('p-value'); xlabel('sample no.');
+title('smoothed','window = 6');
+
+subplot(1,7,6)
+plot(sampleNo,mnKsS(:,6,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,6,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,6,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,6,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+% legend();
+ylabel('p-value'); xlabel('sample no.');
+title('smoothed','window = 7');
+
+subplot(1,7,7)
+plot(sampleNo,mnKsS(:,7,1),'o-','Color','#a6cee3','DisplayName','normal');
+hold on
+plot(sampleNo,mnKsS(:,7,2),'+--','Color','#1f78b4','DisplayName','lognormal');
+plot(sampleNo,mnKsS(:,7,3),'x-','Color','#b2df8a','DisplayName','weibull');
+plot(sampleNo,mnKsS(:,7,4),'.--','Color','#33a02c','DisplayName','gamma');
+hold off
+legend(); ylabel('p-value'); xlabel('sample no.');
+title('smoothed','window = 8');
+
+sgtitle('mean p-value vs. sample no.');
+% randSam = datasample(squeeze(chl(6,6,:)),1000);

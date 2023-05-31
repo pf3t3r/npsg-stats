@@ -134,6 +134,40 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 [ksPic5, obsPic5, dPic5, skPic5, kuPic5, sdPic5, c95pic5, muPic5] = ksOfBinnedCon(picOut,pb5_pic,5);          % 5 dbar / Pico-Eukaryotes
 [ksPic10, obsPic10, dPic10, skPic10, kuPic10, sdPic10, c95pic10, muPic10] = ksOfBinnedCon(picOut,pb10_pic,10);     % 10 dbar / Pico-Eukaryotes
 
+%% standard error vs uncertainty on mean
+% only look at 10 dbar values
+
+% standard error
+seChl = sd10(:,1)./(obs10(obs10>100));              % chl regular
+seHp = sdHp10(:,1)./(obsHp10(obsHp10>100));         % hplc
+seAtp = sdAtp10(:,1)./(obsAtp10(obsAtp10>100));     % atp
+seCmo = sdCmo10(:,1)./(obsCmo10(obsCmo10>100));     % cmo
+seCdi = sdCdi10(:,1)./(obsCdi10(obsCdi10>100));     % cdi
+seParc = sdParc10(:,1)./(obsParc10(obsParc10>100)); % parc
+seNit = sdNit10(:,1)./(obsNit10(obsNit10>100));     % nit
+sePho = sdPho10(:,1)./(obsPho10(obsPho10>100));     % pho
+sePho11 = sdPho10_11(:,1)./(obsPho10_11(obsPho10_11>75));         % pho11
+sePro = sdPro10(:,1)./(obsPro10(obsPro10>100));     % pro
+seSyn = sdSyn10(:,1)./(obsSyn10(obsSyn10>100));     % syn
+sePic = sdPic10(:,1)./(obsPic10(obsPic10>100));     % pic
+
+% confidence interval around mean / uncertainty on mean
+% I just find one-sided uncertainty???
+ciChl = mu10(:,1) - c95_10(:,1);
+ciHp = muHp10(:,1) - c95hp10(:,1);
+ciAtp = muAtp10(:,1) - c95atp10(:,1);
+ciCmo = muCmo10(:,1) - c95cmo10(:,1);
+ciCdi = muCdi10(:,1) - c95cdi10(:,1);
+ciParc = muParc10(:,1) - c95parc10(:,1);
+ciNit = muNit10(:,1) - c95nit10(:,1);
+ciPho = muPho10(:,1) - c95pho10(:,1);
+ciPho11 = muPho10_11(:,1) - c95pho10_11(:,1);
+ciPro = muPro10(:,1) - c95Pro10(:,1);
+ciSyn = muSyn10(:,1) - c95syn10(:,1);
+ciPic = muPic10(:,1) - c95pic10(:,1);
+
+% save datafiles\seCi.mat seChl se
+
 %% Chlorophyll a (regular method): Eulerian 5 dbar
 
 ax1 = figure;
@@ -425,6 +459,95 @@ h.FontSize=30;
 
 exportgraphics(ax26,'figures/meanComp.png'); clear ax26;
 
+%% fucking shit std ci stuff
+
+d = colormap(cbrewer2('PuBu',length(seChl)));
+ax27 = figure;
+subplot(3,4,1)
+h = gscatter(seChl,ciChl,obs10(obs10>100),d,"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('chl: regular method','FontSize',8);
+
+subplot(3,4,2)
+h = gscatter(seHp,ciHp,obsHp10(obsHp10>100),colormap(cbrewer2('PuBu',length(seHp))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('chl: HPLC','FontSize',8);
+
+subplot(3,4,3)
+h = gscatter(seAtp,ciAtp,obsAtp10(obsAtp10>100),colormap(cbrewer2('PuBu',length(seAtp))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('ATP','FontSize',8);
+
+subplot(3,4,4)
+h = gscatter(seCmo,ciCmo,obsCmo10(obsCmo10>100),colormap(cbrewer2('PuBu',length(seCmo))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('HPLC Monovinyl Chl','FontSize',8);
+
+subplot(3,4,5)
+h = gscatter(seCdi,ciCdi,obsCdi10(obsCdi10>100),colormap(cbrewer2('PuBu',length(seCdi))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('HPLC Divinyl Chl','FontSize',8);
+
+subplot(3,4,6)
+h = gscatter(seParc,ciParc,obsParc10(obsParc10>100),colormap(cbrewer2('PuBu',length(seParc))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Carbon','FontSize',8);
+
+subplot(3,4,7)
+h = gscatter(seNit,ciNit,obsNit10(obsNit10>100),colormap(cbrewer2('PuBu',length(seNit))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Nitrogen','FontSize',8);
+
+subplot(3,4,8)
+h = gscatter(sePho,ciPho,obsPho10(obsPho10>100),colormap(cbrewer2('PuBu',length(sePho))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Phosphorus','FontSize',8);
+
+subplot(3,4,9)
+h = gscatter(sePho11,ciPho11,obsPho10_11(obsPho10_11>75),colormap(cbrewer2('PuBu',length(sePho11))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Phosphorus (2011-)','FontSize',8);
+
+subplot(3,4,10)
+h = gscatter(sePro,ciPro,obsPro10(obsPro10>100),colormap(cbrewer2('PuBu',length(sePro))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Prochlorococcus','FontSize',8);
+
+subplot(3,4,11)
+h = gscatter(seSyn,ciSyn,obsSyn10(obsSyn10>100),colormap(cbrewer2('PuBu',length(seSyn))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Synechococcus','FontSize',8);
+
+subplot(3,4,12)
+h = gscatter(sePic,ciPic,obsPic10(obsPic10>100),colormap(cbrewer2('PuBu',length(sePic))),"s",8,"on",'standard error','confidence interval (68%)');
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Picoeukaryotes','FontSize',8);
+
+exportgraphics(ax27,'figures/uncertaintyStErr_botEul.png'); clear ax27;
 
 %% Show STD versus each other
 % 
