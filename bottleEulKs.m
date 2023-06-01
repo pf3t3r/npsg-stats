@@ -138,18 +138,18 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 % only look at 10 dbar values
 
 % standard error
-seChl = sd10(:,1)./(obs10(obs10>100));              % chl regular
-seHp = sdHp10(:,1)./(obsHp10(obsHp10>100));         % hplc
-seAtp = sdAtp10(:,1)./(obsAtp10(obsAtp10>100));     % atp
-seCmo = sdCmo10(:,1)./(obsCmo10(obsCmo10>100));     % cmo
-seCdi = sdCdi10(:,1)./(obsCdi10(obsCdi10>100));     % cdi
-seParc = sdParc10(:,1)./(obsParc10(obsParc10>100)); % parc
-seNit = sdNit10(:,1)./(obsNit10(obsNit10>100));     % nit
-sePho = sdPho10(:,1)./(obsPho10(obsPho10>100));     % pho
-sePho11 = sdPho10_11(:,1)./(obsPho10_11(obsPho10_11>75));         % pho11
-sePro = sdPro10(:,1)./(obsPro10(obsPro10>100));     % pro
-seSyn = sdSyn10(:,1)./(obsSyn10(obsSyn10>100));     % syn
-sePic = sdPic10(:,1)./(obsPic10(obsPic10>100));     % pic
+seChl = sd10(:,3)./sqrt((obs10(obs10>100)));              % chl regular
+seHp = sdHp10(:,3)./sqrt((obsHp10(obsHp10>100)));         % hplc
+seAtp = sdAtp10(:,3)./sqrt((obsAtp10(obsAtp10>100)));     % atp
+seCmo = sdCmo10(:,3)./sqrt((obsCmo10(obsCmo10>100)));     % cmo
+seCdi = sdCdi10(:,3)./sqrt((obsCdi10(obsCdi10>100)));     % cdi
+seParc = sdParc10(:,3)./sqrt((obsParc10(obsParc10>100))); % parc
+seNit = sdNit10(:,3)./sqrt((obsNit10(obsNit10>100)));     % nit
+sePho = sdPho10(:,3)./sqrt((obsPho10(obsPho10>100)));     % pho
+sePho11 = sdPho10_11(:,3)./sqrt((obsPho10_11(obsPho10_11>75)));         % pho11
+sePro = sdPro10(:,3)./sqrt((obsPro10(obsPro10>100)));     % pro
+seSyn = sdSyn10(:,3)./sqrt((obsSyn10(obsSyn10>100)));     % syn
+sePic = sdPic10(:,3)./sqrt((obsPic10(obsPic10>100)));     % pic
 
 % confidence interval around mean / uncertainty on mean
 % I just find one-sided uncertainty???
