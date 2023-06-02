@@ -461,10 +461,11 @@ exportgraphics(ax26,'figures/meanComp.png'); clear ax26;
 
 %% fucking shit std ci stuff
 
-d = colormap(cbrewer2('PuBu',length(seChl)));
+
 ax27 = figure;
 subplot(3,4,1)
-h = gscatter(seChl,ciChl,obs10(obs10>100),d,"s",8,"on",'standard error','confidence interval (68%)');
+h = gscatter(seChl,ciChl,obs10(obs10>100),colormap(cbrewer2('PuBu',length(seChl))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seChl)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -472,6 +473,7 @@ title('chl: regular method','FontSize',8);
 
 subplot(3,4,2)
 h = gscatter(seHp,ciHp,obsHp10(obsHp10>100),colormap(cbrewer2('PuBu',length(seHp))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seHp)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -479,6 +481,7 @@ title('chl: HPLC','FontSize',8);
 
 subplot(3,4,3)
 h = gscatter(seAtp,ciAtp,obsAtp10(obsAtp10>100),colormap(cbrewer2('PuBu',length(seAtp))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seAtp)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -486,6 +489,7 @@ title('ATP','FontSize',8);
 
 subplot(3,4,4)
 h = gscatter(seCmo,ciCmo,obsCmo10(obsCmo10>100),colormap(cbrewer2('PuBu',length(seCmo))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seCmo)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -493,6 +497,7 @@ title('HPLC Monovinyl Chl','FontSize',8);
 
 subplot(3,4,5)
 h = gscatter(seCdi,ciCdi,obsCdi10(obsCdi10>100),colormap(cbrewer2('PuBu',length(seCdi))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seCdi)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -500,6 +505,7 @@ title('HPLC Divinyl Chl','FontSize',8);
 
 subplot(3,4,6)
 h = gscatter(seParc,ciParc,obsParc10(obsParc10>100),colormap(cbrewer2('PuBu',length(seParc))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seParc)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -507,6 +513,7 @@ title('Particulate Carbon','FontSize',8);
 
 subplot(3,4,7)
 h = gscatter(seNit,ciNit,obsNit10(obsNit10>100),colormap(cbrewer2('PuBu',length(seNit))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seNit)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -514,6 +521,7 @@ title('Particulate Nitrogen','FontSize',8);
 
 subplot(3,4,8)
 h = gscatter(sePho,ciPho,obsPho10(obsPho10>100),colormap(cbrewer2('PuBu',length(sePho))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(sePho)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -521,6 +529,7 @@ title('Particulate Phosphorus','FontSize',8);
 
 subplot(3,4,9)
 h = gscatter(sePho11,ciPho11,obsPho10_11(obsPho10_11>75),colormap(cbrewer2('PuBu',length(sePho11))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(sePho11)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -528,6 +537,7 @@ title('Particulate Phosphorus (2011-)','FontSize',8);
 
 subplot(3,4,10)
 h = gscatter(sePro,ciPro,obsPro10(obsPro10>100),colormap(cbrewer2('PuBu',length(sePro))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(sePro)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -535,6 +545,7 @@ title('Prochlorococcus','FontSize',8);
 
 subplot(3,4,11)
 h = gscatter(seSyn,ciSyn,obsSyn10(obsSyn10>100),colormap(cbrewer2('PuBu',length(seSyn))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(seSyn)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
@@ -542,12 +553,116 @@ title('Synechococcus','FontSize',8);
 
 subplot(3,4,12)
 h = gscatter(sePic,ciPic,obsPic10(obsPic10>100),colormap(cbrewer2('PuBu',length(sePic))),"s",8,"on",'standard error','confidence interval (68%)');
+d = colormap(cbrewer2('PuBu',length(sePic)));
 for n = 1:length(h)
     set(h(n),"MarkerFaceColor",d(n,:));
 end
 title('Picoeukaryotes','FontSize',8);
 
 exportgraphics(ax27,'figures/uncertaintyStErr_botEul.png'); clear ax27;
+
+%% ratio vs no. of obs
+
+ax28 = figure;
+
+subplot(3,4,1)
+h = gscatter(obs10(obs10>100),ciChl./seChl,d10,colormap(cbrewer2('PuBu',length(seChl))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+hold on
+d = colormap(cbrewer2('PuBu',length(seChl)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Fluorometric Chl a','FontSize',8);
+
+subplot(3,4,2)
+h = gscatter(obsHp10(obsHp10>100),ciHp./seHp,dHp10,colormap(cbrewer2('PuBu',length(seHp))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seHp)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('HPLC Chl a','FontSize',8);
+
+subplot(3,4,3)
+h = gscatter(obsAtp10(obsAtp10>100),ciAtp./seAtp,dAtp10,colormap(cbrewer2('PuBu',length(seAtp))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seAtp)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('ATP','FontSize',8);
+
+subplot(3,4,4)
+h = gscatter(obsCmo10(obsCmo10>100),ciCmo./seCmo,dCmo10,colormap(cbrewer2('PuBu',length(seCmo))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seCmo)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('HPLC Monovinyl Chlorophyll','FontSize',8);
+
+subplot(3,4,5)
+h = gscatter(obsCdi10(obsCdi10>100),ciCdi./seCdi,dCdi10,colormap(cbrewer2('PuBu',length(seCdi))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seCdi)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('HPLC Divinyl Chlorophyll','FontSize',8);
+
+subplot(3,4,6)
+h = gscatter(obsParc10(obsParc10>100),ciParc./seParc,dParc10,colormap(cbrewer2('PuBu',length(seParc))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seParc)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Carbon','FontSize',8);
+
+subplot(3,4,7)
+h = gscatter(obsNit10(obsNit10>100),ciNit./seNit,dNit10,colormap(cbrewer2('PuBu',length(seNit))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seNit)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Nitrogen','FontSize',8);
+
+subplot(3,4,8)
+h = gscatter(obsPho10(obsPho10>100),ciPho./sePho,dPho10,colormap(cbrewer2('PuBu',length(sePho))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(sePho)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Phosphorus','FontSize',8);
+
+subplot(3,4,9)
+h = gscatter(obsPho10_11(obsPho10_11>75),ciPho11./sePho11,dPho10_11,colormap(cbrewer2('PuBu',length(sePho11))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(sePho11)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Particulate Phosphorus (2011-)','FontSize',8);
+
+subplot(3,4,10)
+h = gscatter(obsPro10(obsPro10>100),ciPro./sePro,dPro10,colormap(cbrewer2('PuBu',length(sePro))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(sePro)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Prochlorococcus','FontSize',8);
+
+subplot(3,4,11)
+h = gscatter(obsSyn10(obsSyn10>100),ciSyn./seSyn,dSyn10,colormap(cbrewer2('PuBu',length(seSyn))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(seSyn)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Synechococcus','FontSize',8);
+
+subplot(3,4,12)
+h = gscatter(obsPic10(obsPic10>100),ciPic./sePic,dPic10,colormap(cbrewer2('PuBu',length(sePic))),"s",8,"on",'No. of Obs.','SE/CI (68%)');
+d = colormap(cbrewer2('PuBu',length(sePic)));
+for n = 1:length(h)
+    set(h(n),"MarkerFaceColor",d(n,:));
+end
+title('Picoeukaryotes','FontSize',8);
+
+exportgraphics(ax28,'figures/uncertaintyStErrRatio_botEul.png'); clear ax2;
 
 %% Show STD versus each other
 % 
