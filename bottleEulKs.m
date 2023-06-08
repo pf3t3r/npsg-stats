@@ -94,6 +94,14 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 [pb5_syn,pb10_syn,synOut,n5_syn,n10_syn] = cleanAndBin(p_syn,syn,id_syn);                       % Synechococcus
 [pb5_pic,pb10_pic,picOut,n5_pic,n10_pic] = cleanAndBin(p_pic,pic,id_pic);                       % Pico-Eukaryotes
 
+%% TEST: HPLC Chl-a @ 25 dbar
+
+figure
+for i = 5:5
+    tmp = chlOut_hplc(pb10_hplc==i);
+    [~,testks(:,i),~,~,~,~] = statsplot2(tmp);
+end
+
 %% Apply KS Test to chl-a across all pressures
 
 [ks5, obs5, d5, sk5, ku5, sd5, c95_5, mu5] = ksOfBinnedCon(chl_Out,pBin5,5);                    % 5 dbar / Chlorophyll a (Regular Method)

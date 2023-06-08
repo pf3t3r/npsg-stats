@@ -57,7 +57,7 @@ title('KS Test');
 
 subplot(1,3,3)
 plot(sk,tr,'Color','#1f78b4');
-tAx = gca; 
+tAx = gca;
 xlabel(tAx,'Skewness','Color','#1f78b4');
 % tAx2 = axes('Position', get(tAx, 'Position')); % Create a new axes in the same position as the first one, overlaid on top
 tAx2 = axes('Position', [0.6916    0.1060    0.2134    0.7825]); % Create a new axes in the same position as the first one, overlaid on top
@@ -72,6 +72,13 @@ set(tAx2,'XAxisLocation','top');
 set(tAx,'XColor','#1f78b4');
 set(tAx2,'XColor','#33a02c');
 
+data1m=get(tAx,'ylim');
+data2m=get(tAx2,'ylim');
+nt=5; %tick number
+data1_tick=linspace(data1m(1),data1m(2),nt);
+data2_tick=linspace(data2m(1),data2m(2),nt);
+set(tAx,'ytick',round(data1_tick*100)/100)
+set(tAx2,'ytick',round(data2_tick*100)/100)
 
 % subplot(1,4,3)
 % plot(sk,tr,'Color','#a6cee3','LineWidth',2);

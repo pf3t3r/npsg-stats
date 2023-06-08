@@ -213,14 +213,6 @@ ksLpN = getKS(meanLpN,129);     % Lagrangian
 
 meanDcmYrly = mean(tmpMeanDcm,'omitnan');
 
-%% NIGHT
-
-ax2 = figure;
-plotKsCtd("yrly",ksEiN,ksEpN,ksLiN,ksLpN,[ctd(1).p(1:129)],meanMldEpN,meanDcmYrly);
-sgtitle('Kolmogorov Smirnov: Night Time Cruise Average, 89-21');
-exportgraphics(ax2,'figures/ksYrlyNight.png');
-clear ax2;
-
 %% NIGHT: 89-01 and 01-21 Comparison
 
 % Cruise documentation states that HOT-130 was the last cruise with the
@@ -240,18 +232,25 @@ for i = b
 end
 
 % mean PCM for F2, night time only
-for i = 1:length(b)
-    tmpMeanPcm(i) = mean([ctd(i).pcm(datetimeStruct(i).nightID)],'omitnan');
-    tmpSTD(i) = std([ctd(i).pcm(datetimeStruct(i).nightID)]);
-end
-ttMeanPcm = round(mean(tmpMeanPcm,'omitnan'));
-ttSTD = mean(tmpSTD,'omitnan');
+% for i = 1:length(b) % no WTF, this is wrong!
+%     tmpMeanPcm(i) = mean([ctd(i).pcm(datetimeStruct(i).nightID)],'omitnan');
+%     tmpSTD(i) = std([ctd(i).pcm(datetimeStruct(i).nightID)]);
+% end
+% ttMeanPcm = round(mean(tmpMeanPcm,'omitnan'));
+% ttSTD = mean(tmpSTD,'omitnan');
 
-% sig-pcm
-[tmp,tmpId] = max(meanEiN);
-tmpId(tmpId==1) = NaN;
-tmpStdSig = 2*std(tmpId,'omitnan');
-tmpMeanP_SigCm = round(2*(mean(tmpId,'omitnan')));
+% above method for finding mean and STD for EiN is incorrect, use below
+% EpN: Mean, STD
+[tmp2,pId_EpN] = max(meanEpN);
+pId_EpN(pId_EpN==1) = NaN;
+stdDcmEpN = 2*std(pId_EpN,'omitnan');
+meanDcmEpn = 2*(mean(pId_EpN,'omitnan'));
+
+% EiN: Mean, STD
+[tmp,pId_EiN] = max(meanEiN);
+pId_EiN(pId_EiN==1) = NaN;
+stdDcmEiN = 2*std(pId_EiN,'omitnan');
+meanDcmEin = 2*(mean(pId_EiN,'omitnan'));
 clear tmp;
 
 % Mean fluorescence: F1 vs F2 (EI)
@@ -291,6 +290,15 @@ set(gca,'YDir','reverse'); title('Lagrangian (Pressure)');
 
 sgtitle('F1 vs F2: Average Fluorescence');
 exportgraphics(ax2aa,'figures/avgFluo_f1Vsf2.png');
+
+%% NIGHT
+
+ax2 = figure;
+plotKsCtd("yrly",ksEiN,ksEpN,ksLiN,ksLpN,[ctd(1).p(1:129)],meanMldEpN,meanDcmEpn,stdDcmEpN,meanDcmEin,stdDcmEiN);
+sgtitle('Kolmogorov Smirnov: Night Time Cruise Average, 89-21');
+exportgraphics(ax2,'figures/ksYrlyNight.png');
+clear ax2;
+
 %% F1 vs F2: Find KS
 
 % Night 89-01 (fluorometer f1)
@@ -305,23 +313,49 @@ ksEpN_f2 = getKS(meanEpN(:,b),129);     % Eulerian
 ksLiN_f2 = getKS(meanLiN(:,b),129);     % Isopycnal Lagrangian
 ksLpN_f2 = getKS(meanLpN(:,b),129);     % Lagrangian
 
-clear a b;
 %% Figures: Night 89-01
 
+
+% EpN F1: Mean, STD
+[tmp,pId_EpN_f1] = max(meanEpN(:,a));
+pId_EpN_f1(pId_EpN_f1==1) = NaN;
+stdDcmEpN_f1 = 2*std(pId_EpN_f1,'omitnan');
+meanDcmEpn_f1 = 2*(mean(pId_EpN_f1,'omitnan'));
+
+% EiN F1: Mean, STD
+[tmp,pId_EiN_f1] = max(meanEiN(:,a));
+pId_EiN_f1(pId_EiN_f1==1) = NaN;
+stdDcmEiN_f1 = 2*std(pId_EiN_f1,'omitnan');
+meanDcmEiN_f1 = 2*(mean(pId_EiN_f1,'omitnan'));
+
+
 ax2a = figure;
-plotKsCtd("yrly",ksEiN_f1,ksEpN_f1,ksLiN_f1,ksLpN_f1,[ctd(1).p(1:129)],meanMldEpN_f1);
+plotKsCtd("yrly",ksEiN_f1,ksEpN_f1,ksLiN_f1,ksLpN_f1,[ctd(1).p(1:129)],meanMldEpN_f1,meanDcmEpn_f1,stdDcmEpN_f1,meanDcmEiN_f1,stdDcmEiN_f1);
 sgtitle('Kolmogorov Smirnov: Night F1 89-01');
 exportgraphics(ax2a,'figures/ks_yearly_f1.png');
 clear ax2a;
 
 %% Figures: Night 01-21
 
+% EpN F1: Mean, STD
+[tmp,pId_EpN_f2] = max(meanEpN(:,b));
+pId_EpN_f2(pId_EpN_f2==1) = NaN;
+stdDcmEpN_f2 = 2*std(pId_EpN_f2,'omitnan');
+meanDcmEpn_f2 = 2*(mean(pId_EpN_f2,'omitnan'));
+
+% EiN F1: Mean, STD
+[tmp,pId_EiN_f2] = max(meanEiN(:,b));
+pId_EiN_f2(pId_EiN_f2==1) = NaN;
+stdDcmEiN_f2 = 2*std(pId_EiN_f2,'omitnan');
+meanDcmEiN_f2 = 2*(mean(pId_EiN_f2,'omitnan'));
+
 ax2b = figure;
-plotKsCtd("yrly",ksEiN_f2,ksEpN_f2,ksLiN_f2,ksLpN_f2,[ctd(1).p(1:129)],meanMldEpN_f2,ttMeanPcm,ttSTD,tmpMeanP_SigCm,tmpStdSig);
+plotKsCtd("yrly",ksEiN_f2,ksEpN_f2,ksLiN_f2,ksLpN_f2,[ctd(1).p(1:129)],meanMldEpN_f2,meanDcmEpn_f2,stdDcmEpN_f2,meanDcmEiN_f2,stdDcmEiN_f2);
 sgtitle('Kolmogorov Smirnov: Night F2 01-21');
 exportgraphics(ax2b,'figures/ksYrlyf2.png');
 clear ax2b;
 
+clear a b;
 %% SEASONAL
 
 for i = cruisesRecorded
@@ -365,10 +399,10 @@ meanDcmSum = mean(tmpMeanDcm(sumVals),'omitnan');
 meanDcmAut = mean(tmpMeanDcm(autVals),'omitnan');
 
 % DCM by season ("isopycnal")
-meanDcmWinSig = round(2*mean(tmpId(winVals),'omitnan'));
-meanDcmSprSig = round(2*mean(tmpId(sprVals),'omitnan'));
-meanDcmSumSig = round(2*mean(tmpId(sumVals),'omitnan'));
-meanDcmAutSig = round(2*mean(tmpId(autVals),'omitnan'));
+meanDcmWinSig = round(2*mean(pId_EiN(winVals),'omitnan'));
+meanDcmSprSig = round(2*mean(pId_EiN(sprVals),'omitnan'));
+meanDcmSumSig = round(2*mean(pId_EiN(sumVals),'omitnan'));
+meanDcmAutSig = round(2*mean(pId_EiN(autVals),'omitnan'));
 
 % WINTER
 ksEiNw = getKS(meanEiN,129,winVals);    % Isopycnal Eulerian
@@ -462,10 +496,10 @@ meanDcmSumF2 = mean(tmpMeanDcm(sumVals(33:end)),'omitnan');
 meanDcmAutF2 = mean(tmpMeanDcm(autVals(30:end)),'omitnan');
 
 % DCM by season ("isopycnal")
-meanDcmWinSigF2 = round(2*mean(tmpId(winVals(36:end)),'omitnan'));
-meanDcmSprSigF2 = round(2*mean(tmpId(sprVals(33:end)),'omitnan'));
-meanDcmSumSigF2 = round(2*mean(tmpId(sumVals(33:end)),'omitnan'));
-meanDcmAutSigF2 = round(2*mean(tmpId(autVals(30:end)),'omitnan'));
+meanDcmWinSigF2 = round(2*mean(pId_EiN(winVals(36:end)),'omitnan'));
+meanDcmSprSigF2 = round(2*mean(pId_EiN(sprVals(33:end)),'omitnan'));
+meanDcmSumSigF2 = round(2*mean(pId_EiN(sumVals(33:end)),'omitnan'));
+meanDcmAutSigF2 = round(2*mean(pId_EiN(autVals(30:end)),'omitnan'));
 
 % WINTER
 ksEiNwF2 = getKS(meanEiN(:,b),129,f2winVals);    % Eulerian Isopycnal
