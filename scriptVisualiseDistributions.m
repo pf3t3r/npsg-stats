@@ -16,7 +16,19 @@ car(car<=0) = nan;
 
 funcVisualiseDistributions(chl_hplc,'Chl a (HPLC)');
 funcVisualiseDistributions(cmo,'Monovinyl Chl a (HPLC)');
-funcVisualiseDistributions(car,'Particulate Carbon');
+% funcVisualiseDistributions(car,'Particulate Carbon');
+
+%%
+p_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,4);
+% chl_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,5);
+id_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,1);
+[pb5_hplc,pb10_hplc,chlOut_hplc,n5_hplc,n10_hplc] = cleanAndBin(p_hplc,chl_hplc,id_hplc);
+
+ks = nan(5,20); obs = nan(20,1); n = 20; depth = 5:10:200;
+for i = 10:10
+    X_i = chl_hplc(pb10_hplc==i);
+    funcVisualiseDistributions(X_i,'Chl a (HPLC): 100 dbar');
+end
 
 
 %% Reference: Examples of Distribution Types

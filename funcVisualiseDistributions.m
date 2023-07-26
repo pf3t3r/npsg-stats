@@ -37,22 +37,22 @@ hold on
 yyaxis right
 plot(x,yBirs,"DisplayName",'Birnbaum Saunders','Color','#a6cee3','LineStyle','-','Marker','none');
 % plot(x,yExpo,"DisplayName",'Exponential');
-% plot(x,yExtv,"DisplayName",'Extreme Value');
-plot(x,yGamm,"DisplayName",'Gamma','Color','#1f78b4','LineStyle','-','Marker','none','LineWidth',3);
-plot(x,yGene,"DisplayName",'Generalized Extreme Value','Color','#b2df8a','LineStyle','-','Marker','none');
+plot(x,yExtv,"DisplayName",'Extreme Value','Color','#1f78b4','LineStyle','-','Marker','none');
+plot(x,yGamm,"DisplayName",'Gamma','Color','#b2df8a','LineStyle','-','Marker','none','LineWidth',3);
+plot(x,yGene,"DisplayName",'Generalized Extreme Value','Color','#33a02c','LineStyle','-','Marker','none');
 % plot(x,yGenp,"DisplayName",'Generalized Pareto');
 % plot(x,yHaln,"DisplayName",'Half Normal');
-plot(x,yInvg,"DisplayName",'Inverse Gaussian','Color','#33a02c','LineStyle','-','Marker','none');
-% plot(x,yLogi,"DisplayName",'Logistic');
-plot(x,yLogl,"DisplayName",'LogLogistic','Color','#fb9a99','LineStyle','-','Marker','none');
-plot(x,yLogn,"DisplayName",'LogNormal','Color','#e31a1c','LineStyle','-','Marker','none','LineWidth',3);
-% plot(x,yNaka,"DisplayName",'Nakagami');
-plot(x,yNorm,"DisplayName",'Normal','Color','#fdbf6f','LineStyle','-','Marker','none','LineWidth',3);
+plot(x,yInvg,"DisplayName",'Inverse Gaussian','Color','#fb9a99','LineStyle','-','Marker','none');
+plot(x,yLogi,"DisplayName",'Logistic','Color','#e31a1c','LineStyle','-','Marker','none');
+plot(x,yLogl,"DisplayName",'LogLogistic','Color','#fdbf6f','LineStyle','-','Marker','none');
+plot(x,yLogn,"DisplayName",'LogNormal','Color','#ff7f00','LineStyle','-','Marker','none','LineWidth',3);
+plot(x,yNaka,"DisplayName",'Nakagami','Color','#cab2d6','LineStyle','-','Marker','none');
+plot(x,yNorm,"DisplayName",'Normal','Color','#6a3d9a','LineStyle','-','Marker','none','LineWidth',3);
 % plot(x,yPois,"DisplayName",'Poisson');
 % plot(x,yRayl,"DisplayName",'Rayleigh');
-plot(x,yRici,"DisplayName",'Rician','Color','#ff7f00','LineStyle','-','Marker','none');
-plot(x,yTloc,"DisplayName",'t Location-Scale','Color','#cab2d6','LineStyle','-','Marker','none');
-plot(x,yWeib,"DisplayName",'Weibull','Color','#6a3d9a','LineStyle','-','Marker','none','LineWidth',3);
+plot(x,yRici,"DisplayName",'Rician','Color','#ffff99','LineStyle','-','Marker','none');
+plot(x,yTloc,"DisplayName",'t Location-Scale','Color','#b15928','LineStyle','-','Marker','none');
+plot(x,yWeib,"DisplayName",'Weibull','Color','#a6cee3','LineStyle','-','Marker','none','LineWidth',3);
 hold off
 legend();
 title(titleName);
