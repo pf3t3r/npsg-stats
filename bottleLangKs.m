@@ -101,6 +101,10 @@ idPic = num2str(importdata('data\picoeu_05-21.txt').data(:,1));
 pPic = importdata('data\picoeu_05-21.txt').data(:,4);
 pic = importdata('data\picoeu_05-21.txt').data(:,5);
 
+idFuc = num2str(importdata('data\fuc_88_21.txt').data(:,1));
+pFuc = importdata('data\fuc_88_21.txt').data(:,4);
+fuc = importdata('data\fuc_88_21.txt').data(:,5);
+
 %% 3. Apply Kolmogorov Smirnov Test to Bottle Concentrations
 
 % Default Threshold (=100)
@@ -119,6 +123,7 @@ b = 1:5890;
 [trPro,ksPro,obsPro,skPro,kuPro,sdPro,c95pro,muPro] = ksOfLagrangian(idPro,pPro,dcm,pro,147);                              % Prochlorococcus
 [trSyn,ksSyn,obsSyn,skSyn,kuSyn,sdSyn,c95syn,muSyn] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147);                              % Synechococcus
 [trPic,ksPic,obsPic,skPic,kuPic,sdPic,c95pic,muPic] = ksOfLagrangian(idPic,pPic,dcm,pic,147);                              % Picoeukaryotes
+[trFuc,ksFuc,obsFuc,skFuc,kuFuc,sdFuc,c95fuc,muFuc] = ksOfLagrangian(idFuc,pFuc,dcm,fuc,147);                              % Picoeukaryotes
 
 % Lower Threshold (=50)
 [trPro50,ksPro50,obsPro50,skPro50,kuPro50,sdPro50,c95pro50,muPro50] = ksOfLagrangian(idPro,pPro,dcm,pro,147,50);                     % Prochlorococcus
@@ -140,6 +145,7 @@ b = 1:5890;
 [trProA,ksProA,obsProA,skProA,kuProA] = ksOfLagrangian(idPro,pPro,dcm,pro,147,46);                        % Prochlorococcus
 [trSynA,ksSynA,obsSynA,skSynA,kuSynA] = ksOfLagrangian(idSyn,pSyn,dcm,syn,147,48);                        % Synechococcus
 [trPicA,ksPicA,obsPicA,skPicA,kuPicA] = ksOfLagrangian(idPic,pPic,dcm,pic,147,46);                        % Picoeukaryotes
+[trFucA,ksFucA,obsFucA,skFucA,kuFucA] = ksOfLagrangian(idFuc,pFuc,dcm,fuc,147,48);                        % Picoeukaryotes
 
 %% 4. Plot the KS Statistics for each Bottle Concentration Time Series
 % All of the following results are DCM-centred (Lagrangian), binned to 10
@@ -316,6 +322,18 @@ ax13a = figure;
 plotKs(trAtpA,ksAtpA,obsAtpA,skAtpA,kuAtpA,2,27,false,70);
 sgtitle('ATP (Lagrangian, 10 dbar, Threshold = 70)');
 exportgraphics(ax13a,'figures/ks_AtpLagA.png'); clear ax13a;
+
+%% 4.m Fucoxanthin
+
+ax13x1 = figure;
+plotKs(trFuc,ksFuc,obsFuc,skFuc,kuFuc,2,27,false);
+sgtitle('Fucoxanthin (Lagrangian, 10 dbar)');
+exportgraphics(ax13x1,'figures/ks_FucLag.png'); clear ax13x1;
+
+ax13x1a = figure;
+plotKs(trFucA,ksFucA,obsFucA,skFucA,kuFucA,2,27,false,48);
+sgtitle('Fucoxanthin (Lagrangian, 10 dbar, Threshold = 48)');
+exportgraphics(ax13x1a,'figures/ks_FucLagA.png'); clear ax13x1a;
 
 %% 5.1 Visualise mean
 

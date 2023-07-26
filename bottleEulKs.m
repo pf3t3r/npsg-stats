@@ -78,6 +78,12 @@ id_pic = importdata('data/picoeu_05-21.txt').data(:,1);
 p_pic = importdata('data/picoeu_05-21.txt').data(:,4);
 pic = importdata('data/picoeu_05-21.txt').data(:,5);
 
+% Fucoxanthin
+% WIP ...
+id_fuc = importdata('data/fuc_88_21.txt').data(:,1);
+p_fuc = importdata('data/fuc_88_21.txt').data(:,4);
+fuc = importdata('data/fuc_88_21.txt').data(:,5);
+
 %% Clean and Bin Data
 
 [pBin5,pBin10,chl_Out,n5,n10] = cleanAndBin(p_reg,chl_reg,id_reg);                              % Chlorophyll a (regular method)
@@ -93,6 +99,7 @@ pic = importdata('data/picoeu_05-21.txt').data(:,5);
 [pb5_pro,pb10_pro,proOut,n5_pro,n10_pro] = cleanAndBin(p_pro,pro,id_pro);                       % Prochlorococcus
 [pb5_syn,pb10_syn,synOut,n5_syn,n10_syn] = cleanAndBin(p_syn,syn,id_syn);                       % Synechococcus
 [pb5_pic,pb10_pic,picOut,n5_pic,n10_pic] = cleanAndBin(p_pic,pic,id_pic);                       % Pico-Eukaryotes
+[pb5_fuc,pb10_fuc,fucOut,n5_fuc,n10_fuc] = cleanAndBin(p_fuc,fuc,id_fuc);                       % Fucoxanthin
 
 %% TEST: HPLC Chl-a @ 25 dbar
 
@@ -142,6 +149,9 @@ end
 [ksPic5, obsPic5, dPic5, skPic5, kuPic5, sdPic5, c95pic5, muPic5] = ksOfBinnedCon(picOut,pb5_pic,5);          % 5 dbar / Pico-Eukaryotes
 [ksPic10, obsPic10, dPic10, skPic10, kuPic10, sdPic10, c95pic10, muPic10] = ksOfBinnedCon(picOut,pb10_pic,10);     % 10 dbar / Pico-Eukaryotes
 
+[ksFuc5, obsFuc5, dFuc5, skFuc5, kuFuc5, sdFuc5, c95fuc5, muFuc5] = ksOfBinnedCon(fucOut,pb5_fuc,5);          % 5 dbar / Fucoxanthin
+[ksFuc10, obsFuc10, dFuc10, skFuc10, kuFuc10, sdFuc10, c95fuc10, muFuc10] = ksOfBinnedCon(fucOut,pb10_fuc,10);     % 10 dbar / Fucoxanthin
+
 %% standard error vs uncertainty on mean
 % only look at 10 dbar values
 
@@ -158,6 +168,7 @@ sePho11 = sdPho10_11(:,3)./sqrt((obsPho10_11(obsPho10_11>75)));         % pho11
 sePro = sdPro10(:,3)./sqrt((obsPro10(obsPro10>100)));     % pro
 seSyn = sdSyn10(:,3)./sqrt((obsSyn10(obsSyn10>100)));     % syn
 sePic = sdPic10(:,3)./sqrt((obsPic10(obsPic10>100)));     % pic
+seFuc = sdFuc10(:,3)./sqrt((obsFuc10(obsFuc10>100)));     % fuc
 
 % confidence interval around mean / uncertainty on mean
 % I just find one-sided uncertainty???
@@ -173,7 +184,7 @@ ciPho11 = muPho10_11(:,1) - c95pho10_11(:,1);
 ciPro = muPro10(:,1) - c95Pro10(:,1);
 ciSyn = muSyn10(:,1) - c95syn10(:,1);
 ciPic = muPic10(:,1) - c95pic10(:,1);
-
+ciFuc = muFuc10(:,1) - c95fuc10(:,1);
 % save datafiles\seCi.mat seChl se
 
 %% Chlorophyll a (regular method): Eulerian 5 dbar
@@ -374,6 +385,20 @@ ax24 = figure;
 plotKs(dPic10,ksPic10,obsPic10,skPic10,kuPic10,0.5,20.5,true);
 sgtitle('Pico-Eukaryotes: Eulerian Bottle, 10 dbar bin');
 exportgraphics(ax24,'figures/ks_PicEulerian10db.png'); clear ax24;
+
+%% Fucoxanthin: Eulerian 5 dbar 
+
+ax24a = figure;
+plotKs(dFuc5,ksFuc5,obsFuc5,skFuc5,kuFuc5,0,40,true);
+sgtitle('Fucoxanthin: Eulerian Bottle, 5 dbar bin');
+exportgraphics(ax24a,'figures/ks_FucEulerian5db.png'); clear ax24a;
+
+%% Fucoxanthin: Eulerian 10 dbar
+
+ax24b = figure;
+plotKs(dFuc10,ksFuc10,obsFuc10,skFuc10,kuFuc10,0.5,20.5,true);
+sgtitle('Fucoxanthin: Eulerian Bottle, 10 dbar bin');
+exportgraphics(ax24b,'figures/ks_FucEulerian10db.png'); clear ax24b;
 
 %% Visualise STD Fraction
 
