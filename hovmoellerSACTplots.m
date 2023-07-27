@@ -199,12 +199,14 @@ MLD_rm = MLD_rm + 5;
 % Very broad trend
 MLD_10yr = movmean(MLD_rm,100);
 
+
+%%
 ax5 = figure;
 
 subplot(2,1,1)
 contourf(t_grid,p_grid,sigma2D,linspace(22,25.5,nb),'LineColor','auto');
 hold on
-plot(t_grid(1,:),MLD,'LineWidth',1.5,'Color',[0 0 0]);
+plot(t_grid(1,:),2*MLD-2,'LineWidth',1.5,'Color',[0 0 0]);
 hold off
 set(gca,'Ydir','reverse')
 datetickzoom('x','dd/mm/yyyy','keeplimits');
