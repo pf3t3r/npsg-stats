@@ -101,3 +101,10 @@ ax2 = figure;
 plotKs(dHp102,ksHp102,obsHp102,skHp102,kuHp102,0.5,20.5,true);
 sgtitle('HPLC Method: [chl a] (Eulerian Bottle, 10 dbar bin)');
 exportgraphics(ax2,'figures/ks_HplcBottleEulerian10db_maxMLD.png'); clear ax2;
+
+%% save things
+
+pMldId = newId2;
+pMld = newP2;
+
+save testPMld.mat pMld pMldId maxMldPerCruise;

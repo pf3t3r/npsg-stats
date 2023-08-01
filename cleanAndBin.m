@@ -35,8 +35,8 @@ p = p(1:id329);
 X = X(1:id329);
 clear idRm idZero id329 i;
 
-pb5 = discretize(p,2.5:5:202.5);
-pb10 = discretize(p,2.5:10:202.5);
+pb5 = discretize(p,0:5:200);
+pb10 = discretize(p,0:10:200);
 n5 = max(pb5);
 n10 = max(pb10);
 
