@@ -1,4 +1,4 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,limitOveride)
 %plotKs
 % INPUT: 
 % OUTPUT: 
@@ -26,6 +26,10 @@ if EulLan
 else
     limits = [-150 100];
     ytix = tr;
+end
+
+if nargin == 10
+    limits = limitOveride;
 end
 
 subplot(1,3,1)

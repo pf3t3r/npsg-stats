@@ -38,6 +38,8 @@ ttdate = reshape(tdate',[],1);
 tttdate = datetime((ttdate)','ConvertFrom','datenum');
 dcm = [ttcrn tcast tpcm];
 
+save dcm.mat dcm;
+
 figure
 plot(tttdate,dcm(:,3));
 xlabel('Time'); ylabel('p_{DCM} (dbar)'); set(gca,'YDir','reverse');
