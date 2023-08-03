@@ -4,35 +4,39 @@ p_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,4);
 chl_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,5);
 id_hplc = num2str(importdata('data/HPLC_chla_88-21.txt').data(:,1));
 
-% p_hplc = importdata('data/HPLC_chlaTS_88-21.txt').data(:,4);
-% chl_hplc = importdata('data/HPLC_chlaTS_88-21.txt').data(:,7);
-% id_hplc = num2str(importdata('data/HPLC_chlaTS_88-21.txt').data(:,1));
+% Load CTD Salinity and Temperature: save where readings coincide with chl
+tmpT = importdata('data\HPLC_chlaTS_88-21.txt').data(:,5);
+tmpSp = importdata('data\HPLC_chlaTS_88-21.txt').data(:,6);
+tmpChl = importdata('data\HPLC_chlaTS_88-21.txt').data(:,7);
+tmpChl(tmpChl==-9) = nan;
+t_hplc = tmpT(~isnan(tmpChl));
+sp_hplc = tmpSp(~isnan(tmpChl));
+
+clear tmpT tmpSp tmpChl;
 
 %%
 
 % Only look at values below the maximum MLD of a cruise
 % We don't have a convenient measurement of MLD in 'isopycnal' coordinates.
-
-% pMldId = load('testPMld.mat').pMldId;
-% pMld = load('testPMld.mat').pMld;
 pMaxMld = load('testPMld.mat').maxMldPerCruise;
 
-
-% tmp = num2str(id_hplc);
 bottleCRN = str2num(id_hplc(:,1:3));
 
 %%
 
 % these new values are pressures etc that are below MLD
 
-tmpP_subML = nan(2062,1);
-tmpCRN_subML = nan(2062,1);
-tmpChl_subML = nan(2062,1);
-tmpId_subML = nan(2062,1);
-tmpCrnStr_subML = nan(2062,1);
+L = 3550;
+
+tmpP_subML = nan(L,1);
+tmpCRN_subML = nan(L,1);
+tmpChl_subML = nan(L,1);
+% tmpId_subML = nan(L,1);
+tmpCrnStr_subML = nan(L,1);
+tmpT = nan(L,1); tmpS = nan(L,1);
 botID = [];
 
-for i = 1:2062
+for i = 1:L
     %bottleCRN(i)
     % with MAX MLD per cruise
     tmpMld = pMaxMld(bottleCRN(i));
@@ -41,6 +45,8 @@ for i = 1:2062
         tmpCRN_subML(i) = bottleCRN(i);
         tmpChl_subML(i) = chl_hplc(i);
         tmpStr = id_hplc(i,:);
+        tmpT(i) = t_hplc(i);
+        tmpS(i) = sp_hplc(i);
         botID = [botID;tmpStr];
     end
 end
@@ -49,12 +55,27 @@ end
 pSubML = tmpP_subML(~isnan(tmpP_subML));
 crnSubML = tmpCRN_subML(~isnan(tmpCRN_subML));
 chlSubML = tmpChl_subML(~isnan(tmpChl_subML));
-idSubML = tmpId_subML(~isnan(tmpId_subML));
+% idSubML = tmpId_subML(~isnan(tmpId_subML));
+tSubML = tmpT(~isnan(tmpT));
+sSubML = tmpS(~isnan(tmpS));
+
+%% Calculate Density for above
+
+SA_subML = gsw_SA_from_SP(sSubML,pSubML,158,22.75);
+CT_subML = gsw_CT_from_t(SA_subML,tSubML,pSubML);
+
+sigma0_subML = gsw_sigma0(SA_subML,CT_subML);
+
+sigma0_subML_ROUND = round(sigma0_subML,5);
+
+%%
+figure;
+histogram(sigma0_subML_ROUND);
 
 %%
 figure
 scatter(chlSubML,pSubML,'Marker','.');
-set(gca,'YDir','reverse');
+set(gca,'YDir','reverse'); ylim([0 200]);
 xlabel('Chl a (HPLC) [ng/l]'); ylabel('Pressure [dbar]');
 title('Sub-ML chl a','Interpreter','latex');
 
@@ -133,7 +154,7 @@ testP = importdata('data/chlTS.txt').data(:,4);
 testT = importdata('data/chlTS.txt').data(:,5);
 % testS_b = importdata('data/chlTS.txt').data(:,7);
 testS_c = importdata('data/chlTS.txt').data(:,6);
-testChl = importdata('data/chlTS.txt').data(:,8);
+testChl = importdata('data/chlTS.txt').data(:,7);
 testId = num2str(importdata('data/chlTS.txt').data(:,1));
 testChl(testChl == -9) = nan;
 
