@@ -64,135 +64,181 @@ sSubML = tmpS(~isnan(tmpS));
 SA_subML = gsw_SA_from_SP(sSubML,pSubML,158,22.75);
 CT_subML = gsw_CT_from_t(SA_subML,tSubML,pSubML);
 
-sigma0_subML = gsw_sigma0(SA_subML,CT_subML);
+sig0_sM = gsw_sigma0(SA_subML,CT_subML);
+sig0_sMr = round(sig0_sM,3,"significant");
 
-sigma0_subML_ROUND = round(sigma0_subML,5);
+%% Density Histogram
 
-%%
+% Set edges to match rounding
+% This should be one less than (no. of unique values + missing bins in
+% between)
+uniH = length(unique(sig0_sMr));
+edgesH = length(min(sig0_sMr):0.1:max(sig0_sMr)) - 1;
+
 figure;
-histogram(sigma0_subML_ROUND);
+histogram(sig0_sMr,edgesH);
 
-%%
-figure
-scatter(chlSubML,pSubML,'Marker','.');
-set(gca,'YDir','reverse'); ylim([0 200]);
-xlabel('Chl a (HPLC) [ng/l]'); ylabel('Pressure [dbar]');
-title('Sub-ML chl a','Interpreter','latex');
+%% Filter densest waters out
 
-%%
+sig0_sMrf = sig0_sMr(sig0_sMr<=25.8);
 
+% Confirm that filtering has been done correctly
+% uniF = length(unique(sig0_sMrf));
+figure; histogram(sig0_sMrf,'BinWidth',0.1,'BinLimits',[min(sig0_sMrf) max(sig0_sMrf)]);
 
+%% Extract chl-a at the densities in range 22.7 - 25.7
+
+chlaSubMLf = chlSubML(sig0_sMr<=25.8);
+botIDf = botID(sig0_sMr<=25.8);             % this is needed for ksOfLagrangian()
+crnSubMLf = crnSubML(sig0_sMr<=25.8);
+
+%% Test visualise
+figure;
+scatter(chlaSubMLf,sig0_sMrf,'Marker','.');
+% plot(chlaSubMLf(1:4),sig0_sMrf(1:4));
+% hold on
+% plot(chlaSubMLf(5:9),sig0_sMrf(5:9));
+% hold off
+set(gca,'YDir','reverse');
+
+%% Try ksOfLagrangian
 dcm = load("dcm.mat").dcm;
 
-%% Calculate KS p-value for Chl-a (HPLC)
+
+
+% [sigKs,ksChlIso,obsChlIso,skChlIso,kuChlIso,~,~,~] = ksOfLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,159,100);
 
 % Threshold = 100
-[p100,ks100,obs100,sk100,ku100,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,100);
-% Threshold = 80
-[p80,ks80,obs80,sk80,ku80,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,77);
-% Threshold = 48
-[p45,ks45,obs45,sk45,ku45,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,48);
-
-
-%% Plot KS p-value for Chl-a (HPLC)
-
-% Threshold = 100
-ax1 = figure;
-plotKs(p100,ks100,obs100,sk100,ku100,1,23,false,100,[-120 100]);
-sgtitle('KS Test: Chl-a (HPLC), T = 100, 88-21');
-exportgraphics(ax1,'figures/ks_botLagSubML_t100.png'); clear ax1;
-
-% Threshold = 77
-ax2 = figure;
-plotKs(p80,ks80,obs80,sk80,ku80,1,23,false,77,[-120 100]);
-sgtitle('KS Test: Chl-a (HPLC), T = 80, 88-21');
-exportgraphics(ax2,'figures/ks_botLagSubML_t80.png'); clear ax2;
-
-% Threshold = 48
-ax3 = figure;
-plotKs(p45,ks45,obs45,sk45,ku45,1,23,false,48,[-120 100]);
-sgtitle('KS Test: Chl-a (HPLC), T = 45, 88-21');
-exportgraphics(ax3,'figures/ks_botLagSubML_t45.png'); clear ax3;
-
-
-
-%% density check for cruise no. 2
-
-% test = importdata('data/crn2_chlTS.txt').data(:,4);
-testP = importdata('data/crn2_chlTS.txt').data(:,4);
-testT = importdata('data\crn2_chlTS.txt').data(:,5);
-testS_b = importdata('data\crn2_chlTS.txt').data(:,7);
-testS_c = importdata('data/crn2_chlTS.txt').data(:,6);
-testChl = importdata('data/crn2_chlTS.txt').data(:,8);
-testId = num2str(importdata('data/crn2_chlTS.txt').data(:,1));
-
-cast = str2num(testId(:,5:6));
-
-SA = gsw_SA_from_SP([testS_c],testP,158,22.75);
-SA(SA==0) = nan;
-CT = gsw_CT_from_t(SA,testT,testP);
-
-siggyBoi = gsw_sigma0(SA,CT);
-
-newVec = [cast(35:43) testP(35:43) siggyBoi(35:43)];
-
-
-
 %%
-sigCtd = [23.6888 24.1807 24.6807 25.0348];
+% ax1 = figure;
+% plotKs(sigKs,ks100,obsChlIso,skChlIso,kuChlIso,1,23,false);
+% sgtitle('KS Test: Chl-a (HPLC), T = 100, 88-21');
+% exportgraphics(ax1,'figures/ks_sM_lagIso.png'); clear ax1;
 
-ax4 = figure;
-yyaxis left; scatter(testChl(40:43),sigCtd); ylabel('$\sigma_0$ (in-situ)','Interpreter','latex'); hold on
-yyaxis right; scatter(testChl(40:43),siggyBoi(40:43)); ylabel('$\sigma_0$: TEOS-10','Interpreter','latex'); hold off
-xlabel('HPLC Chl a [ng/l]'); title('Density of chl a measurements: Cruise No. 2 (HOT, 1988)');
-exportgraphics(ax4,'figures/crn2_sigma0_comparison.png'); clear ax4;
-
-%% density: all cruises
-
-% test = importdata('data/crn2_chlTS.txt').data(:,4);
-testP = importdata('data/chlTS.txt').data(:,4);
-testT = importdata('data/chlTS.txt').data(:,5);
-% testS_b = importdata('data/chlTS.txt').data(:,7);
-testS_c = importdata('data/chlTS.txt').data(:,6);
-testChl = importdata('data/chlTS.txt').data(:,7);
-testId = num2str(importdata('data/chlTS.txt').data(:,1));
-testChl(testChl == -9) = nan;
-
-cast = str2num(testId(:,5:6));
-
-SA = gsw_SA_from_SP(testS_c,testP,158,22.75);
-SA(SA==0) = nan;
-CT = gsw_CT_from_t(SA,testT,testP);
-
-siggyBoi = gsw_sigma0(SA,CT);
-
+%% Sub-ML Chl-a Samples as a function of depth
+% 
+% figure
+% scatter(chlSubML,pSubML,'Marker','.');
+% set(gca,'YDir','reverse'); ylim([0 200]);
+% xlabel('Chl a (HPLC) [ng/l]'); ylabel('Pressure [dbar]');
+% title('Sub-ML chl a','Interpreter','latex');
+% 
+% %%
+% 
+% 
+% dcm = load("dcm.mat").dcm;
+% 
+% %% Chl-a (HPLC): Calculate KS p-value
+% 
+% % Threshold = 100
+% [p100,ks100,obs100,sk100,ku100,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,100);
+% % Threshold = 80
+% [p80,ks80,obs80,sk80,ku80,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,77);
+% % Threshold = 48
+% [p45,ks45,obs45,sk45,ku45,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,48);
+% 
+% 
+% %% Chl-a (HPLC): Plot KS p-value 
+% 
+% % Threshold = 100
+% ax1 = figure;
+% plotKs(p100,ks100,obs100,sk100,ku100,1,23,false,100,[-120 100]);
+% sgtitle('KS Test: Chl-a (HPLC), T = 100, 88-21');
+% exportgraphics(ax1,'figures/ks_botLagSubML_t100.png'); clear ax1;
+% 
+% % Threshold = 77
+% ax2 = figure;
+% plotKs(p80,ks80,obs80,sk80,ku80,1,23,false,77,[-120 100]);
+% sgtitle('KS Test: Chl-a (HPLC), T = 80, 88-21');
+% exportgraphics(ax2,'figures/ks_botLagSubML_t80.png'); clear ax2;
+% 
+% % Threshold = 48
+% ax3 = figure;
+% plotKs(p45,ks45,obs45,sk45,ku45,1,23,false,48,[-120 100]);
+% sgtitle('KS Test: Chl-a (HPLC), T = 45, 88-21');
+% exportgraphics(ax3,'figures/ks_botLagSubML_t45.png'); clear ax3;
+% 
+% 
+% 
+% %% TEST. Look at densities in Cruise No. 2
+% 
+% % test = importdata('data/crn2_chlTS.txt').data(:,4);
+% testP = importdata('data/crn2_chlTS.txt').data(:,4);
+% testT = importdata('data\crn2_chlTS.txt').data(:,5);
+% testS_b = importdata('data\crn2_chlTS.txt').data(:,7);
+% testS_c = importdata('data/crn2_chlTS.txt').data(:,6);
+% testChl = importdata('data/crn2_chlTS.txt').data(:,8);
+% testId = num2str(importdata('data/crn2_chlTS.txt').data(:,1));
+% 
+% cast = str2num(testId(:,5:6));
+% 
+% SA = gsw_SA_from_SP([testS_c],testP,158,22.75);
+% SA(SA==0) = nan;
+% CT = gsw_CT_from_t(SA,testT,testP);
+% 
+% siggyBoi = gsw_sigma0(SA,CT);
+% 
 % newVec = [cast(35:43) testP(35:43) siggyBoi(35:43)];
-figure;scatter(testChl,siggyBoi); set(gca,'YDir','reverse');
-
-sigBin = discretize(siggyBoi,22.4:0.1:26);
-
-% sigBin2 = discretize(siggyBoi,min(siggyBoi):0.1:max(siggyBoi));
-%%
-% [ks, obs, depth2, Sk, ku, sd, c95, mu] = ksOfBinnedCon(testChl, sigBin, 10);
-
-ksSig = nan(5,36);
-Sk = nan(1,36); Ku = nan(1,36); obs = nan(1,36);
-
-for i = 1:36
-    X_i = testChl(sigBin==i);
-    X_i(isnan(X_i)) = [];
-    if length(X_i) >3
-        [~,ksSig(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
-        Sk(i) = skewness(X_i);
-        Ku(i) = kurtosis(X_i);
-    end
-    obs(i) = length(X_i);
-end
-
-% figure;
-% plot(ksSig,1:1:36);
-% set(gca,'YDir','reverse');
-
-tr = linspace(min(siggyBoi),max(siggyBoi),36);
-
-plotKsSig(tr,ksSig,obs,Sk,Ku);
+% 
+% 
+% 
+% %% In-situ Density sigma0: CTD value vs. TEOS-10 calculation
+% % sigma0: in-situ density where reference pressure is 0 dbar.
+% 
+% sigCtd = [23.6888 24.1807 24.6807 25.0348];
+% 
+% ax4 = figure;
+% yyaxis left; scatter(testChl(40:43),sigCtd); ylabel('$\sigma_0$ (in-situ)','Interpreter','latex'); hold on
+% yyaxis right; scatter(testChl(40:43),siggyBoi(40:43)); ylabel('$\sigma_0$: TEOS-10','Interpreter','latex'); hold off
+% xlabel('HPLC Chl a [ng/l]'); title('Density of chl a measurements: Cruise No. 2 (HOT, 1988)');
+% exportgraphics(ax4,'figures/crn2_sigma0_comparison.png'); clear ax4;
+% 
+% %% density: all cruises
+% 
+% % test = importdata('data/crn2_chlTS.txt').data(:,4);
+% testP = importdata('data/chlTS.txt').data(:,4);
+% testT = importdata('data/chlTS.txt').data(:,5);
+% % testS_b = importdata('data/chlTS.txt').data(:,7);
+% testS_c = importdata('data/chlTS.txt').data(:,6);
+% testChl = importdata('data/chlTS.txt').data(:,7);
+% testId = num2str(importdata('data/chlTS.txt').data(:,1));
+% testChl(testChl == -9) = nan;
+% 
+% cast = str2num(testId(:,5:6));
+% 
+% SA = gsw_SA_from_SP(testS_c,testP,158,22.75);
+% SA(SA==0) = nan;
+% CT = gsw_CT_from_t(SA,testT,testP);
+% 
+% siggyBoi = gsw_sigma0(SA,CT);
+% 
+% % newVec = [cast(35:43) testP(35:43) siggyBoi(35:43)];
+% figure;scatter(testChl,siggyBoi); set(gca,'YDir','reverse');
+% 
+% sigBin = discretize(siggyBoi,22.4:0.1:26);
+% 
+% % sigBin2 = discretize(siggyBoi,min(siggyBoi):0.1:max(siggyBoi));
+% %%
+% % [ks, obs, depth2, Sk, ku, sd, c95, mu] = ksOfBinnedCon(testChl, sigBin, 10);
+% 
+% ksSig = nan(5,36);
+% Sk = nan(1,36); Ku = nan(1,36); obs = nan(1,36);
+% 
+% for i = 1:36
+%     X_i = testChl(sigBin==i);
+%     X_i(isnan(X_i)) = [];
+%     if length(X_i) >3
+%         [~,ksSig(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
+%         Sk(i) = skewness(X_i);
+%         Ku(i) = kurtosis(X_i);
+%     end
+%     obs(i) = length(X_i);
+% end
+% 
+% % figure;
+% % plot(ksSig,1:1:36);
+% % set(gca,'YDir','reverse');
+% 
+% tr = linspace(min(siggyBoi),max(siggyBoi),36);
+% 
+% plotKsSig(tr,ksSig,obs,Sk,Ku);

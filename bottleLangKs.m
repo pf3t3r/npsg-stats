@@ -10,6 +10,7 @@ set(0,'defaultAxesFontSize',10);
 crn = nan(329,1);
 cast = nan(329,31);
 pcm = nan(329,31);
+sigcm = nan(329,31);
 tdate = nan(329,31);
 
 ctd = load('datafiles\ctd_iso_ALL.mat').ctd;
@@ -21,6 +22,7 @@ for i = 1:329
     crn(i) = tmp;
     cast(i,1:length(ctd(i).cast)) = ctd(i).cast;
     pcm(i,1:length(ctd(i).pcm)) = ctd(i).pcm;
+    sigcm(i,1:length(ctd(i).sigcm)) = ctd(i).sigcm;
     tdate(i,1:length(ctd(i).date)) = ctd(i).date;
 end
 
@@ -31,12 +33,13 @@ tcrn = repmat(crn',31,1)';
 tcast = reshape(cast',[],1);
 ttcrn = reshape(tcrn',[],1);
 tpcm = reshape(pcm',[],1);
+tsigcm = reshape(sigcm',[],1);
 tMeanDcm = mean(pcm,2,"omitnan");
 tStdDcm = std(pcm,[],2,"omitnan");
 tStartCruise = datetime(tdate(:,1),'ConvertFrom','datenum');
 ttdate = reshape(tdate',[],1);
 tttdate = datetime((ttdate)','ConvertFrom','datenum');
-dcm = [ttcrn tcast tpcm];
+dcm = [ttcrn tcast tpcm tsigcm];
 
 save dcm.mat dcm;
 
