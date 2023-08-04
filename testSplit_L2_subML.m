@@ -89,22 +89,65 @@ figure; histogram(sig0_sMrf,'BinWidth',0.1,'BinLimits',[min(sig0_sMrf) max(sig0_
 %% Extract chl-a at the densities in range 22.7 - 25.7
 
 chlaSubMLf = chlSubML(sig0_sMr<=25.8);
-botIDf = botID(sig0_sMr<=25.8);             % this is needed for ksOfLagrangian()
+botIDf = botID(sig0_sMr<=25.8,:);             % this is needed for ksOfLagrangian()
 crnSubMLf = crnSubML(sig0_sMr<=25.8);
 
 %% Test visualise
-figure;
-scatter(chlaSubMLf,sig0_sMrf,'Marker','.');
-% plot(chlaSubMLf(1:4),sig0_sMrf(1:4));
-% hold on
-% plot(chlaSubMLf(5:9),sig0_sMrf(5:9));
-% hold off
-set(gca,'YDir','reverse');
+% figure;
+% scatter(chlaSubMLf,sig0_sMrf,'Marker','.');
+% % plot(chlaSubMLf(1:4),sig0_sMrf(1:4));
+% % hold on
+% % plot(chlaSubMLf(5:9),sig0_sMrf(5:9));
+% % hold off
+% set(gca,'YDir','reverse');
 
 %% Try ksOfLagrangian
 dcm = load("dcm.mat").dcm;
 
+%%
+threshold = 93;
 
+[trange,ks,obsPerBin,Sk,Ku,botArr,sigB,Xout] = ksOfIsoLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,threshold);
+
+%% Test
+figure;
+yyaxis left
+scatter(chlaSubMLf,sig0_sMrf,'Marker','.'); set(gca,'YDir','reverse');
+ylabel('$\sigma_0 [\textrm{kg m}^{-3}]$','Interpreter','latex');
+yyaxis right
+scatter(botArr(:,7),botArr(:,6),'Marker','.');
+set(gca,'YDir','reverse'); xlabel('$\textrm{Chl } \textit{a } [\textrm{ng l}^{-1}$]','Interpreter','latex');
+ylabel('$\sigma_0: \textrm{DCM-centred, below ML} [\textrm{kg m}^{-3}]$','Interpreter','latex');
+title('Chl a vs. $\sigma_0$',[],'Interpreter','latex');
+
+
+%% KS
+figure;
+subplot(1,2,1)
+barh(obsPerBin,'FaceColor','#a6cee3');
+hold on
+xline(threshold);
+hold off
+set(gca,'YDir','reverse');
+set(gca,'XDir','reverse'); 
+% ylim([-1.9 1.8]);
+ylim([1 38]);
+set(gca,"YTick",1:1:length(trange),"YTickLabel",trange);
+
+subplot(1,2,2)
+plot(ks(1,:),trange,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+hold on
+plot(ks(2,:),trange,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+plot(ks(3,:),trange,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+plot(ks(4,:),trange,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+hold off
+grid minor;
+ylim([-1.9 1.8]);
+set(gca,'YDir','reverse');
+legend('Location','best');
+xlabel('p-value');
+ylabel('$\sigma_0 [\textrm{kg m}^{-3}]$','Interpreter','latex');
+title('KS Test: DCM-centred');
 
 % [sigKs,ksChlIso,obsChlIso,skChlIso,kuChlIso,~,~,~] = ksOfLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,159,100);
 
