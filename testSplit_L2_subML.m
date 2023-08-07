@@ -1,287 +1,200 @@
 clear; clc; close all; addpath("baroneRoutines\");
 
-p_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,4);
-chl_hplc = importdata('data/HPLC_chla_88-21.txt').data(:,5);
-id_hplc = num2str(importdata('data/HPLC_chla_88-21.txt').data(:,1));
-
-% Load CTD Salinity and Temperature: save where readings coincide with chl
-tmpT = importdata('data\HPLC_chlaTS_88-21.txt').data(:,5);
-tmpSp = importdata('data\HPLC_chlaTS_88-21.txt').data(:,6);
-tmpChl = importdata('data\HPLC_chlaTS_88-21.txt').data(:,7);
-tmpChl(tmpChl==-9) = nan;
-t_hplc = tmpT(~isnan(tmpChl));
-sp_hplc = tmpSp(~isnan(tmpChl));
-
-clear tmpT tmpSp tmpChl;
-
-%%
-
-% Only look at values below the maximum MLD of a cruise
-% We don't have a convenient measurement of MLD in 'isopycnal' coordinates.
+%% Load MLD and DCM
 pMaxMld = load('testPMld.mat').maxMldPerCruise;
+dcm = load("dcm.mat").dcm;  % pDcm and sigmaDcm (all casts, crn 1 - 329)
 
-bottleCRN = str2num(id_hplc(:,1:3));
+%% Load parameters to test
 
-%%
+% CHL
+% Load bottle ID, pressure, chl, and corresponding CTD Sp and T
+chlId = num2str(importdata('data/HPLC_chlaTS_88-21.txt').data(:,1));
+chlP = importdata('data/HPLC_chlaTS_88-21.txt').data(:,4);
+chlChl = importdata('data\HPLC_chlaTS_88-21.txt').data(:,7);
+chlT = importdata('data\HPLC_chlaTS_88-21.txt').data(:,5);
+chlSp = importdata('data\HPLC_chlaTS_88-21.txt').data(:,6);
 
-% these new values are pressures etc that are below MLD
+% Let's try same for DIVINYL CHL A
+divId = num2str(importdata('data/chlaDivinyl_TS_88-21.txt').data(:,1));
+divP = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,4);
+divDiv = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,7);
+divT = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,5);
+divSp = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,6);
 
-L = 3550;
+% Let's try for PROCHLOROCOCCUS 05-21
+proId = num2str(importdata('data/proTS_05-21.txt').data(:,1));
+proP = importdata('data/proTS_05-21.txt').data(:,4);
+proPro = importdata('data/proTS_05-21.txt').data(:,7);
+proT = importdata('data/proTS_05-21.txt').data(:,5);
+proSp = importdata('data/proTS_05-21.txt').data(:,6);
 
-tmpP_subML = nan(L,1);
-tmpCRN_subML = nan(L,1);
-tmpChl_subML = nan(L,1);
-% tmpId_subML = nan(L,1);
-tmpCrnStr_subML = nan(L,1);
-tmpT = nan(L,1); tmpS = nan(L,1);
-botID = [];
 
-for i = 1:L
-    %bottleCRN(i)
-    % with MAX MLD per cruise
-    tmpMld = pMaxMld(bottleCRN(i));
-    if p_hplc(i) > tmpMld
-        tmpP_subML(i) = p_hplc(i);
-        tmpCRN_subML(i) = bottleCRN(i);
-        tmpChl_subML(i) = chl_hplc(i);
-        tmpStr = id_hplc(i,:);
-        tmpT(i) = t_hplc(i);
-        tmpS(i) = sp_hplc(i);
-        botID = [botID;tmpStr];
-    end
-end
+%% Find where density and concentration measurements coincide
 
-% now what do I do...
-pSubML = tmpP_subML(~isnan(tmpP_subML));
-crnSubML = tmpCRN_subML(~isnan(tmpCRN_subML));
-chlSubML = tmpChl_subML(~isnan(tmpChl_subML));
-% idSubML = tmpId_subML(~isnan(tmpId_subML));
-tSubML = tmpT(~isnan(tmpT));
-sSubML = tmpS(~isnan(tmpS));
+% Chl a
+[chlIdOut,sigChl,chlOut,testcrn] = densityConcentrations(chlId, chlP, chlChl, chlT, chlSp, pMaxMld);
 
-%% Calculate Density for above
+% Divinyl Chl a
+[divIdOut,sigDiv,divOut] = densityConcentrations(divId, divP, divDiv, divT, divSp, pMaxMld);
 
-SA_subML = gsw_SA_from_SP(sSubML,pSubML,158,22.75);
-CT_subML = gsw_CT_from_t(SA_subML,tSubML,pSubML);
+% Prochlorococcus
+[proIdOut,sigPro,proOut] = densityConcentrations(proId, proP, proPro, proT, proSp, pMaxMld);
 
-sig0_sM = gsw_sigma0(SA_subML,CT_subML);
-sig0_sMr = round(sig0_sM,3,"significant");
+%% Apply ksOfIsoLagrangian function
 
-%% Density Histogram
+t93 = 93; t67 = 67; t39 = 39; t31 = 31;
 
-% Set edges to match rounding
-% This should be one less than (no. of unique values + missing bins in
-% between)
-uniH = length(unique(sig0_sMr));
-edgesH = length(min(sig0_sMr):0.1:max(sig0_sMr)) - 1;
+% CHLA (HPLC)
+[trange,ks,obsPerBin,Sk,Ku,botArr,sigB,Xout] = ksOfIsoLagrangian(chlIdOut,sigChl,dcm,chlOut,t93);
+[tr67,ks67,obs67,sk67,ku67,bot67,sigB67,Xout67] = ksOfIsoLagrangian(chlIdOut,sigChl,dcm,chlOut,t67);
+[tr39,ks39,obs39,sk39,ku39,bot39,sigB39,Xout39] = ksOfIsoLagrangian(chlIdOut,sigChl,dcm,chlOut,t39);
 
-figure;
-histogram(sig0_sMr,edgesH);
+% DIVINYL CHLA (HPLC)
+[trDiv,ksDiv,obsDiv,SkDiv,KuDiv,botDiv,sigBDiv,XoutDiv] = ksOfIsoLagrangian(divIdOut,sigDiv,dcm,divOut,t93);
 
-%% Filter densest waters out
+% Prochlorococcus
+[trPro,ksPro,obsPro,SkPro,KuPro,botPro,sigBPro,XoutPro] = ksOfIsoLagrangian(proIdOut,sigPro,dcm,proOut,t31);
 
-sig0_sMrf = sig0_sMr(sig0_sMr<=25.8);
 
-% Confirm that filtering has been done correctly
-% uniF = length(unique(sig0_sMrf));
-figure; histogram(sig0_sMrf,'BinWidth',0.1,'BinLimits',[min(sig0_sMrf) max(sig0_sMrf)]);
 
-%% Extract chl-a at the densities in range 22.7 - 25.7
-
-chlaSubMLf = chlSubML(sig0_sMr<=25.8);
-botIDf = botID(sig0_sMr<=25.8,:);             % this is needed for ksOfLagrangian()
-crnSubMLf = crnSubML(sig0_sMr<=25.8);
-
-%% Test visualise
+%
+% axA = figure;
+% plotKsSig(obsPerBin,t93,[1 38],[-1.9 1.8],ks,trange,Sk,Ku);
+% sgtitle('Chl-a (HPLC) 88-21: sub-ML, isopycnal, DCM-centred','FontSize',10);
+% exportgraphics(axA,'figures/L2/ks_chla_func.png'); clear axA;
+% %
+% % Extract id, p, chl, T, Sp only where there are measurements of chl
+% tmpChl(tmpChl==-9) = nan;
+% 
+% id_hplc = chlId(~isnan(tmpChl),:);
+% p_hplc = chlP(~isnan(tmpChl));
+% chl_hplc = tmpChl(~isnan(tmpChl));
+% t_hplc = tmpT(~isnan(tmpChl));
+% sp_hplc = tmpSp(~isnan(tmpChl));
+% 
+% clear tmpT tmpSp;
+%
+% % Only look at values below the maximum MLD of a cruise
+% % We don't have a convenient measurement of MLD in 'isopycnal' coordinates.
+% 
+% % Load mixed layer depth 'pMaxMld'. It is defined as the maximum mixed
+% % layer depth attained during a cruise.
+% pMaxMld = load('testPMld.mat').maxMldPerCruise;
+% 
+% % Extract cruise number 'crn'
+% crn = str2num(id_hplc(:,1:3));
+% Extract measurements taken below pMaxMld
+% L = 3550; % No. of casts with chl measurements in cruise 1 - 329
+% 
+% tmpP_subML = nan(L,1);
+% tmpCRN_subML = nan(L,1);
+% tmpChl_subML = nan(L,1);
+% % tmpCrnStr_subML = nan(L,1);
+% tmpT = nan(L,1); tmpS = nan(L,1);
+% botID = [];
+% 
+% % To find the measurements taken beneath pMaxMld, we save them to a new
+% % file...
+% for i = 1:L
+%     %crn(i)
+%     % with MAX MLD per cruise
+%     tmpMld = pMaxMld(crn(i));
+%     if p_hplc(i) > tmpMld
+%         tmpP_subML(i) = p_hplc(i);
+%         tmpCRN_subML(i) = crn(i);
+%         tmpChl_subML(i) = chl_hplc(i);
+%         tmpStr = id_hplc(i,:);
+%         tmpT(i) = t_hplc(i);
+%         tmpS(i) = sp_hplc(i);
+%         botID = [botID;tmpStr];
+%     end
+% end
+% 
+% % ...and remove nan values (which here represent measurements above
+% % pMaxMld)
+% pSubML = tmpP_subML(~isnan(tmpP_subML));
+% % crnSubML = tmpCRN_subML(~isnan(tmpCRN_subML));
+% chlSubML = tmpChl_subML(~isnan(tmpChl_subML));
+% tSubML = tmpT(~isnan(tmpT));
+% sSubML = tmpS(~isnan(tmpS));
+% % Calculate the sub-ML Density 'sig0_sM'
+% SA_subML = gsw_SA_from_SP(sSubML,pSubML,158,22.75);
+% CT_subML = gsw_CT_from_t(SA_subML,tSubML,pSubML);
+% 
+% sig0_sM = gsw_sigma0(SA_subML,CT_subML);
+% % Bin the sub-ML density -> 'sig0_sMr'
+% sig0_sMr = round(sig0_sM,3,"significant");
+% % Display Histogram of the binned sub-ML density 'sig0_sMr' 
+% % Edges = (no. of unique values/bins + missing bins) - 1
+% uniH = length(unique(sig0_sMr));
+% edgesH = length(min(sig0_sMr):0.1:max(sig0_sMr)) - 1;
+% 
 % figure;
-% scatter(chlaSubMLf,sig0_sMrf,'Marker','.');
-% % plot(chlaSubMLf(1:4),sig0_sMrf(1:4));
-% % hold on
-% % plot(chlaSubMLf(5:9),sig0_sMrf(5:9));
-% % hold off
-% set(gca,'YDir','reverse');
+% histogram(sig0_sMr,edgesH);
+% % Remove densest waters -> continuous, binned sub-ML density 'sig0_sMrf'
+% This is justified because (1) it will give a continuous 'depth' profile
+% of density, and (2) 99.4% of the measurements are contained within the
+% continuosu portion anyway.
+% sig0_sMrf = sig0_sMr(sig0_sMr<=25.8);
+% 
+% % Confirm that filtering has been done correctly
+% figure; histogram(sig0_sMrf,'BinWidth',0.1,'BinLimits',[min(sig0_sMrf) max(sig0_sMrf)]);
+% % Extract Chl-a at the filtered, binned densities found above
+% chlaSubMLf = chlSubML(sig0_sMr<=25.8);
+% botIDf = botID(sig0_sMr<=25.8,:);             % this is needed for ksOfLagrangian()
+% % crnSubMLf = crnSubML(sig0_sMr<=25.8);
+% % Load DCM vector
+% This shows pDcm and sigmaDcm of each cast for cruises 1 - 329
+% dcm = load("dcm.mat").dcm;
+% % Apply ksOfIsoLagrangian function
+% t93 = 93; t67 = 67; t39 = 39;
+% 
+% [trange,ks,obsPerBin,Sk,Ku,botArr,sigB,Xout] = ksOfIsoLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,t93);
+% Alternative thresholds: 67, 39
+% [tr67,ks67,obs67,sk67,ku67,bot67,sigB67,Xout67] = ksOfIsoLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,t67);
+% [tr39,ks39,obs39,sk39,ku39,bot39,sigB39,Xout39] = ksOfIsoLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,t39);
 
-%% Try ksOfLagrangian
-dcm = load("dcm.mat").dcm;
+%% Chl a: Compare untransformed coordinates (Eulerian) to DCM-centred, Isopycnal coordinates
 
-%%
-threshold = 93;
-
-[trange,ks,obsPerBin,Sk,Ku,botArr,sigB,Xout] = ksOfIsoLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,threshold);
-
-%% Test
 figure;
 yyaxis left
-scatter(chlaSubMLf,sig0_sMrf,'Marker','.'); set(gca,'YDir','reverse');
-ylabel('$\sigma_0 [\textrm{kg m}^{-3}]$','Interpreter','latex');
+scatter(chlOut,sigChl,'Marker','.'); set(gca,'YDir','reverse');
+ylabel('$\sigma_0: \textrm{below ML } [\textrm{kg m}^{-3}]$','Interpreter','latex');
 yyaxis right
 scatter(botArr(:,7),botArr(:,6),'Marker','.');
 set(gca,'YDir','reverse'); xlabel('$\textrm{Chl } \textit{a } [\textrm{ng l}^{-1}$]','Interpreter','latex');
 ylabel('$\sigma_0: \textrm{DCM-centred, below ML} [\textrm{kg m}^{-3}]$','Interpreter','latex');
 title('Chl a vs. $\sigma_0$',[],'Interpreter','latex');
 
+%% KS p-values: Chl a (Isopycnal, DCM-centred)
 
-%% KS
-figure;
-subplot(1,2,1)
-barh(obsPerBin,'FaceColor','#a6cee3');
-hold on
-xline(threshold);
-hold off
-set(gca,'YDir','reverse');
-set(gca,'XDir','reverse'); 
-% ylim([-1.9 1.8]);
-ylim([1 38]);
-set(gca,"YTick",1:1:length(trange),"YTickLabel",trange);
+% trange(20) = round(trange(20));
 
-subplot(1,2,2)
-plot(ks(1,:),trange,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-hold on
-plot(ks(2,:),trange,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(3,:),trange,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-plot(ks(4,:),trange,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
-hold off
-grid minor;
-ylim([-1.9 1.8]);
-set(gca,'YDir','reverse');
-legend('Location','best');
-xlabel('p-value');
-ylabel('$\sigma_0 [\textrm{kg m}^{-3}]$','Interpreter','latex');
-title('KS Test: DCM-centred');
+ax1 = figure;
+plotKsSig(obsPerBin,t93,[1 38],[-1.9 1.8],ks,trange,Sk,Ku);
+sgtitle('Chl-a (HPLC) 88-21: sub-ML, isopycnal, DCM-centred','FontSize',10);
+exportgraphics(ax1,'figures/L2/ks_chla.png'); clear ax1;
 
-% [sigKs,ksChlIso,obsChlIso,skChlIso,kuChlIso,~,~,~] = ksOfLagrangian(botIDf,sig0_sMrf,dcm,chlaSubMLf,159,100);
+% ax1a = figure;
+% plotKsSig(obsPerBin,t67,[1 38],[-1.9 1.8],ks67,tr67,sk67,ku67);
+% sgtitle('Chl-a (HPLC) 88-21: sub-ML, isopycnal, DCM-centred (t = 67)','FontSize',10);
+% exportgraphics(ax1a,'figures/L2/ks_chla_t67.png'); clear ax1a;
+% 
+% ax1b = figure;
+% plotKsSig(obsPerBin,t39,[1 38],[-1.9 1.8],ks39,tr39,sk39,ku39);
+% sgtitle('Chl-a (HPLC) 88-21: sub-ML, isopycnal, DCM-centred (t = 39)','FontSize',10);
+% exportgraphics(ax1b,'figures/L2/ks_chla_t39.png'); clear ax1b;
 
-% Threshold = 100
-%%
-% ax1 = figure;
-% plotKs(sigKs,ks100,obsChlIso,skChlIso,kuChlIso,1,23,false);
-% sgtitle('KS Test: Chl-a (HPLC), T = 100, 88-21');
-% exportgraphics(ax1,'figures/ks_sM_lagIso.png'); clear ax1;
+%% KS p-values: Divinyl Chl a (Isopycnal, DCM-centred)
 
-%% Sub-ML Chl-a Samples as a function of depth
-% 
-% figure
-% scatter(chlSubML,pSubML,'Marker','.');
-% set(gca,'YDir','reverse'); ylim([0 200]);
-% xlabel('Chl a (HPLC) [ng/l]'); ylabel('Pressure [dbar]');
-% title('Sub-ML chl a','Interpreter','latex');
-% 
-% %%
-% 
-% 
-% dcm = load("dcm.mat").dcm;
-% 
-% %% Chl-a (HPLC): Calculate KS p-value
-% 
-% % Threshold = 100
-% [p100,ks100,obs100,sk100,ku100,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,100);
-% % Threshold = 80
-% [p80,ks80,obs80,sk80,ku80,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,77);
-% % Threshold = 48
-% [p45,ks45,obs45,sk45,ku45,~,~,~] = ksOfLagrangian(botID,pSubML,dcm,chlSubML,159,48);
-% 
-% 
-% %% Chl-a (HPLC): Plot KS p-value 
-% 
-% % Threshold = 100
-% ax1 = figure;
-% plotKs(p100,ks100,obs100,sk100,ku100,1,23,false,100,[-120 100]);
-% sgtitle('KS Test: Chl-a (HPLC), T = 100, 88-21');
-% exportgraphics(ax1,'figures/ks_botLagSubML_t100.png'); clear ax1;
-% 
-% % Threshold = 77
-% ax2 = figure;
-% plotKs(p80,ks80,obs80,sk80,ku80,1,23,false,77,[-120 100]);
-% sgtitle('KS Test: Chl-a (HPLC), T = 80, 88-21');
-% exportgraphics(ax2,'figures/ks_botLagSubML_t80.png'); clear ax2;
-% 
-% % Threshold = 48
-% ax3 = figure;
-% plotKs(p45,ks45,obs45,sk45,ku45,1,23,false,48,[-120 100]);
-% sgtitle('KS Test: Chl-a (HPLC), T = 45, 88-21');
-% exportgraphics(ax3,'figures/ks_botLagSubML_t45.png'); clear ax3;
-% 
-% 
-% 
-% %% TEST. Look at densities in Cruise No. 2
-% 
-% % test = importdata('data/crn2_chlTS.txt').data(:,4);
-% testP = importdata('data/crn2_chlTS.txt').data(:,4);
-% testT = importdata('data\crn2_chlTS.txt').data(:,5);
-% testS_b = importdata('data\crn2_chlTS.txt').data(:,7);
-% testS_c = importdata('data/crn2_chlTS.txt').data(:,6);
-% testChl = importdata('data/crn2_chlTS.txt').data(:,8);
-% testId = num2str(importdata('data/crn2_chlTS.txt').data(:,1));
-% 
-% cast = str2num(testId(:,5:6));
-% 
-% SA = gsw_SA_from_SP([testS_c],testP,158,22.75);
-% SA(SA==0) = nan;
-% CT = gsw_CT_from_t(SA,testT,testP);
-% 
-% siggyBoi = gsw_sigma0(SA,CT);
-% 
-% newVec = [cast(35:43) testP(35:43) siggyBoi(35:43)];
-% 
-% 
-% 
-% %% In-situ Density sigma0: CTD value vs. TEOS-10 calculation
-% % sigma0: in-situ density where reference pressure is 0 dbar.
-% 
-% sigCtd = [23.6888 24.1807 24.6807 25.0348];
-% 
-% ax4 = figure;
-% yyaxis left; scatter(testChl(40:43),sigCtd); ylabel('$\sigma_0$ (in-situ)','Interpreter','latex'); hold on
-% yyaxis right; scatter(testChl(40:43),siggyBoi(40:43)); ylabel('$\sigma_0$: TEOS-10','Interpreter','latex'); hold off
-% xlabel('HPLC Chl a [ng/l]'); title('Density of chl a measurements: Cruise No. 2 (HOT, 1988)');
-% exportgraphics(ax4,'figures/crn2_sigma0_comparison.png'); clear ax4;
-% 
-% %% density: all cruises
-% 
-% % test = importdata('data/crn2_chlTS.txt').data(:,4);
-% testP = importdata('data/chlTS.txt').data(:,4);
-% testT = importdata('data/chlTS.txt').data(:,5);
-% % testS_b = importdata('data/chlTS.txt').data(:,7);
-% testS_c = importdata('data/chlTS.txt').data(:,6);
-% testChl = importdata('data/chlTS.txt').data(:,7);
-% testId = num2str(importdata('data/chlTS.txt').data(:,1));
-% testChl(testChl == -9) = nan;
-% 
-% cast = str2num(testId(:,5:6));
-% 
-% SA = gsw_SA_from_SP(testS_c,testP,158,22.75);
-% SA(SA==0) = nan;
-% CT = gsw_CT_from_t(SA,testT,testP);
-% 
-% siggyBoi = gsw_sigma0(SA,CT);
-% 
-% % newVec = [cast(35:43) testP(35:43) siggyBoi(35:43)];
-% figure;scatter(testChl,siggyBoi); set(gca,'YDir','reverse');
-% 
-% sigBin = discretize(siggyBoi,22.4:0.1:26);
-% 
-% % sigBin2 = discretize(siggyBoi,min(siggyBoi):0.1:max(siggyBoi));
-% %%
-% % [ks, obs, depth2, Sk, ku, sd, c95, mu] = ksOfBinnedCon(testChl, sigBin, 10);
-% 
-% ksSig = nan(5,36);
-% Sk = nan(1,36); Ku = nan(1,36); obs = nan(1,36);
-% 
-% for i = 1:36
-%     X_i = testChl(sigBin==i);
-%     X_i(isnan(X_i)) = [];
-%     if length(X_i) >3
-%         [~,ksSig(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
-%         Sk(i) = skewness(X_i);
-%         Ku(i) = kurtosis(X_i);
-%     end
-%     obs(i) = length(X_i);
-% end
-% 
-% % figure;
-% % plot(ksSig,1:1:36);
-% % set(gca,'YDir','reverse');
-% 
-% tr = linspace(min(siggyBoi),max(siggyBoi),36);
-% 
-% plotKsSig(tr,ksSig,obs,Sk,Ku);
+ax2 = figure;
+plotKsSig(obsDiv,t93,[1 38],[-1.9 1.8],ksDiv,trDiv,SkDiv,KuDiv);
+sgtitle('Divinyl Chl-a (HPLC) 88-21: sub-ML, isopycnal, DCM-centred','FontSize',10);
+exportgraphics(ax2,'figures/L2/ks_diviChla.png'); clear ax2;
+
+%% KS p-values: Prochlorococcus (Isopycnal, DCM-centred)
+
+ax3 = figure;
+plotKsSig(obsPro,t31,[1 38],[-1.9 1.8],ksPro,trPro,SkPro,KuPro);
+sgtitle('Prochlorococcus (05-21): sub-ML, isopycnal, DCM-centred','FontSize',10);
+exportgraphics(ax3,'figures/L2/ks_pro.png'); clear ax3;

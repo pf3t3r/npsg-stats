@@ -71,6 +71,8 @@ tmin = min(bottleArray(:,6));
 tmax = max(bottleArray(:,6));
 trange = tmin:0.1:tmax;
 
+trange = round(trange,3);
+
 Xout = bottleArray(:,7);
 sigB = bottleArray(:,6);
 ks = nan(5,length(trange));
