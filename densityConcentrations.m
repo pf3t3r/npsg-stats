@@ -31,10 +31,12 @@ for i = 1:length(crn)
     if crn(i) == 330
         stop = i;
         break
+    else
+        stop = length(p) + 1;
     end
 end
 
-disp(stop);
+%disp(stop);
 
 % Extract meas below pMaxMld
 L = stop-1; % No. of casts with chl measurements in cruise 1 - 329
@@ -72,7 +74,9 @@ tSubML = tmpT(~isnan(tmpT));
 sSubML = tmpS(~isnan(tmpS));
 
 % Calculate the sub-ML Density 'sig0_sM'
-
+disp(length(sSubML));
+disp(length(tSubML));
+disp(length(pSubML));
 SA_subML = gsw_SA_from_SP(sSubML,pSubML,158,22.75);
 CT_subML = gsw_CT_from_t(SA_subML,tSubML,pSubML);
 

@@ -1,33 +1,42 @@
 clear; clc; close all; addpath("baroneRoutines\");
 
 %% Load MLD and DCM
-pMaxMld = load('testPMld.mat').maxMldPerCruise;
+pMaxMld = load('mldVals.mat').maxMld;
 dcm = load("dcm.mat").dcm;  % pDcm and sigmaDcm (all casts, crn 1 - 329)
 
 %% Load parameters to test
-
-% CHL
 % Load bottle ID, pressure, chl, and corresponding CTD Sp and T
+
+% Chlorophyll a
 chlId = num2str(importdata('data/HPLC_chlaTS_88-21.txt').data(:,1));
 chlP = importdata('data/HPLC_chlaTS_88-21.txt').data(:,4);
 chlChl = importdata('data\HPLC_chlaTS_88-21.txt').data(:,7);
 chlT = importdata('data\HPLC_chlaTS_88-21.txt').data(:,5);
 chlSp = importdata('data\HPLC_chlaTS_88-21.txt').data(:,6);
 
-% Let's try same for DIVINYL CHL A
+% Divinyl Chlorophyll a
 divId = num2str(importdata('data/chlaDivinyl_TS_88-21.txt').data(:,1));
 divP = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,4);
 divDiv = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,7);
 divT = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,5);
 divSp = importdata('data/chlaDivinyl_TS_88-21.txt').data(:,6);
+divSp(divSp==-9) = nan;
 
-% Let's try for PROCHLOROCOCCUS 05-21
+% Prochlorococcus: 05-21
 proId = num2str(importdata('data/proTS_05-21.txt').data(:,1));
 proP = importdata('data/proTS_05-21.txt').data(:,4);
 proPro = importdata('data/proTS_05-21.txt').data(:,7);
 proT = importdata('data/proTS_05-21.txt').data(:,5);
 proSp = importdata('data/proTS_05-21.txt').data(:,6);
 
+% Prochlorococcus: 90-05
+% proId9 = num2str(importdata('data/proTS_90-05.txt').data(:,1));
+% proP9 = importdata('data/proTS_90-05.txt').data(:,4);
+% proPro9 = importdata('data/proTS_90-05.txt').data(:,7);
+% proT9 = importdata('data/proTS_90-05.txt').data(:,5);
+% proSp9 = importdata('data/proTS_90-05.txt').data(:,6);
+% proT9(proT9==-9) = nan;
+% proSp9(proSp9==-9) = nan;
 
 %% Find where density and concentration measurements coincide
 
@@ -37,8 +46,11 @@ proSp = importdata('data/proTS_05-21.txt').data(:,6);
 % Divinyl Chl a
 [divIdOut,sigDiv,divOut] = densityConcentrations(divId, divP, divDiv, divT, divSp, pMaxMld);
 
-% Prochlorococcus
+% Prochlorococcus: 05-21
 [proIdOut,sigPro,proOut] = densityConcentrations(proId, proP, proPro, proT, proSp, pMaxMld);
+
+% Prochlorococcus: 90-05
+% [proIdOut9,sigPro9,proOut9] = densityConcentrations(proId9, proP9, proPro9, proT9, proSp9, pMaxMld);
 
 %% Apply ksOfIsoLagrangian function
 
@@ -52,11 +64,13 @@ t93 = 93; t67 = 67; t39 = 39; t31 = 31;
 % DIVINYL CHLA (HPLC)
 [trDiv,ksDiv,obsDiv,SkDiv,KuDiv,botDiv,sigBDiv,XoutDiv] = ksOfIsoLagrangian(divIdOut,sigDiv,dcm,divOut,t93);
 
-% Prochlorococcus
+% Prochlorococcus: 05-21
 [trPro,ksPro,obsPro,SkPro,KuPro,botPro,sigBPro,XoutPro] = ksOfIsoLagrangian(proIdOut,sigPro,dcm,proOut,t31);
 
+% Prochlorococcus: 90-05
+% [trPro9,ksPro9,obsPro9,SkPro9,KuPro9,botPro9,sigBPro9,XoutPro9] = ksOfIsoLagrangian(proIdOut9,sigPro9,dcm(1:5394,:),proOut9,t31);
 
-
+%%
 %
 % axA = figure;
 % plotKsSig(obsPerBin,t93,[1 38],[-1.9 1.8],ks,trange,Sk,Ku);
@@ -79,7 +93,7 @@ t93 = 93; t67 = 67; t39 = 39; t31 = 31;
 % 
 % % Load mixed layer depth 'pMaxMld'. It is defined as the maximum mixed
 % % layer depth attained during a cruise.
-% pMaxMld = load('testPMld.mat').maxMldPerCruise;
+% pMaxMld = load('testPMld.mat').maxMld;
 % 
 % % Extract cruise number 'crn'
 % crn = str2num(id_hplc(:,1:3));
@@ -194,7 +208,14 @@ exportgraphics(ax2,'figures/L2/ks_diviChla.png'); clear ax2;
 
 %% KS p-values: Prochlorococcus (Isopycnal, DCM-centred)
 
+% 05-21
 ax3 = figure;
 plotKsSig(obsPro,t31,[1 38],[-1.9 1.8],ksPro,trPro,SkPro,KuPro);
 sgtitle('Prochlorococcus (05-21): sub-ML, isopycnal, DCM-centred','FontSize',10);
 exportgraphics(ax3,'figures/L2/ks_pro.png'); clear ax3;
+
+% 90-05
+% ax3a = figure;
+% plotKsSig(obsPro9,t31,[1 38],[-1.9 1.8],ksPro9,trPro9,SkPro9,KuPro9);
+% sgtitle('Prochlorococcus (90-05): sub-ML, isopycnal, DCM-centred','FontSize',10);
+% exportgraphics(ax3a,'figures/L2/ks_pro9.png'); clear ax3a;

@@ -54,9 +54,9 @@ tSigCm(tid(end):end) = dcmArray(dcmArrayRowNo(end),4);
 
 % The number of unique cruise & cast combinations
 Ltid = length(tid);
-
+disp(length(tid));
 for i = 2:Ltid-2
-    disp(i);
+    %disp(i);
     tSigCm(tid(i):tid(i+1)-1) = dcmArray(dcmArrayRowNo(i),4);
 end
 

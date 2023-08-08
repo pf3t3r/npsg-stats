@@ -1,110 +1,134 @@
 clear; clc; close all; addpath("baroneRoutines\");
 
-p_hplc = importdata('data/hplcChla_88-21_110.txt').data(:,4);
-chl_hplc = importdata('data/hplcChla_88-21_110.txt').data(:,5);
-id_hplc = importdata('data/hplcChla_88-21_110.txt').data(:,1);
+%% Extract Maximum Mixed Layer Depth (per cruise) 'maxMld'
 
-mld = importdata("datafiles\MLD.mat").MLD;
-
-%% set up max MLD
-
-testMe = importdata('datafiles\ctd_iso_ALL.mat').ctd;
-testMe2 = nan(329,1);
+ctdData = importdata('datafiles\ctd_iso_ALL.mat').ctd;
+maxMld = nan(329,1);
 for i = 1:329
-    if ~isnan([testMe(i).mld003])
-    testMe2(i) = max([testMe(i).mld003]);
+    if ~isnan([ctdData(i).mld003])
+        maxMld(i) = max([ctdData(i).mld003]);
     end
 end
 
-maxMldPerCruise = testMe2;
+clear ctdData;
 
-%% cruise 1
+%% Load Data
 
-% so CRN1 MLD = 42 dbar
-tmp = num2str(id_hplc);
-bottleCRN = str2num(tmp(:,1:3));
+% Chlorophyll a
+pChlIn = importdata('data/hplcChla_88-21_150.txt').data(:,4);
+chlIn = importdata('data/hplcChla_88-21_150.txt').data(:,5);
+idChlIn = importdata('data/hplcChla_88-21_150.txt').data(:,1);
 
-testPnew = nan(1,2090);
-testCRNnew = nan(1,2090);
-testChlNew = nan(1,2090);
-testId = nan(1,2090);
+% Divinyl Chl a
+pDivIn = importdata('data/chlaDivi_88-21_150.txt').data(:,4);
+divIn = importdata('data/chlaDivi_88-21_150.txt').data(:,5);
+idDivIn = importdata('data/chlaDivi_88-21_150.txt').data(:,1);
 
-testPnew2 = nan(1,2090);
-testCRNnew2 = nan(1,2090);
-testChlNew2 = nan(1,2090);
-testId2 = nan(1,2090);
-% tmpMld = [];
+% Prochlorococcus 05-21
+pProIn = importdata('data/pro_05-21_150.txt').data(:,4);
+proIn = importdata('data/pro_05-21_150.txt').data(:,5);
+idProIn = importdata('data/pro_05-21_150.txt').data(:,1);
 
-for i = 1:2062
-    %bottleCRN(i)
-    tmpMld = mld(bottleCRN(i));
-    disp(tmpMld);
-    if p_hplc(i) < 2*tmpMld - 2
-        testPnew(i) = p_hplc(i);
-        testCRNnew(i) = bottleCRN(i);
-        testChlNew(i) = chl_hplc(i);
-        testId(i) = id_hplc(i);
-    end
-    % with MAX MLD per cruise
-    tmpMld2 = maxMldPerCruise(bottleCRN(i));
-    if p_hplc(i) < tmpMld2
-        testPnew2(i) = p_hplc(i);
-        testCRNnew2(i) = bottleCRN(i);
-        testChlNew2(i) = chl_hplc(i);
-        testId2(i) = id_hplc(i);
-%         continue...
-    end
-end
+% Prochlorococcus 90-05
+pProIn9 = importdata('data/pro_90-05_150.txt').data(:,4);
+proIn9 = importdata('data/pro_90-05_150.txt').data(:,5);
+idProIn9 = importdata('data/pro_90-05_150.txt').data(:,1);
 
-newP = testPnew(~isnan(testPnew));
-newCrn = testCRNnew(~isnan(testCRNnew));
-newChl = testChlNew(~isnan(testChlNew));
-newId = testId(~isnan(testId));
+%% Extract Bottle Concentrations within Mixed Layer
 
-newChlVec = [newCrn; newId; newP; newChl]';
+% Chlorophyll a
+[idChlOut,pChlOut,chlOut] = extractMldVals(idChlIn,pChlIn,chlIn,maxMld);
 
-newP2 = testPnew2(~isnan(testPnew2));
-newCrn2 = testCRNnew2(~isnan(testCRNnew2));
-newChl2 = testChlNew2(~isnan(testChlNew2));
-newId2 = testId2(~isnan(testId2));
+% Divinyl Chl a
+[idDivOut,pDivOut,divOut] = extractMldVals(idDivIn,pDivIn,divIn,maxMld);
 
-newChlVec2 = [newCrn2; newId2; newP2; newChl2]';
+% Prochlorococcus: 05-21
+[idProOut,pProOut,proOut] = extractMldVals(idProIn,pProIn,proIn,maxMld);
 
-%%
-figure;
-scatter(newChl,newP);
+% Prochlorococcus: 90-05
+[idProOut9,pProOut9,proOut9] = extractMldVals(idProIn9,pProIn9,proIn9,maxMld);
 
-figure;
-scatter(newChl2,newP2);
-%% clean, bin
+%% Visualise ML Extraction
 
-% [pb5_hplc,pb10_hplc,chlOut_hplc,n5_hplc,n10_hplc] = cleanAndBin(p_hplc,chl_hplc,id_hplc);       % Chlorophyll a (HPLC method)
-[pb5_hplc,pb10_hplc,chlOut_hplc,n5_hplc,n10_hplc] = cleanAndBin(newP,newChl,newId');       % Chlorophyll a (HPLC method)
+figure; % Chlorophyll a
+scatter(chlOut,pChlOut);
+grid on;
+set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
+xlabel('Chl a [ng/l]');
+title('Chl a: 88-21');
 
-[pb5_hplc2,pb10_hplc2,chlOut_hplc2,n5_hplc2,n10_hplc2] = cleanAndBin(newP2,newChl2,newId2');       % Chlorophyll a (HPLC method)
+figure; % Divinyl Chl a
+scatter(divOut,pDivOut);
+grid on;
+set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
+xlabel('Divinyl Chl a [ng/l]');
+title('Divinyl Chl a: 88-21');
 
-%% 10 dbar bin KS test
+figure; % Prochlorococcus: 05-21
+scatter(proOut,pProOut);
+grid on;
+set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
+xlabel('$ \textrm{Prochlorococcus [1e5 ml}^{-1}]$','Interpreter','latex');
+title('Prochlorococcus: 05-21');
 
-[ksHp10, obsHp10, dHp10, skHp10, kuHp10, sdHp10, c95hp10, muHp10] = ksOfBinnedCon(chlOut_hplc,pb10_hplc,10);  % 10 dbar / HPLC Chlorophyll a
+figure; % Prochlorococcus: 90-05
+scatter(proOut9,pProOut9);
+grid on;
+set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
+xlabel('$ \textrm{Prochlorococcus [1e5 ml}^{-1}]$','Interpreter','latex');
+title('Prochlorococcus: 90-05');
 
-[ksHp102, obsHp102, dHp102, skHp102, kuHp102, sdHp102, c95hp102, muHp102] = ksOfBinnedCon(chlOut_hplc2,pb10_hplc2,10);  % 10 dbar / HPLC Chlorophyll a
+%% Clean and bin ML extraction
 
-%%
+% Chlorophyll a
+[~,pChlOutB10,chlOutB,~,~] = cleanAndBin(pChlOut,chlOut,idChlOut');
 
-ax1 = figure;
-plotKs(dHp10,ksHp10,obsHp10,skHp10,kuHp10,0.5,20.5,true);
-sgtitle('HPLC Method: [chl a] (Eulerian Bottle, 10 dbar bin)');
-exportgraphics(ax1,'figures/ks_HplcBottleEulerian10db_meanMLD.png'); clear ax1;
+% Divinyl Chl a
+[~,pDivOutB10,divOutB,~,~] = cleanAndBin(pDivOut,divOut,idDivOut');
 
-%%
-ax2 = figure;
-plotKs(dHp102,ksHp102,obsHp102,skHp102,kuHp102,0.5,20.5,true);
-sgtitle('HPLC Method: [chl a] (Eulerian Bottle, 10 dbar bin)');
-exportgraphics(ax2,'figures/ks_HplcBottleEulerian10db_maxMLD.png'); clear ax2;
+% Prochlorococcus: 05-21
+[~,pProOutB10,proOutB,~,~] = cleanAndBin(pProOut,proOut,idProOut');
 
-%% save things
+% Prochlorococcus: 90-05
+[~,pProOutB109,proOutB9,~,~] = cleanAndBin(pProOut9,proOut9,idProOut9');
 
-pMldId = newId2;
-pMld = newP2;
+%% Find KS p-values, skewness, and kurtosis for ML extraction
 
-save testPMld.mat pMld pMldId maxMldPerCruise;
+% Chlorophyll a
+[ksChl,obsChl,pChlKs,chlSk,chlKu,~,~,~] = ksOfBinnedCon(chlOutB,pChlOutB10,10);
+
+% Divinyl Chl a
+[ksDiv,obsDiv,pDivKs,divSk,divKu,~,~,~] = ksOfBinnedCon(divOutB,pDivOutB10,10);
+
+% Prochlorococcus: 05-21
+[ksPro,obsPro,pProKs,proSk,proKu,~,~,~] = ksOfBinnedCon(proOutB,pProOutB10,10);
+
+% Prochlorococcus: 90-05
+[ksPro9,obsPro9,pProKs9,proSk9,proKu9,~,~,~] = ksOfBinnedCon(proOutB9,pProOutB109,10);
+
+%% Visualise KS p-values, skewness, and kurtosis
+
+ax1 = figure; % Chlorophyll a
+plotKs(pChlKs,ksChl,obsChl,chlSk,chlKu,0.5,20.5,true);
+sgtitle('[Chl a] 88-21: Mixed Layer');
+exportgraphics(ax1,'figures/L1/ks_chla150.png'); clear ax1;
+
+ax2 = figure; % Divinyl Chl a
+plotKs(pDivKs,ksDiv,obsDiv,divSk,divKu,0.5,20.5,true);
+sgtitle('[Divinyl Chl a] 88-21: Mixed Layer');
+exportgraphics(ax2,'figures/L1/ks_divi150.png'); clear ax2;
+
+ax3 = figure; % Prochlorococcus: 05-21
+plotKs(pProKs,ksPro,obsPro,proSk,proKu,0.5,20.5,true);
+sgtitle('Prochlorococcus 05-21: Mixed Layer');
+exportgraphics(ax3,'figures/L1/ks_pro150.png'); clear ax3;
+
+ax4 = figure; % Prochlorococcus: 90-05
+plotKs(pProKs9,ksPro9,obsPro9,proSk9,proKu9,0.5,20.5,true);
+sgtitle('Prochlorococcus 90-05: Mixed Layer');
+exportgraphics(ax4,'figures/L1/ks_pro1509.png'); clear ax4;
+
+%% Save new data
+
+save mldVals.mat maxMld;
+% idChlOut pChlOut idDivOut pDivOut idProOut pProOut;
