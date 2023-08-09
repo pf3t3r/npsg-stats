@@ -1,5 +1,5 @@
-function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu] = ksOfLagrangian(id,p,dcmArray,X,Ltid,threshold)
-%funShit3 quickly find the DCM-centred (Lagrangian) transformation for a
+function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu] = ksOfLagrangian(id,p,dcmArray,X,threshold)
+%ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
 % id: bottle ID
@@ -51,8 +51,10 @@ tPcm = nan(length(p),1);
 tPcm(1:tid(1)-1) = dcmArray(dcmArrayRowNo(1),3);
 tPcm(tid(end):end) = dcmArray(dcmArrayRowNo(end),3);
 
+Ltid = length(tid);
+disp(Ltid);
 for i = 2:Ltid-2
-    disp(i);
+    %disp(i);
     tPcm(tid(i):tid(i+1)-1) = dcmArray(dcmArrayRowNo(i),3);
 end
 
@@ -83,7 +85,7 @@ for i = 1:length(trange)
     tmp(isnan(tmp)) = [];
     obsPerBin(i) = length(tmp);
     if length(tmp) > 3
-        disp(i);
+        %disp(i);
         [~,ks(:,i),~,tmpC95,tmpMle,muMle] = statsplot2(tmp,'noplot');
         Sk(i) = skewness(tmp);
         Ku(i) = kurtosis(tmp);
