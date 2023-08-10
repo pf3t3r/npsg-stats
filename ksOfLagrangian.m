@@ -1,10 +1,10 @@
-function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu] = ksOfLagrangian(id,p,dcmArray,X,threshold)
+function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu,b] = ksOfLagrangian(id,p,dcm,X,threshold)
 %ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
 % id: bottle ID
 % p = pressure
-% dcmArray = shows where the DCM is
+% dcm = shows where the DCM is
 % X = bottle concentration
 % Ltid = not sure how this works but hey it works...
 % OUTPUTS:
@@ -17,29 +17,31 @@ function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu] = ksOfLagrangian(id,p,dcmArray,X,
 % obsPerBin = no. of observations in a particular depth bin. 
 
 
-if nargin < 6
+if nargin < 5
     threshold = 100;
 end
 
-CRN = str2num(id(:,1:3)); 
+% Extract cruise number 'crn' and 'cast'
+crn = str2num(id(:,1:3)); 
 cast = str2num(id(:,6:8));
 cast(cast==100) = nan;
 
-bottleArray = [CRN cast p];
+bottleArray = [crn cast p];
 
-t = rmmissing(unique(bottleArray(:,1:2),"rows"));
+% Create an array of all unique bottle cruise/cast combinations
+botCrnCast = rmmissing(unique(bottleArray(:,1:2),"rows"));
 
-dcmArrayRowNo = [];
-
-for i = 1:length(dcmArray(:,1))
-    for x = 1:length(t)
-        if dcmArray(i,1:2) == t(x,1:2) 
-            dcmArrayRowNo = [dcmArrayRowNo i];
+% Find these unique cruise/cast combinations in the 'dcm' array
+dcmCrnCast = [];
+for i = 1:length(dcm(:,1))
+    for x = 1:length(botCrnCast)
+        if dcm(i,1:2) == botCrnCast(x,1:2) 
+            dcmCrnCast = [dcmCrnCast i];
         end
     end
 end
 
-% save when bottleArray changes
+% Split bottle concentration by cruise & cast
 tid = [];
 for i = 2:length(p)
     if bottleArray(i,1) > bottleArray(i-1,1) || bottleArray(i,2) > bottleArray(i-1,2)
@@ -48,14 +50,19 @@ for i = 2:length(p)
 end
 
 tPcm = nan(length(p),1);
-tPcm(1:tid(1)-1) = dcmArray(dcmArrayRowNo(1),3);
-tPcm(tid(end):end) = dcmArray(dcmArrayRowNo(end),3);
+tPcm(1:tid(1)-1) = dcm(dcmCrnCast(1),3);
+tPcm(tid(end):end) = dcm(dcmCrnCast(end),3);
 
 Ltid = length(tid);
+
+disp(length(botCrnCast));
+disp(length(dcmCrnCast));
 disp(Ltid);
+tmp = length(dcmCrnCast) - 1;
+Ltid = tmp;
 for i = 2:Ltid-2
     %disp(i);
-    tPcm(tid(i):tid(i+1)-1) = dcmArray(dcmArrayRowNo(i),3);
+    tPcm(tid(i):tid(i+1)-1) = dcm(dcmCrnCast(i),3);
 end
 
 bottleArray = [bottleArray tPcm];
