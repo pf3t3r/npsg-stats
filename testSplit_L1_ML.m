@@ -44,6 +44,30 @@ pDicIn = importdata('data/L1/dic_88-21_150.txt').data(:,4);
 dicIn = importdata('data/L1/dic_88-21_150.txt').data(:,5);
 idDicIn = importdata('data/L1/dic_88-21_150.txt').data(:,1);
 
+% pH: 92-21
+pPhIn = importdata('data/L1/pH_92-21_150.txt').data(:,4);
+phIn = importdata('data/L1/pH_92-21_150.txt').data(:,5);
+idPhIn = importdata('data/L1/pH_92-21_150.txt').data(:,1);
+
+% Alkalinity: 89-21
+pAlkIn = importdata('data/L1/alk_89-21_150.txt').data(:,4);
+alkIn = importdata('data/L1/alk_89-21_150.txt').data(:,5);
+idAlkIn = importdata('data/L1/alk_89-21_150.txt').data(:,1);
+
+% Phosphate: 88-21
+pPhoIn = importdata('data/L1/pho_88-21_150.txt').data(:,4);
+phoIn = importdata('data/L1/pho_88-21_150.txt').data(:,5);
+idPhoIn = importdata('data/L1/pho_88-21_150.txt').data(:,1);
+
+% Nitrate + Nitrite: 88-21
+pNit2In = importdata('data/L1/nit2_88-21_150.txt').data(:,4);
+nit2In = importdata('data/L1/nit2_88-21_150.txt').data(:,5);
+idNit2In = importdata('data/L1/nit2_88-21_150.txt').data(:,1);
+
+% Nitrite: 89-94
+pNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,4);
+nitIn = importdata('data/L1/nit_89-95_150.txt').data(:,5);
+idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
 %% Extract Bottle Concentrations within Mixed Layer
 
 % Chlorophyll a
@@ -63,6 +87,21 @@ idDicIn = importdata('data/L1/dic_88-21_150.txt').data(:,1);
 
 % Dissolved Inorganic Carbon: 88-21
 [idDicOut,pDicOut,dicOut] = extractMldVals(idDicIn,pDicIn,dicIn,maxMld);
+
+% pH: 92-21
+[idPhOut,pPhOut,phOut] = extractMldVals(idPhIn,pPhIn,phIn,maxMld);
+
+% Alkalinity: 89-21
+[idAlkOut,pAlkOut,alkOut] = extractMldVals(idAlkIn,pAlkIn,alkIn,maxMld);
+
+% Phosphate: 88-21
+[idPhoOut,pPhoOut,phoOut] = extractMldVals(idPhoIn,pPhoIn,phoIn,maxMld);
+
+% Nitrate + Nitrite: 88-21
+[idNit2Out,pNit2Out,nit2Out] = extractMldVals(idNit2In,pNit2In,nit2In,maxMld);
+
+% Nitrite: 89-94 ''' breaks
+% [idNitOut,pNitOut,nitOut] = extractMldVals(idNitIn,pNitIn,nitIn,maxMld);
 
 %% Visualise ML Extraction
 
@@ -120,25 +159,55 @@ idDicIn = importdata('data/L1/dic_88-21_150.txt').data(:,1);
 
 % Dissolved Inorganic Carbon: 88-21
 [~,pDicOutB10,dicOutB,~,~] = cleanAndBin(pDicOut,dicOut,idDicOut');
+
+% pH: 92-21
+[~,pPhOutB10,phOutB,~,~] = cleanAndBin(pPhOut,phOut,idPhOut');
+
+% Alkalinity: 89-21
+[~,pAlkOutB10,alkOutB,~,~] = cleanAndBin(pAlkOut,alkOut,idAlkOut');
+
+% Phosphate: 88-21
+[~,pPhoOutB10,phoOutB,~,~] = cleanAndBin(pPhoOut,phoOut,idPhoOut');
+
+% Nitrate + Nitrite: 88-21
+[~,pNit2OutB10,nit2OutB,~,~] = cleanAndBin(pNit2Out,nit2Out,idNit2Out');
+
+% Nitrite: 89-94
+% [~,pNitOutB10,nitOutB,~,~] = cleanAndBin(pNitOut,nitOut,idNitOut');
 %% Find KS p-values, skewness, and kurtosis for ML extraction
 
 % Chlorophyll a
-[ksChl,obsChl,pChlKs,chlSk,chlKu,~,~,~] = ksOfBinnedCon(chlOutB,pChlOutB10,10,89);
+[ksChl,obsChl,pChlKs,chlSk,chlKu] = ksOfBinnedCon(chlOutB,pChlOutB10,10,89);
 
 % Divinyl Chl a
-[ksDiv,obsDiv,pDivKs,divSk,divKu,~,~,~] = ksOfBinnedCon(divOutB,pDivOutB10,10,84);
+[ksDiv,obsDiv,pDivKs,divSk,divKu] = ksOfBinnedCon(divOutB,pDivOutB10,10,84);
 
 % Prochlorococcus: 05-21
-[ksPro,obsPro,pProKs,proSk,proKu,~,~,~] = ksOfBinnedCon(proOutB,pProOutB10,10);
+[ksPro,obsPro,pProKs,proSk,proKu] = ksOfBinnedCon(proOutB,pProOutB10,10);
 
 % Prochlorococcus: 90-05
-[ksPro9,obsPro9,pProKs9,proSk9,proKu9,~,~,~] = ksOfBinnedCon(proOutB9,pProOutB109,10);
+[ksPro9,obsPro9,pProKs9,proSk9,proKu9] = ksOfBinnedCon(proOutB9,pProOutB109,10);
 
 % Dissolved Oxygen: 88-21
-[ksOxy,obsOxy,pOxyKs,oxySk,oxyKu,~,~,~] = ksOfBinnedCon(oxyOutB,pOxyOutB10,10,89);
+[ksOxy,obsOxy,pOxyKs,oxySk,oxyKu] = ksOfBinnedCon(oxyOutB,pOxyOutB10,10,89);
 
 % Dissolved Inorganic Carbon: 88-21
-[ksDic,obsDic,pDicKs,dicSk,dicKu,~,~,~] = ksOfBinnedCon(dicOutB,pDicOutB10,10,96);
+[ksDic,obsDic,pDicKs,dicSk,dicKu] = ksOfBinnedCon(dicOutB,pDicOutB10,10,96);
+
+% pH: 92-21
+[ksPh,obsPh,pPhKs,phSk,phKu] = ksOfBinnedCon(phOutB,pPhOutB10,10);
+
+% Alkalinity: 89-21
+[ksAlk,obsAlk,pAlkKs,alkSk,alkKu] = ksOfBinnedCon(alkOutB,pAlkOutB10,10);
+
+% Phosphate: 88-21
+[ksPho,obsPho,pPhoKs,phoSk,phoKu] = ksOfBinnedCon(phoOutB,pPhoOutB10,10);
+
+% Nitrate + Nitrite: 88-21
+[ksNit2,obsNit2,pNit2Ks,nit2Sk,nit2Ku] = ksOfBinnedCon(nit2OutB,pNit2OutB10,10);
+
+% Nitrite: 89-94
+% [ksNit,obsNit,pNitKs,nitSk,nitKu] = ksOfBinnedCon(nitOutB,pNitOutB10,10);
 
 %% Visualise KS p-values, skewness, and kurtosis
 
@@ -171,6 +240,32 @@ ax6 = figure; % Dissolved Inorganic Carbon: 88-21
 plotKs(pDicKs,ksDic,obsDic,dicSk,dicKu,0.5,20.5,true,96);
 sgtitle('Dissolved Inorganic Carbon 88-21: Mixed Layer');
 exportgraphics(ax6,'figures/L1/ks_dic150.png'); clear ax6;
+
+ax7 = figure; % pH: 92-21
+plotKs(pPhKs,ksPh,obsPh,phSk,phKu,0.5,20.5,true);
+sgtitle('pH 92-21: Mixed Layer');
+exportgraphics(ax7,'figures/L1/ks_ph150.png'); clear ax7;
+
+ax8 = figure; % Alkalinity: 89-21
+plotKs(pAlkKs,ksAlk,obsAlk,alkSk,alkKu,0.5,20.5,true);
+sgtitle('Alkalinity 89-21: Mixed Layer');
+exportgraphics(ax8,'figures/L1/ks_alk150.png'); clear ax8;
+
+ax9 = figure; % Phosphate: 88-21
+plotKs(pPhoKs,ksPho,obsPho,phoSk,phoKu,0.5,20.5,true);
+sgtitle('Phosphate 88-21: Mixed Layer');
+exportgraphics(ax9,'figures/L1/ks_pho150.png'); clear ax9;
+
+% % Broken: no pressures output so can't plot.
+% ax10 = figure; % Nitrate + Nitrite: 88-21
+% plotKs(pNit2Ks,ksNit2,obsNit2,nit2Sk,nit2Ku,0.5,20.5,true);
+% sgtitle('Nitrate + Nitrite 88-21: Mixed Layer');
+% exportgraphics(ax10,'figures/L1/ks_nit2_150.png'); clear ax10;
+
+% ax11 = figure; % Nitrite: 89-94
+% plotKs(pNitKs,ksNit,obsNit,nitSk,nitKu,0.5,20.5,true);
+% sgtitle('Nitrite 89-94: Mixed Layer');
+% exportgraphics(ax11,'figures/L1/ks_nit150.png'); clear ax11;
 
 %% Save new data
 
