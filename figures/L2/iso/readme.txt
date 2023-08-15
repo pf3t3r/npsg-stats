@@ -1,0 +1,1 @@
+This folder contains file from the discontinued DCM-centred density coordinate analysis. It was discontinued because it is not helpful to think of the DCM in terms of density coordinates as the DCM moves diapycnally.
