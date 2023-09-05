@@ -68,6 +68,11 @@ idNit2In = importdata('data/L1/nit2_88-21_150.txt').data(:,1);
 pNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,4);
 nitIn = importdata('data/L1/nit_89-95_150.txt').data(:,5);
 idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
+
+% Silicate: 88-22
+pSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,4);
+silIn = importdata('data\L1\sil_88-22_150.txt').data(:,5);
+idSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,1);
 %% Extract Bottle Concentrations within Mixed Layer
 
 % Chlorophyll a
@@ -102,6 +107,9 @@ idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
 
 % Nitrite: 89-94 ''' breaks
 % [idNitOut,pNitOut,nitOut] = extractMldVals(idNitIn,pNitIn,nitIn,maxMld);
+
+% Silicate: 88-22
+[idSilOut,pSilOut,silOut] = extractMldVals(idSilIn,pSilIn,silIn,maxMld);
 
 %% Visualise ML Extraction
 
@@ -174,6 +182,9 @@ idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
 
 % Nitrite: 89-94
 % [~,pNitOutB10,nitOutB,~,~] = cleanAndBin(pNitOut,nitOut,idNitOut');
+
+% Silicate: 88-22
+[~,pSilOutB10,silOutB,~,~] = cleanAndBin(pSilOut,silOut,idSilOut');
 %% Find KS p-values, skewness, and kurtosis for ML extraction
 
 % Chlorophyll a
@@ -209,6 +220,8 @@ idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
 % Nitrite: 89-94
 % [ksNit,obsNit,pNitKs,nitSk,nitKu] = ksOfBinnedCon(nitOutB,pNitOutB10,10);
 
+% Silicate: 88-22
+[ksSil,obsSil,pSilKs,silSk,silKu] = ksOfBinnedCon(silOutB,pSilOutB10,10);
 %% Visualise KS p-values, skewness, and kurtosis
 
 ax1 = figure; % Chlorophyll a
@@ -266,6 +279,11 @@ exportgraphics(ax9,'figures/L1/ks_pho150.png'); clear ax9;
 % plotKs(pNitKs,ksNit,obsNit,nitSk,nitKu,0.5,20.5,true);
 % sgtitle('Nitrite 89-94: Mixed Layer');
 % exportgraphics(ax11,'figures/L1/ks_nit150.png'); clear ax11;
+
+ax12 = figure; % Silicate: 88-22
+plotKs(pSilKs,ksSil,obsSil,silSk,silKu,0.5,20.5,true);
+sgtitle('Silicate 88-22: Mixed Layer');
+exportgraphics(ax12,'figures/L1/ks_sil150.png'); clear ax12;
 
 %% Save new data
 

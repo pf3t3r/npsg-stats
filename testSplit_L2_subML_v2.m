@@ -62,6 +62,11 @@ nitId = num2str(importdata('data/L2/nit_89-94_200.txt').data(:,1));
 nitP = importdata('data/L2/nit_89-94_200.txt').data(:,4);
 nit = importdata('data/L2/nit_89-94_200.txt').data(:,5);
 
+% Silicate: 88-22
+silId = num2str(importdata('data/L2/sil_88-22_200.txt').data(:,1));
+silP = importdata('data/L2/sil_88-22_200.txt').data(:,4);
+sil = importdata('data/L2/sil_88-22_200.txt').data(:,5);
+
 %% Extract sub-ML bottle ID, pressure, bottle concentrations
 
 % extractSMLC = 'extract sub-ML concentration'
@@ -76,7 +81,7 @@ nit = importdata('data/L2/nit_89-94_200.txt').data(:,5);
 [idSubmlPho,pSubmlPho,submlPho] = extractSMLC(phoId,phoP,pho,pMaxMld);
 [idSubmlNit2,pSubmlNit2,submlNit2] = extractSMLC(nit2Id,nit2P,nit2,pMaxMld);
 % [idSubmlNit,pSubmlNit,submlNit] = extractSMLC(nitId,nitP,nit,pMaxMld);
-
+[idSubmlSil,pSubmlSil,submlSil] = extractSMLC(silId,silP,sil,pMaxMld);
 %% KS Test p-values, skewness, kurtosis: calculate
 
 [prChl,ksChl,obsChl,skChl,kuChl,~,~,~] = ksOfLagrangian(idSubmlChl,pSubmlChl,dcm,submlChl,81);
@@ -90,6 +95,7 @@ nit = importdata('data/L2/nit_89-94_200.txt').data(:,5);
 [prPho,ksPho,obsPho,skPho,kuPho,~,~,~] = ksOfLagrangian(idSubmlPho,pSubmlPho,dcm,submlPho);
 [prNit2,ksNit2,obsNit2,skNit2,kuNit2,~,~,~] = ksOfLagrangian(idSubmlNit2,pSubmlNit2,dcm,submlNit2);
 % [prNit,ksNit,obsNit,skNit,kuNit,~,~,~] = ksOfLagrangian(idSubmlNit,pSubmlNit,dcm,submlNit);
+[prSil,ksSil,obsSil,skSil,kuSil,~,~,~] = ksOfLagrangian(idSubmlSil,pSubmlSil,dcm,submlSil);
 
 %% KS Test p-values, skewness, kurtosis: visualise
 
@@ -147,3 +153,8 @@ exportgraphics(ax10,'figures/L2/ks_nit2.png'); clear ax10;
 % plotKs2(prNit,ksNit,obsNit,skNit,kuNit,prNit(1),prNit(end));
 % sgtitle('Nitrite: 89-94');
 % exportgraphics(ax11,'figures/L2/ks_nit.png'); clear ax11;
+
+ax12 = figure; % Silicate: 88-22
+plotKs2(prSil,ksSil,obsSil,skSil,kuSil,prSil(1),prSil(end));
+sgtitle('Silicate (sub-ML, around DCM): 88-22');
+exportgraphics(ax12,'figures/L2/ks_sil.png'); clear ax12;
