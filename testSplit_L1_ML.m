@@ -73,6 +73,11 @@ idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
 pSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,4);
 silIn = importdata('data\L1\sil_88-22_150.txt').data(:,5);
 idSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,1);
+
+% Dissolved Organic Phosphorus: 88-01
+pDopIn = importdata("data/L1/dop_88-01_150.txt").data(:,4);
+dopIn = importdata("data\L1\dop_88-01_150.txt").data(:,5);
+idDopIn = importdata("data\L1\dop_88-01_150.txt").data(:,1);
 %% Extract Bottle Concentrations within Mixed Layer
 
 % Chlorophyll a
@@ -110,6 +115,9 @@ idSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,1);
 
 % Silicate: 88-22
 [idSilOut,pSilOut,silOut] = extractMldVals(idSilIn,pSilIn,silIn,maxMld);
+
+% Dissolved Organic Phosphorus: 88-01
+[idDopOut,pDopOut,dopOut] = extractMldVals(idDopIn,pDopIn,dopIn,maxMld);
 
 %% Visualise ML Extraction
 
@@ -185,6 +193,9 @@ idSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,1);
 
 % Silicate: 88-22
 [~,pSilOutB10,silOutB,~,~] = cleanAndBin(pSilOut,silOut,idSilOut');
+
+% DOP: 88-01
+[~,pDopOutB,dopOutB,~,~] = cleanAndBin(pDopOut,dopOut,idDopOut');
 %% Find KS p-values, skewness, and kurtosis for ML extraction
 
 % Chlorophyll a
@@ -222,6 +233,9 @@ idSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,1);
 
 % Silicate: 88-22
 [ksSil,obsSil,pSilKs,silSk,silKu] = ksOfBinnedCon(silOutB,pSilOutB10,10);
+
+% DOP: 88-01
+[ksDop,obsDop,pDopKs,dopSk,dopKu] = ksOfBinnedCon(dopOutB,pDopOutB,10,88);
 %% Visualise KS p-values, skewness, and kurtosis
 
 ax1 = figure; % Chlorophyll a
@@ -284,6 +298,11 @@ ax12 = figure; % Silicate: 88-22
 plotKs(pSilKs,ksSil,obsSil,silSk,silKu,0.5,20.5,true);
 sgtitle('Silicate 88-22: Mixed Layer');
 exportgraphics(ax12,'figures/L1/ks_sil150.png'); clear ax12;
+
+ax13 = figure; % Dissolved Organic Phosphorus (DOP): 88-01
+plotKs(pDopKs,ksDop,obsDop,dopSk,dopKu,0.5,20.5,true,88);
+sgtitle('Dissolved Organic Phosphorus 88-01: Mixed Layer');
+exportgraphics(ax13,'figures/L1/ks_dop150.png'); clear ax13;
 
 %% Save new data
 

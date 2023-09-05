@@ -67,6 +67,10 @@ silId = num2str(importdata('data/L2/sil_88-22_200.txt').data(:,1));
 silP = importdata('data/L2/sil_88-22_200.txt').data(:,4);
 sil = importdata('data/L2/sil_88-22_200.txt').data(:,5);
 
+% Dissolved Organic Phosphorus (DOP): 88-01
+dopId = num2str(importdata("data\L2\dop_88-01_200.txt").data(:,1));
+dopP = importdata("data\L2\dop_88-01_200.txt").data(:,4);
+dop = importdata("data\L2\dop_88-01_200.txt").data(:,5);
 %% Extract sub-ML bottle ID, pressure, bottle concentrations
 
 % extractSMLC = 'extract sub-ML concentration'
@@ -82,6 +86,7 @@ sil = importdata('data/L2/sil_88-22_200.txt').data(:,5);
 [idSubmlNit2,pSubmlNit2,submlNit2] = extractSMLC(nit2Id,nit2P,nit2,pMaxMld);
 % [idSubmlNit,pSubmlNit,submlNit] = extractSMLC(nitId,nitP,nit,pMaxMld);
 [idSubmlSil,pSubmlSil,submlSil] = extractSMLC(silId,silP,sil,pMaxMld);
+[idSubmlDop,pSubmlDop,submlDop] = extractSMLC(dopId,dopP,dop,pMaxMld);
 %% KS Test p-values, skewness, kurtosis: calculate
 
 [prChl,ksChl,obsChl,skChl,kuChl,~,~,~] = ksOfLagrangian(idSubmlChl,pSubmlChl,dcm,submlChl,81);
@@ -96,7 +101,7 @@ sil = importdata('data/L2/sil_88-22_200.txt').data(:,5);
 [prNit2,ksNit2,obsNit2,skNit2,kuNit2,~,~,~] = ksOfLagrangian(idSubmlNit2,pSubmlNit2,dcm,submlNit2);
 % [prNit,ksNit,obsNit,skNit,kuNit,~,~,~] = ksOfLagrangian(idSubmlNit,pSubmlNit,dcm,submlNit);
 [prSil,ksSil,obsSil,skSil,kuSil,~,~,~] = ksOfLagrangian(idSubmlSil,pSubmlSil,dcm,submlSil);
-
+[prDop,ksDop,obsDop,skDop,kuDop,~,~,~] = ksOfLagrangian(idSubmlDop,pSubmlDop,dcm,submlDop,44);
 %% KS Test p-values, skewness, kurtosis: visualise
 
 ax1 = figure;
@@ -158,3 +163,8 @@ ax12 = figure; % Silicate: 88-22
 plotKs2(prSil,ksSil,obsSil,skSil,kuSil,prSil(1),prSil(end));
 sgtitle('Silicate (sub-ML, around DCM): 88-22');
 exportgraphics(ax12,'figures/L2/ks_sil.png'); clear ax12;
+
+ax13 = figure; % Dissolved Organic Phosphorus: 88-01
+plotKs2(prDop,ksDop,obsDop,skDop,kuDop,prDop(1),prDop(end),44);
+sgtitle('Dissolved Organic Phosphorus (DOP), sub-ML, DCM-centred: 88-01');
+exportgraphics(ax13,'figures/L2/ks_dop.png'); clear ax13;
