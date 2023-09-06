@@ -52,7 +52,7 @@ idChlIn = importdata('data/L1/hplcChla_88-21_150.txt').data(:,1);
 % 5. Plot results
 ax1 = figure;
 plotKs(pChlKs,ksChl,obsChl,chlSk,chlKu,0.5,20.5,true,89);
-sgtitle('[Chl a] 88-21: Mixed Layer');
+sgtitle('[Chl a] 88-21: L1');
 exportgraphics(ax1,'figures/L1/ks_chla150.png'); clear ax1;
 
 %% Divinyl Chlorophyll a: 88-21
@@ -74,7 +74,7 @@ idDivIn = importdata('data/L1/chlaDivi_88-21_150.txt').data(:,1);
 % 5. Plot results
 ax2 = figure;
 plotKs(pDivKs,ksDiv,obsDiv,divSk,divKu,0.5,20.5,true,84);
-sgtitle('[Divinyl Chl a] 88-21: Mixed Layer');
+sgtitle('[Divinyl Chl a] 88-21: L1');
 exportgraphics(ax2,'figures/L1/ks_divi150.png'); clear ax2;
 
 %% Prochlorococcus: 05-21
@@ -96,7 +96,7 @@ idProIn = importdata('data/L1/pro_05-21_150.txt').data(:,1);
 % 5. Plot results
 ax3 = figure;
 plotKs(pProKs,ksPro,obsPro,proSk,proKu,0.5,20.5,true);
-sgtitle('Prochlorococcus 05-21: Mixed Layer');
+sgtitle('Prochlorococcus 05-21: L1');
 exportgraphics(ax3,'figures/L1/ks_pro150.png'); clear ax3;
 
 %% Prochlorococcus: 90-05
@@ -118,7 +118,7 @@ idProIn9 = importdata('data/L1/pro_90-05_150.txt').data(:,1);
 % 5. Plot results
 ax4 = figure;
 plotKs(pProKs9,ksPro9,obsPro9,proSk9,proKu9,0.5,20.5,true);
-sgtitle('Prochlorococcus 90-05: Mixed Layer');
+sgtitle('Prochlorococcus 90-05: L1');
 exportgraphics(ax4,'figures/L1/ks_pro1509.png'); clear ax4;
 
 %% Dissolved Oxygen: 88-21
@@ -140,7 +140,7 @@ idOxyIn = importdata('data/L1/oxy_88-21_150.txt').data(:,1);
 % 5. Plot results
 ax5 = figure;
 plotKs(pOxyKs,ksOxy,obsOxy,oxySk,oxyKu,0.5,20.5,true,89);
-sgtitle('Dissolved Oxygen 88-21: Mixed Layer');
+sgtitle('Dissolved Oxygen 88-21: L1');
 exportgraphics(ax5,'figures/L1/ks_oxy150.png'); clear ax5;
 
 %% Dissolved Inorganic Carbon (DOC): 88-21
@@ -162,7 +162,7 @@ idDicIn = importdata('data/L1/dic_88-21_150.txt').data(:,1);
 % 5. Plot results
 ax6 = figure;
 plotKs(pDicKs,ksDic,obsDic,dicSk,dicKu,0.5,20.5,true,96);
-sgtitle('Dissolved Inorganic Carbon 88-21: Mixed Layer');
+sgtitle('Dissolved Inorganic Carbon 88-21: L1');
 exportgraphics(ax6,'figures/L1/ks_dic150.png'); clear ax6;
 
 %% pH: 92-21
@@ -184,7 +184,7 @@ idPhIn = importdata('data/L1/pH_92-21_150.txt').data(:,1);
 % 5. Plot results
 ax7 = figure;
 plotKs(pPhKs,ksPh,obsPh,phSk,phKu,0.5,20.5,true);
-sgtitle('pH 92-21: Mixed Layer');
+sgtitle('pH 92-21: L1');
 exportgraphics(ax7,'figures/L1/ks_ph150.png'); clear ax7;
 
 %% Alkalinity: 89-21
@@ -206,7 +206,7 @@ idAlkIn = importdata('data/L1/alk_89-21_150.txt').data(:,1);
 % 5. Plot results
 ax8 = figure;
 plotKs(pAlkKs,ksAlk,obsAlk,alkSk,alkKu,0.5,20.5,true);
-sgtitle('Alkalinity 89-21: Mixed Layer');
+sgtitle('Alkalinity 89-21: L1');
 exportgraphics(ax8,'figures/L1/ks_alk150.png'); clear ax8;
 
 %% Phosphate: 88-21
@@ -228,7 +228,7 @@ idPhoIn = importdata('data/L1/pho_88-21_150.txt').data(:,1);
 % 5. Plot results
 ax9 = figure;
 plotKs(pPhoKs,ksPho,obsPho,phoSk,phoKu,0.5,20.5,true);
-sgtitle('Phosphate 88-21: Mixed Layer');
+sgtitle('Phosphate 88-21: L1');
 exportgraphics(ax9,'figures/L1/ks_pho150.png'); clear ax9;
 
 %% Nitrate + Nitrite: 88-21
@@ -279,127 +279,145 @@ idNitIn = importdata('data/L1/nit_89-95_150.txt').data(:,1);
 % sgtitle('Nitrite 89-94: Mixed Layer');
 % exportgraphics(ax11,'figures/L1/ks_nit150.png'); clear ax11;
 
-%% Load Data
+%% Silicate: 88-22
 
-% Silicate: 88-22
+% 1. Load data
 pSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,4);
 silIn = importdata('data\L1\sil_88-22_150.txt').data(:,5);
 idSilIn = importdata('data\L1\sil_88-22_150.txt').data(:,1);
 
-% Dissolved Organic Phosphorus: 88-01
+% 2. Extract data in ML
+[idSilOut,pSilOut,silOut] = extractMldVals(idSilIn,pSilIn,silIn,maxMld);
+
+% 3. Bin data
+[~,pSilOutB10,silOutB,~,~] = cleanAndBin(pSilOut,silOut,idSilOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksSil,obsSil,pSilKs,silSk,silKu] = ksOfBinnedCon(silOutB,pSilOutB10,10);
+
+% 5. Plot results
+ax12 = figure;
+plotKs(pSilKs,ksSil,obsSil,silSk,silKu);
+sgtitle('Silicate 88-22: L1');
+exportgraphics(ax12,'figures/L1/ks_sil150.png'); clear ax12;
+
+%% Dissolved Organic Phosphorus: 88-01
+
+% 1. Load data
 pDopIn = importdata("data/L1/dop_88-01_150.txt").data(:,4);
 dopIn = importdata("data\L1\dop_88-01_150.txt").data(:,5);
 idDopIn = importdata("data\L1\dop_88-01_150.txt").data(:,1);
 
-% Dissolved Organic Nitrogen: 88-17
+% 2. Extract data in ML
+[idDopOut,pDopOut,dopOut] = extractMldVals(idDopIn,pDopIn,dopIn,maxMld);
+
+% 3. Bin data
+[~,pDopOutB,dopOutB,~,~] = cleanAndBin(pDopOut,dopOut,idDopOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksDop,obsDop,pDopKs,dopSk,dopKu] = ksOfBinnedCon(dopOutB,pDopOutB,10,88);
+
+% 5. Plot results
+ax13 = figure;
+plotKs(pDopKs,ksDop,obsDop,dopSk,dopKu,0.5,20.5,true,88);
+sgtitle('Dissolved Organic Phosphorus 88-01: L1');
+exportgraphics(ax13,'figures/L1/ks_dop150.png'); clear ax13;
+
+%% Dissolved Organic Nitrogen: 88-17
+
+% 1. Load data
 pDonIn = importdata("data\L1\don_88-17_150.txt").data(:,4);
 donIn = importdata("data\L1\don_88-17_150.txt").data(:,5);
 idDonIn = importdata("data\L1\don_88-17_150.txt").data(:,1);
 
-% Dissolved Organic Carbon (DOC): 93-17
-docM = importdata('data\L1\doc_93-17_150.txt');
-pDocIn = docM.data(:,4);
-docIn = docM.data(:,5);
-idDocIn = docM.data(:,1);
-clear docM;
-%% Extract Bottle Concentrations within Mixed Layer
-
-% Silicate: 88-22
-[idSilOut,pSilOut,silOut] = extractMldVals(idSilIn,pSilIn,silIn,maxMld);
-
-% Dissolved Organic Phosphorus: 88-01
-[idDopOut,pDopOut,dopOut] = extractMldVals(idDopIn,pDopIn,dopIn,maxMld);
-
-% DON: 88-17
+% 2. Extract data in ML
 [idDonOut,pDonOut,donOut] = extractMldVals(idDonIn,pDonIn,donIn,maxMld);
 
-% DOC: 93-17
-[idDocOut,pDocOut,docOut] = extractMldVals(idDocIn,pDocIn,docIn,maxMld);
-%% Visualise ML Extraction
-
-% figure; % Chlorophyll a
-% scatter(chlOut,pChlOut);
-% grid on;
-% set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
-% xlabel('Chl a [ng/l]');
-% title('Chl a: 88-21');
-
-% figure; % Divinyl Chl a
-% scatter(divOut,pDivOut);
-% grid on;
-% set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
-% xlabel('Divinyl Chl a [ng/l]');
-% title('Divinyl Chl a: 88-21');
-
-% figure; % Prochlorococcus: 05-21
-% scatter(proOut,pProOut);
-% grid on;
-% set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
-% xlabel('$ \textrm{Prochlorococcus [1e5 ml}^{-1}]$','Interpreter','latex');
-% title('Prochlorococcus: 05-21');
-
-% figure; % Prochlorococcus: 90-05
-% scatter(proOut9,pProOut9);
-% grid on;
-% set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
-% xlabel('$ \textrm{Prochlorococcus [1e5 ml}^{-1}]$','Interpreter','latex');
-% title('Prochlorococcus: 90-05');
-
-% figure; % Oxygen: 88-21
-% scatter(oxyOut,pOxyOut);
-% grid on;
-% set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
-% xlabel('$Oxygen [\mu mol kg}^}{-1}]$','Interpreter','latex');
-% title('Oxygen: 88-21');
-
-%% Clean and bin ML extraction
-
-% Silicate: 88-22
-[~,pSilOutB10,silOutB,~,~] = cleanAndBin(pSilOut,silOut,idSilOut');
-
-% DOP: 88-01
-[~,pDopOutB,dopOutB,~,~] = cleanAndBin(pDopOut,dopOut,idDopOut');
-
-% DON: 88-17
+% 3. Bin data
 [~,pDonOutB,donOutB,~,~] = cleanAndBin(pDonOut,donOut,idDonOut');
 
-% DOC: 93-17
-[~,pDocOutB,docOutB,~,~] = cleanAndBin(pDocOut,docOut,idDocOut');
-%% Find KS p-values, skewness, and kurtosis for ML extraction
-
-% Silicate: 88-22
-[ksSil,obsSil,pSilKs,silSk,silKu] = ksOfBinnedCon(silOutB,pSilOutB10,10);
-
-% DOP: 88-01
-[ksDop,obsDop,pDopKs,dopSk,dopKu] = ksOfBinnedCon(dopOutB,pDopOutB,10,88);
-
-% DON: 88-17
+% 4. Calculate KS p-value, skewness, kurtosis
 [ksDon,obsDon,pDonKs,donSk,donKu] = ksOfBinnedCon(donOutB,pDonOutB,10);
 
-% DOC: 93-17
-[ksDoc,obsDoc,pDocKs,docSk,docKu] = ksOfBinnedCon(docOutB,pDocOutB,10);
-%% Visualise KS p-values, skewness, and kurtosis
-
-ax12 = figure; % Silicate: 88-22
-plotKs(pSilKs,ksSil,obsSil,silSk,silKu,0.5,20.5,true);
-sgtitle('Silicate 88-22: Mixed Layer');
-exportgraphics(ax12,'figures/L1/ks_sil150.png'); clear ax12;
-
-ax13 = figure; % Dissolved Organic Phosphorus (DOP): 88-01
-plotKs(pDopKs,ksDop,obsDop,dopSk,dopKu,0.5,20.5,true,88);
-sgtitle('Dissolved Organic Phosphorus 88-01: Mixed Layer');
-exportgraphics(ax13,'figures/L1/ks_dop150.png'); clear ax13;
-
-ax14 = figure; % DON: 88-17
-plotKs(pDonKs,ksDon,obsDon,donSk,donKu,0.5,20.5,true);
-sgtitle('DON 88-17: Mixed Layer');
+% 5. Plot results
+ax14 = figure;
+plotKs(pDonKs,ksDon,obsDon,donSk,donKu);
+sgtitle('DON 88-17: L1');
 exportgraphics(ax14,'figures/L1/ks_don150.png'); clear ax14;
 
-ax15 = figure; % DOC: 93-17
+%% Dissolved Organic Carbon (DOC): 93-17
+
+% 1. Load data
+tmp = importdata('data\L1\doc_93-17_150.txt');
+pDocIn = tmp.data(:,4);
+docIn = tmp.data(:,5);
+idDocIn = tmp.data(:,1);
+clear tmp;
+
+% 2. Extract data in ML
+[idDocOut,pDocOut,docOut] = extractMldVals(idDocIn,pDocIn,docIn,maxMld);
+
+% 3. Bin data
+[~,pDocOutB,docOutB,~,~] = cleanAndBin(pDocOut,docOut,idDocOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksDoc,obsDoc,pDocKs,docSk,docKu] = ksOfBinnedCon(docOutB,pDocOutB,10);
+
+% 5. Plot results
+ax15 = figure;
 plotKs(pDocKs,ksDoc,obsDoc,docSk,docKu,0.5,20.5,true);
-sgtitle('DOC 93-17: Mixed Layer');
+sgtitle('DOC 93-17: L1');
 exportgraphics(ax15,'figures/L1/ks_doc150.png'); clear ax15;
+
+%% Total Dissolved Phosphorus (TDP): 88-01
+
+% 1. Load data
+tmp = importdata('data\L1\tdp_88-01_150.txt');
+pTdpIn = tmp.data(:,4);
+tdpIn = tmp.data(:,5);
+idTdpIn = tmp.data(:,1);
+clear tmp;
+
+% 2. Extract data in ML
+[idTdpOut,pTdpOut,tdpOut] = extractMldVals(idTdpIn,pTdpIn,tdpIn,maxMld);
+
+% 3. Bin data
+[~,pTdpOutB,tdpOutB,~,~] = cleanAndBin(pTdpOut,tdpOut,idTdpOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksTdp,obsTdp,pTdpKs,tdpSk,tdpKu] = ksOfBinnedCon(tdpOutB,pTdpOutB,10,87);
+
+% 5. Plot results
+ax16 = figure;
+plotKs(pTdpKs,ksTdp,obsTdp,tdpSk,tdpKu,0.5,20.5,true,87);
+sgtitle('Total Dissolved Phosphorus 88-01: L1');
+exportgraphics(ax16,'figures/L1/ks_tdp150.png'); clear ax16;
+%% TEMPLATE: XX-YY
+
+% 1. Load data
+
+% 2. Extract data in ML
+
+% 3. Bin data
+
+% 4. Calculate KS p-value, skewness, kurtosis
+
+% 5. Plot results
+
+%% Visualise ML Extraction
+
+% pressure = pChlOut;
+% concentration = chlOut;
+% xLabel = 'Chl a [ng/l]';
+% figTitle = 'Chl a: 88-21';
+% 
+% figure; % Chlorophyll a
+% scatter(concentration,pressure);
+% grid on;
+% set(gca,'YDir','reverse'); ylabel('Pressure [dbar]');
+% xlabel(xLabel);
+% title(figTitle);
+
 %% Save new data
 
 save mldVals.mat maxMld;
-% idChlOut pChlOut idDivOut pDivOut idProOut pProOut;

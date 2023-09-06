@@ -12,8 +12,9 @@ if nargin < 8
 end
 
 if nargin < 6
-    obsLimA = 1;
-    obsLimB = length(tr);
+    obsLimA = 0.5;
+    %obsLimB = length(tr);
+    obsLimB = length(obs) + 0.5;
 end
 
 if EulLan
