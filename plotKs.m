@@ -60,22 +60,43 @@ xlabel('p-value');
 title('KS Test');
 
 subplot(1,3,3)
-plot(sk,tr,'Color','#1f78b4');
-ylim(limits);
-tAx = gca;
-xlabel(tAx,'Skewness','Color','#1f78b4');
-% tAx2 = axes('Position', get(tAx, 'Position')); % Create a new axes in the same position as the first one, overlaid on top
-tAx2 = axes('Position', [0.6916    0.1060    0.2134    0.7825]); % Create a new axes in the same position as the first one, overlaid on top
-plot(ku,tr,'Color','#33a02c'); 
-set(tAx2, 'ylim', get(tAx, 'ylim'), 'color', 'none'); % Set y limits same as original axes, and make background transparent
-set(tAx2,'YTickLabel',[]);
-set(tAx,'YDir','reverse');
-set(tAx2,'YDir','reverse');
-xlabel(tAx2,'Kurtosis','Color','#33a02c');
-% tAx2.set('XTickLabel','Color','#33a02c');
-set(tAx2,'XAxisLocation','top');
-set(tAx,'XColor','#1f78b4');
-set(tAx2,'XColor','#33a02c');
+yyaxis left
+plot(sk,tr,'DisplayName','Skewness'); hold on
+ylim(limits); set(gca,'YDir','reverse');
+% yticklabels({});
+yyaxis right
+plot(ku,tr,'DisplayName','Kurtosis');
+ylim(limits); set(gca,'YDir','reverse');
+% set(gca,'YTickLabel',{tr(5:5:length(tr))},'YColor','Black')
+xline(3,'.','Mesokurtic','HandleVisibility','off');
+xline(2.5,':','HandleVisibility','off');
+xline(3.5,':','HandleVisibility','off');
+xline(0,'.','Symmetric','HandleVisibility','off');
+xline(-0.5,':','HandleVisibility','off');
+xline(0.5,':','HandleVisibility','off');
+hold off
+grid minor;
+legend('Location','south');
+title('Moments');
+
+% old subplot 3
+% subplot(1,3,3)
+% plot(sk,tr,'Color','#1f78b4');
+% ylim(limits);
+% tAx = gca;
+% xlabel(tAx,'Skewness','Color','#1f78b4');
+% % tAx2 = axes('Position', get(tAx, 'Position')); % Create a new axes in the same position as the first one, overlaid on top
+% tAx2 = axes('Position', [0.6916    0.1060    0.2134    0.7825]); % Create a new axes in the same position as the first one, overlaid on top
+% plot(ku,tr,'Color','#33a02c'); 
+% set(tAx2, 'ylim', get(tAx, 'ylim'), 'color', 'none'); % Set y limits same as original axes, and make background transparent
+% set(tAx2,'YTickLabel',[]);
+% set(tAx,'YDir','reverse');
+% set(tAx2,'YDir','reverse');
+% xlabel(tAx2,'Kurtosis','Color','#33a02c');
+% % tAx2.set('XTickLabel','Color','#33a02c');
+% set(tAx2,'XAxisLocation','top');
+% set(tAx,'XColor','#1f78b4');
+% set(tAx2,'XColor','#33a02c');
 
 % data1m=get(tAx,'ylim');
 % data2m=get(tAx2,'ylim');
