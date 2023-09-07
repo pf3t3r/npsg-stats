@@ -20,7 +20,8 @@ clear ctdData i;
 % (3) bin this data, (4) calculate the KS p-value, skewness, and kurtosis
 % for this binned mixed-layer data, and finally (5) plot (and save?) the
 % results.
-
+% THE TWO SECTIONS BEFORE THE README MUST BE RUN IN ORDER TO LOAD THE MLD,
+% THEN EACH INDIVIDUAL BLOCK CAN BE RUN.
 %% TEMPLATE: XX-YY
 
 % 1. Load data
@@ -392,17 +393,102 @@ ax16 = figure;
 plotKs(pTdpKs,ksTdp,obsTdp,tdpSk,tdpKu,0.5,20.5,true,87);
 sgtitle('Total Dissolved Phosphorus 88-01: L1');
 exportgraphics(ax16,'figures/L1/ks_tdp150.png'); clear ax16;
-%% TEMPLATE: XX-YY
+
+%% Total Dissolved Nitrogen: 88-17
 
 % 1. Load data
+tmp = importdata('data\L1\tdn_88-17_150.txt');
+pTdnIn = tmp.data(:,4);
+tdnIn = tmp.data(:,5);
+idTdnIn = tmp.data(:,1);
+clear tmp;
 
 % 2. Extract data in ML
+[idTdnOut,pTdnOut,tdnOut] = extractMldVals(idTdnIn,pTdnIn,tdnIn,maxMld);
 
 % 3. Bin data
+[~,pTdnOutB,tdnOutB,~,~] = cleanAndBin(pTdnOut,tdnOut,idTdnOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
+[ksTdn,obsTdn,pTdnKs,tdnSk,tdnKu] = ksOfBinnedCon(tdnOutB,pTdnOutB,10);
 
 % 5. Plot results
+ax = figure;
+plotKs(pTdnKs,ksTdn,obsTdn,tdnSk,tdnKu);
+sgtitle('Total Dissolved Nitrogen 88-17: L1');
+exportgraphics(ax,'figures/L1/ks_tdn150.png'); clear ax;
+
+%% Particulate Phosphorus: 11-21
+
+% 1. Load data
+tmp = importdata('data\L1\parp_11-21_150.txt');
+pParpIn = tmp.data(:,4);
+parpIn = tmp.data(:,5);
+idParpIn = tmp.data(:,1);
+clear tmp;
+
+% 2. Extract data in ML
+[idParpOut,pParpOut,parpOut] = extractMldVals(idParpIn,pParpIn,parpIn,maxMld);
+
+% 3. Bin data
+[~,pParpOutB,parpOutB,~,~] = cleanAndBin(pParpOut,parpOut,idParpOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksParp,obsParp,pParpKs,parpSk,parpKu] = ksOfBinnedCon(parpOutB,pParpOutB,10,64);
+
+% 5. Plot results
+ax = figure;
+plotKs(pParpKs,ksParp,obsParp,parpSk,parpKu,0.5,20.5,true,64);
+sgtitle('Particulate Phosphorus 11-21: L1');
+exportgraphics(ax,'figures/L1/ks_parp150.png'); clear ax;
+
+%% Particulate Nitrogen: 89-21
+
+% 1. Load data
+tmp = importdata('data\L1\parn_89-21_150.txt');
+pParnIn = tmp.data(:,4);
+parnIn = tmp.data(:,5);
+idParnIn = tmp.data(:,1);
+clear tmp;
+
+% 2. Extract data in ML
+[idParnOut,pParnOut,parnOut] = extractMldVals(idParnIn,pParnIn,parnIn,maxMld);
+
+% 3. Bin data
+[~,pParnOutB,parnOutB,~,~] = cleanAndBin(pParnOut,parnOut,idParnOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksParn,obsParn,pParnKs,parnSk,parnKu] = ksOfBinnedCon(parnOutB,pParnOutB,10);
+
+% 5. Plot results
+ax = figure;
+plotKs(pParnKs,ksParn,obsParn,parnSk,parnKu,0.5,20.5,true);
+sgtitle('Particulate Nitrogen 89-21: L1');
+exportgraphics(ax,'figures/L1/ks_parn150.png'); clear ax;
+
+%% Particulate Carbon: 89-21
+
+% 1. Load data
+tmp = importdata('data\L1\parc_89-21_150.txt');
+pParcIn = tmp.data(:,4);
+parcIn = tmp.data(:,5);
+idParcIn = tmp.data(:,1);
+clear tmp;
+
+% 2. Extract data in ML
+[idParcOut,pParcOut,parcOut] = extractMldVals(idParcIn,pParcIn,parcIn,maxMld);
+
+% 3. Bin data
+[~,pParcOutB,parcOutB,~,~] = cleanAndBin(pParcOut,parcOut,idParcOut');
+
+% 4. Calculate KS p-value, skewness, kurtosis
+[ksParc,obsParc,pParcKs,parcSk,parcKu] = ksOfBinnedCon(parcOutB,pParcOutB,10);
+
+% 5. Plot results
+ax = figure;
+plotKs(pParcKs,ksParc,obsParc,parcSk,parcKu,0.5,20.5,true);
+sgtitle('Particulate Carbon 89-21: L1');
+exportgraphics(ax,'figures/L1/ks_parc150.png'); clear ax;
 
 %% Visualise ML Extraction
 

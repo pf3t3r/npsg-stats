@@ -324,3 +324,86 @@ plotKs2(prTdp,ksTdp,obsTdp,skTdp,kuTdp,prTdp(1),prTdp(end),44);
 sgtitle('Total Dissolved Phosphorus 88-01: L2');
 exportgraphics(ax15,'figures/L2/ks_tdp.png'); clear ax15;
 
+%% Total Dissolved Nitrogen (TDN): 88-17
+
+% 1. Load data
+tmp = importdata("data\L2\tdn_88-17_200.txt");
+tdnId = num2str(tmp.data(:,1));
+tdnP = tmp.data(:,4);
+tdn = tmp.data(:,5);
+clear tmp;
+
+% 2. Extract data beneath ML, centre around DCM
+[idSubmlTdn,pSubmlTdn,submlTdn] = extractSMLC(tdnId,tdnP,tdn,pMaxMld);
+
+% 3. Calculate KS p-value, skewness, kurtosis
+[prTdn,ksTdn,obsTdn,skTdn,kuTdn,~,~,~] = ksOfLagrangian(idSubmlTdn,pSubmlTdn,dcm,submlTdn,56);
+
+% 4. Plot results
+ax16 = figure;
+plotKs2(prTdn,ksTdn,obsTdn,skTdn,kuTdn,prTdn(1),prTdn(end),56);
+sgtitle('Total Dissolved Nitrogen 88-01: L2');
+exportgraphics(ax16,'figures/L2/ks_tdn.png'); clear ax16;
+
+%% Particulate Phosphorus: 11-21
+
+% 1. Load data
+tmp = importdata("data\L2\parp_11-21_200.txt");
+parpId = num2str(tmp.data(:,1));
+parpP = tmp.data(:,4);
+parp = tmp.data(:,5);
+clear tmp;
+
+% 2. Extract data beneath ML, centre around DCM
+[idSubmlParp,pSubmlParp,submlParp] = extractSMLC(parpId,parpP,parp,pMaxMld);
+
+% 3. Calculate KS p-value, skewness, kurtosis
+[prParp,ksParp,obsParp,skParp,kuParp,~,~,~] = ksOfLagrangian(idSubmlParp,pSubmlParp,dcm,submlParp,20);
+
+% 4. Plot results
+ax = figure;
+plotKs2(prParp,ksParp,obsParp,skParp,kuParp,prParp(1),prParp(end),20);
+sgtitle('Particulate Phosphorus 11-21: L2');
+exportgraphics(ax,'figures/L2/ks_parp.png'); clear ax;
+
+%% Particulate Nitrogen: 89-21
+
+% 1. Load data
+tmp = importdata("data\L2\parn_89-21_200.txt");
+parnId = num2str(tmp.data(:,1));
+parnP = tmp.data(:,4);
+parn = tmp.data(:,5);
+clear tmp;
+
+% 2. Extract data beneath ML, centre around DCM
+[idSubmlParn,pSubmlParn,submlParn] = extractSMLC(parnId,parnP,parn,pMaxMld);
+
+% 3. Calculate KS p-value, skewness, kurtosis
+[prParn,ksParn,obsParn,skParn,kuParn,~,~,~] = ksOfLagrangian(idSubmlParn,pSubmlParn,dcm,submlParn,55);
+
+% 4. Plot results
+ax = figure;
+plotKs2(prParn,ksParn,obsParn,skParn,kuParn,prParn(1),prParn(end),55);
+sgtitle('Particulate Nitrogen 89-21: L2');
+exportgraphics(ax,'figures/L2/ks_parn.png'); clear ax;
+
+%% Particulate Carbon: 89-21
+
+% 1. Load data
+tmp = importdata("data\L2\parc_89-21_200.txt");
+parcId = num2str(tmp.data(:,1));
+parcP = tmp.data(:,4);
+parc = tmp.data(:,5);
+clear tmp;
+
+% 2. Extract data beneath ML, centre around DCM
+[idSubmlParc,pSubmlParc,submlParc] = extractSMLC(parcId,parcP,parc,pMaxMld);
+
+% 3. Calculate KS p-value, skewness, kurtosis
+[prParc,ksParc,obsParc,skParc,kuParc,~,~,~] = ksOfLagrangian(idSubmlParc,pSubmlParc,dcm,submlParc,55);
+
+% 4. Plot results
+ax = figure;
+plotKs2(prParc,ksParc,obsParc,skParc,kuParc,prParc(1),prParc(end),55);
+sgtitle('Particulate Carbon 89-21: L2');
+exportgraphics(ax,'figures/L2/ks_parc.png'); clear ax;
