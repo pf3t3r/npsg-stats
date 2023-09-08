@@ -245,165 +245,220 @@ exportgraphics(ax12,'figures/L2/ks_sil.png'); clear ax12;
 %% Dissolved Organic Phosphorus (DOP): 88-01
 
 % 1. Load data
-dopId = num2str(importdata("data\L2\dop_88-01_200.txt").data(:,1));
-dopP = importdata("data\L2\dop_88-01_200.txt").data(:,4);
-dop = importdata("data\L2\dop_88-01_200.txt").data(:,5);
+tmp = importdata("data\L2\dop_88-01_200.txt");
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlDop,pSubmlDop,submlDop] = extractSMLC(dopId,dopP,dop,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prDop,ksDop,obsDop,skDop,kuDop,~,~,~] = ksOfLagrangian(idSubmlDop,pSubmlDop,dcm,submlDop,44);
-
-% 4. Plot results
-ax13 = figure; % Dissolved Organic Phosphorus: 88-01
-plotKs2(prDop,ksDop,obsDop,skDop,kuDop,prDop(1),prDop(end),44);
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,44);
 sgtitle('DOP 88-01: L2');
-exportgraphics(ax13,'figures/L2/ks_dop.png'); clear ax13;
+exportgraphics(ax,'figures/L2/ks_dop.png'); clear ax;
+save("output\L2\dop.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
+
 
 %% DON: 88-17
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\don_88-17_200.txt");
-donId = num2str(tmp.data(:,1));
-donP = tmp.data(:,4);
-don = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlDon,pSubmlDon,submlDon] = extractSMLC(donId,donP,don,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prDon,ksDon,obsDon,skDon,kuDon,~,~,~] = ksOfLagrangian(idSubmlDon,pSubmlDon,dcm,submlDon,52);
-
-% 4. Plot results
-ax14 = figure;
-plotKs2(prDon,ksDon,obsDon,skDon,kuDon,prDon(1),prDon(end),52);
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,44);
 sgtitle('DON 88-17: L2');
-exportgraphics(ax14,'figures/L2/ks_don.png'); clear ax14;
+exportgraphics(ax,'figures/L2/ks_don.png'); clear ax;
+save("output\L2\don.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% DOC: 93-17
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\doc_93-17_200.txt");
-docId = num2str(tmp.data(:,1));
-docP = tmp.data(:,4);
-doc = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlDoc,pSubmlDoc,submlDoc] = extractSMLC(docId,docP,doc,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prDoc,ksDoc,obsDoc,skDoc,kuDoc,~,~,~] = ksOfLagrangian(idSubmlDoc,pSubmlDoc,dcm,submlDoc,65);
-
-% 4. Plot results
-ax15 = figure;
-plotKs2(prDoc,ksDoc,obsDoc,skDoc,kuDoc,prDoc(1),prDoc(end),65);
-sgtitle('DOC 93-17: L2');
-exportgraphics(ax15,'figures/L2/ks_don.png'); clear ax15;
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,65);
+sgtitle('DOC 88-17: L2');
+exportgraphics(ax,'figures/L2/ks_doc.png'); clear ax;
+save("output\L2\doc.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% TDP: 88-01
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\tdp_88-01_200.txt");
-tdpId = num2str(tmp.data(:,1));
-tdpP = tmp.data(:,4);
-tdp = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlTdp,pSubmlTdp,submlTdp] = extractSMLC(tdpId,tdpP,tdp,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prTdp,ksTdp,obsTdp,skTdp,kuTdp,~,~,~] = ksOfLagrangian(idSubmlTdp,pSubmlTdp,dcm,submlTdp,44);
-
-% 4. Plot results
-ax15 = figure;
-plotKs2(prTdp,ksTdp,obsTdp,skTdp,kuTdp,prTdp(1),prTdp(end),44);
-sgtitle('Total Dissolved Phosphorus 88-01: L2');
-exportgraphics(ax15,'figures/L2/ks_tdp.png'); clear ax15;
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,44);
+sgtitle('TDP 88-01: L2');
+exportgraphics(ax,'figures/L2/ks_tdp.png'); clear ax;
+save("output\L2\tdp.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% Total Dissolved Nitrogen (TDN): 88-17
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\tdn_88-17_200.txt");
-tdnId = num2str(tmp.data(:,1));
-tdnP = tmp.data(:,4);
-tdn = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlTdn,pSubmlTdn,submlTdn] = extractSMLC(tdnId,tdnP,tdn,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prTdn,ksTdn,obsTdn,skTdn,kuTdn,~,~,~] = ksOfLagrangian(idSubmlTdn,pSubmlTdn,dcm,submlTdn,56);
-
-% 4. Plot results
-ax16 = figure;
-plotKs2(prTdn,ksTdn,obsTdn,skTdn,kuTdn,prTdn(1),prTdn(end),56);
-sgtitle('Total Dissolved Nitrogen 88-01: L2');
-exportgraphics(ax16,'figures/L2/ks_tdn.png'); clear ax16;
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,56);
+sgtitle('TDN 88-17: L2');
+exportgraphics(ax,'figures/L2/ks_tdn.png'); clear ax;
+save("output\L2\tdn.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% Particulate Phosphorus: 11-21
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\parp_11-21_200.txt");
-parpId = num2str(tmp.data(:,1));
-parpP = tmp.data(:,4);
-parp = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlParp,pSubmlParp,submlParp] = extractSMLC(parpId,parpP,parp,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prParp,ksParp,obsParp,skParp,kuParp,~,~,~] = ksOfLagrangian(idSubmlParp,pSubmlParp,dcm,submlParp,20);
-
-% 4. Plot results
-ax = figure;
-plotKs2(prParp,ksParp,obsParp,skParp,kuParp,prParp(1),prParp(end),20);
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,20);
 sgtitle('Particulate Phosphorus 11-21: L2');
 exportgraphics(ax,'figures/L2/ks_parp.png'); clear ax;
+save("output\L2\parp.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% Particulate Nitrogen: 89-21
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\parn_89-21_200.txt");
-parnId = num2str(tmp.data(:,1));
-parnP = tmp.data(:,4);
-parn = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlParn,pSubmlParn,submlParn] = extractSMLC(parnId,parnP,parn,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prParn,ksParn,obsParn,skParn,kuParn,~,~,~] = ksOfLagrangian(idSubmlParn,pSubmlParn,dcm,submlParn,55);
-
-% 4. Plot results
-ax = figure;
-plotKs2(prParn,ksParn,obsParn,skParn,kuParn,prParn(1),prParn(end),55);
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,55);
 sgtitle('Particulate Nitrogen 89-21: L2');
 exportgraphics(ax,'figures/L2/ks_parn.png'); clear ax;
+save("output\L2\parn.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% Particulate Carbon: 89-21
 
-% 1. Load data
+% Load data
 tmp = importdata("data\L2\parc_89-21_200.txt");
-parcId = num2str(tmp.data(:,1));
-parcP = tmp.data(:,4);
-parc = tmp.data(:,5);
-clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
-[idSubmlParc,pSubmlParc,submlParc] = extractSMLC(parcId,parcP,parc,pMaxMld);
-
-% 3. Calculate KS p-value, skewness, kurtosis
-[prParc,ksParc,obsParc,skParc,kuParc,~,~,~] = ksOfLagrangian(idSubmlParc,pSubmlParc,dcm,submlParc,55);
-
-% 4. Plot results
-ax = figure;
-plotKs2(prParc,ksParc,obsParc,skParc,kuParc,prParc(1),prParc(end),55);
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,55);
 sgtitle('Particulate Carbon 89-21: L2');
 exportgraphics(ax,'figures/L2/ks_parc.png'); clear ax;
+save("output\L2\parc.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
+
+%% Delta 15 N of PN
+
+% Left as a placeholder because with the current methods I cannot deal with
+% negative numbers...
+
+%% Low-level Phosphorus: 88-22
+
+% 1. Load data
+tmp = importdata("data\L2\llp_88-22_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,100);
+sgtitle('Low-level Phosphorus 88-22: L2');
+exportgraphics(ax,'figures/L2/ks_llp.png'); clear ax;
+save("output\L2\llp.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
+
+%% Low-level Nitrogen: 89-22
+
+% 1. Load data
+tmp = importdata("data\L2\lln_89-22_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,78);
+sgtitle('Low-level Nitrogen 89-22: L2');
+exportgraphics(ax,'figures/L2/ks_lln.png'); clear ax;
+save("output\L2\lln.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% Fluorometric Chlorophyll: 88-22
+
+% 1. Load data
+tmp = importdata("data\L2\chlFlu_88-22_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,100);
+sgtitle('Fluorometric Chlorophyll 88-22: L2');
+exportgraphics(ax,'figures/L2/ks_chlaFluo.png'); clear ax;
+save("output\L2\chlaFluo.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% Phaeopigments: 88-22
+
+% 1. Load data
+tmp = importdata("data\L2\pheo_88-22_200.txt");
+% tmp.data = tmp.data(1:9808,:);
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('Phaeopigments 88-22: L2');
+exportgraphics(ax,'figures/L2/ks_phae.png'); clear ax;
+save("output\L2\phae.mat","p","ks","obs","sk","ku");
+% clear ax p ks obs sk ku;
+
+%% HPLC Chlorophyll C3: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\chl3_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,21);
+sgtitle('Chlorophyll C3 (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_chl3.png'); clear ax;
+save("output\L2\chl3.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Chlorophyll C1 + C2: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\chl12_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,28);
+sgtitle('Chlorophyll C1 + C2 (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_chl12.png'); clear ax;
+save("output\L2\chl12.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Chlorophyll C1 + C2 + C3: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\chl123_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,94);
+sgtitle('Chlorophyll C1 + C2 + C3 (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_chl123.png'); clear ax;
+save("output\L2\chl123.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% Peridinin: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\per_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,94);
+sgtitle('Peridinin (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_per.png'); clear ax;
+save("output\L2\per.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% But19: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\but19_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,98);
+sgtitle('But19 (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_but19.png'); clear ax;
+save("output\L2\but19.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;

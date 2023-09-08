@@ -490,6 +490,148 @@ plotKs(pParcKs,ksParc,obsParc,parcSk,parcKu,0.5,20.5,true);
 sgtitle('Particulate Carbon 89-21: L1');
 exportgraphics(ax,'figures/L1/ks_parc150.png'); clear ax;
 
+%% delta15N of PN: 00-04
+
+% This DOES NOT work because of the negative values.
+
+% % 1. Load data
+% tmp = importdata('data\L1\p15n_00-04_150.txt');
+% pP15nIn = tmp.data(:,4);
+% p15nIn = tmp.data(:,5);
+% idP15nIn = tmp.data(:,1);
+% clear tmp;
+% 
+% % 2. Extract data in ML
+% [idP15nOut,pP15nOut,p15nOut] = extractMldVals(idP15nIn,pP15nIn,p15nIn,maxMld);
+% 
+% % 3. Bin data
+% [~,pP15nOutB,p15nOutB,~,~] = cleanAndBin(pP15nOut,p15nOut,idP15nOut');
+% 
+% % 4. Calculate KS p-value, skewness, kurtosis
+% [ksP15n,obsP15n,pP15n,p15nSk,p15nKu] = ksOfBinnedCon(p15nOutB,pP15nOutB,10,39);
+% 
+% % 5. Plot results
+% ax = figure;
+% plotKs(pP15n,ksP15n,obsP15n,p15nSk,p15nKu,0.5,20.5,true,39);
+% sgtitle('delta 15 N of PN 00-04: L1');
+% exportgraphics(ax,'figures/L1/ks_p15n150.png'); clear ax;
+
+%% Low-Level Phosphorus: 88-22
+
+% 1: Load data
+tmp = importdata('data\L1\llp_88-22_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('Low-Level Phosphorus 88-22: L1');
+exportgraphics(ax,'figures/L1/ks_llp150.png'); clear ax;
+save("output\L1\llp.mat","p","ks","obs","Sk","Ku");
+
+%% Low-Level Nitrogen: 89-22
+
+% 1: Load data
+tmp = importdata('data\L1\lln_89-22_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('Low-Level Nitrogen 89-22: L1');
+exportgraphics(ax,'figures/L1/ks_lln150.png'); clear ax;
+save("output\L1\lln.mat","p","ks","obs","Sk","Ku");
+
+%% Fluorometric Chlorophyll a: 89-22
+
+% This is not of sufficient precision. Included only for reference.
+
+% 1: Load data
+tmp = importdata('data\L1\chlFlu_88-22_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('Fluorometric Chlorophyll a 89-22: L1');
+exportgraphics(ax,'figures/L1/ks_chlFlu150.png'); clear ax;
+save("output\L1\chlaFluo.mat","p","ks","obs","Sk","Ku");
+
+%% Phaeopigments: 88-22
+
+% 1: Load data
+tmp = importdata('data\L1\pheo_88-22_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('Phaeopigments 88-22: L1');
+exportgraphics(ax,'figures/L1/ks_phae150.png'); clear ax;
+save("output\L1\phae.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Chlorophyll C3: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\chl3_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,50);
+
+sgtitle('HPLC Chl c3: L1');
+exportgraphics(ax,'figures/L1/ks_chl3.png'); clear ax;
+save("output\L1\chl3.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Chlorophyll C1 + C2: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\chl12_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,53);
+
+sgtitle('HPLC Chl c1 + c2: L1');
+exportgraphics(ax,'figures/L1/ks_chl12.png'); clear ax;
+save("output\L1\chl12.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Chlorophyll C1 + C2 + C3: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\chl123_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,53);
+
+sgtitle('HPLC Chl c1 + c2 + c3: L1');
+exportgraphics(ax,'figures/L1/ks_chl123.png'); clear ax;
+save("output\L1\chl123.mat","p","ks","obs","Sk","Ku");
+
+%% Peridinin: 88-21
+
+% One significant digit. Unreliable results!
+
+% 1: Load data
+tmp = importdata('data\L1\per_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,73);
+
+sgtitle('Peridinin: L1');
+exportgraphics(ax,'figures/L1/ks_per.png'); clear ax;
+save("output\L1\per.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC 19' Butanoyloxyfucoxanthin: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\but19_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,55);
+
+sgtitle('HPLC 19 Butanoyloxyfucoxanthin 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_but19.png'); clear ax;
+save("output\L1\but19.mat","p","ks","obs","Sk","Ku");
+
 %% Visualise ML Extraction
 
 % pressure = pChlOut;
