@@ -462,3 +462,124 @@ tmp = importdata("data\L2\but19_88-21_200.txt");
 sgtitle('But19 (88-21): L2');
 exportgraphics(ax,'figures/L2/ks_but19.png'); clear ax;
 save("output\L2\but19.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Fucoxanthin: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\fuco_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC Fucoxanthin (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_fuco.png'); clear ax;
+save("output\L2\fuco.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC 19' Hexanoyloxyfucoxanthin: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\hex19_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC 19'' Hexanoyloxyfucoxanthin (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_hex19.png'); clear ax;
+save("output\L2\hex19.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Prasinoxanthin: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\prasino_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,41);
+sgtitle('HPLC Prasinoxanthin (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_prasino.png'); clear ax;
+save("output\L2\prasino.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Diadinoxanthin: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\diadino_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC Diadinoxanthin (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_diadino.png'); clear ax;
+save("output\L2\diadino.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Zeaxanthin: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\zeaxan_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC Zeaxanthin (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_zeaxan.png'); clear ax;
+save("output\L2\zeaxan.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Chlorophyll b: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\chlb_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC Chlorophyll b (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_chlb.png'); clear ax;
+save("output\L2\chlb.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% 	HPLC Chlorophyll c4: 88-21
+% ERROR COMPILING.
+
+% 1. Load data
+tmp = importdata("data\L2\chlc4_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC Chlorophyll c4 (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_chlc4.png'); clear ax;
+save("output\L2\chlc4.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC alpha-Carotene: 94-21
+
+% 1. Load data
+tmp = importdata("data\L2\acar_94-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC alpha-Carotene (94-21): L2');
+exportgraphics(ax,'figures/L2/ks_acar.png'); clear ax;
+save("output\L2\acar.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC beta-Carotene: 94-21
+
+% 1. Load data
+tmp = importdata("data\L2\bcar_94-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC beta-Carotene (94-21): L2');
+exportgraphics(ax,'figures/L2/ks_bcar.png'); clear ax;
+save("output\L2\bcar.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+
+%% HPLC Carotenes: 88-21
+
+% 1. Load data
+tmp = importdata("data\L2\caroten_88-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('HPLC Carotenes (88-21): L2');
+exportgraphics(ax,'figures/L2/ks_caroten.png'); clear ax;
+save("output\L2\caroten.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;

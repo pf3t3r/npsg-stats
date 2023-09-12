@@ -632,6 +632,72 @@ sgtitle('HPLC 19 Butanoyloxyfucoxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_but19.png'); clear ax;
 save("output\L1\but19.mat","p","ks","obs","Sk","Ku");
 
+%% HPLC Fucoxanthin: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\fuco_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+
+sgtitle('Fucoxanthin 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_fuco.png'); clear ax;
+save("output\L1\fuco.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC 19' Hexanoyloxyfucoxanthin: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\hex19_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+
+sgtitle('HPLC 19'' Hexanoyloxyfucoxanthin 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_hex19.png'); clear ax;
+save("output\L1\hex19.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Prasinoxanthin: 88-21
+% One significant digits => very unreliable!
+% Also too few observations!
+
+% 1: Load data
+tmp = importdata('data\L1\prasino_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC Prasinoxanthin 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_prasino.png'); clear ax;
+save("output\L1\prasino.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Diadinoxanthin: 88-21
+% One significant digits => very unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\diadino_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+
+sgtitle('HPLC Diadinoxanthin 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_diadino.png'); clear ax;
+save("output\L1\diadino.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Zeaxanthin: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\zeaxan_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+
+sgtitle('HPLC Zeaxanthin 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_zeaxan.png'); clear ax;
+save("output\L1\zeaxan.mat","p","ks","obs","Sk","Ku");
+
 %% Visualise ML Extraction
 
 % pressure = pChlOut;
