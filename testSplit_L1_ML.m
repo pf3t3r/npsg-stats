@@ -764,6 +764,214 @@ sgtitle('HPLC Carotenes 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_caroten.png'); clear ax;
 save("output\L1\caroten.mat","p","ks","obs","Sk","Ku");
 
+%% HPLC Chlorophyllide a: 94-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\chlda_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC Chlorophyllide a 94-21: L1');
+exportgraphics(ax,'figures/L1/chlda.png'); clear ax;
+save("output\L1\chlda.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Violaxanthin: 94-21
+% One significant digits => very unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\viol_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC Violaxanthin 94-21: L1');
+exportgraphics(ax,'figures/L1/viol.png'); clear ax;
+save("output\L1\viol.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Lutein: 94-21
+% One significant digits => very unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\lutein_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,48);
+
+sgtitle('HPLC Lutein 94-21: L1');
+exportgraphics(ax,'figures/L1/lutein.png'); clear ax;
+save("output\L1\lutein.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Monovinyl chlorophyll a: 94-21
+% Three significant digits => good!
+
+% 1: Load data
+tmp = importdata('data\L1\mvchla_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC Monovinyl chlorophyll a 94-21: L1');
+exportgraphics(ax,'figures/L1/mvchla.png'); clear ax;
+save("output\L1\mvchla.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Divinyl chlorophyll a: 94-21
+% Three significant digits => good!
+
+% 1: Load data
+tmp = importdata('data\L1\dvchla_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC Divinyl chlorophyll a 94-21: L1');
+exportgraphics(ax,'figures/L1/dvchla.png'); clear ax;
+save("output\L1\dvchla.mat","p","ks","obs","Sk","Ku");
+
+%% Phycoerythrin 0.4u fraction: 00-08
+% Four significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\pe4_00-08_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,55);
+
+sgtitle('Phycoerythrin 0.4u fraction 00-08: L1');
+exportgraphics(ax,'figures/L1/pe4.png'); clear ax;
+save("output\L1\pe4.mat","p","ks","obs","Sk","Ku");
+
+%% Phycoerythrin 5u fraction: 00-08
+% Three significant digits => good!
+
+% 1: Load data
+tmp = importdata('data\L1\pe5_00-08_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,43);
+
+sgtitle('Phycoerythrin 5u fraction 00-08: L1');
+exportgraphics(ax,'figures/L1/pe5.png'); clear ax;
+save("output\L1\pe5.mat","p","ks","obs","Sk","Ku");
+
+%% Phycoerythrin 10u fraction: 00-08
+% 4 significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\pe10_00-08_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,58);
+
+sgtitle('Phycoerythrin 10u fraction 00-08: L1');
+exportgraphics(ax,'figures/L1/pe10.png'); clear ax;
+save("output\L1\pe10.mat","p","ks","obs","Sk","Ku");
+
+%% Heterotrophic Bacteria: 05-21
+% 4 significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\hbact_05-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+
+sgtitle('Heterotrophic Bacteria 05-21: L1');
+exportgraphics(ax,'figures/L1/hbact.png'); clear ax;
+save("output\L1\hbact.mat","p","ks","obs","Sk","Ku");
+
+%% Prochlorococcus: 05-21
+% 4 significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\pbact_05-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+
+sgtitle('Prochlorococcus 05-21: L1');
+exportgraphics(ax,'figures/L1/pbact.png'); clear ax;
+save("output\L1\pbact.mat","p","ks","obs","Sk","Ku");
+
+%% Synechococcus: 05-21
+% Two significant digits => may be unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\sbact_05-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+
+sgtitle('Synechococcus 05-21: L1');
+exportgraphics(ax,'figures/L1/sbact.png'); clear ax;
+save("output\L1\sbact.mat","p","ks","obs","Sk","Ku");
+
+%% PicoEukaryotes: 05-21
+% 2 significant digits => may be unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\ebact_05-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+
+sgtitle('Picoeukaryotes 05-21: L1');
+exportgraphics(ax,'figures/L1/ebact.png'); clear ax;
+save("output\L1\ebact.mat","p","ks","obs","Sk","Ku");
+
+%% ATP: 88-22
+% Four significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\atp_88-22_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,92);
+
+sgtitle('ATP 88-22: L1');
+exportgraphics(ax,'figures/L1/atp.png'); clear ax;
+save("output\L1\atp.mat","p","ks","obs","Sk","Ku");
+
+%% Nitrous Oxide: 93-01
+% 4 significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\n2o_93-01_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,30);
+
+sgtitle('Nitrous Oxide 93-01: L1');
+exportgraphics(ax,'figures/L1/n2o.png'); clear ax;
+save("output\L1\n2o.mat","p","ks","obs","Sk","Ku");
+
+%% PProd Light-12: 89-22
+% 4 significant digits => very good!
+
+% 1: Load data
+tmp = importdata('data\L1\l12_89-22_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,83);
+
+sgtitle('PProd Light-12 89-22: L1');
+exportgraphics(ax,'figures/L1/l12.png'); clear ax;
+save("output\L1\l12.mat","p","ks","obs","Sk","Ku");
+
+%% PProd Dark-12: 89-00
+% Three significant digits => good!
+
+% 1: Load data
+tmp = importdata('data\L1\d12_89-00_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,78);
+
+sgtitle('PProd Dark-12 89-00: L1');
+exportgraphics(ax,'figures/L1/d12.png'); clear ax;
+save("output\L1\d12.mat","p","ks","obs","Sk","Ku");
+
 %% Visualise ML Extraction
 
 % pressure = pChlOut;
