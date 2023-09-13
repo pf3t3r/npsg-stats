@@ -698,6 +698,72 @@ sgtitle('HPLC Zeaxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_zeaxan.png'); clear ax;
 save("output\L1\zeaxan.mat","p","ks","obs","Sk","Ku");
 
+%% HPLC chlorophyll b: 88-21
+% Three significant digits => reliable
+
+% 1: Load data
+tmp = importdata('data\L1\chlb_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC chlorophyll b 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_chlb.png'); clear ax;
+save("output\L1\chlb.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC chlorophyll c4: 88-21
+% ERROR COMPILING
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\chlc4_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC chlorophyll c4 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_chlc4.png'); clear ax;
+save("output\L1\chlc4.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC alpha-Carotene: 94-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\acar_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC alpha-Carotene 94-21: L1');
+exportgraphics(ax,'figures/L1/ks_acar.png'); clear ax;
+save("output\L1\acar.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC beta-Carotene: 94-21
+% One or two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\bcar_94-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC beta-Carotene 94-21: L1');
+exportgraphics(ax,'figures/L1/ks_bcar.png'); clear ax;
+save("output\L1\bcar.mat","p","ks","obs","Sk","Ku");
+
+%% HPLC Carotenes: 88-21
+% Two significant digits => unreliable!
+
+% 1: Load data
+tmp = importdata('data\L1\caroten_88-21_150.txt');
+
+% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+
+sgtitle('HPLC Carotenes 88-21: L1');
+exportgraphics(ax,'figures/L1/ks_caroten.png'); clear ax;
+save("output\L1\caroten.mat","p","ks","obs","Sk","Ku");
+
 %% Visualise ML Extraction
 
 % pressure = pChlOut;
