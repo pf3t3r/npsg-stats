@@ -321,6 +321,19 @@ exportgraphics(ax,'figures/L2/ks_parp.png'); clear ax;
 save("output\L2\parp.mat","p","ks","obs","sk","ku");
 clear ax p ks obs sk ku;
 
+%% Particulate Silica: 96-21
+
+% Load data
+tmp = importdata("data\L2\pars_96-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,44);
+sgtitle('Particulate Silica 96-21: L2');
+exportgraphics(ax,'figures/L2/ks_pars.png'); clear ax;
+save("output\L2\pars.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
+
 %% Particulate Nitrogen: 89-21
 
 % Load data
