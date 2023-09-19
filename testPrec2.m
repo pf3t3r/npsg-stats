@@ -57,7 +57,7 @@ rn20(rn20<0) = 0.1; rn40(rn40<0) = 0.1; rn60(rn60<0) = 0.1; rn80(rn80<0) = 0.1;
 %% test
 
 % log on log
-ksL20 = quickMleAndKs(rl20);
+[ksL20,lil_LL20] = quickMleAndKs(rl20);
 ksL40 = quickMleAndKs(rl40);
 ksL60 = quickMleAndKs(rl60);
 ksL80 = quickMleAndKs(rl80);

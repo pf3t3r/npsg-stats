@@ -18,7 +18,7 @@ chl = gcaloha.chl;
 
 %% Inspect time series at each grid cell
 
-figure
+ax1 = figure;
 tiledlayout(12,12);
 
 for i = 1:12
@@ -30,6 +30,7 @@ for i = 1:12
 end
 
 sgtitle('Chl a Surface Concentration: 1997-2022, All Grid Cells');
+exportgraphics(ax1,'figures/satellite/allCellTimeseries.png');
 
 %% Find 'Regional' Time-Mean Satellite Chl a
 % Here I mean the mean chl a over the entire 12x12 region across the time
@@ -43,9 +44,10 @@ end
 clear i tmp;
 
 %% Satellite Chl a: Regional Time-Mean
-figure
+ax2 = figure;
 plot(date,zonMerMeanChla);
 title('zonal and meridional mean chlorophyll from satellite data, station aloha');
+exportgraphics(ax2,'figures/satellite/zonMerMeanSurfaceChl.png');
 
 %% Find Time-Mean Satellite Chl a for each grid cell (2D Map)
 testMean = mean(chl,3,'omitnan');
@@ -53,13 +55,14 @@ testMean = mean(chl,3,'omitnan');
 %% Time-Mean Satellite Chl a over 12x12 Grid
 nb = 100;
 
-figure; contourf(testMean,linspace(0.0683,0.0694,nb),'LineColor','auto');
+ax3 = figure; contourf(testMean,linspace(0.0683,0.0694,nb),'LineColor','auto');
 xticklabels(lon); yticklabels(lat); set(gca,'YDir','reverse');
 xlabel('Longitude'); ylabel('Latitude');
 colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = '[chl a] (ug/kg)';
 title('[chl a]: mean surface concentration (1997-2022)');
+exportgraphics(ax3,'figures/satellite/chlContour.png');
 clear c nb;
 %% Find Kolmogorov-Smirnov Statistic: Regional Time-Mean Chl a
 
@@ -76,12 +79,9 @@ tmp = squeeze(chl(6,6,:));
 % tmp = randSam;
 tmp(isnan(tmp)) = [];
 
-% tmp = movmean(tmp,10);
-
-figure;
+ax4 = figure;
 [mle,ks,~,~,~,~] = statsplot2(tmp);
-
-% clear tmp;
+exportgraphics(ax4,'figures/satellite/hists.png');
 
 %% Sensitivity Analysis
 
@@ -111,7 +111,7 @@ end
 
 %% Sensitivity Analysis: Sample No. vs p-value (no moving mean)
 
-figure;
+ax5 = figure;
 plot(sampleNo,mnKsS(:,1,1),'o-','Color','#a6cee3','DisplayName','normal');
 hold on
 plot(sampleNo,mnKsS(:,1,2),'+--','Color','#1f78b4','DisplayName','lognormal');
@@ -121,10 +121,11 @@ hold off
 legend();
 ylabel('p-value'); xlabel('sample no.');
 title('Station Aloha Surface Chl a: KS Test p-value vs. sample no.');
+exportgraphics(ax5,'figures/satellite/ksVsP_sample.png');
 
 %% Sensitivity Analysis: Including smoothing
 
-figure;
+ax6 = figure;
 subplot(1,7,1)
 plot(sampleNo,mnKsS(:,1,1),'o-','Color','#a6cee3','DisplayName','normal');
 hold on
@@ -202,4 +203,6 @@ legend(); ylabel('p-value'); xlabel('sample no.');
 title('smoothed','window = 8');
 
 sgtitle('mean p-value vs. sample no.');
+exportgraphics(ax6,'figures/satellite/ksVsPsmoothing.png');
+
 % randSam = datasample(squeeze(chl(6,6,:)),1000);
