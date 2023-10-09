@@ -18,8 +18,10 @@ function [ax,p,ks,obs,sk,ku] = L2_helper(tmp,maxMld,dcm,threshold)
 % Ku = kurtosis at the same depths.
 
 % Set default threshold
+% Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
+% & Zahediasl (2012), and Ahad et al (2011).
 if nargin < 4
-    threshold = 100;
+    threshold = 50;
 end
 
 id = num2str(tmp.data(:,1));

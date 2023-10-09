@@ -15,7 +15,7 @@ function [ks, obs, depth2, Sk, ku] = ksOfBinnedCon(X, p, binning, threshold)
 % (norm); 3: stdMle/stdData (norm)
 
 if nargin <4
-    threshold = 100;
+    threshold = 50;
 end
 
 if nargin <3

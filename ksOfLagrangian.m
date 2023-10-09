@@ -16,9 +16,8 @@ function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu,b] = ksOfLagrangian(id,p,dcm,X,thr
 % the given distribution fits the data better.
 % obsPerBin = no. of observations in a particular depth bin. 
 
-
 if nargin < 5
-    threshold = 100;
+    threshold = 50;
 end
 
 % Extract cruise number 'crn' and 'cast'

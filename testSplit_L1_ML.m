@@ -1,5 +1,7 @@
 clear; clc; close all; addpath("baroneRoutines\");
 
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
+
 %% Extract Maximum Mixed Layer Depth (per cruise) 'maxMld'
 
 ctdData = importdata('datafiles\ctd_iso_ALL.mat').ctd;
@@ -48,11 +50,11 @@ idChlIn = importdata('data/L1/hplcChla_88-21_150.txt').data(:,1);
 [~,pChlOutB,chlOutB,~,~] = cleanAndBin(pChlOut,chlOut,idChlOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksChl,obsChl,pChlKs,chlSk,chlKu] = ksOfBinnedCon(chlOutB,pChlOutB,10,89);
+[ksChl,obsChl,pChlKs,chlSk,chlKu] = ksOfBinnedCon(chlOutB,pChlOutB,10);
 
 % 5. Plot results
 ax1 = figure;
-plotKs(pChlKs,ksChl,obsChl,chlSk,chlKu,0.5,20.5,true,89);
+plotKs(pChlKs,ksChl,obsChl,chlSk,chlKu,0.5,20.5,true);
 sgtitle('[Chl a] 88-21: L1');
 exportgraphics(ax1,'figures/L1/ks_chla150.png'); clear ax1;
 
@@ -70,11 +72,11 @@ idDivIn = importdata('data/L1/chlaDivi_88-21_150.txt').data(:,1);
 [~,pDivOutB10,divOutB,~,~] = cleanAndBin(pDivOut,divOut,idDivOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksDiv,obsDiv,pDivKs,divSk,divKu] = ksOfBinnedCon(divOutB,pDivOutB10,10,84);
+[ksDiv,obsDiv,pDivKs,divSk,divKu] = ksOfBinnedCon(divOutB,pDivOutB10,10);
 
 % 5. Plot results
 ax2 = figure;
-plotKs(pDivKs,ksDiv,obsDiv,divSk,divKu,0.5,20.5,true,84);
+plotKs(pDivKs,ksDiv,obsDiv,divSk,divKu,0.5,20.5,true);
 sgtitle('[Divinyl Chl a] 88-21: L1');
 exportgraphics(ax2,'figures/L1/ks_divi150.png'); clear ax2;
 
@@ -136,11 +138,11 @@ idOxyIn = importdata('data/L1/oxy_88-21_150.txt').data(:,1);
 [~,pOxyOutB10,oxyOutB,~,~] = cleanAndBin(pOxyOut,oxyOut,idOxyOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksOxy,obsOxy,pOxyKs,oxySk,oxyKu] = ksOfBinnedCon(oxyOutB,pOxyOutB10,10,89);
+[ksOxy,obsOxy,pOxyKs,oxySk,oxyKu] = ksOfBinnedCon(oxyOutB,pOxyOutB10,10);
 
 % 5. Plot results
 ax5 = figure;
-plotKs(pOxyKs,ksOxy,obsOxy,oxySk,oxyKu,0.5,20.5,true,89);
+plotKs(pOxyKs,ksOxy,obsOxy,oxySk,oxyKu,0.5,20.5,true);
 sgtitle('Dissolved Oxygen 88-21: L1');
 exportgraphics(ax5,'figures/L1/ks_oxy150.png'); clear ax5;
 
@@ -158,11 +160,11 @@ idDicIn = importdata('data/L1/dic_88-21_150.txt').data(:,1);
 [~,pDicOutB10,dicOutB,~,~] = cleanAndBin(pDicOut,dicOut,idDicOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksDic,obsDic,pDicKs,dicSk,dicKu] = ksOfBinnedCon(dicOutB,pDicOutB10,10,96);
+[ksDic,obsDic,pDicKs,dicSk,dicKu] = ksOfBinnedCon(dicOutB,pDicOutB10,10);
 
 % 5. Plot results
 ax6 = figure;
-plotKs(pDicKs,ksDic,obsDic,dicSk,dicKu,0.5,20.5,true,96);
+plotKs(pDicKs,ksDic,obsDic,dicSk,dicKu,0.5,20.5,true);
 sgtitle('Dissolved Inorganic Carbon 88-21: L1');
 exportgraphics(ax6,'figures/L1/ks_dic150.png'); clear ax6;
 
@@ -316,11 +318,11 @@ idDopIn = importdata("data\L1\dop_88-01_150.txt").data(:,1);
 [~,pDopOutB,dopOutB,~,~] = cleanAndBin(pDopOut,dopOut,idDopOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksDop,obsDop,pDopKs,dopSk,dopKu] = ksOfBinnedCon(dopOutB,pDopOutB,10,88);
+[ksDop,obsDop,pDopKs,dopSk,dopKu] = ksOfBinnedCon(dopOutB,pDopOutB,10);
 
 % 5. Plot results
 ax13 = figure;
-plotKs(pDopKs,ksDop,obsDop,dopSk,dopKu,0.5,20.5,true,88);
+plotKs(pDopKs,ksDop,obsDop,dopSk,dopKu,0.5,20.5,true);
 sgtitle('Dissolved Organic Phosphorus 88-01: L1');
 exportgraphics(ax13,'figures/L1/ks_dop150.png'); clear ax13;
 
@@ -386,11 +388,11 @@ clear tmp;
 [~,pTdpOutB,tdpOutB,~,~] = cleanAndBin(pTdpOut,tdpOut,idTdpOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksTdp,obsTdp,pTdpKs,tdpSk,tdpKu] = ksOfBinnedCon(tdpOutB,pTdpOutB,10,87);
+[ksTdp,obsTdp,pTdpKs,tdpSk,tdpKu] = ksOfBinnedCon(tdpOutB,pTdpOutB,10);
 
 % 5. Plot results
 ax16 = figure;
-plotKs(pTdpKs,ksTdp,obsTdp,tdpSk,tdpKu,0.5,20.5,true,87);
+plotKs(pTdpKs,ksTdp,obsTdp,tdpSk,tdpKu,0.5,20.5,true);
 sgtitle('Total Dissolved Phosphorus 88-01: L1');
 exportgraphics(ax16,'figures/L1/ks_tdp150.png'); clear ax16;
 
@@ -434,11 +436,11 @@ clear tmp;
 [~,pParpOutB,parpOutB,~,~] = cleanAndBin(pParpOut,parpOut,idParpOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ksParp,obsParp,pParpKs,parpSk,parpKu] = ksOfBinnedCon(parpOutB,pParpOutB,10,64);
+[ksParp,obsParp,pParpKs,parpSk,parpKu] = ksOfBinnedCon(parpOutB,pParpOutB,10);
 
 % 5. Plot results
 ax = figure;
-plotKs(pParpKs,ksParp,obsParp,parpSk,parpKu,0.5,20.5,true,64);
+plotKs(pParpKs,ksParp,obsParp,parpSk,parpKu,0.5,20.5,true);
 sgtitle('Particulate Phosphorus 11-21: L1');
 exportgraphics(ax,'figures/L1/ks_parp150.png'); clear ax;
 
@@ -573,7 +575,7 @@ save("output\L1\phae.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\chl3_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,50);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Chl c3: L1');
 exportgraphics(ax,'figures/L1/ks_chl3.png'); clear ax;
@@ -586,7 +588,7 @@ save("output\L1\chl3.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\chl12_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,53);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Chl c1 + c2: L1');
 exportgraphics(ax,'figures/L1/ks_chl12.png'); clear ax;
@@ -599,7 +601,7 @@ save("output\L1\chl12.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\chl123_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,53);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Chl c1 + c2 + c3: L1');
 exportgraphics(ax,'figures/L1/ks_chl123.png'); clear ax;
@@ -613,7 +615,7 @@ save("output\L1\chl123.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\per_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,73);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Peridinin: L1');
 exportgraphics(ax,'figures/L1/ks_per.png'); clear ax;
@@ -626,7 +628,7 @@ save("output\L1\per.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\but19_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,55);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC 19 Butanoyloxyfucoxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_but19.png'); clear ax;
@@ -639,7 +641,7 @@ save("output\L1\but19.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\fuco_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Fucoxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_fuco.png'); clear ax;
@@ -652,7 +654,7 @@ save("output\L1\fuco.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\hex19_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC 19'' Hexanoyloxyfucoxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_hex19.png'); clear ax;
@@ -679,7 +681,7 @@ save("output\L1\prasino.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\diadino_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Diadinoxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_diadino.png'); clear ax;
@@ -692,7 +694,7 @@ save("output\L1\diadino.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\zeaxan_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,89);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Zeaxanthin 88-21: L1');
 exportgraphics(ax,'figures/L1/ks_zeaxan.png'); clear ax;
@@ -715,15 +717,15 @@ save("output\L1\chlb.mat","p","ks","obs","Sk","Ku");
 % ERROR COMPILING
 % Two significant digits => unreliable!
 
-% 1: Load data
-tmp = importdata('data\L1\chlc4_88-21_150.txt');
-
-% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
-
-sgtitle('HPLC chlorophyll c4 88-21: L1');
-exportgraphics(ax,'figures/L1/ks_chlc4.png'); clear ax;
-save("output\L1\chlc4.mat","p","ks","obs","Sk","Ku");
+% % 1: Load data
+% tmp = importdata('data\L1\chlc4_88-21_150.txt');
+% 
+% % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+% [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+% 
+% sgtitle('HPLC chlorophyll c4 88-21: L1');
+% exportgraphics(ax,'figures/L1/ks_chlc4.png'); clear ax;
+% save("output\L1\chlc4.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC alpha-Carotene: 94-21
 % Two significant digits => unreliable!
@@ -779,16 +781,17 @@ save("output\L1\chlda.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Violaxanthin: 94-21
 % One significant digits => very unreliable!
+% ERROR: parameters must be positive.
 
-% 1: Load data
-tmp = importdata('data\L1\viol_94-21_150.txt');
-
-% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
-
-sgtitle('HPLC Violaxanthin 94-21: L1');
-exportgraphics(ax,'figures/L1/viol.png'); clear ax;
-save("output\L1\viol.mat","p","ks","obs","Sk","Ku");
+% % 1: Load data
+% tmp = importdata('data\L1\viol_94-21_150.txt');
+% 
+% % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+% [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+% 
+% sgtitle('HPLC Violaxanthin 94-21: L1');
+% exportgraphics(ax,'figures/L1/viol.png'); clear ax;
+% save("output\L1\viol.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Lutein: 94-21
 % One significant digits => very unreliable!
@@ -797,7 +800,7 @@ save("output\L1\viol.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\lutein_94-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,48);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Lutein 94-21: L1');
 exportgraphics(ax,'figures/L1/lutein.png'); clear ax;
@@ -836,7 +839,7 @@ save("output\L1\dvchla.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\pe4_00-08_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,55);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Phycoerythrin 0.4u fraction 00-08: L1');
 exportgraphics(ax,'figures/L1/pe4.png'); clear ax;
@@ -849,7 +852,7 @@ save("output\L1\pe4.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\pe5_00-08_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,43);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Phycoerythrin 5u fraction 00-08: L1');
 exportgraphics(ax,'figures/L1/pe5.png'); clear ax;
@@ -862,7 +865,7 @@ save("output\L1\pe5.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\pe10_00-08_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,58);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Phycoerythrin 10u fraction 00-08: L1');
 exportgraphics(ax,'figures/L1/pe10.png'); clear ax;
@@ -875,7 +878,7 @@ save("output\L1\pe10.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\hbact_05-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Heterotrophic Bacteria 05-21: L1');
 exportgraphics(ax,'figures/L1/hbact.png'); clear ax;
@@ -888,7 +891,7 @@ save("output\L1\hbact.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\pbact_05-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Prochlorococcus 05-21: L1');
 exportgraphics(ax,'figures/L1/pbact.png'); clear ax;
@@ -901,7 +904,7 @@ save("output\L1\pbact.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\sbact_05-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Synechococcus 05-21: L1');
 exportgraphics(ax,'figures/L1/sbact.png'); clear ax;
@@ -914,7 +917,7 @@ save("output\L1\sbact.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\ebact_05-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,51);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Picoeukaryotes 05-21: L1');
 exportgraphics(ax,'figures/L1/ebact.png'); clear ax;
@@ -927,7 +930,7 @@ save("output\L1\ebact.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\atp_88-22_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,92);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('ATP 88-22: L1');
 exportgraphics(ax,'figures/L1/atp.png'); clear ax;
@@ -940,7 +943,7 @@ save("output\L1\atp.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\n2o_93-01_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,30);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Nitrous Oxide 93-01: L1');
 exportgraphics(ax,'figures/L1/n2o.png'); clear ax;
@@ -953,7 +956,7 @@ save("output\L1\n2o.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\l12_89-22_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,83);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('PProd Light-12 89-22: L1');
 exportgraphics(ax,'figures/L1/l12.png'); clear ax;
@@ -966,7 +969,7 @@ save("output\L1\l12.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data\L1\d12_89-00_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,78);
+[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('PProd Dark-12 89-00: L1');
 exportgraphics(ax,'figures/L1/d12.png'); clear ax;

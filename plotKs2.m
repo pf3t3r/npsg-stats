@@ -28,13 +28,13 @@ function [] = plotKs2(tr,ks,obs,sk,ku,lim1,lim2,threshold)
 % end
 
 if nargin < 8
-    threshold = 100;
+    threshold = 50;
 end
 
 tix = lim1:10:lim2;
 disp(tix);
 
-subplot(1,3,1)
+subplot(1,4,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
@@ -46,7 +46,7 @@ ylabel('Pressure [dbar]');
 set(gca,"YTick",1:1:length(tix),"YTickLabel",lim1:10:lim2);
 title('No. of Observations');
 
-subplot(1,3,2)
+subplot(1,4,2)
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -61,7 +61,7 @@ xlabel('p-value');
 % ylabel('Pressure [db]');
 title('KS Test');
 
-subplot(1,3,3)
+subplot(1,4,3)
 yyaxis left
 plot(sk,tr,'DisplayName','Skewness'); hold on
 ylim([lim1 lim2]);
@@ -82,6 +82,19 @@ hold off
 grid minor;
 legend('Location','south');
 title('Moments');
+
+subplot(1,4,4)
+p = polyfit(sk, ku, 1);
+px = [min(sk) max(sk)];
+py = polyval(p, px);
+scatter(sk,ku,'DisplayName','Data');
+hold on
+plot(px, py, 'LineWidth', 1, 'DisplayName','Trend');
+hold off
+grid minor;
+xlabel('Skewness'); ylabel('Kurtosis');
+legend('Location','south');
+title('SK vs KU');
 
 % old subplot 3
 % subplot(1,3,3)
