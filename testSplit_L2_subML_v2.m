@@ -1,4 +1,5 @@
 clear; clc; close all; addpath("baroneRoutines\");
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
 %% Load MLD and DCM
 pMaxMld = load('mldVals.mat').maxMld;
@@ -67,7 +68,7 @@ tmp = importdata('data/L2/oxy_88-21_200.txt');
 
 sgtitle('Dissolved Oxygen 88-21: L2');
 exportgraphics(ax,'figures/L2/boxy.png'); clear ax;
-save("output\L2\pH.mat","p","ks","obs","sk","ku");
+save("output\L2\boxy.mat","p","ks","obs","sk","ku");
 clear ax p ks obs sk ku;
 
 %% Dissolved Inorganic Carbon: 88-21
@@ -80,8 +81,8 @@ tmp = importdata('data/L2/dic_88-21_200.txt');
 [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
 
 sgtitle('Dissolved Inorganic Carbon 88-21: L2');
-exportgraphics(ax,'figures/L2/ks_dic.png'); clear ax;
-save("output\L2\pH.mat","p","ks","obs","sk","ku");
+exportgraphics(ax,'figures/L2/dic.png'); clear ax;
+save("output\L2\dic.mat","p","ks","obs","sk","ku");
 clear ax p ks obs sk ku;
 
 %% pH: 92-21
@@ -108,8 +109,8 @@ tmp = importdata('data/L2/alk_89-21_200.txt');
 [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
 
 sgtitle('Alkalinity 89-21: L2');
-exportgraphics(ax,'figures/L2/ks_alk.png'); clear ax;
-save("output\L2\phos.mat","p","ks","obs","sk","ku");
+exportgraphics(ax,'figures/L2/alk.png'); clear ax;
+save("output\L2\alk.mat","p","ks","obs","sk","ku");
 clear ax p ks obs sk ku;
 
 %% Phosphate: 88-21
@@ -639,17 +640,17 @@ sgtitle('Heterotrophic Bacteria (05-21): L2');
 exportgraphics(ax,'figures/L2/hbact.png'); clear ax;
 save("output\L2\hbact.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
-%% Prochlorococcus: 05-21
-
-% 1. Load data
-tmp = importdata("data\L2\pbact_05-21_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('Prochlorococcus (05-21): L2');
-exportgraphics(ax,'figures/L2/pbact.png'); clear ax;
-save("output\L2\pbact.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% %% Prochlorococcus: 05-21
+% 
+% % 1. Load data
+% tmp = importdata("data\L2\pbact_05-21_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('Prochlorococcus (05-21): L2');
+% exportgraphics(ax,'figures/L2/pbact.png'); clear ax;
+% save("output\L2\pbact.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Synechococcus: 05-21
 

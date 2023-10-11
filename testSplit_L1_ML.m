@@ -285,7 +285,7 @@ tmp = importdata('data\L1\parc_89-21_150.txt');
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('Particulate Carbon 89-21: L1');
-exportgraphics(ax,'figures/L1/llp.png'); clear ax;
+exportgraphics(ax,'figures/L1/pc.png'); clear ax;
 save("output\L1\pc.mat","p","ks","obs","Sk","Ku");
 
 %% delta15N of PN: 00-04
@@ -480,7 +480,7 @@ tmp = importdata('data\L1\diadino_88-21_150.txt');
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle('HPLC Diadinoxanthin 88-21: L1');
-exportgraphics(ax,'figures/L1/ks_diadino.png'); clear ax;
+exportgraphics(ax,'figures/L1/diadino.png'); clear ax;
 save("output\L1\diadino.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Zeaxanthin: 88-21
@@ -680,18 +680,18 @@ sgtitle('Heterotrophic Bacteria 05-21: L1');
 exportgraphics(ax,'figures/L1/hbact.png'); clear ax;
 save("output\L1\hbact.mat","p","ks","obs","Sk","Ku");
 
-%% Prochlorococcus: 05-21
-% 4 significant digits => very good!
-
-% 1: Load data
-tmp = importdata('data\L1\pbact_05-21_150.txt');
-
-% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
-
-sgtitle('Prochlorococcus 05-21: L1');
-exportgraphics(ax,'figures/L1/pbact.png'); clear ax;
-save("output\L1\pbact.mat","p","ks","obs","Sk","Ku");
+% %% Prochlorococcus: 05-21
+% % 4 significant digits => very good!
+% 
+% % 1: Load data
+% tmp = importdata('data\L1\pbact_05-21_150.txt');
+% 
+% % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+% [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+% 
+% sgtitle('Prochlorococcus 05-21: L1');
+% exportgraphics(ax,'figures/L1/pbact.png'); clear ax;
+% save("output\L1\pbact.mat","p","ks","obs","Sk","Ku");
 
 %% Synechococcus: 05-21
 % Two significant digits => may be unreliable!
