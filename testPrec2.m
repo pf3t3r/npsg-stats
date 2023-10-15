@@ -10,6 +10,7 @@ clc; close all; clear;
 %% Initialise MEAN and STD
 
 mu = [0.5 1 1.5 2 2.5 3];
+% mu = 1.5;
 sd = 0.4;
 
 % mu = round(testMean); sd = round(testSd);
@@ -184,47 +185,69 @@ sd = 0.4;
 
 tmp20 = []; tmp40 = []; tmp60 = []; tmp80 = []; tmp100 = []; tmp1000 = [];
 
-for j = 1:length(mu)
-for i = 1:50
-    t20 = lognrnd(mu(j),sd,20,1);
-    tmp20 = [tmp20 t20];
-    t40 = lognrnd(mu(j),sd,40,1);
-    tmp40 = [tmp40 t40];
-    t60 = lognrnd(mu(j),sd,60,1);
-    tmp60 = [tmp60 t60];
-    t80 = lognrnd(mu(j),sd,80,1);
-    tmp80 = [tmp80 t80];
-    t100 = lognrnd(mu(j),sd,100,1);
-    tmp100 = [tmp100 t100];
-    t1000 = lognrnd(mu(j),sd,1000,1);
-    tmp1000 = [tmp1000 t1000];
+tmp20 = nan(20,50,6);
+tmp40 = nan(40,50,6);
+tmp60 = nan(60,50,6);
+tmp80 = nan(80,50,6);
+tmp100 = nan(100,50,6);
+tmp1000 = nan(1000,50,6);
+
+for j = 1:50
+for i = 1:length(mu)
+    t20 = lognrnd(mu(i),sd,20,1);
+    tmp20(:,j,i) = t20;
+    %tmp20 = [tmp20 t20];
+    t40 = lognrnd(mu(i),sd,40,1);
+    %tmp40 = [tmp40 t40];
+    tmp40(:,j,i) = t40;
+    t60 = lognrnd(mu(i),sd,60,1);
+    tmp60(:,j,i) = t60;
+    %tmp60 = [tmp60 t60];
+    t80 = lognrnd(mu(i),sd,80,1);
+    tmp80(:,j,i) = t80;
+    %tmp80 = [tmp80 t80];
+    t100 = lognrnd(mu(i),sd,100,1);
+    tmp100(:,j,i) = t100;
+    %tmp100 = [tmp100 t100];
+    t1000 = lognrnd(mu(i),sd,1000,1);
+    tmp1000(:,j,i) = t1000;
+    %tmp1000 = [tmp1000 t1000];
 end
-r2l20(:,j) = mean(tmp20,2); r2l40(:,j) = mean(tmp40,2);
-r2l60(:,j) = mean(tmp60,2); r2l80(:,j) = mean(tmp80,2);
-r2l100(:,j) = mean(tmp100,2); r2l1000(:,j) = mean(tmp1000,2);
+% r2l20(:,j) = mean(tmp20,2); r2l40(:,j) = mean(tmp40,2);
+% r2l60(:,j) = mean(tmp60,2); r2l80(:,j) = mean(tmp80,2);
+% r2l100(:,j) = mean(tmp100,2); r2l1000(:,j) = mean(tmp1000,2);
 end 
 
-figure;
-% plot(tmp20(:,1:50),'g:');
-plot(r2l20);
-hold on
-plot(r2l40);
-plot(r2l60);
-plot(r2l80);
-plot(r2l100);
-plot(r2l1000);
-hold off
-legend();
+% figure;
+% plot(tmp20);
+% hold on
+% plot(tmp40);
+% plot(tmp60);
+% plot(tmp80);
+% plot(tmp100);
+% plot(tmp1000);
+% hold off
+% legend();
 
 %%
 
 % log on log
-ksL20 = quickMleAndKs(r2l20,6);
-ksL40 = quickMleAndKs(r2l40,6);
-ksL60 = quickMleAndKs(r2l60,6);
-ksL80 = quickMleAndKs(r2l80,6);
-ksL100 = quickMleAndKs(r2l100,6);
-ksL1000 = quickMleAndKs(r2l1000,6);
+
+for i = 1:50
+    ksL20(i,:) = quickMleAndKs(tmp20(:,i,:),6);
+    ksL40(i,:) = quickMleAndKs(tmp40(:,i,:),6);
+    ksL60(i,:) = quickMleAndKs(tmp60(:,i,:),6);
+    ksL80(i,:) = quickMleAndKs(tmp80(:,i,:),6);
+    ksL100(i,:) = quickMleAndKs(tmp100(:,i,:),6);
+    ksL1000(i,:) = quickMleAndKs(tmp1000(:,i,:),6);
+end
+
+%%
+% ksL40 = quickMleAndKs(tmp40,6);
+% ksL60 = quickMleAndKs(tmp60,6);
+% ksL80 = quickMleAndKs(tmp80,6);
+% ksL100 = quickMleAndKs(tmp100,6);
+% ksL1000 = quickMleAndKs(tmp1000,6);
 
 % save("output\Prec\mu6.mat","ksL20","ksL40","ksL60","ksL80","ksL100","ksL1000");
 
@@ -280,16 +303,28 @@ ksL1000 = quickMleAndKs(r2l1000,6);
 % ttmp1000 = [tmp1 tmp2 tmp3 tmp4 tmp5];
 
 ax = figure;
-plot(mu,ksL20,'DisplayName','n = 20');
+plot(mu,mean(ksL20),'Color','#a6cee3','DisplayName','n = 20');
 hold on
-plot(mu,ksL40,'DisplayName','n = 40');
-plot(mu,ksL60,'DisplayName','n = 60');
-plot(mu,ksL80,'DisplayName','n = 80');
-plot(mu,ksL100,'DisplayName','n = 100');
-plot(mu,ksL1000,'DisplayName','n = 1000');
+plot(mu,mean(ksL20)+std(ksL20),'Color','#a6cee3','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL20)-std(ksL20),'Color','#a6cee3','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL40),'Color','#1f78b4','DisplayName','n = 40');
+plot(mu,mean(ksL40)+std(ksL40),'Color','#1f78b4','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL40)-std(ksL40),'Color','#1f78b4','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL60),'Color','#b2df8a','DisplayName','n = 60');
+plot(mu,mean(ksL60)+std(ksL60),'Color','#b2df8a','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL60)-std(ksL60),'Color','#b2df8a','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL80),'Color','#33a02c','DisplayName','n = 80');
+plot(mu,mean(ksL80)+std(ksL80),'Color','#33a02c','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL80)-std(ksL80),'Color','#33a02c','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL100),'Color','#fb9a99','DisplayName','n = 100');
+plot(mu,mean(ksL100)+std(ksL100),'Color','#fb9a99','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL100)-std(ksL100),'Color','#fb9a99','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL1000),'Color','#e31a1c','DisplayName','n = 1000');
+plot(mu,mean(ksL1000)+std(ksL1000),'Color','#e31a1c','LineStyle',':',HandleVisibility="off");
+plot(mu,mean(ksL1000)-std(ksL1000),'Color','#e31a1c','LineStyle',':',HandleVisibility="off");
 hold off
 ylabel('p-value');
 xlabel('mean');
-legend();
+legend(Location="best");
 title('K-S Lognormal Test of Random Lognormal Data','Sensitivity Analysis (\sigma = 1)');
-exportgraphics(ax,'figures/prec/run5.png'); clear ax;
+exportgraphics(ax,'figures/prec/runMain.png'); clear ax;
