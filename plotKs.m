@@ -81,8 +81,8 @@ legend('Location','south');
 title('Moments');
 
 subplot(1,4,4)
-p = polyfit(sk, ku, 1);
-px = [min(sk) max(sk)];
+p = polyfit(sk, ku, 2);
+px = linspace(min(sk),max(sk));
 py = polyval(p, px);
 scatter(sk,ku,'DisplayName','Data');
 % scatter(x, y, 'filled')
@@ -90,6 +90,7 @@ hold on
 plot(px, py, 'LineWidth', 1, 'DisplayName','Trend'); 
 hold off
 grid minor;
+ylim([1 10]); xlim([0 3]);
 xlabel('Skewness'); ylabel('Kurtosis');
 legend('Location','south');
 title('SK vs KU');

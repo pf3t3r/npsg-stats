@@ -1,4 +1,4 @@
-function [ks, obs, depth2, Sk, ku] = ksOfBinnedCon(X, p, binning, threshold)
+function [ks, obs, depth2, Sk, ku,sd] = ksOfBinnedCon(X, p, binning, threshold)
 %ksOfBinnedCon find the KS statistic
 % INPUTS:
 % X = substance concentration,
@@ -31,6 +31,7 @@ else
     error(msg);
 end
 
+std = nan(1,n);
 for i = 1:n
     % find concentration X_i at binned pressure i
     X_i = X(p==i);
@@ -38,9 +39,11 @@ for i = 1:n
     % change limit below to >3 to fix error with picoeu -> may change other
     % results
     if length(X_i) > 3
-        [~,ks(:,i),~,tmpC95,tmpMle,muMle] = statsplot2(X_i,'noplot');
-        [~,ks(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
-        disp(size(tmpC95));
+        %test = std(X_i);
+        %disp(i);
+        [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(X_i,'noplot');
+        %[~,ks(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
+        %disp(size(tmpC95));
         Sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
 %         tmpDat = [std(X_i) std(log(X_i))];
@@ -63,6 +66,7 @@ for i = 1:n
         ks(:,i) = nan;   
         Sk(i) = nan;
         ku(i) = nan;
+        sd(i,:) = nan;
 %         sd(i,:) = nan;
 %         c95(i,:) = nan;
 %         mu(i,:) = nan;
@@ -78,6 +82,7 @@ end
 depth2 = depth(tmp);
 Sk = Sk(tmp);
 ku = ku(tmp);
+sd = sd(tmp,:);
 % sd = sd(tmp,:);
 % c95 = c95(tmp,:);
 % mu = mu(tmp,:);

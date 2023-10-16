@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld,threshold)
+function [ax,p,ks,obs,Sk,Ku,sd] = L1_helper(tmp,maxMld,threshold)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -34,7 +34,7 @@ clear tmp;
 [~,pOutB,cOutB,~,~] = cleanAndBin(pOut,cOut,idOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[ks,obs,p,Sk,Ku] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
+[ks,obs,p,Sk,Ku,sd] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
 
 % 5. Plot results
 ax = figure;

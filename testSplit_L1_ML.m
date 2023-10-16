@@ -1,4 +1,5 @@
-clear; clc; close all; addpath("baroneRoutines\");
+clear; clc; close all;
+addpath("baroneRoutines\");
 
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
@@ -42,7 +43,7 @@ clear ctdData i;
 tmp = importdata('data/L1/hplcChla_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+[ax,p,ks,obs,Sk,Ku,sd] = L1_helper(tmp,maxMld);
 
 sgtitle('[Chl a] 88-21: L1');
 exportgraphics(ax,'figures/L1/chla.png'); clear ax;
@@ -459,16 +460,17 @@ save("output\L1\hex19.mat","p","ks","obs","Sk","Ku");
 %% HPLC Prasinoxanthin: 88-21
 % One significant digits => very unreliable!
 % Also too few observations!
+% BREAKS
 
-% 1: Load data
-tmp = importdata('data\L1\prasino_88-21_150.txt');
-
-% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
-
-sgtitle('HPLC Prasinoxanthin 88-21: L1');
-exportgraphics(ax,'figures/L1/prasino.png'); clear ax;
-save("output\L1\prasino.mat","p","ks","obs","Sk","Ku");
+% % 1: Load data
+% tmp = importdata('data\L1\prasino_88-21_150.txt');
+% 
+% % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+% [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+% 
+% sgtitle('HPLC Prasinoxanthin 88-21: L1');
+% exportgraphics(ax,'figures/L1/prasino.png'); clear ax;
+% save("output\L1\prasino.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Diadinoxanthin: 88-21
 % One significant digits => very unreliable!
@@ -734,16 +736,17 @@ save("output\L1\atp.mat","p","ks","obs","Sk","Ku");
 
 %% Nitrous Oxide: 93-01
 % 4 significant digits => very good!
-
-% 1: Load data
-tmp = importdata('data\L1\n2o_93-01_150.txt');
-
-% 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
-
-sgtitle('Nitrous Oxide 93-01: L1');
-exportgraphics(ax,'figures/L1/n2o.png'); clear ax;
-save("output\L1\n2o.mat","p","ks","obs","Sk","Ku");
+% BROKEN 
+% 
+% % 1: Load data
+% tmp = importdata('data\L1\n2o_93-01_150.txt');
+% 
+% % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
+% [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+% 
+% sgtitle('Nitrous Oxide 93-01: L1');
+% exportgraphics(ax,'figures/L1/n2o.png'); clear ax;
+% save("output\L1\n2o.mat","p","ks","obs","Sk","Ku");
 
 %% PProd Light-12: 89-22
 % 4 significant digits => very good!
