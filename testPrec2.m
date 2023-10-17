@@ -40,7 +40,6 @@ sd = 0.4;
 % subplot(2,1,2)
 % histogram(log(rl40));
 %% Rounding
-
 % % Lognormal
 % [rl20(:,2),rl20(:,3),rl20(:,4),rl20(:,5)] = quickRound(rl20);
 % [rl40(:,2),rl40(:,3),rl40(:,4),rl40(:,5)] = quickRound(rl40);
@@ -56,7 +55,7 @@ sd = 0.4;
 % [rn100(:,2),rn100(:,3),rn100(:,4),rn100(:,5)] = quickRound(rn100);
 % 
 % rn20(rn20<0) = 0.1; rn40(rn40<0) = 0.1; rn60(rn60<0) = 0.1; rn80(rn80<0) = 0.1;
-%% test
+% test
 
 % % log on log
 % [ksL20,lil_LL20] = quickMleAndKs(rl20);
@@ -86,7 +85,7 @@ sd = 0.4;
 % ks_nl_80 = quickMleAndKs(rl80,'norm');
 % ks_nl_100 = quickMleAndKs(rl100,'norm');
 
-%% MLE
+% MLE
 % for i = 1:5
 %     mle20(i,:) = mle(rl20(:,i),'distribution','Lognormal');
 %     mle40(i,:) = mle(rl40(:,i),'distribution','Lognormal');
@@ -115,8 +114,7 @@ sd = 0.4;
 %     [Hl_80(i),KS_80(i)] = kstest(rl80(:,i),[xCdf80(i,:)' yCdfLogn80(i,:)']);
 %     [Hl_100(i),KS_100(i)] = kstest(rl100(:,i),[xCdf100(i,:)' yCdfLogn100(i,:)']);
 % end
-
-%%
+%
 % noSig = [5 4 3 2 1];
 % 
 % ax1 = figure;

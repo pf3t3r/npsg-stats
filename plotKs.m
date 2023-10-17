@@ -33,6 +33,30 @@ if nargin == 10
     limits = limitOveride;
 end
 
+% Lognormal family: generate theoretical skewness and kurtosis
+sigTh = linspace(0,1,1000);
+for i = 1:length(sigTh)
+    skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
+    kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
+end
+
+% Gamma family: generate theoretical skewness and kurtosis
+kTh = linspace(0.2,5000,10000);
+for i = 1:length(kTh)
+    skGam(i) = 2/sqrt(kTh(i));
+    kuGam(i) = 6/kTh(i) + 3;
+end
+
+% % Weibull family: generate theoretical skewness and kurtosis
+% kWbl = linspace(0.5,5,1000);
+% gF = 1;
+% for i = 1:length(kWbl)
+%     skWbl(i) = (gF*(1+3/kWbl(i)) - 3*gF*(1+1/kWbl(i))*gF*(1+2/kWbl(i)) + 2*gF^3*(1+1/kWbl(i))) ./ ...
+%         (gF*(1+2/kWbl(i)) - gF^2*(1+1/kWbl(i)))^(3/2);
+%     kuWbl(i) = ( gF*(1+4/kWbl(i)) - 4*gF*(1+1/kWbl(i))*gF*(1+3/kWbl(i)) + 6*gF^2*(1+1/kWbl(i))*gF*(1+2/kWbl(i)) - 3*gF^4*(1+1/kWbl(i))) ./ ...
+%        ((gF*(1+2/kWbl(i)) - gF^2*(1+1/kWbl(i)))^2);
+% end
+
 subplot(1,4,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
@@ -81,18 +105,20 @@ legend('Location','south');
 title('Moments');
 
 subplot(1,4,4)
-p = polyfit(sk, ku, 2);
-px = linspace(min(sk),max(sk));
-py = polyval(p, px);
-scatter(sk,ku,'DisplayName','Data');
-% scatter(x, y, 'filled')
+numGroups = length(unique(tr));
+clr = parula(numGroups);
+gscatter(sk,ku,tr,clr);
 hold on
-plot(px, py, 'LineWidth', 1, 'DisplayName','Trend'); 
+% scatter(sk,ku,'DisplayName','Data');
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
+plot(skGam,kuGam,'DisplayName','Gamma','Color',[0.4 0.4 0.4]);
+% plot(skWbl,kuWbl,'DisplayName','Weib.','Color',[0.7 0.7 0.7]);
 hold off
 grid minor;
-ylim([1 10]); xlim([0 3]);
+ylim([1 10]); xlim([0 2.5]);
 xlabel('Skewness'); ylabel('Kurtosis');
-legend('Location','south');
+lgd = legend('Location','best');
+title(lgd,'Pressure [dbar]');
 title('SK vs KU');
 
 % old subplot 3
