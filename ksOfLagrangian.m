@@ -119,4 +119,17 @@ for i = 1:length(trange)
     end
 end
 
+% tmp = [];
+% for i = 1:length(trange)
+%     if ~isnan(sum(ks(:,i)))
+%         tmp = [tmp i];
+%     end
+% end
+% 
+% trange2 = trange(tmp);
+% Sk = Sk(tmp);
+% Ku = Ku(tmp);
+% sd = sd(tmp,:);
+% ks = ks(:,~all(isnan(ks)));
+
 end

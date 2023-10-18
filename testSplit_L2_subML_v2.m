@@ -27,7 +27,7 @@ tmp = importdata('data/L2/hplcChla_88-21_200.txt');
 sgtitle('[Chl a] 88-21: L2');
 exportgraphics(ax,'figures/L2/chla.png'); clear ax;
 save("output\L2\chla.mat","p","ks","obs","sk","ku");
-clear ax p ks obs sk ku;
+% clear ax p ks obs sk ku;
 
 %% Prochlorococcus: 05-21
 

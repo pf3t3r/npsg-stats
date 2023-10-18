@@ -34,6 +34,20 @@ end
 tix = lim1:10:lim2;
 disp(tix);
 
+% Lognormal family: generate theoretical skewness and kurtosis
+sigTh = linspace(0,1,1000);
+for i = 1:length(sigTh)
+    skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
+    kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
+end
+
+% Gamma family: generate theoretical skewness and kurtosis
+kTh = linspace(0.2,5000,10000);
+for i = 1:length(kTh)
+    skGam(i) = 2/sqrt(kTh(i));
+    kuGam(i) = 6/kTh(i) + 3;
+end
+
 subplot(1,4,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
@@ -83,18 +97,45 @@ grid minor;
 legend('Location','south');
 title('Moments');
 
+tmp = [];
+for i = 1:length(tr)
+    if ~isnan(sum(ks(:,i)))
+        tmp = [tmp i];
+    end
+end
+tr2 = tr(tmp);
+sk2 = sk(tmp);
+ku2 = ku(tmp);
+clear tmp;
+
 subplot(1,4,4)
-p = polyfit(sk, ku, 1);
-px = [min(sk) max(sk)];
-py = polyval(p, px);
-scatter(sk,ku,'DisplayName','Data');
+numGroups = length(unique(tr2));
+clr = parula(numGroups);
+gscatter(sk2,ku2,tr2,clr);
 hold on
-plot(px, py, 'LineWidth', 1, 'DisplayName','Trend');
+% scatter(sk,ku,'DisplayName','Data');
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
+plot(skGam,kuGam,'DisplayName','Gam.','Color',[0.4 0.4 0.4]);
+% plot(skWbl,kuWbl,'DisplayName','Weib.','Color',[0.7 0.7 0.7]);
 hold off
 grid minor;
+ylim([1 10]); xlim([0 2.5]);
 xlabel('Skewness'); ylabel('Kurtosis');
-legend('Location','south');
+lgd = legend('Location','best');
+title(lgd,'P [dbar]');
 title('SK vs KU');
+% subplot(1,4,4)
+% p = polyfit(sk, ku, 1);
+% px = [min(sk) max(sk)];
+% py = polyval(p, px);
+% scatter(sk,ku,'DisplayName','Data');
+% hold on
+% plot(px, py, 'LineWidth', 1, 'DisplayName','Trend');
+% hold off
+% grid minor;
+% xlabel('Skewness'); ylabel('Kurtosis');
+% legend('Location','south');
+% title('SK vs KU');
 
 % old subplot 3
 % subplot(1,3,3)
