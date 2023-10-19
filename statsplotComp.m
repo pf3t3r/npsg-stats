@@ -1,37 +1,40 @@
-function [mleParams,pKs,pLil,pAd] = statsplotComp(x)
+function [mleParams,pKs,pLil,pAd,pSw] = statsplotComp(x)
 %
-%
-% function [mleParams,pKs,pLil,pAd] = statsplotComp(x)
-% 
-% Calculates Maximum Likelihood Estimates of the parameters from Normal,
-% Lognormal, Gamma, Weibull and Exponential distributions; and performs a 
-% Kolmogorov Smirnov test (K-S), Lilliefors-corrected K-S test (Lil), and 
-% a Anderson-Darling test (A-D) on data for each MLE distribution.
+% Calculates Maximum Likelihood Estimates (MLE) of the parameters from 
+% Normal, Lognormal, Gamma, Weibull and Exponential distributions; and 
+% performs a Kolmogorov Smirnov Test (K-S) according to the output
+% parameters. This code additionally performs the Lilliefors-corrected K-S
+% Test (Lil), an Anderson-Darling Test (A-D), and a Shapiro-Wilks Test
+% (S-W) on the data. The resultant p-values may be compared to each other.
 %
 % INPUT
 %   x: the vector of unknown distribution.
 % OUTPUT
 %   mleParams: a 5*2 matrix of the parameters of the MLE. Rows are,
 %       respectively, Normal, Lognormal, Gamma, Weibull and Exponential.
-%       Last one has only one parameter assigned.
+%       Last one has only one parameter assigned. Required only for the
+%       Kolmogorov-Smirnov Test (K-S).
 %   pKs: a 5*1 vector containing p-values from the Kolmogoroff-Smirnov test
 %       for data versus MLE cdf.
 %   pLil: a 5*1 vector containing p-values from the Lilliefors-corrected
-%       K-S test for data versus MLE cdf.
+%       K-S test on data.
 %   pAd: a 5*1 vector containing p-values from the Anderson-Darling test
-%       for data versues MLE cdf.
+%       on data.
+%   pSw: a 2*1 vector containing p-values from the Shapiro-Wilks test on 
+%       data (normal and lognormal distribution only).
 % Author: B. Barone, P. Farrell.
 
 % Initialize Output values
 mleParams = nan*ones(5,2);
-pKs = nan*ones(5,1); pLil = nan*ones(5,1); pAd = nan*ones(5,1);
+pKs = nan*ones(5,1); pLil = nan*ones(5,1); pAd = nan*ones(5,1); pSw = nan*ones(2,1);
 [mleParams(1,:),~] = mle(x,'distribution','norm','Alpha',0.32);
 if sum(x<=0) == 0
     [mleParams(2,:),~] = mle(x,'distribution','logn','Alpha',0.32);
     [mleParams(3,:),~] = mle(x,'distribution','wbl','Alpha',0.32);
     [mleParams(4,:),~] = mle(x,'distribution','gamma','Alpha',0.32);
     [mleParams(5,1),~] = mle(x,'distribution','exp','Alpha',0.32);
-else mleParams(2,:) = [nan nan];
+else 
+    mleParams(2,:) = [nan nan];
     disp('Can''t compute MLE parameters for Lognormal, Weibull, Gamma and Exponential distribution. Negative or zero values in input vector.')
 end
 
@@ -52,26 +55,29 @@ if sum(x<=0) == 0
     [~,pKs(5)] = kstest(x,[x_cdf' y_cdf_exp']);
 end
 
-% Lil test for each MLE distribution
-[~,pLil(1)] = lillietest(x);
+% NOTE that the MLE is not required for the following tests.
+
+% Lil test on data
+[~,pLil(1)] = lillietest(x,"MCTol",1e-2);
 if sum(x<=0) == 0
-    [~,pLil(2)] = lillietest(log(x));
-    [~,pLil(3)] = lillietest(log(x),"Distr","ev");
-    [~,pLil(4)] = lillietest(x);
-    [~,pLil(5)] = lillietest(x);
+    [~,pLil(2)] = lillietest(log(x),"MCTol",1e-2);
+    [~,pLil(3)] = lillietest(log(x),"Distr","ev","MCTol",1e-2);
+    [~,pLil(4)] = lillietest(x,MCTol=1e-2);
+    [~,pLil(5)] = lillietest(x,MCTol=1e-2);
 end
 
-% A-D test for each MLE distribution
-[~,pAd(1)] = adtest(x);
+% A-D test on data
+[~,pAd(1)] = adtest(x,MCTol=1e-2);
 if sum(x<=0) == 0
-    [~,pAd(2)] = adtest(x,"Distribution","logn");
-    [~,pAd(3)] = adtest(x,"Distribution","weibull");
-    [~,pAd(4)] = adtest(x);
-    [~,pAd(5)] = adtest(x);
+    [~,pAd(2)] = adtest(x,"Distribution","logn",MCTol=1e-2);
+    [~,pAd(3)] = adtest(x,"Distribution","weibull",MCTol=1e-2);
+    [~,pAd(4)] = adtest(x,MCTol=1e-2);
+    [~,pAd(5)] = adtest(x,MCTol=1e-2);
 end
 
-% Dummy values for pAd
-% pAd = [0 0 0 0 0];
+% S-W Test on data
+[~,pSw(1)] = swtest(x);
+[~,pSw(2)] = swtest(log(x));
 
 % % Negative Log-Likelihood for each MLE distribution on data
 % nll(1) = normlike(mleParams(1,:),x);

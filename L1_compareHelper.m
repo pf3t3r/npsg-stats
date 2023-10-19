@@ -1,4 +1,4 @@
-function [ax,p,pKs,pLil,pAd,obs,Sk,Ku] = L1_compareHelper(tmp,maxMld,threshold)
+function [ax,p,pKs,pLil,pAd,pSw,obs,Sk,Ku] = L1_compareHelper(tmp,maxMld,threshold)
 %%L1_helper_V2: this function allows for the calculation of the p-values
 % according to the Lilliefors-corrected K-S test (Lil), the basic K-S test
 % (K-S), and the Anderson-Darling test (A-D).
@@ -34,11 +34,11 @@ clear tmp;
 [~,pOutB,cOutB,~,~] = cleanAndBin(pOut,cOut,idOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis
-[pKs,pLil,pAd,obs,p,Sk,Ku] = pValueOfBinned(cOutB,pOutB,10,threshold);
+[pKs,pLil,pAd,pSw,obs,p,Sk,Ku] = pValueOfBinned(cOutB,pOutB,10,threshold);
 
 % 5. Plot results
 ax = figure;
-subplot(1,4,1)
+subplot(1,5,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
@@ -50,40 +50,52 @@ ylabel('Pressure [dbar]');
 set(gca,"YTick",1:1:length(5:10:205),"YTickLabel",5:10:205);
 title('No. of Observations');
 
-subplot(1,4,2)
-plot(pKs(1,:),p,'o-','Color','#a6cee3','DisplayName','K-S','LineWidth',1.5,'MarkerSize',5);
+subplot(1,5,2)
+plot(pKs(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
-plot(pLil(1,:),p,'o-','Color','#1f78b4','DisplayName','Lillie','LineWidth',1.5,'MarkerSize',5);
-plot(pAd(1,:),p,'o-','Color','#b2df8a','DisplayName','A-D','LineWidth',1.5,'MarkerSize',5);
+plot(pKs(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+plot(pKs(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 grid minor;
 ylim([0 200]);
 set(gca,'YDir','reverse');
 legend('Location','best');
 xlabel('p-value');
-title('Normal');
+title('Kolmogorov-Smirnov');
 
-subplot(1,4,3)
-plot(pKs(2,:),p,'o-','Color','#a6cee3','DisplayName','K-S','LineWidth',1.5,'MarkerSize',5);
+subplot(1,5,3)
+plot(pLil(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
-plot(pLil(2,:),p,'o-','Color','#1f78b4','DisplayName','Lillie','LineWidth',1.5,'MarkerSize',5);
-plot(pAd(2,:),p,'o-','Color','#b2df8a','DisplayName','A-D','LineWidth',1.5,'MarkerSize',5);
+plot(pLil(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+plot(pLil(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 grid minor;
 ylim([0 200]);
 set(gca,'YDir','reverse');
 legend('Location','best');
 xlabel('p-value');
-title('Lognormal');
+title('Lilliefors');
 
-subplot(1,4,4)
-plot(pKs(3,:),p,'o-','Color','#a6cee3','DisplayName','K-S','LineWidth',1.5,'MarkerSize',5);
+subplot(1,5,4)
+plot(pAd(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
-plot(pLil(3,:),p,'o-','Color','#1f78b4','DisplayName','Lillie','LineWidth',1.5,'MarkerSize',5);
-plot(pAd(3,:),p,'o-','Color','#b2df8a','DisplayName','A-D','LineWidth',1.5,'MarkerSize',5);
+plot(pAd(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+plot(pAd(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 grid minor;
 ylim([0 200]);
 set(gca,'YDir','reverse');
 legend('Location','best');
 xlabel('p-value');
-title('Weibull');
+title('Anderson-Darling');
+
+subplot(1,5,5)
+plot(pSw(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+hold on
+plot(pSw(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+hold off
+grid minor;
+ylim([0 200]);
+set(gca,'YDir','reverse');
+legend('Location','best');
+xlabel('p-value');
+title('Shapiro-Wilks');
 
 end

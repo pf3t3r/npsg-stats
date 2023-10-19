@@ -1,4 +1,4 @@
-function [pKs, pLil, pAd, obs, depth2, Sk, ku] = pValueOfBinned(X, p, binning, threshold)
+function [pKs, pLil, pAd, pSw, obs, depth2, Sk, ku] = pValueOfBinned(X, p, binning, threshold)
 %pValueOfBinned finds the p-value corresponding to a concentration
 %following three statistical tests: the Kolmogorov-Smirnov test (K-S), the
 %Lilliefors-corrected K-S test (Lil), and the Anderson-Darling test (A-D).
@@ -27,9 +27,9 @@ if nargin <3
 end
 
 if binning == 5
-    pKs = nan(5,40); pLil = nan(5,40); pAd = nan(5,40); obs = nan(40,1); n = 40; depth = 5:5:200;
+    pKs = nan(5,40); pLil = nan(5,40); pAd = nan(5,40); pSw = nan(2,40); obs = nan(40,1); n = 40; depth = 5:5:200;
 elseif binning == 10
-    pKs = nan(5,20); pLil = nan(5,20); pAd = nan(5,20); obs = nan(20,1); n = 20; depth = 5:10:200;
+    pKs = nan(5,20); pLil = nan(5,20); pAd = nan(5,20); pSw = nan(2,20); obs = nan(20,1); n = 20; depth = 5:10:200;
 else
     msg = 'Binning input not valid. Must be either 5 or 10 dbar.';
     error(msg);
@@ -42,7 +42,7 @@ for i = 1:n
     % change limit below to >3 to fix error with picoeu -> may change other
     % results
     if length(X_i) > 3
-        [~,pKs(:,i),pLil(:,i),pAd(:,i)] = statsplotComp(X_i);
+        [~,pKs(:,i),pLil(:,i),pAd(:,i),pSw(:,i)] = statsplotComp(X_i);
         %disp(size(tmpC95));
         Sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
@@ -53,7 +53,7 @@ end
 
 for i = 1:n
     if obs(i) < threshold
-        pKs(:,i) = nan; pLil(:,i) = nan; pAd(:,i) = nan;
+        pKs(:,i) = nan; pLil(:,i) = nan; pAd(:,i) = nan; pSw(:,i) = nan;
         Sk(i) = nan;
         ku(i) = nan;
     end
@@ -79,5 +79,6 @@ ku = ku(tmp);
 pKs = pKs(:,~all(isnan(pKs)));
 pLil = pLil(:,~all(isnan(pLil)));
 pAd = pAd(:,~all(isnan(pAd)));
+pSw = pSw(:,~all(isnan(pSw)));
 
 end

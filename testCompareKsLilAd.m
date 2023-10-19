@@ -18,7 +18,7 @@ clear ctdData i;
 tmp = importdata('data/L1/hplcChla_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,pKs,pLil,pAd,obs,Sk,Ku] = L1_compareHelper(tmp,maxMld,3);
+[ax,p,pKs,pLil,pAd,pSw,obs,Sk,Ku] = L1_compareHelper(tmp,maxMld);
 sgtitle('[Chl a] 88-21: L1');
 exportgraphics(ax,'figures/statTestComp/chla.png'); clear ax;
 
