@@ -1,4 +1,4 @@
-function [ks, obs, depth2, Sk, ku,sd] = ksOfBinnedCon(X, p, binning, threshold)
+function [ks, obs, depth2, Sk, ku, sd, rV, pV] = ksOfBinnedCon(X, p, binning, threshold)
 %ksOfBinnedCon find the KS statistic
 % INPUTS:
 % X = substance concentration,
@@ -42,6 +42,7 @@ for i = 1:n
         %test = std(X_i);
         %disp(i);
         [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(X_i,'noplot');
+        [rV(:,i),pV(:,i)] = bbvuong(X_i);
         %[~,ks(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
         %disp(size(tmpC95));
         Sk(i) = skewness(X_i);
@@ -67,6 +68,8 @@ for i = 1:n
         Sk(i) = nan;
         ku(i) = nan;
         sd(i,:) = nan;
+        rV(:,i) = nan;
+        pV(:,i) = nan;
 %         sd(i,:) = nan;
 %         c95(i,:) = nan;
 %         mu(i,:) = nan;
@@ -83,6 +86,8 @@ depth2 = depth(tmp);
 Sk = Sk(tmp);
 ku = ku(tmp);
 sd = sd(tmp,:);
+rV = rV(:,tmp);
+pV = pV(:,tmp);
 % sd = sd(tmp,:);
 % c95 = c95(tmp,:);
 % mu = mu(tmp,:);

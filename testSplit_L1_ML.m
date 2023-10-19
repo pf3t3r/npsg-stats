@@ -43,7 +43,7 @@ clear ctdData i;
 tmp = importdata('data/L1/hplcChla_88-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku,sd] = L1_helper(tmp,maxMld);
+[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld);
 
 sgtitle('[Chl a] 88-21: L1');
 exportgraphics(ax,'figures/L1/chla.png'); clear ax;
@@ -55,7 +55,7 @@ save("output\L1\chla.mat","p","ks","obs","Sk","Ku");
 tmp = importdata('data/L1/pro_05-21_150.txt');
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld);
 
 sgtitle('Prochlorococcus 05-21: L1');
 exportgraphics(ax,'figures/L1/pbact21.png'); clear ax;
