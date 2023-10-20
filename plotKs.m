@@ -1,4 +1,4 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,limitOveride)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,rV,pV,limitOveride)
 %plotKs
 % INPUT: 
 % OUTPUT: 
@@ -29,8 +29,26 @@ else
     ytix = tr;
 end
 
-if nargin == 10
+if nargin < 10
+    vuongRes = 0;
+end
+
+if nargin == 13
     limits = limitOveride;
+end
+
+% Create Annotations for Vuong's Test Results
+annot = strings(1,length(tr));
+for i = 1:length(tr)
+    if vuongRes(i) == 1
+        annot(i) = "Normal";
+    elseif vuongRes(i) == 2
+        annot(i) = "Lognormal";
+    elseif vuongRes(i) == 3
+        annot(i) = "Weibull";
+    elseif vuongRes(i) == 4
+        annot(i) = "Gamma";
+    end
 end
 
 % Lognormal family: generate theoretical skewness and kurtosis
@@ -57,7 +75,7 @@ end
 %        ((gF*(1+2/kWbl(i)) - gF^2*(1+1/kWbl(i)))^2);
 % end
 
-subplot(1,4,1)
+subplot(1,6,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
@@ -69,7 +87,7 @@ ylabel('Pressure [dbar]');
 set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
 
-subplot(1,4,2)
+subplot(1,6,2)
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -79,12 +97,42 @@ hold off
 grid minor;
 ylim(limits);
 set(gca,'YDir','reverse');
-legend('Location','best');
+legend(Location="best");
 xlabel('p-value');
-% ylabel('Pressure [db]');
-title('KS Test');
+title('K-S p-values');
 
-subplot(1,4,3)
+subplot(1,6,3)
+plot(rV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3');
+hold on
+plot(rV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4');
+plot(rV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a');
+plot(rV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c');
+plot(rV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99');
+plot(rV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c');
+text(ks(1,:),tr,annot,FontSize=8);
+xline(0,HandleVisibility="off");
+hold off
+grid minor;
+ylim(limits); set(gca,'YDir','reverse');
+% xlim([-5 45]);
+legend(Location="best");
+title('Vuong: LLR');
+
+subplot(1,6,4)
+plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3');
+hold on
+plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4');
+plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a');
+plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c');
+plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99');
+plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c');
+hold off
+grid minor;
+ylim(limits); set(gca,'YDir','reverse');
+legend(Location="best");
+title('Vuong: p-values');
+
+subplot(1,6,5)
 yyaxis left
 plot(sk,tr,'DisplayName','Skewness'); hold on
 ylim(limits); set(gca,'YDir','reverse');
@@ -104,21 +152,21 @@ grid minor;
 legend('Location','south');
 title('Moments');
 
-subplot(1,4,4)
+subplot(1,6,6)
 numGroups = length(unique(tr));
 clr = parula(numGroups);
 gscatter(sk,ku,tr,clr);
 hold on
 % scatter(sk,ku,'DisplayName','Data');
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
-plot(skGam,kuGam,'DisplayName','Gamma','Color',[0.4 0.4 0.4]);
+plot(skGam,kuGam,'DisplayName','Gam.','Color',[0.4 0.4 0.4]);
 % plot(skWbl,kuWbl,'DisplayName','Weib.','Color',[0.7 0.7 0.7]);
 hold off
 grid minor;
 ylim([1 10]); xlim([0 2.5]);
 xlabel('Skewness'); ylabel('Kurtosis');
 lgd = legend('Location','best');
-title(lgd,'Pressure [dbar]');
+title(lgd,'P [dbar]');
 title('SK vs KU');
 
 % old subplot 3

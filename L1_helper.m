@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,threshold)
+function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(vuongRes,maxMld,threshold)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -22,10 +22,10 @@ if nargin < 3
     threshold = 50;
 end
 
-pIn = tmp.data(:,4);
-cIn = tmp.data(:,5);
-idIn = tmp.data(:,1);
-clear tmp;
+pIn = vuongRes.data(:,4);
+cIn = vuongRes.data(:,5);
+idIn = vuongRes.data(:,1);
+clear vuongRes;
 
 % 2. Extract data in ML
 [idOut,pOut,cOut] = extractMldVals(idIn,pIn,cIn,maxMld);
@@ -36,20 +36,27 @@ clear tmp;
 % 4. Calculate KS p-value, skewness, kurtosis
 [ks,obs,p,Sk,Ku,sd,rV,pV] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
 
+% 4.a. Intercomparison of results from Vuong's Test: easily see best
+% distribution at each depth.
+vuongRes = nan(1,length(p));
 for i = 1:length(p)
     if rV(1,i) & rV(2,i) & rV(3,i) > 0
         disp('Normal');
+        vuongRes(i) = 1;
     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
         disp('Lognormal');
-    elseif rV(2,i) < 0 rV(5,i) < 0 & rV(8,i) > 0
+        vuongRes(i) = 2;
+    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
         disp('Weibull');
+        vuongRes(i) = 3;
     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
         disp('Gamma');
+        vuongRes(i) = 4;
     end
 end
 
 % 5. Plot results
 ax = figure;
-plotKs(p,ks,obs,Sk,Ku,0.5,20.5,true,threshold);
+plotKs(p,ks,obs,Sk,Ku,0.5,20.5,true,threshold,vuongRes,rV,pV);
 
 end
