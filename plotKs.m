@@ -66,14 +66,13 @@ for i = 1:length(kTh)
 end
 
 % % Weibull family: generate theoretical skewness and kurtosis
-% kWbl = linspace(0.5,5,1000);
-% gF = 1;
-% for i = 1:length(kWbl)
-%     skWbl(i) = (gF*(1+3/kWbl(i)) - 3*gF*(1+1/kWbl(i))*gF*(1+2/kWbl(i)) + 2*gF^3*(1+1/kWbl(i))) ./ ...
-%         (gF*(1+2/kWbl(i)) - gF^2*(1+1/kWbl(i)))^(3/2);
-%     kuWbl(i) = ( gF*(1+4/kWbl(i)) - 4*gF*(1+1/kWbl(i))*gF*(1+3/kWbl(i)) + 6*gF^2*(1+1/kWbl(i))*gF*(1+2/kWbl(i)) - 3*gF^4*(1+1/kWbl(i))) ./ ...
-%        ((gF*(1+2/kWbl(i)) - gF^2*(1+1/kWbl(i)))^2);
-% end
+kWbl = linspace(0.5,4,10000);
+for i = 1:length(kWbl)
+    skWbl(i) = (gamma(1+3/kWbl(i)) - 3*gamma(1+1/kWbl(i))*gamma(1+2/kWbl(i)) + 2*(gamma(1+1/kWbl(i))))^3 ./ ...
+        (gamma(1+2/kWbl(i)) - ((gamma(1+1/kWbl(i)))^2)^(3/2));
+    kuWbl(i) = ( gamma(1+4/kWbl(i)) - 4*gamma(1+1/kWbl(i))*gamma(1+3/kWbl(i)) + 6*((gamma(1+1/kWbl(i)))^2)*gamma(1+2/kWbl(i)) - 3*((gamma(1+1/kWbl(i)))^4) )./ ...
+       ((gamma(1+2/kWbl(i)) - (gamma(1+1/kWbl(i)))^2)^2);
+end
 
 subplot(1,6,1)
 barh(obs,'FaceColor','#a6cee3');
@@ -160,7 +159,7 @@ hold on
 % scatter(sk,ku,'DisplayName','Data');
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
 plot(skGam,kuGam,'DisplayName','Gam.','Color',[0.4 0.4 0.4]);
-% plot(skWbl,kuWbl,'DisplayName','Weib.','Color',[0.7 0.7 0.7]);
+plot(skWbl,kuWbl,'DisplayName','Weib.','Color',[0.7 0.7 0.7]);
 hold off
 grid minor;
 ylim([1 10]); xlim([0 2.5]);

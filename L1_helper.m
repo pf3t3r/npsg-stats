@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(vuongRes,maxMld,threshold)
+function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,threshold)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -22,10 +22,10 @@ if nargin < 3
     threshold = 50;
 end
 
-pIn = vuongRes.data(:,4);
-cIn = vuongRes.data(:,5);
-idIn = vuongRes.data(:,1);
-clear vuongRes;
+pIn = tmp.data(:,4);
+cIn = tmp.data(:,5);
+idIn = tmp.data(:,1);
+clear tmp;
 
 % 2. Extract data in ML
 [idOut,pOut,cOut] = extractMldVals(idIn,pIn,cIn,maxMld);
