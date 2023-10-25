@@ -65,14 +65,24 @@ for i = 1:length(kTh)
     kuGam(i) = 6/kTh(i) + 3;
 end
 
-% % Weibull family: generate theoretical skewness and kurtosis
-kWbl = linspace(0.5,4,10000);
+% Weibull family: generate theoretical skewness and kurtosis
+kWbl = linspace(0,5,10000);
 for i = 1:length(kWbl)
-    skWbl(i) = (gamma(1+3/kWbl(i)) - 3*gamma(1+1/kWbl(i))*gamma(1+2/kWbl(i)) + 2*(gamma(1+1/kWbl(i))))^3 ./ ...
-        (gamma(1+2/kWbl(i)) - ((gamma(1+1/kWbl(i)))^2)^(3/2));
-    kuWbl(i) = ( gamma(1+4/kWbl(i)) - 4*gamma(1+1/kWbl(i))*gamma(1+3/kWbl(i)) + 6*((gamma(1+1/kWbl(i)))^2)*gamma(1+2/kWbl(i)) - 3*((gamma(1+1/kWbl(i)))^4) )./ ...
-       ((gamma(1+2/kWbl(i)) - (gamma(1+1/kWbl(i)))^2)^2);
+    skWbl(i) = ( gamma(1 + 3/kWbl(i)) - 3*gamma(1 + 1/kWbl(i))*gamma(1 + 2/kWbl(i)) + 2*(gamma(1 + 1/kWbl(i)))^3 ) ./ ...
+        ( gamma(1 + 2/kWbl(i)) -  (gamma(1 + 1/kWbl(i)))^2 )^(3/2);
+    kuWbl(i) = ( gamma(1 + 4/kWbl(i)) - 4*gamma(1 + 1/kWbl(i))*gamma(1 + 3/kWbl(i)) + 6*( (gamma(1 + 1/kWbl(i)) )^2)*gamma(1 + 2/kWbl(i)) - 3*( (gamma(1 + 1/kWbl(i)))^4 ) ) ./ ...
+       ( gamma(1 + 2/kWbl(i)) - ( gamma(1 + 1/kWbl(i)) )^2 )^2;
 end
+
+% Loglogistic family: generate theoretical skewness and kurtosis
+% Nothings shows up: Maybe I need to tune the shape parameter a bit (??)
+% cLgi = linspace(2,4,10000);
+% for i = 1:length(cLgi)
+%     skLgi(i) = ( 2*(pi^2)*(csc(pi/cLgi(i)))^3 - 6*cLgi(i)*pi*csc(pi/cLgi(i))*csc(2*pi/cLgi(i)) + 3*(cLgi(i)^2)*csc(3*pi/cLgi(i)) ) ./ ...
+%         sqrt(pi)*((-pi*(csc(pi/cLgi(i))^2)) + 2*cLgi(i)*csc(2*pi/cLgi(i)))^(3/2);
+%     kuLgi(i) = ( -3*pi^2*(csc(pi/cLgi(i))^4) - 12*pi*cLgi(i)^2*csc(pi/cLgi(i))*csc(3*pi/cLgi(i)) + 4*cLgi(i)^3*csc(4*pi/cLgi(i)) + 6*cLgi(i)*pi^2*(csc(pi/cLgi(i))^3)*sec(pi/cLgi(i)) ) ./ ...
+%         pi*( -pi*(csc(pi/cLgi(i))^2) + 2*cLgi(i)*csc(2*pi/cLgi(i)) )^2;
+% end
 
 subplot(1,6,1)
 barh(obs,'FaceColor','#a6cee3');
@@ -100,15 +110,16 @@ legend(Location="best");
 xlabel('p-value');
 title('K-S p-values');
 
+zzs = zeros(length(tr),1);
 subplot(1,6,3)
-plot(rV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3');
+% plot(rV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3');
+% plot(rV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4');
+% plot(rV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a');
+% plot(rV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c');
+% plot(rV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99');
+% plot(rV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c');
+text(zzs,tr,annot,FontSize=8);
 hold on
-plot(rV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4');
-plot(rV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a');
-plot(rV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c');
-plot(rV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99');
-plot(rV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c');
-text(ks(1,:),tr,annot,FontSize=8);
 xline(0,HandleVisibility="off");
 hold off
 grid minor;
@@ -153,13 +164,18 @@ title('Moments');
 
 subplot(1,6,6)
 numGroups = length(unique(tr));
-clr = parula(numGroups);
+clr = flipud(parula(numGroups));
 gscatter(sk,ku,tr,clr);
 hold on
-% scatter(sk,ku,'DisplayName','Data');
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
-plot(skGam,kuGam,'DisplayName','Gam.','Color',[0.4 0.4 0.4]);
-plot(skWbl,kuWbl,'DisplayName','Weib.','Color',[0.7 0.7 0.7]);
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#a6cee3');
+plot(skGam,kuGam,'DisplayName','Gam.','Color','#1f78b4');
+plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a');
+% plot(skLgi,kuLgi,'DisplayName','Logl.','Color','#33a02c');
+plot(2,9,'DisplayName','Exp.',Marker='+');
+plot(0,9/5,'DisplayName','Uni.',Marker='o');
+plot(0,3,'DisplayName','Norm.',Marker='*');
+plot(0,21/5,'DisplayName','Logi.',Marker='.');
+plot(1.1395,5.4,'DisplayName','LEV',Marker='x');
 hold off
 grid minor;
 ylim([1 10]); xlim([0 2.5]);
