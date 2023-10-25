@@ -66,12 +66,15 @@ if sum(x<=0) == 0
     [~,pLil(5)] = lillietest(x,MCTol=1e-2);
 end
 
+% create gamma PDO
+pd2 = fitdist(x',"Gamma");
+
 % A-D test on data
 [~,pAd(1)] = adtest(x,MCTol=1e-2);
 if sum(x<=0) == 0
     [~,pAd(2)] = adtest(x,"Distribution","logn",MCTol=1e-2);
     [~,pAd(3)] = adtest(x,"Distribution","weibull",MCTol=1e-2);
-    [~,pAd(4)] = adtest(x,MCTol=1e-2);
+    [~,pAd(4)] = adtest(x,Distribution=pd2,MCTol=0.05);
     [~,pAd(5)] = adtest(x,MCTol=1e-2);
 end
 

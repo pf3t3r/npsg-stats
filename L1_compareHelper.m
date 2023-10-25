@@ -55,6 +55,7 @@ plot(pKs(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'M
 hold on
 plot(pKs(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(pKs(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+plot(pKs(4,:),p,'o-','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 grid minor;
 ylim([0 200]);
 set(gca,'YDir','reverse');
@@ -79,6 +80,7 @@ plot(pAd(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'M
 hold on
 plot(pAd(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(pAd(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+plot(pAd(4,:),p,'o-','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 grid minor;
 ylim([0 200]);
 set(gca,'YDir','reverse');
