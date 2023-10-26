@@ -84,7 +84,33 @@ end
 %         pi*( -pi*(csc(pi/cLgi(i))^2) + 2*cLgi(i)*csc(2*pi/cLgi(i)) )^2;
 % end
 
-subplot(1,6,1)
+% Only plot pV over 0.05
+for i = 1:10
+    for j = 1:length(tr)
+        if pV(i,j) < 0.01
+            pV(i,j) = nan;
+        end
+    end
+end
+
+% Only plot pV related to DOMINANT Vuong LLR
+for k = 1:length(tr)
+    if vuongRes(k) == 1
+        disp('a...');
+        pV([4 5 6 7 8 9 10],k) = nan;
+    elseif vuongRes(k) == 2
+        disp('b...');
+        pV([2 3 4 7 8 9 10],k) = nan;
+    elseif vuongRes(k) == 3
+        disp('c..');
+        pV([1 3 4 6 7 9 10],k) = nan;
+    else
+        disp('d...');
+        pV([1 2 4 5 7 9 10],k) = nan;
+    end
+end
+
+subplot(1,5,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
@@ -96,7 +122,7 @@ ylabel('Pressure [dbar]');
 set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
 
-subplot(1,6,2)
+subplot(1,5,2)
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -110,39 +136,40 @@ legend(Location="best");
 xlabel('p-value');
 title('K-S p-values');
 
-zzs = zeros(length(tr),1);
-subplot(1,6,3)
-% plot(rV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3');
-% plot(rV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4');
-% plot(rV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a');
-% plot(rV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c');
-% plot(rV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99');
-% plot(rV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c');
-text(zzs,tr,annot,FontSize=8);
-hold on
+zzs = 0.25*ones(length(tr),1);
+subplot(1,5,3)
 xline(0,HandleVisibility="off");
+hold on
+plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3',Marker='+');
+plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4',Marker='o');
+plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a',Marker='*');
+plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c',Marker='.');
+plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99',Marker='x');
+plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c',Marker='square');
+text(zzs,tr,annot,FontSize=8);
 hold off
 grid minor;
+xlabel('p-value');
 ylim(limits); set(gca,'YDir','reverse');
 % xlim([-5 45]);
 legend(Location="best");
-title('Vuong: LLR');
+title('Vuong: LLR, p-values','p-value > 0.05 plotted');
 
-subplot(1,6,4)
-plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3');
-hold on
-plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4');
-plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a');
-plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c');
-plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99');
-plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c');
-hold off
-grid minor;
-ylim(limits); set(gca,'YDir','reverse');
-legend(Location="best");
-title('Vuong: p-values');
+% subplot(1,6,4)
+% plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3',Marker='+');
+% hold on
+% plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4',Marker='o');
+% plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a',Marker='*');
+% plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c',Marker='.');
+% plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99',Marker='x');
+% plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c',Marker='square');
+% hold off
+% grid minor;
+% ylim(limits); set(gca,'YDir','reverse');
+% legend(Location="best");
+% title('Vuong: p-values');
 
-subplot(1,6,5)
+subplot(1,5,4)
 yyaxis left
 plot(sk,tr,'DisplayName','Skewness'); hold on
 ylim(limits); set(gca,'YDir','reverse');
@@ -162,7 +189,7 @@ grid minor;
 legend('Location','south');
 title('Moments');
 
-subplot(1,6,6)
+subplot(1,5,5)
 numGroups = length(unique(tr));
 clr = flipud(parula(numGroups));
 gscatter(sk,ku,tr,clr);
