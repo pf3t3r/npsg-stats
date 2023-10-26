@@ -1,4 +1,4 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,rV,pV,limitOveride)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride)
 %plotKs
 % INPUT: 
 % OUTPUT: 
@@ -33,7 +33,7 @@ if nargin < 10
     vuongRes = 0;
 end
 
-if nargin == 13
+if nargin == 12
     limits = limitOveride;
 end
 
@@ -110,7 +110,7 @@ for k = 1:length(tr)
     end
 end
 
-subplot(1,5,1)
+subplot(1,7,1)
 barh(obs,'FaceColor','#a6cee3');
 hold on
 xline(threshold);
@@ -122,7 +122,7 @@ ylabel('Pressure [dbar]');
 set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
 
-subplot(1,5,2)
+subplot(1,7,[2 3])
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -137,22 +137,22 @@ xlabel('p-value');
 title('K-S p-values');
 
 zzs = 0.25*ones(length(tr),1);
-subplot(1,5,3)
+subplot(1,7,[4 5])
 xline(0,HandleVisibility="off");
 hold on
-plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3',Marker='+');
-plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4',Marker='o');
-plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a',Marker='*');
-plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c',Marker='.');
-plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99',Marker='x');
-plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c',Marker='square');
+plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3',Marker='+',LineWidth=1);
+plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4',Marker='o',LineWidth=1);
+plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a',Marker='*',LineWidth=1);
+plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c',Marker='.',LineWidth=1);
+plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99',Marker='x',LineWidth=1);
+plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c',Marker='square',LineWidth=1);
 text(zzs,tr,annot,FontSize=8);
 hold off
 grid minor;
 xlabel('p-value');
 ylim(limits); set(gca,'YDir','reverse');
 % xlim([-5 45]);
-legend(Location="best");
+legend(Location="south");
 title('Vuong: LLR, p-values','p-value > 0.05 plotted');
 
 % subplot(1,6,4)
@@ -169,47 +169,49 @@ title('Vuong: LLR, p-values','p-value > 0.05 plotted');
 % legend(Location="best");
 % title('Vuong: p-values');
 
-subplot(1,5,4)
-yyaxis left
-plot(sk,tr,'DisplayName','Skewness'); hold on
-ylim(limits); set(gca,'YDir','reverse');
-% yticklabels({});
-yyaxis right
-plot(ku,tr,'DisplayName','Kurtosis');
-ylim(limits); set(gca,'YDir','reverse');
-% set(gca,'YTickLabel',{tr(5:5:length(tr))},'YColor','Black')
-xline(3,'.','Mesokurtic','HandleVisibility','off');
-xline(2.5,':','HandleVisibility','off');
-xline(3.5,':','HandleVisibility','off');
-xline(0,'.','Symmetric','HandleVisibility','off');
-xline(-0.5,':','HandleVisibility','off');
-xline(0.5,':','HandleVisibility','off');
-hold off
-grid minor;
-legend('Location','south');
-title('Moments');
+% subplot(1,5,4)
+% yyaxis left
+% plot(sk,tr,'DisplayName','Skewness'); hold on
+% ylim(limits); set(gca,'YDir','reverse');
+% % yticklabels({});
+% yyaxis right
+% plot(ku,tr,'DisplayName','Kurtosis');
+% ylim(limits); set(gca,'YDir','reverse');
+% % set(gca,'YTickLabel',{tr(5:5:length(tr))},'YColor','Black')
+% xline(3,'.','Mesokurtic','HandleVisibility','off');
+% xline(2.5,':','HandleVisibility','off');
+% xline(3.5,':','HandleVisibility','off');
+% xline(0,'.','Symmetric','HandleVisibility','off');
+% xline(-0.5,':','HandleVisibility','off');
+% xline(0.5,':','HandleVisibility','off');
+% hold off
+% grid minor;
+% legend('Location','south');
+% title('Moments');
 
-subplot(1,5,5)
+subplot(1,7,[6 7])
 numGroups = length(unique(tr));
-clr = flipud(parula(numGroups));
+clr = flipud(copper(numGroups));
 gscatter(sk,ku,tr,clr);
 hold on
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#a6cee3');
-plot(skGam,kuGam,'DisplayName','Gam.','Color','#1f78b4');
-plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a');
+P = [0 2.5; 0 3.5; 0.5 3.5; 0.5 2.5] ;
+patch(P(:,1),P(:,2),[0.6 0.6 0.6],'EdgeColor','k','HandleVisibility','off');
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#a6cee3',LineStyle='-',LineWidth=1);
+plot(skGam,kuGam,'DisplayName','Gam.','Color','#1f78b4',LineStyle='--',LineWidth=1);
+plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle=':',LineWidth=1);
 % plot(skLgi,kuLgi,'DisplayName','Logl.','Color','#33a02c');
-plot(2,9,'DisplayName','Exp.',Marker='+');
-plot(0,9/5,'DisplayName','Uni.',Marker='o');
-plot(0,3,'DisplayName','Norm.',Marker='*');
-plot(0,21/5,'DisplayName','Logi.',Marker='.');
-plot(1.1395,5.4,'DisplayName','LEV',Marker='x');
+scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
+scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
+scatter(0,3,'DisplayName','Norm.',Marker='*',LineWidth=1);
+scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
+scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 hold off
 grid minor;
 ylim([1 10]); xlim([0 2.5]);
 xlabel('Skewness'); ylabel('Kurtosis');
-lgd = legend('Location','best');
+lgd = legend('Location','best','FontSize',6);
 title(lgd,'P [dbar]');
-title('SK vs KU');
+title('SK vs KU','Grey = approx norm.');
 
 % old subplot 3
 % subplot(1,3,3)
