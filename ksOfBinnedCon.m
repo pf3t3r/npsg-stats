@@ -1,4 +1,4 @@
-function [ks, obs, depth2, Sk, ku, sd, rV, pV] = ksOfBinnedCon(X, p, binning, threshold)
+function [ks,obs,tr,sk,ku,sd,rV,pV] = ksOfBinnedCon(X, p, binning, threshold)
 %ksOfBinnedCon find the KS statistic
 % INPUTS:
 % X = substance concentration,
@@ -8,8 +8,8 @@ function [ks, obs, depth2, Sk, ku, sd, rV, pV] = ksOfBinnedCon(X, p, binning, th
 % OUTPUTS: 
 % ks = KS test for five distributions 
 % obs = observations per depth
-% depth2 = array of depths above threshold (=100)
-% Sk = skewness
+% tr = array of depths above threshold (=100)
+% sk = skewness
 % ku = kurtosis
 % sd = standard deviation (3 x n). 1: STD of mle (norm); 2: STD of data
 % (norm); 3: stdMle/stdData (norm)
@@ -45,7 +45,7 @@ for i = 1:n
         [rV(:,i),pV(:,i)] = bbvuong(X_i);
         %[~,ks(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
         %disp(size(tmpC95));
-        Sk(i) = skewness(X_i);
+        sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
 %         tmpDat = [std(X_i) std(log(X_i))];
 %         tmpDatMu = [mean(X_i) mean(log(X_i))];
@@ -65,7 +65,7 @@ end
 for i = 1:n
     if obs(i) < threshold
         ks(:,i) = nan;   
-        Sk(i) = nan;
+        sk(i) = nan;
         ku(i) = nan;
         sd(i,:) = nan;
         rV(:,i) = nan;
@@ -82,8 +82,8 @@ for i = 1:n
         tmp = [tmp i];
     end
 end
-depth2 = depth(tmp);
-Sk = Sk(tmp);
+tr = depth(tmp);
+sk = sk(tmp);
 ku = ku(tmp);
 sd = sd(tmp,:);
 rV = rV(:,tmp);

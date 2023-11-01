@@ -79,7 +79,29 @@ SEK_L = SEK_E;
 y1_kurL = kurtChloroL + SEK_L;
 y2_kurL = kurtChloroL - SEK_L;
 
+
+%% Average Profile
+
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 10 12]);
+
+ax0 = figure;
+patch([y1_medE; flipud(y2_medE)], [pE; flipud(pE)], [0.8 0.8 0.8]);
+hold on
+plot(medChloro,pE,'LineWidth',1);
+hold off
+set(gca, 'YDir','reverse');
+% xlim([0 1]);
+ylim([0 250]);
+ylabel('Pressure [dbar]'); xlabel('Chl $\textit{a}$ [$\mu$g L$^{-1}$]',Interpreter='latex');
+% title('Median');
+
+exportgraphics(ax0,'figures/moments-Eulerian_1988_2021.png');
+
+
 %% Eulerian Moments
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 28 12]);
+
+
 
 ax1 = figure;
 sgtitle('Chloropigment Moments (Eulerian)');

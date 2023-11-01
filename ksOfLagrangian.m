@@ -1,4 +1,4 @@
-function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu,b] = ksOfLagrangian(id,p,dcm,X,threshold)
+function [tr,ks,obs,sk,ku,sd,rV,pV] = ksOfLagrangian(id,p,dcm,X,threshold)
 %ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
@@ -9,12 +9,12 @@ function [trange,ks,obsPerBin,Sk,Ku,sd,c95,mu,b] = ksOfLagrangian(id,p,dcm,X,thr
 % Ltid = not sure how this works but hey it works...
 % OUTPUTS:
 % bottleArray = not needed anymore, to remove
-% trange = depths where sufficient measurements are present
+% tr = depths where sufficient measurements are present
 % chl = also not used??
 % pB = binned pressure, also not used?
 % ks = Kolmogorov-Smirnov Statistic (p value). High p-value indicates that
 % the given distribution fits the data better.
-% obsPerBin = no. of observations in a particular depth bin. 
+% obs = no. of observations in a particular depth bin. 
 
 if nargin < 5
     threshold = 50;
@@ -54,13 +54,9 @@ tPcm(tid(end):end) = dcm(dcmCrnCast(end),3);
 
 Ltid = length(tid);
 
-disp(length(botCrnCast));
-disp(length(dcmCrnCast));
-disp(Ltid);
 tmp = length(dcmCrnCast) - 1;
 Ltid = tmp;
 for i = 2:Ltid-2
-    %disp(i);
     tPcm(tid(i):tid(i+1)-1) = dcm(dcmCrnCast(i),3);
 end
 
@@ -76,25 +72,27 @@ bottleArray = [bottleArray pB10];
 bottleArray = [bottleArray X];
 tmin = min(bottleArray(:,6));
 tmax = max(bottleArray(:,6));
-trange = tmin:10:tmax;
+tr = tmin:10:tmax;
 
 chl = bottleArray(:,7);
 pB = bottleArray(:,6);
-ks = nan(5,length(trange));
-obsPerBin = nan(1,length(trange));
+ks = nan(5,length(tr));
+rV = nan(10,length(tr));
+pV = nan(10,length(tr));
+obs = nan(1,length(tr));
 
-Sk = nan(1,length(trange));
+sk = nan(1,length(tr));
 
-for i = 1:length(trange)
-    tmp = chl(pB==trange(i));
+for i = 1:length(tr)
+    tmp = chl(pB==tr(i));
     tmp(tmp<=0) = nan;
     tmp(isnan(tmp)) = [];
-    obsPerBin(i) = length(tmp);
+    obs(i) = length(tmp);
     if length(tmp) > 3
-        %disp(i);
         [~,ks(:,i),~,tmpC95,tmpMle,muMle] = statsplot2(tmp,'noplot');
-        Sk(i) = skewness(tmp);
-        Ku(i) = kurtosis(tmp);
+        [rV(:,i),pV(:,i)] = bbvuong(tmp);
+        sk(i) = skewness(tmp);
+        ku(i) = kurtosis(tmp);
         tmpDat = [std(tmp) std(log(tmp))];
         tmpDatMu = [mean(tmp) mean(log(tmp))];
         tmpComp = [tmpMle(1)/tmpDat(1) tmpMle(2)/tmpDat(2)];
@@ -108,11 +106,12 @@ for i = 1:length(trange)
     end
 end
 
-for i = 1:length(trange)
-    if obsPerBin(i) < threshold
+for i = 1:length(tr)
+    if obs(i) < threshold
         ks(:,i) = nan;
-        Sk(i) = nan;
-        Ku(i) = nan;
+        rV(:,i) = nan;
+        sk(i) = nan;
+        ku(i) = nan;
         sd(i,:) = nan;
         c95(i,:) = nan;
         mu(i,:) = nan;
@@ -120,15 +119,15 @@ for i = 1:length(trange)
 end
 
 % tmp = [];
-% for i = 1:length(trange)
+% for i = 1:length(tr)
 %     if ~isnan(sum(ks(:,i)))
 %         tmp = [tmp i];
 %     end
 % end
 % 
-% trange2 = trange(tmp);
-% Sk = Sk(tmp);
-% Ku = Ku(tmp);
+% trange2 = tr(tmp);
+% sk = sk(tmp);
+% ku = ku(tmp);
 % sd = sd(tmp,:);
 % ks = ks(:,~all(isnan(ks)));
 

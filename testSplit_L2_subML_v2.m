@@ -22,7 +22,7 @@ tmp = importdata('data/L2/hplcChla_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,pMaxMld,dcm);
 
 sgtitle('[Chl a] 88-21: L2');
 exportgraphics(ax,'figures/L2/chla.png'); clear ax;

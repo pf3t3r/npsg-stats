@@ -187,8 +187,8 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
-ylabel('Depth [db]');
-title('Chloropigment: Eulerian (1988-2021) [200 db]');
+ylabel('Pressure [dbar]');
+% title('Fluo (1988-2021) [200 db]');
 
 exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerian.png');
 
@@ -201,7 +201,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: Eulerian (1988-2021) [256db]');
 
 exportgraphics(ax3,'figures/fluorescence-1988-2021_256_eulerian.png');
@@ -215,7 +215,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: Eulerian (1988 - 2021) [300 db]');
 
 exportgraphics(ax3a,'figures/fluorescence-1988-2021_300_eulerian.png');
@@ -254,7 +254,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM at each time';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Eulerian, Normalised)');
 
 exportgraphics(ax4,'figures/fluorescence_norm-1988-2021_eulerianView.png');
@@ -267,7 +267,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM at each time';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Eulerian, Normalised) [256 db]');
 
 exportgraphics(ax4a,'figures/fluorescence_norm-1988-2021_eulerian256.png');
@@ -280,7 +280,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM at each time';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Eulerian, Normalised) [300 db]');
 exportgraphics(ax4b,'figures/fluorescence_norm-1988-2021_eulerian300.png');
 
@@ -441,7 +441,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Lagrangian)');
 exportgraphics(ax7,'figures/fluorescence-1988-2021_lagrangianView.png');
 
@@ -455,7 +455,7 @@ c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 ylim([-110 110]);
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Lagrangian) [256 db]');
 exportgraphics(ax7a,'figures/fluorescence-1988-2021_lagrangian256.png');
 
@@ -469,7 +469,7 @@ c = colorbar;
 c.Label.String = 'chloropigment (fluorescence) [ug/L]';
 ylim([-110 110]);
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Lagrangian) [300 db]');
 exportgraphics(ax7b,'figures/fluorescence-1988-2021_lagrangian300.png');
 
@@ -502,7 +502,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Lagrangian, Normalised)');
 exportgraphics(ax8,'figures/fluorescence_norm-1988-2021_lagrangianView.png');
 
@@ -515,7 +515,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Lagrangian, Normalised, 256 db)');
 exportgraphics(ax8a,'figures/fluorescence_norm-1988-2021_lagrangian256.png');
 
@@ -528,7 +528,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, normalised relative to DCM';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment (Normalised): Lagrangian (1988 - 2021) [300 db]');
 exportgraphics(ax8b,'figures/fluorescence_norm-1988-2021_lagrangian300.png');
 
@@ -607,7 +607,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, seasonality removed';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Lagrangian, Seasonality Removed, 256 db)');
 
 exportgraphics(ax12,'figures/fluorescence_1988-2021_lagrangian256_seasonalityRemoved.png');
@@ -620,7 +620,7 @@ colormap(flipud(cbrewer2('Spectral',nb)));
 c = colorbar;
 c.Label.String = 'chloropigment, seasonality removed';
 xlabel('Time');
-ylabel('Depth [db]');
+ylabel('Pressure [dbar]');
 title('Chloropigment: 1988 - 2021 (Eulerian, Seasonality Removed, 256 db)');
 
 exportgraphics(ax13,'figures/fluorescence_1988-2021_eulerian256_seasonalityRemoved.png');
