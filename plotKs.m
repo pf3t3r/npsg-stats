@@ -76,6 +76,16 @@ for i = 1:length(kWbl)
        ( gamma(1 + 2/kWbl(i)) - ( gamma(1 + 1/kWbl(i)) )^2 )^2;
 end
 
+% Beta family: generate theoretical skewness and kurtosis
+% etaB = linspace(5,0.5,100);
+% gammaB = linspace(0.5,5,100);
+% for i = 1:length(etaB)
+%     skBet(i) = 2*(etaB(i) - gammaB(i)) * sqrt(gammaB(i) + etaB(i) + 1) ./ ...
+%         sqrt(etaB(i)*gammaB(i)) * (etaB(i) + gammaB(i) + 2);
+%     kuBet(i) = 3*(etaB(i) + gammaB(i) + 1) * ( 2*(etaB(i) + gammaB(i))^2 + gammaB(i)*etaB(i)*(etaB(i) + gammaB(i) - 6) ) ./ ...
+%         etaB(i)*gammaB(i)*(etaB(i) + gammaB(i) + 2)*(etaB(i) + gammaB(i) + 3);
+% end
+
 % Loglogistic family: generate theoretical skewness and kurtosis
 % Nothings shows up: Maybe I need to tune the shape parameter a bit (??)
 % cLgi = linspace(2,4,10000);
@@ -199,6 +209,7 @@ hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#a6cee3',LineStyle='-',LineWidth=1);
 plot(skGam,kuGam,'DisplayName','Gam.','Color','#1f78b4',LineStyle='--',LineWidth=1);
 plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle=':',LineWidth=1);
+plot(skBet,kuBet,'DisplayName','Beta','Color','#33a02c',LineStyle='-.',LineWidth=1);
 % plot(skLgi,kuLgi,'DisplayName','Logl.','Color','#33a02c');
 scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
