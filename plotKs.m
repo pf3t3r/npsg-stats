@@ -209,7 +209,7 @@ hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#a6cee3',LineStyle='-',LineWidth=1);
 plot(skGam,kuGam,'DisplayName','Gam.','Color','#1f78b4',LineStyle='--',LineWidth=1);
 plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle=':',LineWidth=1);
-plot(skBet,kuBet,'DisplayName','Beta','Color','#33a02c',LineStyle='-.',LineWidth=1);
+% plot(skBet,kuBet,'DisplayName','Beta','Color','#33a02c',LineStyle='-.',LineWidth=1);
 % plot(skLgi,kuLgi,'DisplayName','Logl.','Color','#33a02c');
 scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
