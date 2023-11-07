@@ -22,7 +22,7 @@ tmp = importdata('data/L2/hplcChla_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('[Chl a] 88-21: L2');
 exportgraphics(ax,'figures/L2/chla.png'); clear ax;
@@ -36,7 +36,7 @@ tmp = importdata('data/L2/pro_05-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 22]);
 
 sgtitle('Prochlorococcus 05-21: L2');
 exportgraphics(ax,'figures/L2/pbact21.png'); clear ax;
@@ -50,7 +50,7 @@ tmp = importdata('data/L2/pro_90-05_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('Prochlorococcus 90-05: L2');
 exportgraphics(ax,'figures/L2/pbact05.png'); clear ax;
@@ -64,7 +64,7 @@ tmp = importdata('data/L2/oxy_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 22]);
 
 sgtitle('Dissolved Oxygen 88-21: L2');
 exportgraphics(ax,'figures/L2/boxy.png'); clear ax;
@@ -78,7 +78,7 @@ tmp = importdata('data/L2/dic_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 22]);
 
 sgtitle('Dissolved Inorganic Carbon 88-21: L2');
 exportgraphics(ax,'figures/L2/dic.png'); clear ax;
@@ -92,7 +92,7 @@ tmp = importdata('data/L2/pH_92-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 22]);
 
 sgtitle('pH 92-21: L2');
 exportgraphics(ax,'figures/L2/pH.png'); clear ax;
@@ -106,7 +106,7 @@ tmp = importdata('data/L2/alk_89-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 22]);
 
 sgtitle('Alkalinity 89-21: L2');
 exportgraphics(ax,'figures/L2/alk.png'); clear ax;
@@ -120,7 +120,7 @@ tmp = importdata('data/L2/pho_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('Phosphate 88-21: L2');
 exportgraphics(ax,'figures/L2/phos.png'); clear ax;
@@ -134,7 +134,7 @@ tmp = importdata('data/L2/nit2_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('Nitrate + Nitrite 88-21: L2');
 exportgraphics(ax,'figures/L2/nit2.png'); clear ax;
@@ -167,7 +167,7 @@ tmp = importdata('data/L2/sil_88-22_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('Silicate 88-22: L2');
 exportgraphics(ax,'figures/L2/sil.png'); clear ax;
@@ -209,7 +209,7 @@ tmp = importdata("data\L2\doc_93-17_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('DOC 88-17: L2');
 exportgraphics(ax,'figures/L2/doc.png'); clear ax;
 save("output\L2\doc.mat","p","ks","obs","sk","ku");
@@ -261,7 +261,7 @@ tmp = importdata("data\L2\pars_96-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('Particulate Silica 96-21: L2');
 exportgraphics(ax,'figures/L2/ps.png'); clear ax;
 save("output\L2\ps.mat","p","ks","obs","sk","ku");
@@ -274,7 +274,7 @@ tmp = importdata("data\L2\parn_89-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[4 24]);
 sgtitle('Particulate Nitrogen 89-21: L2');
 exportgraphics(ax,'figures/L2/pn.png'); clear ax;
 save("output\L2\pn.mat","p","ks","obs","sk","ku");
@@ -287,7 +287,7 @@ tmp = importdata("data\L2\parc_89-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[4 24]);
 sgtitle('Particulate Carbon 89-21: L2');
 exportgraphics(ax,'figures/L2/pc.png'); clear ax;
 save("output\L2\pc.mat","p","ks","obs","sk","ku");
@@ -305,7 +305,7 @@ tmp = importdata("data\L2\llp_88-22_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[11 31]);
 sgtitle('Low-level Phosphorus 88-22: L2');
 exportgraphics(ax,'figures/L2/llp.png'); clear ax;
 save("output\L2\llp.mat","p","ks","obs","sk","ku");
@@ -318,7 +318,7 @@ tmp = importdata("data\L2\lln_89-22_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[11 31]);
 sgtitle('Low-level Nitrogen 89-22: L2');
 exportgraphics(ax,'figures/L2/lln.png'); clear ax;
 save("output\L2\lln.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -330,7 +330,7 @@ tmp = importdata("data\L2\chlFlu_88-22_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[11 31]);
 sgtitle('Fluorometric Chlorophyll 88-22: L2');
 exportgraphics(ax,'figures/L2/chlaFluo.png'); clear ax;
 save("output\L2\chlaFluo.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -343,7 +343,7 @@ tmp = importdata("data\L2\pheo_88-22_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[11 31]);
 sgtitle('Phaeopigments 88-22: L2');
 exportgraphics(ax,'figures/L2/phaeo.png'); clear ax;
 save("output\L2\phaeo.mat","p","ks","obs","sk","ku");
@@ -356,7 +356,7 @@ tmp = importdata("data\L2\chl3_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[1 21]);
 sgtitle('Chlorophyll C3 (88-21): L2');
 exportgraphics(ax,'figures/L2/chl3.png'); clear ax;
 save("output\L2\chl3.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -368,7 +368,7 @@ tmp = importdata("data\L2\chl12_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[1 21]);
 sgtitle('Chlorophyll C1 + C2 (88-21): L2');
 exportgraphics(ax,'figures/L2/chl12.png'); clear ax;
 save("output\L2\chl12.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -380,7 +380,7 @@ tmp = importdata("data\L2\chl123_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('Chlorophyll C1 + C2 + C3 (88-21): L2');
 exportgraphics(ax,'figures/L2/chl123.png'); clear ax;
 save("output\L2\chl123.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -406,7 +406,7 @@ tmp = importdata("data\L2\but19_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('But19 (88-21): L2');
 exportgraphics(ax,'figures/L2/but19.png'); clear ax;
 save("output\L2\but19.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -418,7 +418,7 @@ tmp = importdata("data\L2\fuco_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Fucoxanthin (88-21): L2');
 exportgraphics(ax,'figures/L2/fuco.png'); clear ax;
 save("output\L2\fuco.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -430,7 +430,7 @@ tmp = importdata("data\L2\hex19_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC 19'' Hexanoyloxyfucoxanthin (88-21): L2');
 exportgraphics(ax,'figures/L2/hex19.png'); clear ax;
 save("output\L2\hex19.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -442,7 +442,7 @@ tmp = importdata("data\L2\prasino_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Prasinoxanthin (88-21): L2');
 exportgraphics(ax,'figures/L2/prasino.png'); clear ax;
 save("output\L2\prasino.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -454,7 +454,7 @@ tmp = importdata("data\L2\diadino_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Diadinoxanthin (88-21): L2');
 exportgraphics(ax,'figures/L2/diadino.png'); clear ax;
 save("output\L2\diadino.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -466,7 +466,7 @@ tmp = importdata("data\L2\zeaxan_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Zeaxanthin (88-21): L2');
 exportgraphics(ax,'figures/L2/zeaxan.png'); clear ax;
 save("output\L2\zeaxan.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -478,7 +478,7 @@ tmp = importdata("data\L2\chlb_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Chlorophyll b (88-21): L2');
 exportgraphics(ax,'figures/L2/chlb.png'); clear ax;
 save("output\L2\chlb.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -503,7 +503,7 @@ tmp = importdata("data\L2\acar_94-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC alpha-Carotene (94-21): L2');
 exportgraphics(ax,'figures/L2/acar.png'); clear ax;
 save("output\L2\acar.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -515,7 +515,7 @@ tmp = importdata("data\L2\bcar_94-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC beta-Carotene (94-21): L2');
 exportgraphics(ax,'figures/L2/bcar.png'); clear ax;
 save("output\L2\bcar.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -527,7 +527,7 @@ tmp = importdata("data\L2\caroten_88-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Carotenes (88-21): L2');
 exportgraphics(ax,'figures/L2/caroten.png'); clear ax;
 save("output\L2\caroten.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -539,7 +539,7 @@ tmp = importdata("data\L2\chlda_94-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC chlorophyllide a (94-21): L2');
 exportgraphics(ax,'figures/L2/chlda.png'); clear ax;
 save("output\L2\chlda.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -551,7 +551,7 @@ tmp = importdata("data\L2\viol_94-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Violaxanthin (94-21): L2');
 exportgraphics(ax,'figures/L2/viol.png'); clear ax;
 save("output\L2\viol.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -575,7 +575,7 @@ tmp = importdata("data\L2\mvchla_94-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Monovinyl chlorophyll a (94-21): L2');
 exportgraphics(ax,'figures/L2/mvchla.png'); clear ax;
 save("output\L2\mvchla.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -587,7 +587,7 @@ tmp = importdata("data\L2\dvchla_94-21_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('HPLC Divinyl chlorophyll a (94-21): L2');
 exportgraphics(ax,'figures/L2/dvchla.png'); clear ax;
 save("output\L2\dvchla.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -683,7 +683,7 @@ tmp = importdata("data\L2\atp_88-22_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 sgtitle('ATP (88-22): L2');
 exportgraphics(ax,'figures/L2/atp.png'); clear ax;
 save("output\L2\atp.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;

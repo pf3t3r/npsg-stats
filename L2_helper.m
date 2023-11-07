@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,maxMld,dcm,threshold)
+function [ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -20,8 +20,12 @@ function [ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,maxMld,dcm,threshold)
 % Set default threshold
 % Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
-if nargin < 4
+if nargin < 5
     threshold = 50;
+end
+
+if nargin < 4
+    tmpLts = [2 22];
 end
 
 id = num2str(tmp.data(:,1));
@@ -56,8 +60,10 @@ for i = 1:length(pr)
     end
 end
 rV(rV==0) = nan;
-limits = [pr(3) pr(23)];
-obsId = [3 23];
+
+
+limits = [pr(tmpLts(1)) pr(tmpLts(2))];
+obsId = [tmpLts(1) tmpLts(2)];
 
 % 4. Plot results
 ax = figure;
