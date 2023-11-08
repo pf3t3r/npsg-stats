@@ -695,7 +695,7 @@ tmp = importdata("data\L2\n2o_93-01_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[4 14]);
 sgtitle('Nitrous Oxide (93-01): L2');
 exportgraphics(ax,'figures/L2/n2o.png'); clear ax;
 save("output\L2\n2o.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
@@ -719,7 +719,7 @@ tmp = importdata("data\L2\d12_89-00_200.txt");
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 12]);
 sgtitle('PProd Dark-12 (89-00): L2');
 exportgraphics(ax,'figures/L2/d12.png'); clear ax;
 save("output\L2\d12.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;

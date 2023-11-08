@@ -77,14 +77,15 @@ for i = 1:length(kWbl)
 end
 
 % Beta family: generate theoretical skewness and kurtosis
-% etaB = linspace(5,0.5,100);
-% gammaB = linspace(0.5,5,100);
-% for i = 1:length(etaB)
-%     skBet(i) = 2*(etaB(i) - gammaB(i)) * sqrt(gammaB(i) + etaB(i) + 1) ./ ...
-%         sqrt(etaB(i)*gammaB(i)) * (etaB(i) + gammaB(i) + 2);
-%     kuBet(i) = 3*(etaB(i) + gammaB(i) + 1) * ( 2*(etaB(i) + gammaB(i))^2 + gammaB(i)*etaB(i)*(etaB(i) + gammaB(i) - 6) ) ./ ...
-%         etaB(i)*gammaB(i)*(etaB(i) + gammaB(i) + 2)*(etaB(i) + gammaB(i) + 3);
-% end
+muB = linspace(0.5,5,100);
+nuB = linspace(0.5,5,100);
+alphaB = muB.*nuB; betaB = (1 - muB).*nuB;
+for i = 1:length(betaB)
+    skBet(i) = 2*(betaB(i) - alphaB(i)) * sqrt(alphaB(i) + betaB(i) + 1) ./ ...
+        sqrt(betaB(i)*alphaB(i)) * (betaB(i) + alphaB(i) + 2);
+    kuBet(i) = 3*(betaB(i) + alphaB(i) + 1) * ( 2*(betaB(i) + alphaB(i))^2 + alphaB(i)*betaB(i)*(betaB(i) + alphaB(i) - 6) ) ./ ...
+        betaB(i)*alphaB(i)*(betaB(i) + alphaB(i) + 2)*(betaB(i) + alphaB(i) + 3);
+end
 
 % Loglogistic family: generate theoretical skewness and kurtosis
 % Nothings shows up: Maybe I need to tune the shape parameter a bit (??)
