@@ -164,6 +164,21 @@ sk2 = sk(tmp);
 ku2 = ku(tmp);
 clear tmp;
 
+kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
+if max(ku2) > 10
+    kurtLimB = max(ku2) + 1;
+    skewLimB = max(sk2) + 0.1;
+elseif min(sk2) < 0 
+    skewLimA = min(sk2) - 0.1;
+elseif max(sk2) > 2.5
+    kurtLimB = max(ku2) + 1;
+    skewLimB = max(sk2) + 0.1;
+else 
+    kurtLimB = 10;
+    skewLimA = 0;
+    skewLimB = 2.5;
+end
+
 subplot(1,6,[5 6])
 numGroups = length(unique(tr2));
 clr = flipud(copper(numGroups));
@@ -181,7 +196,7 @@ scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 hold off
 grid minor;
-ylim([1 10]); xlim([0 2.5]);
+ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
 lgd = legend('Location','best','FontSize',6);
 title(lgd,'P [dbar]');
