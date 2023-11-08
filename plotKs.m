@@ -200,6 +200,25 @@ title('Vuong LLR');
 % legend('Location','south');
 % title('Moments');
 
+kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
+if max(ku) > 10 & min(sk) < 0
+    kurtLimB = max(ku) + 1;
+    skewLimA = min(sk) - 0.1;
+    skewLimB = max(sk) + 0.1;
+elseif max(ku) > 10
+    kurtLimB = max(ku) + 1;
+    skewLimB = max(sk) + 0.1;
+elseif min(sk) < 0 
+    skewLimA = min(sk) - 0.1;
+elseif max(sk) > 2.5
+    kurtLimB = max(ku) + 1;
+    skewLimB = max(sk) + 0.1;
+else 
+    kurtLimB = 10;
+    skewLimA = 0;
+    skewLimB = 2.5;
+end
+
 subplot(1,6,[5 6])
 numGroups = length(unique(tr));
 clr = flipud(copper(numGroups));
@@ -219,7 +238,7 @@ scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 hold off
 grid minor;
-ylim([1 10]); xlim([0 2.5]);
+ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
 lgd = legend('Location','best','FontSize',6);
 title(lgd,'P [dbar]');

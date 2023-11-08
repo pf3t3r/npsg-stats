@@ -165,7 +165,11 @@ ku2 = ku(tmp);
 clear tmp;
 
 kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
-if max(ku2) > 10
+if max(ku2) > 10 & min(sk2) < 0
+    kurtLimB = max(ku2) + 1;
+    skewLimA = min(sk2) - 0.1;
+    skewLimB = max(sk2) + 0.1;
+elseif max(ku2) > 10
     kurtLimB = max(ku2) + 1;
     skewLimB = max(sk2) + 0.1;
 elseif min(sk2) < 0 
