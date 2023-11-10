@@ -1,8 +1,8 @@
 % This file will apply the Kolmogorov-Smirnov test to time- and
-% depth-series of chl a from CTD fluorometry and bottle data. We will use
-% only data from night-time casts (to remove the effect of
-% non-photochemical quenching) and from after 2001 (specifically, from HOT
-% cruise 130, when the current fluorometer was first used).
+% depth-series of chl a from CTD fluorometry. We will use only data from 
+% night-time casts (to remove the effect of non-photochemical quenching) 
+% and from after 2001 (specifically, from HOT cruise 130, when the current 
+% fluorometer was first used).
 
 close all; clc; clear;
 set(groot,'defaultAxesXGrid','on');
@@ -23,7 +23,7 @@ cruisesRecorded(missingCruises) = [];
 clear cruises missingCruises;
 
 mlds = load('datafiles\MLD.mat').MLD;
-mldt = load('datafiles\MLD.mat').MLDt;
+% mldt = load('datafiles\MLD.mat').MLDt;
 
 %% Find (Eulerian) cruise-averaged fluorescence
 
@@ -45,6 +45,8 @@ meanEp(meanEp<0) = nan;
 % following sections
 figure; plot(meanEi,[iso.sig]); set(gca,'YDir','reverse');
 xlabel('Mean Fluorescence'); ylabel('Isopycnal Layer');
+
+clear i;
 
 %% Find cruise-averaged fluorescence in Lagrangian coordinates
 
@@ -83,9 +85,9 @@ for j = cruisesRecorded
     end
 end
 
-clear tmp2;
+clear tmp tmp2 i j;
 
-%% Calculate KS
+%% Calculate K-S
 
 meanLi = [isoL.fLMean];
 meanLi(meanLi<=0) = nan;
@@ -96,13 +98,6 @@ ksEi = getKS(meanEi,129);       % Isopycnal Eulerian
 ksEp = getKS(meanEp,129);       % Eulerian
 ksLi = getKS(meanLi,129);       % Isopycnal Lagrangian
 ksLp = getKS(meanLp,129);       % Lagrangian
-
-%% Bin the means
-
-% edges = 0:10:250;
-% p = ctd(1).p(1:129,:);
-% test2 = meanEp(1:129,:);
-% test = discretize([ctd(1).p(1:129,:)],edges);
 
 %%
 
@@ -140,8 +135,9 @@ end
 rs2 = hours(rsMean);
 rs2.Format = 'hh:mm';
 
-clear k rs rsMean;
-%% cast at night or not
+clear i j k rs rsMean tmp;
+
+%% Cast at night time?
 
 % reconvert to decimal hour for comparison
 sunrise = hours(rs2(:,1));
@@ -231,14 +227,6 @@ for i = b
     meanMldEpN_f2 = mean(tmpMldEpN_f2);
 end
 
-% mean PCM for F2, night time only
-% for i = 1:length(b) % no WTF, this is wrong!
-%     tmpMeanPcm(i) = mean([ctd(i).pcm(datetimeStruct(i).nightID)],'omitnan');
-%     tmpSTD(i) = std([ctd(i).pcm(datetimeStruct(i).nightID)]);
-% end
-% ttMeanPcm = round(mean(tmpMeanPcm,'omitnan'));
-% ttSTD = mean(tmpSTD,'omitnan');
-
 % above method for finding mean and STD for EiN is incorrect, use below
 % EpN: Mean, STD
 [tmp2,pId_EpN] = max(meanEpN);
@@ -247,11 +235,10 @@ stdDcmEpN = 2*std(pId_EpN,'omitnan');
 meanDcmEpn = 2*(mean(pId_EpN,'omitnan'));
 
 % EiN: Mean, STD
-[tmp,pId_EiN] = max(meanEiN);
+[~,pId_EiN] = max(meanEiN);
 pId_EiN(pId_EiN==1) = NaN;
 stdDcmEiN = 2*std(pId_EiN,'omitnan');
 meanDcmEin = 2*(mean(pId_EiN,'omitnan'));
-clear tmp;
 
 % Mean fluorescence: F1 vs F2 (EI)
 mmEiN_f1 = mean(meanEiN(:,a),2,'omitnan');
@@ -299,7 +286,7 @@ sgtitle('Kolmogorov Smirnov: Night Time Cruise Average, 89-21');
 exportgraphics(ax2,'figures/ksYrlyNight.png');
 clear ax2;
 
-%% F1 vs F2: Find KS
+%% F1 vs F2: Find K-S
 
 % Night 89-01 (fluorometer f1)
 ksEiN_f1 = getKS(meanEiN(:,a),129);     % Isopycnal Eulerian
@@ -317,17 +304,16 @@ ksLpN_f2 = getKS(meanLpN(:,b),129);     % Lagrangian
 
 
 % EpN F1: Mean, STD
-[tmp,pId_EpN_f1] = max(meanEpN(:,a));
+[~,pId_EpN_f1] = max(meanEpN(:,a));
 pId_EpN_f1(pId_EpN_f1==1) = NaN;
 stdDcmEpN_f1 = 2*std(pId_EpN_f1,'omitnan');
 meanDcmEpn_f1 = 2*(mean(pId_EpN_f1,'omitnan'));
 
 % EiN F1: Mean, STD
-[tmp,pId_EiN_f1] = max(meanEiN(:,a));
+[~,pId_EiN_f1] = max(meanEiN(:,a));
 pId_EiN_f1(pId_EiN_f1==1) = NaN;
 stdDcmEiN_f1 = 2*std(pId_EiN_f1,'omitnan');
 meanDcmEiN_f1 = 2*(mean(pId_EiN_f1,'omitnan'));
-
 
 ax2a = figure;
 plotKsCtd("yrly",ksEiN_f1,ksEpN_f1,ksLiN_f1,ksLpN_f1,[ctd(1).p(1:129)],meanMldEpN_f1,meanDcmEpn_f1,stdDcmEpN_f1,meanDcmEiN_f1,stdDcmEiN_f1);
@@ -338,13 +324,13 @@ clear ax2a;
 %% Figures: Night 01-21
 
 % EpN F1: Mean, STD
-[tmp,pId_EpN_f2] = max(meanEpN(:,b));
+[~,pId_EpN_f2] = max(meanEpN(:,b));
 pId_EpN_f2(pId_EpN_f2==1) = NaN;
 stdDcmEpN_f2 = 2*std(pId_EpN_f2,'omitnan');
 meanDcmEpn_f2 = 2*(mean(pId_EpN_f2,'omitnan'));
 
 % EiN F1: Mean, STD
-[tmp,pId_EiN_f2] = max(meanEiN(:,b));
+[~,pId_EiN_f2] = max(meanEiN(:,b));
 pId_EiN_f2(pId_EiN_f2==1) = NaN;
 stdDcmEiN_f2 = 2*std(pId_EiN_f2,'omitnan');
 meanDcmEiN_f2 = 2*(mean(pId_EiN_f2,'omitnan'));
@@ -383,7 +369,7 @@ end
 clear i tmp;
 save('datafiles\lagrangianData.mat','ctdL','-append');
 
-%% KS NIGHT Seasonal
+%% K-S NIGHT Seasonal
 % These routines may take ~10-20s per season.
 
 % MLD by season
@@ -428,7 +414,7 @@ ksEpNa = getKS(meanEpN,129,autVals);      % Eulerian
 ksLiNa = getKS(meanLiN,129,autVals);     % Isopycnal Lagrangian
 ksLpNa = getKS(meanLpN,129,autVals);        % Lagrangian
 
-%% SEASONAL KS FIGURES (night time)
+%% SEASONAL K-S FIGURES (night time)
 
 
 mld = [meanMldWin meanMldSpr meanMldSum meanMldAut];
@@ -481,7 +467,6 @@ f2winVals(f2winVals<0) = [];
 f2sprVals(f2sprVals<0) = [];
 f2sumVals(f2sumVals<0) = [];
 f2autVals(f2autVals<=0) = [];
-
 
 % MLD by season
 meanMldWinF2 = mean(mlds(winVals(36:end)));
@@ -560,190 +545,3 @@ plotKsCtd("seas",ksLpNwF2,ksLpNspF2,ksLpNsuF2,ksLpNaF2,[ctd(1).p(1:129)]-129);
 sgtitle('Kolmogorov Smirnov: Lagrangian (Pressure Avg) Night, 01-21');
 exportgraphics(ax10,'figures/ks_F2_seasonal_LpN.png');
 clear ax10;
-
-%% MAYBE I should use the 'dodgy cast' removal part here ...
-% 1. All those casts which have NaN as the pressure at the DCM, and
-% 2. All those casts that were flagged for having anomalously large mean
-% values (>0.5 ug/kg) and/or large single values (>2 ug/kg), and were
-% confirmed visually as suspicious.
-
-% Step (1)
-% f_copy = f_iso;
-% 
-% p_copy = pcm;
-% p_copy(isnan(pcm)) = [];
-% 
-% f_copy(:,isnan(pcm)) = [];
-% f_isoR = f_copy(1:129,:);
-% 
-% t_copy = t_iso;
-% t_copy(isnan(pcm)) = [];
-% 
-% % Step (2)
-% dodgyCasts = [18 248 253 666 667 668 669 ...
-%     1213 1214 1215 1216 1217 1218 1219 1220 1221 1222 1223 1224 ...
-%     2124 2371 2434 2599 2610 2626 2898 2918 2926 2979 ...
-%     3110 3133 3560 3561];
-% f_isoR2 = f_isoR;
-% f_isoR2(:,dodgyCasts) = [];
-% t_copy(dodgyCasts) = [];
-
-%% SECTIONS hereafter maybe don't use anymore
-
-%% Find Lagrangian
-% 
-% [sig_cm,sig_cmID] = max(f_isoR2);
-% f_iso_lag = NaN(129,length(f_isoR2(1,:)));
-% offset_fISOL = 65 - sig_cmID;
-% 
-% for i = 1:length(f_isoR2(1,:))
-%     f_iso_lag(:,i) = circshift(f_isoR2(1:129,i),offset_fISOL(i));
-%     if offset_fISOL(i) > -1 && offset_fISOL(i) < 40
-%         disp(i);
-%         f_iso_lag(1:offset_fISOL(i),i) = NaN;
-%     elseif offset_fISOL(i) == -1
-%         f_iso_lag(end,i) = NaN;
-%     elseif offset_fISOL(i) < -1 && offset_fISOL(i) > -40
-%         disp(i);
-%         f_iso_lag((end+offset_fISOL(i)):end,i) = NaN;
-%     elseif abs(offset_fISOL(i)) > 40
-%         f_iso_lag(:,i) = NaN;
-%     end
-% end
-
-%% ALL CASTS
-%% Eul + Lag All Cast: Calculate KS
-% 
-% % Eulerian
-% for i = 1:129
-%     disp(i);
-%     tmp = f_isoR2(i,:);
-%     tmp(isnan(tmp)) = [];
-%     [~,ksISO(:,i),~] = statsplot2(tmp,'noplot');
-% end
-% clear tmp;
-% 
-% % Lagrangian
-% for i = 1:129
-%     disp(i);
-%     tmp = f_iso_lag(i,:);
-%     tmp(isnan(tmp)) = [];
-%     [~,ksISO_L(:,i),~] = statsplot2(tmp,'noplot');
-% end
-% clear tmp;
-
-%% Eul + Lag All Cast: KS Figs
-
-% incorrect
-% sig_lag = sig(65) - sig(1:129);
-% 
-% axX = figure;
-% axX.Position = [3 3 13 15];
-% 
-% % Eulerian
-% subplot(1,2,1)
-% plot(ksISO(1,:),sig(1:129),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksISO(2,:),sig(1:129),'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksISO(3,:),sig(1:129),'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksISO(4,:),sig(1:129),'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% legend();
-% xlim([0 0.8]);
-% set(gca,'YDir','reverse');
-% xlabel('p-value');
-% ylabel('\sigma^{\Theta} [kg m^{-3}]');
-% title('Eulerian');
-% 
-% % Lagrangian
-% subplot(1,2,2)
-% plot(ksISO_L(1,:),sig_lag,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksISO_L(2,:),sig_lag,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksISO_L(3,:),sig_lag,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksISO_L(4,:),sig_lag,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% % legend();
-% xlim([0 0.6]);
-% set(gca,'YDir','reverse');
-% xlabel('p-value');
-% ylabel('\Delta \sigma^{\Theta} [kg m^{-3}]');
-% title('Lagrangian');
-% 
-% sgtitle('KS on all casts (isopycnal, 89-21)');
-% exportgraphics(axX,'figures/ks_iso_allCast.png');
-% clear axX;
-
-%% NIGHT CASTS only
-% %% Eul + Lag Night Cast: Calculate KS
-% 
-% nightCastID = load('datafiles\nightCast.mat').nightCastIDs;
-% f_iso_en = f_isoR2(:,nightCastID);
-% f_iso_ln = f_iso_lag(:,nightCastID);
-% % t_n = t(nightCastIDs);
-% 
-% % Eulerian
-% for i = 1:129
-%     disp(i);
-%     tmp = f_iso_en(i,:);
-%     tmp(isnan(tmp)) = [];
-%     if length(tmp) > 2
-%         [~,ksIsoEN(:,i),~] = statsplot2(tmp,'noplot');
-%     end
-% end
-% clear tmp;
-% 
-% % Lagrangian
-% for i = 1:129
-%     disp(i);
-%     tmp = f_iso_ln(i,:);
-%     tmp(isnan(tmp)) = [];
-%     if length(tmp) > 2
-%         [~,ksIsoLN(:,i),~] = statsplot2(tmp,'noplot');
-%     end
-% end
-% clear tmp;
-
-%% Eul + Lag Night Casts: KS Figs
-
-% ax2 = figure;
-% ax2.Position = [3 3 13 15];
-% 
-% % Eulerian
-% subplot(1,2,1)
-% plot(ksIsoEN(1,:),sig(1:129),'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksIsoEN(2,:),sig(1:129),'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksIsoEN(3,:),sig(1:129),'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksIsoEN(4,:),sig(1:129),'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% legend();
-% xlim([0 0.8]);
-% set(gca,'YDir','reverse');
-% xlabel('p-value');
-% ylabel('\sigma^{\Theta} [kg m^{-3}]');
-% title('Eulerian');
-% 
-% % Lagrangian
-% subplot(1,2,2)
-% plot(ksIsoLN(1,:),sig_lag,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4);
-% hold on
-% plot(ksIsoLN(2,:),sig_lag,'+--','Color',[0 0 0],'LineStyle','--','DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-% plot(ksIsoLN(3,:),sig_lag,'xr-','DisplayName','Weibull','MarkerSize',4);
-% plot(ksIsoLN(4,:),sig_lag,'r.--','DisplayName','Gamma','MarkerSize',4);
-% hold off
-% % legend();
-% xlim([0 0.6]);
-% set(gca,'YDir','reverse');
-% xlabel('p-value');
-% ylabel('\Delta \sigma^{\Theta} [kg m^{-3}]');
-% title('Lagrangian');
-% 
-% sgtitle('KS on night casts (isopycnal, 89-21)');
-% exportgraphics(ax2,'figures/ks_iso_nightCast.png');
-
-%% mean DCM
-% 
-% figure;
-% plot(mean(f_isoR2,2,'omitnan'),sig(1:129),'Color',[0.6 0.6 0.6]);
-% set(gca,'YDir','reverse');

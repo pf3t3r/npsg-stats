@@ -6,7 +6,6 @@ function plotKsCtd(seasYrly,ks1,ks2,ks3,ks4,p,MLD,dcmMu,dcmSigma,dcmIsoMu,dcmIso
 % will be updated in the future to account for KS tests run in actual 
 % isopycnal coordinates, and we will rename the current isopycnal test.
 
-
 % Smooth KS Results over 10 dbar
 ks1 = movmean(ks1,5,2);
 ks2 = movmean(ks2,5,2);
@@ -168,7 +167,5 @@ else
     h_leg.BoxFace.ColorType='truecoloralpha';
     h_leg.BoxFace.ColorData=uint8(255*[1 1 1 0.75]');
 end
-
-
 
 end
