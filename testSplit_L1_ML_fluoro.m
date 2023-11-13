@@ -15,17 +15,25 @@ sgtitle('CTD Chl a 01-21: L1');
 exportgraphics(ax,'figures/L1/ctd/chla.png'); clear ax;
 save("output\L1\ctd\chla.mat","p","ks","obs","Sk","Ku");
 
-%% Load other parameters
-
-%% Temperature
+%% Load Temperature
 ctdData = load("datafiles\ctd_iso_ALL.mat").ctd;
-T = nan(329,501,31);
+T = nan(329,76,31);
+meanT = nan(76,329);
 
-for i = 1:1
-    tmp = ctdData(i).t;
-    for j = 1:length(tmp(1,:))
-        T(1,:,j) = tmp(:,j);
+msng = [21, 48, 207, 218, 276];
+tmp1 = 1:1:329;
+tmp = setdiff(tmp1,msng);
+
+for i = tmp
+    tmp = ctdData(i).t(1:76,:);
+    if length(tmp) > 3
+        for j = 1:length(tmp(1,:))
+            T(i,:,j) = tmp(:,j);
+        end
     end
 end
 
-meanT = mean(squeeze(T(1,:,:)),2,"omitnan");
+for i = 1:329
+    meanT(:,i) = mean(squeeze(T(i,:,:)),2,"omitnan");
+end
+
