@@ -27,17 +27,35 @@ end
 % end
 
 n = length(pIn);
-for i = 1:n
-    tmp = X(i,:);
-    tmp(isnan(tmp) | tmp<0) = 0;
-    tmp(tmp==0) = [];
-    [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(tmp,'noplot');
-    [rV(:,i),pV(:,i)] = bbvuong(tmp);
-    sk(i) = skewness(tmp);
-    ku(i) = kurtosis(tmp);
-    obs(i) = length(tmp);
+
+copyX = nan(size(X));
+for k = 1:length(X(1,:))
+    for j = 1:n
+        if pIn(j) < maxMld(k)
+            copyX(j,k) = X(j,k);
+        end
+    end
 end
 
+
+% init
+ks = nan(5,n); rV = nan(10,n); pV = nan(10,n); sd = nan(n,2); sk = nan(1,n);
+ku = nan(1,n); obs = nan(1,n);
+
+for i = 1:n
+    tmp = copyX(i,:);
+    tmp(isnan(tmp) | tmp<0) = 0;
+    tmp(tmp==0) = [];
+    if length(tmp) > 3
+        [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(tmp,'noplot');
+        [rV(:,i),pV(:,i)] = bbvuong(tmp);
+        sk(i) = skewness(tmp);
+        ku(i) = kurtosis(tmp);
+        obs(i) = length(tmp);
+    end
+end
+
+% tr = pIn;
 
 for i = 1:n
     if obs(i) < threshold
@@ -65,11 +83,10 @@ pV = pV(:,tmp);
 
 ks = ks(:,~all(isnan(ks)));
 
-
 % 4.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.
-vuongRes = nan(1,length(pIn));
-for i = 1:length(pIn)
+vuongRes = nan(1,length(tr));
+for i = 1:length(tr)
     if rV(1,i) & rV(2,i) & rV(3,i) > 0
         disp('Normal');
         vuongRes(i) = 1;
@@ -87,7 +104,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(tr,ks,obs,sk,ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120]);
-
-disp(vuongRes);
+plotKs(tr,ks,obs,sk,ku,0,76,true,threshold,vuongRes,pV,[0 76],true);
+% 
+% disp(vuongRes);
 end

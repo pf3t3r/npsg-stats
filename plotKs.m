@@ -1,7 +1,15 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,fluoOveride)
 %plotKs
 % INPUT: 
 % OUTPUT: 
+
+if nargin < 13
+    fluoOveride = false;
+end
+
+if nargin < 10
+    vuongRes = 0;
+end
 
 if nargin < 9
     threshold = 50;
@@ -29,12 +37,12 @@ else
     ytix = tr;
 end
 
-if nargin < 10
-    vuongRes = 0;
+if nargin >= 12
+    limits = limitOveride;
 end
 
-if nargin == 12
-    limits = limitOveride;
+if fluoOveride
+    ytix = obsLimA:2:obsLimB;
 end
 
 % Create Annotations for Vuong's Test Results
@@ -130,7 +138,11 @@ xline(threshold);
 hold off
 set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
-ylim([obsLimA obsLimB]);
+if fluoOveride
+    ylim([obsLimA+1 obsLimB/2 + 1]);
+else
+    ylim([obsLimA obsLimB]);
+end
 ylabel('Pressure [dbar]');
 set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
