@@ -104,7 +104,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(tr,ks,obs,sk,ku,0,76,true,threshold,vuongRes,pV,[0 76],true);
+plotKs(tr,ks,obs,sk,ku,0,94,true,threshold,vuongRes,pV,[0 94],true);
 % 
 % disp(vuongRes);
 end
