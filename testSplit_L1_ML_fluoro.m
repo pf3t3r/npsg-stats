@@ -122,7 +122,7 @@ sgtitle('CTD Temperature 88-21: L1');
 save("output\L1\ctd\t.mat","p","ks","obs","Sk","Ku");
 
 %% SP
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(meanT,pIn,maxMld);
+[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(meanSp,pIn,maxMld);
 sgtitle('CTD S_P 88-21: L1');
 exportgraphics(ax,'figures/L1/ctd/sp.png'); clear ax;
 save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
