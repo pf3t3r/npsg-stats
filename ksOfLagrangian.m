@@ -43,6 +43,7 @@ end
 % Split bottle concentration by cruise & cast
 tid = [];
 for i = 2:length(p)
+    % check if CRN or CAST changes
     if bottleArray(i,1) > bottleArray(i-1,1) || bottleArray(i,2) > bottleArray(i-1,2)
         tid = [tid i];
     end
@@ -62,6 +63,7 @@ end
 
 bottleArray = [bottleArray tPcm];
 
+% THIS is where we convert to Lagrangian pressure coordinates!!!
 tPLagrangian = nan(length(p),1);
 tPLagrangian = bottleArray(:,3) - bottleArray(:,4);
 bottleArray = [bottleArray tPLagrangian];

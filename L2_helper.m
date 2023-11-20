@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,sk,ku,sd,rV] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold)
+function [ax,p,ks,obs,sk,ku,sd,rV,pSubml] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -33,10 +33,11 @@ p = tmp.data(:,4);
 c = tmp.data(:,5);
 clear tmp;
 
-% 2. Extract data beneath ML, centre around DCM
+% 2. Extract data beneath ML
 [idSubml,pSubml,cSubml] = extractSMLC(id,p,c,maxMld);
 
 % 3. Calculate KS p-value, skewness, kurtosis
+% ..., centre around DCM (?)
 [pr,ks,obs,sk,ku,sd,rV,~] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
 
 % 3.a. Intercomparison of results from Vuong's Test: easily see best
