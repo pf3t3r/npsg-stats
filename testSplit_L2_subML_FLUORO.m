@@ -17,11 +17,11 @@ chla = load("output\CTD\chla.mat").meanEpN(1:lowerP,:);
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
+[ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
 sgtitle('[Chl a] 88-21: L2');
 exportgraphics(ax,'figures/L2/ctd/chla.png'); clear ax;
 save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
-clearvars -except maxMld dcm lowerP pIn chla;
+clearvars -except maxMld dcm lowerP pIn chla sk ku tr2;
 
 %% Temperature: 88-21
 

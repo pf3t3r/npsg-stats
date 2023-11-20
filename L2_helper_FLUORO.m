@@ -1,4 +1,4 @@
-function [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(X,pIn,maxMld,dcm)
+function [ax,pL,ks,obs,sk,ku,pV,rV,tr] = L2_helper_FLUORO(X,pIn,maxMld,dcm)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -157,7 +157,8 @@ hold off
 set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
 ylabel('Pressure [dbar]');
-set(gca,"YTick",1:25:length(range),"YTickLabel",range(1):50:range(end));
+set(gca,"YTick",1:5:n2,"YTickLabel",range(1):10:range(end));
+ylim([rangeLen(21) rangeLen(end-30)]);
 title('No. of Observations');
 
 subplot(1,6,[2 3])
@@ -168,7 +169,7 @@ plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.
 plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;
-ylim([l1 l2]);
+ylim([l1+40 l2-60]);
 set(gca,'YDir','reverse');
 legend('Location','best','FontSize',6);
 xlabel('p-value');
@@ -177,7 +178,7 @@ title('K-S Test');
 zzs = 0.25*ones(n2,1);
 subplot(1,6,4)
 text(zzs,range,annot,FontSize=8);
-ylim([l1 l2]); 
+ylim([l1+40 l2-60]); 
 set(gca,'YDir','reverse');
 title('Vuong LLR');
 
@@ -212,13 +213,21 @@ else
 end
 
 subplot(1,6,[5 6])
-numGroups = length(unique(tr2));
-clr = flipud(copper(numGroups));
-gscatter(sk2,ku2,tr2,clr);
+clr = 1:1:length(tr2);
+scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
+colormap(gca,flipud(colormap("hot")));
+cbar = colorbar;
+cbar.Direction = "reverse";
+cbar.Ticks = 1:10:length(tr2);
+cbar.TickLabels = tr2(1):20:tr2(end);
+cbar.Label.String = "P [dbar]";
+% numGroups = length(unique(tr2));
+% clr = flipud(copper(numGroups));
+% gscatter(sk2,ku2,tr2,clr);
 hold on
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
-plot(skGam,kuGam,'DisplayName','Gam.','Color',[0.4 0.4 0.4]);
-plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle=':',LineWidth=1);
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color','k',LineWidth=2);
+plot(skGam,kuGam,'DisplayName','Gam.','Color','#a6cee3',LineWidth=2);
+plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#1f78b4',LineStyle=':',LineWidth=2);
 scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
 scatter(0,3,'DisplayName','Norm.',Marker='*',LineWidth=1);
@@ -226,10 +235,12 @@ scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 hold off
 grid minor;
+ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
-lgd = legend('Location','best','FontSize',4);
-title(lgd,'P [dbar]');
-lgd.NumColumns = 3;
+lgd = legend('Location','best','FontSize',6);
+title(lgd,'Distributions');
+% lgd.NumColumns = 3;
 title('Skewness vs. Kurtosis');
 
+sk = sk2; ku = ku2; tr = tr2;
 end
