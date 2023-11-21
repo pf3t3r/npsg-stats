@@ -17,18 +17,18 @@ function [ax,pL,ks,obs,sk,ku,pV,rV,tr] = L2_helper_FLUORO(X,pIn,maxMld,dcm)
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
-% Default threshold = 50 [Mishra et al (2019), Ghasemi & Zahediasl (2012),
-% and Ahad et al (2011).
-threshold = 50;
+threshold = 50;         % Default threshold = 50 [Mishra et al (2019), 
+                        % Ghasemi & Zahediasl (2012), Ahad et al (2011)]
+n = length(pIn);        % Depth range
+nT = length(X(1,:));    % Time range
 
-% Depth range
-n = length(pIn);
 
 % 1. Extract data beneath ML
-pSubml = nan(n,329);
-xSubml = nan(n,329);
+
+pSubml = nan(n,nT);
+xSubml = nan(n,nT);
 for i = 1:n-1
-    for j = 1:329
+    for j = 1:nT
         if pIn(i) >= maxMld(j)
             pSubml(i,j) = pIn(i+1);
             xSubml(i,j) = X(i+1,j);
@@ -36,11 +36,14 @@ for i = 1:n-1
     end
 end
 
+
 % 2. Convert p to Lagrangian Coordinates
-pL = nan(n,329);
-for i = 1:329
+
+pL = nan(n,nT);
+for i = 1:nT
     pL(:,i) = pSubml(:,i) - dcm(i);
 end
+
 
 % 3. Find KS p-value, Vuong p-value and LLR, skewness, and kurtosis for 
 % each depth.
@@ -86,59 +89,52 @@ for i = rangeLen
     end
 end
 
+
 % 4. Compare all Vuong Test LLR results to give a single best distribution
 % for each depth.
+
 vuongRes = zeros(1,n2);
 annot = strings(1,n2);
+anClr = strings(1,n2);
+anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 rV(isnan(rV)) = 0;
 for i = 1:n2
     if rV(1,i) & rV(2,i) & rV(3,i) > 0
         vuongRes(i) = 1;
         annot(i) = "Normal";
+        anClr(i) = '#a6cee3';
     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
         vuongRes(i) = 2;
         annot(i) = "Lognormal";
+        anClr(i) = '#1f78b4';
     elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
         vuongRes(i) = 3;
         annot(i) = "Weibull";
+        anClr(i) = '#b2df8a';
     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
         vuongRes(i) = 4;
         annot(i) = "Gamma";
+        anClr(i) = '#33a02c';
     end
 end
 rV(rV==0) = nan;
 
-% Create Annotations for Vuong's Test Results
-% annot = strings(1,n2);
-% for i = 1:n2
-%     if vuongRes(i) == 1
-%         annot(i) = "Normal";
-%     elseif vuongRes(i) == 2
-%         annot(i) = "Lognormal";
-%     elseif vuongRes(i) == 3
-%         annot(i) = "Weibull";
-%     elseif vuongRes(i) == 4
-%         annot(i) = "Gamma";
-%     elseif vuongRes(i) == 0
-%         annot(i) = "";
-%     end
-% end
-
-% Lognormal family: generate theoretical skewness and kurtosis
+% 5. Generate theoretical skewness-kurtosis curves for the...
+% Lognormal family,
 sigTh = linspace(0,1,1000);
 for i = 1:length(sigTh)
     skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
     kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
 end
 
-% Gamma family: generate theoretical skewness and kurtosis
+% Gamma family, and
 kTh = linspace(0.2,5000,10000);
 for i = 1:length(kTh)
     skGam(i) = 2/sqrt(kTh(i));
     kuGam(i) = 6/kTh(i) + 3;
 end
 
-% Weibull family: generate theoretical skewness and kurtosis
+% Weibull family
 kWbl = linspace(0,5,10000);
 for i = 1:length(kWbl)
     skWbl(i) = ( gamma(1 + 3/kWbl(i)) - 3*gamma(1 + 1/kWbl(i))*gamma(1 + 2/kWbl(i)) + 2*(gamma(1 + 1/kWbl(i)))^3 ) ./ ...
@@ -146,6 +142,9 @@ for i = 1:length(kWbl)
     kuWbl(i) = ( gamma(1 + 4/kWbl(i)) - 4*gamma(1 + 1/kWbl(i))*gamma(1 + 3/kWbl(i)) + 6*( (gamma(1 + 1/kWbl(i)) )^2)*gamma(1 + 2/kWbl(i)) - 3*( (gamma(1 + 1/kWbl(i)))^4 ) ) ./ ...
        ( gamma(1 + 2/kWbl(i)) - ( gamma(1 + 1/kWbl(i)) )^2 )^2;
 end
+
+
+% 6. Plot everything.
 
 ax = figure;
 
@@ -171,13 +170,15 @@ hold off
 grid minor;
 ylim([l1+40 l2-60]);
 set(gca,'YDir','reverse');
-legend('Location','best','FontSize',6);
-xlabel('p-value');
+legend('Location','best');
+xlabel('$p$-value','Interpreter','latex');
 title('K-S Test');
 
 zzs = 0.25*ones(n2,1);
 subplot(1,6,4)
-text(zzs,range,annot,FontSize=8);
+for i = 1:n2
+    text(zzs(i),range(i),annot(i),FontSize=8,Color=anClr(i));
+end
 ylim([l1+40 l2-60]); 
 set(gca,'YDir','reverse');
 title('Vuong LLR');
@@ -221,9 +222,6 @@ cbar.Direction = "reverse";
 cbar.Ticks = 1:10:length(tr2);
 cbar.TickLabels = tr2(1):20:tr2(end);
 cbar.Label.String = "P [dbar]";
-% numGroups = length(unique(tr2));
-% clr = flipud(copper(numGroups));
-% gscatter(sk2,ku2,tr2,clr);
 hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','k',LineWidth=2);
 plot(skGam,kuGam,'DisplayName','Gam.','Color','#a6cee3',LineWidth=2);
@@ -237,10 +235,10 @@ hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
-lgd = legend('Location','best','FontSize',6);
+lgd = legend('Location','best');
 title(lgd,'Distributions');
-% lgd.NumColumns = 3;
 title('Skewness vs. Kurtosis');
 
 sk = sk2; ku = ku2; tr = tr2;
+
 end

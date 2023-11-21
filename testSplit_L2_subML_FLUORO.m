@@ -7,18 +7,18 @@ dcm = load("dcm.mat").meanPcm;
 
 %% Assign lower pressure we measure until...
 
-lowerP = 141;
+lowerP = 129;
 pIn = 0:2:2*(lowerP-1);
 
 %% Chlorophyll a: 88-21
 
 % 1. Load data
-chla = load("output\CTD\chla.mat").meanEpN(1:lowerP,:);
+chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
 [ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
-sgtitle('[Chl a] 88-21: L2');
+sgtitle('[Chl a] 01-21: L2');
 exportgraphics(ax,'figures/L2/ctd/chla.png'); clear ax;
 save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
 clearvars -except maxMld dcm lowerP pIn chla sk ku tr2;
@@ -26,7 +26,7 @@ clearvars -except maxMld dcm lowerP pIn chla sk ku tr2;
 %% Temperature: 88-21
 
 % Load Data
-ctdData = load("datafiles\ctd_iso_ALL.mat").ctd;
+ctdData = load("datafiles\ctd_iso_ALL.mat").iso;
 msng = [21, 48, 207, 218, 276];
 cR = 1:1:329;
 cRm = setdiff(cR,msng);
