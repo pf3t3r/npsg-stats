@@ -39,6 +39,8 @@ clear tmp;
 % 4.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.
 vuongRes = nan(1,length(p));
+
+% 4.a.i Default Case.
 for i = 1:length(p)
     if rV(1,i) & rV(2,i) & rV(3,i) > 0
         disp('Normal');
@@ -54,6 +56,17 @@ for i = 1:length(p)
         vuongRes(i) = 4;
     end
 end
+
+% % 4.a.ii. Normal-Lognormal Case ONLY.
+% for i = 1:length(p)
+%     if rV(1,i) > 0
+%         disp('Normal');
+%         vuongRes(i) = 1;
+%     elseif rV(1,i) < 0
+%         disp('Lognormal');
+%         vuongRes(i) = 2;
+%     end
+% end
 
 % 5. Plot results
 ax = figure;

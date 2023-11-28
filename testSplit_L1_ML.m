@@ -46,8 +46,8 @@ tmp = importdata('data/L1/hplcChla_88-21_150.txt');
 [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld);
 
 sgtitle('[Chl a] 88-21: L1');
-exportgraphics(ax,'figures/L1/chla.png'); clear ax;
-save("output\L1\chla.mat","p","ks","obs","Sk","Ku");
+exportgraphics(ax,'figures/L1/chla_NL.png'); clear ax;
+% save("output\L1\chla.mat","p","ks","obs","Sk","Ku");
 
 %% Prochlorococcus: 05-21
 

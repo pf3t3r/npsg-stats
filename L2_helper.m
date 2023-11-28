@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,sk,ku,sd,rV,pSubml] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold)
+function [ax,p,ks,obs,sk,ku,sd,rV,pSubml,pV] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -38,12 +38,13 @@ clear tmp;
 
 % 3. Calculate KS p-value, skewness, kurtosis
 % ..., centre around DCM (?)
-[pr,ks,obs,sk,ku,sd,rV,~] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
+[pr,ks,obs,sk,ku,sd,rV,pV] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
 
 % 3.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.
 vuongRes = zeros(1,length(pr));
 rV(isnan(rV)) = 0;
+
 for i = 1:length(pr)
     %disp(i);
     if rV(1,i) & rV(2,i) & rV(3,i) > 0
@@ -62,12 +63,20 @@ for i = 1:length(pr)
 end
 rV(rV==0) = nan;
 
+% for i = 1:length(pr)
+%     if rV(1,i)  > 0
+%         vuongRes(i) = 1;
+%     elseif rV(1,i) < 0
+%         vuongRes(i) = 2;
+%     end
+% end
+% rV(rV==0) = nan;
 
 limits = [pr(tmpLts(1)) pr(tmpLts(2))];
 obsId = [tmpLts(1) tmpLts(2)];
 
 % 4. Plot results
 ax = figure;
-plotKs2(pr,ks,obs,sk,ku,limits(1),limits(end),threshold,vuongRes,obsId);
+plotKs2(pr,ks,obs,sk,ku,limits(1),limits(end),threshold,vuongRes,obsId,pV);
 
 end

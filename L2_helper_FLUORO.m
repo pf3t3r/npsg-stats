@@ -91,33 +91,52 @@ end
 
 
 % 4. Compare all Vuong Test LLR results to give a single best distribution
-% for each depth.
+% for each depth. Comment / uncomment only one of 4.a or 4.b.
 
 vuongRes = zeros(1,n2);
 annot = strings(1,n2);
 anClr = strings(1,n2);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 rV(isnan(rV)) = 0;
+
+% % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
+% for i = 1:n2
+%     if rV(1,i) & rV(2,i) & rV(3,i) > 0
+%         vuongRes(i) = 1;
+%         annot(i) = "Normal";
+%         anClr(i) = '#a6cee3';
+%     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
+%         vuongRes(i) = 2;
+%         annot(i) = "Lognormal";
+%         anClr(i) = '#1f78b4';
+%     elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+%         vuongRes(i) = 3;
+%         %annot(i) = "";
+%         annot(i) = "Weibull";
+%         anClr(i) = '#b2df8a';
+%     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+%         vuongRes(i) = 4;
+%         %annot(i) = "";
+%         annot(i) = "Gamma";
+%         anClr(i) = '#33a02c';
+%     end
+% end
+rV(rV==0) = nan;
+
+% 4.b. Vuong: Normal Vs. Lognormal Only
 for i = 1:n2
-    if rV(1,i) & rV(2,i) & rV(3,i) > 0
+    if rV(1,i) > 0 
         vuongRes(i) = 1;
         annot(i) = "Normal";
         anClr(i) = '#a6cee3';
-    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
+    elseif rV(1,i) < 0
         vuongRes(i) = 2;
         annot(i) = "Lognormal";
         anClr(i) = '#1f78b4';
-    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
-        vuongRes(i) = 3;
-        annot(i) = "Weibull";
-        anClr(i) = '#b2df8a';
-    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
-        vuongRes(i) = 4;
-        annot(i) = "Gamma";
-        anClr(i) = '#33a02c';
+    else
+        annot(i) = "";
     end
 end
-rV(rV==0) = nan;
 
 % 5. Generate theoretical skewness-kurtosis curves for the...
 % Lognormal family,
@@ -164,8 +183,8 @@ subplot(1,6,[2 3])
 plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;
 ylim([l1+40 l2-60]);
@@ -179,6 +198,13 @@ subplot(1,6,4)
 for i = 1:n2
     text(zzs(i),range(i),annot(i),FontSize=8,Color=anClr(i));
 end
+hold on
+for i = 1:n2
+    if pV(1,i) > 0.05
+        scatter(pV(1,i),range(i),[],"black");
+    end
+end
+hold off
 ylim([l1+40 l2-60]); 
 set(gca,'YDir','reverse');
 title('Vuong LLR');

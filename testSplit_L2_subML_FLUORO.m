@@ -19,8 +19,8 @@ chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
 % and kurtosis; and plot.
 [ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
 sgtitle('[Chl a] 01-21: L2');
-exportgraphics(ax,'figures/L2/ctd/chla.png'); clear ax;
-save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+exportgraphics(ax,'figures/L2/ctd/chla_NL.png'); clear ax;
+% save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
 clearvars -except maxMld dcm lowerP pIn chla sk ku tr2;
 
 %% Temperature: 88-21

@@ -1,4 +1,4 @@
-function [] = plotKs2(tr,ks,obs,sk,ku,lim1,lim2,threshold,vuongRes,idObs)
+function [] = plotKs2(tr,ks,obs,sk,ku,lim1,lim2,threshold,vuongRes,idObs,pV)
 %plotKs2
 % INPUT: 
 % OUTPUT: 
@@ -20,21 +20,47 @@ disp(length(tix));
 a = idObs(1); b = idObs(2);
 % disp(a);disp(b);
 
+n = length(tr);
+
 % Create Annotations for Vuong's Test Results
-annot = strings(1,length(tr));
-for i = 1:length(tr)
+annot = strings(1,n);
+anClr = strings(1,n);
+anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
+
+% 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
+for i = 1:n
     if vuongRes(i) == 1
         annot(i) = "Normal";
+        anClr(i) = '#a6cee3';
     elseif vuongRes(i) == 2
         annot(i) = "Lognormal";
+        anClr(i) = '#1f78b4';
     elseif vuongRes(i) == 3
+        %annot(i) = "";
         annot(i) = "Weibull";
+        anClr(i) = '#b2df8a';
     elseif vuongRes(i) == 4
+        %annot(i) = "";
         annot(i) = "Gamma";
+        anClr(i) = '#33a02c';
     elseif vuongRes(i) == 0
         annot(i) = "";
     end
 end
+
+% % 4.b. Vuong: Normal Vs. Lognormal Only
+% for i = 1:n
+%     if vuongRes(i) == 1
+%         annot(i) = "Normal";
+%         anClr(i) = '#a6cee3';
+%     elseif vuongRes(i) == 2
+%         annot(i) = "Lognormal";
+%         anClr(i) = '#1f78b4';
+%     else
+%         annot(i) = "";
+%     end
+% end
+
 
 % Lognormal family: generate theoretical skewness and kurtosis
 sigTh = linspace(0,1,1000);
@@ -61,7 +87,7 @@ end
 
 % Only plot pV over 0.01
 % for i = 1:10
-%     for j = 1:length(tr)
+%     for j = 1:n
 %         if pV(i,j) < 0.01
 %             pV(i,j) = nan;
 %         end
@@ -69,7 +95,7 @@ end
 % end
 
 % Only plot pV related to DOMINANT Vuong LLR
-% for k = 1:length(tr)
+% for k = 1:n
 %     if vuongRes(k) == 1
 %         disp('a...');
 %         pV([4 5 6 7 8 9 10],k) = nan;
@@ -92,7 +118,7 @@ xline(threshold);
 hold off
 set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
-% ylim([1 length(tr)]);
+% ylim([1 n]);
 % ylim([1 length(tix)]);
 ylim([1 length(tix)]);
 ylabel('Pressure [dbar]');
@@ -111,20 +137,21 @@ ylim([lim1 lim2]);
 set(gca,'YDir','reverse');
 legend('Location','best','FontSize',6);
 xlabel('p-value');
-% ylabel('Pressure [db]');
 title('K-S Test');
 
-zzs = 0.25*ones(length(tr),1);
+zzs = 0.25*ones(n,1);
 subplot(1,6,4)
-% xline(0,HandleVisibility="off");
+for i = 1:n
+    text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i));
+end
+% % For Normal-Lognormal Comparison ONLY
 % hold on
-% plot(pV(1,:),tr,DisplayName='Nor/Log',Color='#a6cee3',Marker='+',LineWidth=1);
-% plot(pV(2,:),tr,DisplayName='Nor/Wbl',Color='#1f78b4',Marker='o',LineWidth=1);
-% plot(pV(3,:),tr,DisplayName='Nor/Gam',Color='#b2df8a',Marker='*',LineWidth=1);
-% plot(pV(5,:),tr,DisplayName='Log/Wbl',Color='#33a02c',Marker='.',LineWidth=1);
-% plot(pV(6,:),tr,DisplayName='Log/Gam',Color='#fb9a99',Marker='x',LineWidth=1);
-% plot(pV(8,:),tr,DisplayName='Wbl/Gam',Color='#e31a1c',Marker='square',LineWidth=1);
-text(zzs,tr,annot,FontSize=8);
+% pV(1,obs<threshold) = nan;
+% for i = 1:n
+%     if pV(1,i) > 0.01
+%         scatter(pV(1,i),tr(i),[],"black");
+%     end
+% end
 % hold off
 grid minor;
 ylim(limits); set(gca,'YDir','reverse');
@@ -141,7 +168,7 @@ title('Vuong LLR');
 % plot(ku,tr,'DisplayName','Kurtosis');
 % ylim([lim1 lim2]); 
 % set(gca,'YDir','reverse');
-% % set(gca,'YTickLabel',{tr(5:5:length(tr))},'YColor','Black')
+% % set(gca,'YTickLabel',{tr(5:5:n)},'YColor','Black')
 % xline(3,'.','Mesokurtic','HandleVisibility','off');
 % xline(2.5,':','HandleVisibility','off');
 % xline(3.5,':','HandleVisibility','off');
@@ -154,7 +181,7 @@ title('Vuong LLR');
 % title('Moments');
 
 tmp = [];
-for i = 1:length(tr)
+for i = 1:n
     if ~isnan(sum(ks(:,i)))
         tmp = [tmp i];
     end
@@ -184,12 +211,15 @@ else
 end
 
 subplot(1,6,[5 6])
-numGroups = length(unique(tr2));
-clr = flipud(copper(numGroups));
-gscatter(sk2,ku2,tr2,clr);
+clr = 1:1:length(tr2);
+scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
+colormap(gca,flipud(colormap("hot")));
+cbar = colorbar;
+cbar.Direction = "reverse";
+cbar.Ticks = 1:1:length(tr2);
+cbar.TickLabels = tr2(1):10:tr2(end);
+cbar.Label.String = "P [dbar]";
 hold on
-% P = [0 2.5; 0 3.5; 0.5 3.5; 0.5 2.5] ;
-% patch(P(:,1),P(:,2),[0.6 0.6 0.6],'EdgeColor','k','HandleVisibility','off');
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color',[0 0 0]);
 plot(skGam,kuGam,'DisplayName','Gam.','Color',[0.4 0.4 0.4]);
 plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle=':',LineWidth=1);
@@ -202,59 +232,8 @@ hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
-lgd = legend('Location','best','FontSize',6);
-title(lgd,'P [dbar]');
+lgd = legend('Location','best');
+title(lgd,'Distributions');
 title('Skewness vs. Kurtosis');
-% subplot(1,4,4)
-% p = polyfit(sk, ku, 1);
-% px = [min(sk) max(sk)];
-% py = polyval(p, px);
-% scatter(sk,ku,'DisplayName','Data');
-% hold on
-% plot(px, py, 'LineWidth', 1, 'DisplayName','Trend');
-% hold off
-% grid minor;
-% xlabel('Skewness'); ylabel('Kurtosis');
-% legend('Location','south');
-% title('SK vs KU');
-
-% old subplot 3
-% subplot(1,3,3)
-% plot(sk,tr,'Color','#1f78b4');
-% ylim([lim1 lim2]);
-% tAx = gca;
-% xlabel(tAx,'Skewness','Color','#1f78b4');
-% % tAx2 = axes('Position', get(tAx, 'Position')); % Create a new axes in the same position as the first one, overlaid on top
-% tAx2 = axes('Position', [0.6916    0.1060    0.2134    0.7825]); % Create a new axes in the same position as the first one, overlaid on top
-% plot(ku,tr,'Color','#33a02c'); 
-% set(tAx2, 'ylim', get(tAx, 'ylim'), 'color', 'none'); % Set y limits same as original axes, and make background transparent
-% set(tAx2,'YTickLabel',[]);
-% set(tAx,'YDir','reverse');
-% set(tAx2,'YDir','reverse');
-% xlabel(tAx2,'Kurtosis','Color','#33a02c');
-% % tAx2.set('XTickLabel','Color','#33a02c');
-% set(tAx2,'XAxisLocation','top');
-% set(tAx,'XColor','#1f78b4');
-% set(tAx2,'XColor','#33a02c');
-
-% data1m=get(tAx,'ylim');
-% data2m=get(tAx2,'ylim');
-% nt = 10; %tick number
-% data1_tick=linspace(data1m(1),data1m(2),nt);
-% data2_tick=linspace(data2m(1),data2m(2),nt);
-% set(tAx,'ytick',round(data1_tick*100)/100);
-% set(tAx2,'ytick',round(data2_tick*100)/100);
-
-% subplot(1,4,3)
-% plot(sk,tr,'Color','#a6cee3','LineWidth',2);
-% set(gca,'YDir','reverse');
-% title('Skewness');
-% ylim(limits);
-% 
-% subplot(1,4,4)
-% plot(ku,tr,'Color','#1f78b4','LineWidth',2);
-% set(gca,'YDir','reverse');
-% title('Kurtosis');
-% ylim(limits);
 
 end

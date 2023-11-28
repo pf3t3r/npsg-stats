@@ -22,11 +22,11 @@ tmp = importdata('data/L2/hplcChla_88-21_200.txt');
 
 % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
 % and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku,sd,rV,pSubml] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
+[ax,p,ks,obs,sk,ku,sd,rV,pSubml,pV] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('[Chl a] 88-21: L2');
 exportgraphics(ax,'figures/L2/chla.png'); clear ax;
-save("output\L2\chla.mat","p","ks","obs","sk","ku");
+% save("output\L2\chla.mat","p","ks","obs","sk","ku");
 % clear ax p ks obs sk ku;
 
 %% Prochlorococcus: 05-21
@@ -46,16 +46,16 @@ clear ax p ks obs sk ku;
 %% Prochlorococcus: 90-05
 
 % 1. Load data
-tmp = importdata('data/L2/pro_90-05_200.txt');
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
-
-sgtitle('Prochlorococcus 90-05: L2');
-exportgraphics(ax,'figures/L2/pbact05.png'); clear ax;
-save("output\L2\pbact05.mat","p","ks","obs","sk","ku");
-clear ax p ks obs sk ku;
+% tmp = importdata('data/L2/pro_90-05_200.txt');
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
+% 
+% sgtitle('Prochlorococcus 90-05: L2');
+% exportgraphics(ax,'figures/L2/pbact05.png'); clear ax;
+% save("output\L2\pbact05.mat","p","ks","obs","sk","ku");
+% clear ax p ks obs sk ku;
 
 %% Oxygen: 88-21
 
@@ -243,16 +243,16 @@ clear ax p ks obs sk ku;
 
 %% Particulate Phosphorus: 11-21
 
-% Load data
-tmp = importdata("data\L2\parp_11-21_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('Particulate Phosphorus 11-21: L2');
-exportgraphics(ax,'figures/L2/pp.png'); clear ax;
-save("output\L2\pp.mat","p","ks","obs","sk","ku");
-clear ax p ks obs sk ku;
+% % Load data
+% tmp = importdata("data\L2\parp_11-21_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('Particulate Phosphorus 11-21: L2');
+% exportgraphics(ax,'figures/L2/pp.png'); clear ax;
+% save("output\L2\pp.mat","p","ks","obs","sk","ku");
+% clear ax p ks obs sk ku;
 
 %% Particulate Silica: 96-21
 
@@ -558,15 +558,15 @@ save("output\L2\viol.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% HPLC Lutein: 94-21
 
-% 1. Load data
-tmp = importdata("data\L2\lutein_94-21_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('HPLC Lutein (94-21): L2');
-exportgraphics(ax,'figures/L2/lutein.png'); clear ax;
-save("output\L2\lutein.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\lutein_94-21_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('HPLC Lutein (94-21): L2');
+% exportgraphics(ax,'figures/L2/lutein.png'); clear ax;
+% save("output\L2\lutein.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% HPLC Monovinyl chlorophyll a: 94-21
 
@@ -594,39 +594,39 @@ save("output\L2\dvchla.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Phycoerythrin 0.4u fraction: 00-08
 
-% 1. Load data
-tmp = importdata("data\L2\pe4_00-08_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('Phycoerythrin 0.4u fraction (00-08): L2');
-exportgraphics(ax,'figures/L2/pe4.png'); clear ax;
-save("output\L2\pe4.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\pe4_00-08_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('Phycoerythrin 0.4u fraction (00-08): L2');
+% exportgraphics(ax,'figures/L2/pe4.png'); clear ax;
+% save("output\L2\pe4.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Phycoerythrin 5u fraction: 00-08
 
-% 1. Load data
-tmp = importdata("data\L2\pe5_00-08_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('Phycoerythrin 5u fraction (00-08): L2');
-exportgraphics(ax,'figures/L2/pe5.png'); clear ax;
-save("output\L2\pe5.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\pe5_00-08_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('Phycoerythrin 5u fraction (00-08): L2');
+% exportgraphics(ax,'figures/L2/pe5.png'); clear ax;
+% save("output\L2\pe5.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Phycoerythrin 10u fraction: 00-08
 
-% 1. Load data
-tmp = importdata("data\L2\pe10_00-08_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('Phycoerythrin 10u fraction (00-08): L2');
-exportgraphics(ax,'figures/L2/pe10.png'); clear ax;
-save("output\L2\pe10.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\pe10_00-08_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('Phycoerythrin 10u fraction (00-08): L2');
+% exportgraphics(ax,'figures/L2/pe10.png'); clear ax;
+% save("output\L2\pe10.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Heterotrophic Bacteria: 05-21
 
@@ -654,15 +654,15 @@ save("output\L2\hbact.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Synechococcus: 05-21
 
-% 1. Load data
-tmp = importdata("data\L2\sbact_05-21_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-sgtitle('Synechococcus (05-21): L2');
-exportgraphics(ax,'figures/L2/sbact.png'); clear ax;
-save("output\L2\sbact.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\sbact_05-21_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+% sgtitle('Synechococcus (05-21): L2');
+% exportgraphics(ax,'figures/L2/sbact.png'); clear ax;
+% save("output\L2\sbact.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Picoeukaryotes: 05-21
 
@@ -690,15 +690,15 @@ save("output\L2\atp.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% Nitrous Oxide: 93-01
 
-% 1. Load data
-tmp = importdata("data\L2\n2o_93-01_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[4 14]);
-sgtitle('Nitrous Oxide (93-01): L2');
-exportgraphics(ax,'figures/L2/n2o.png'); clear ax;
-save("output\L2\n2o.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\n2o_93-01_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[4 14]);
+% sgtitle('Nitrous Oxide (93-01): L2');
+% exportgraphics(ax,'figures/L2/n2o.png'); clear ax;
+% save("output\L2\n2o.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% PProd Light-12: 89-22
 
@@ -714,12 +714,12 @@ save("output\L2\l12.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
 
 %% PProd Dark-12: 89-00
 
-% 1. Load data
-tmp = importdata("data\L2\d12_89-00_200.txt");
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
-[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 12]);
-sgtitle('PProd Dark-12 (89-00): L2');
-exportgraphics(ax,'figures/L2/d12.png'); clear ax;
-save("output\L2\d12.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
+% % 1. Load data
+% tmp = importdata("data\L2\d12_89-00_200.txt");
+% 
+% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% % and kurtosis; and plot.
+% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm,[2 12]);
+% sgtitle('PProd Dark-12 (89-00): L2');
+% exportgraphics(ax,'figures/L2/d12.png'); clear ax;
+% save("output\L2\d12.mat","p","ks","obs","sk","ku"); clear ax p ks obs sk ku;
