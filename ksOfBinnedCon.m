@@ -39,24 +39,10 @@ for i = 1:n
     % change limit below to >3 to fix error with picoeu -> may change other
     % results
     if length(X_i) > 3
-        %test = std(X_i);
-        %disp(i);
         [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(X_i,'noplot');
         [rV(:,i),pV(:,i)] = bbvuong(X_i);
-        %[~,ks(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
-        %disp(size(tmpC95));
         sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
-%         tmpDat = [std(X_i) std(log(X_i))];
-%         tmpDatMu = [mean(X_i) mean(log(X_i))];
-%         tmpComp = [tmpMle(1)/tmpDat(1) tmpMle(2)/tmpDat(2)];
-%         tmpCompMu = [muMle(1)/tmpDatMu(1) muMle(2)/tmpDatMu(2)];
-%         mu(i,:) = [muMle(1) muMle(2) tmpDatMu(1) tmpDatMu(2) tmpCompMu(1) tmpCompMu(2)];
-%         sd(i,:) = [tmpMle(1) tmpMle(2) tmpDat(1) tmpDat(2) tmpComp(1) tmpComp(2)];
-%         c95(i,1:2) = [tmpC95(1,1) tmpC95(2,1)];
-%         c95(i,3:4) = [tmpC95(1,2) tmpC95(2,2)];
-%         c95(i,5:6) = [tmpC95(1,3) tmpC95(2,3)];
-%         c95(i,7:8) = [tmpC95(1,4) tmpC95(2,4)];
     end
     obs(i) = length(X_i);
     clear X_i;
@@ -70,9 +56,6 @@ for i = 1:n
         sd(i,:) = nan;
         rV(:,i) = nan;
         pV(:,i) = nan;
-%         sd(i,:) = nan;
-%         c95(i,:) = nan;
-%         mu(i,:) = nan;
     end
 end
 
@@ -88,10 +71,6 @@ ku = ku(tmp);
 sd = sd(tmp,:);
 rV = rV(:,tmp);
 pV = pV(:,tmp);
-% sd = sd(tmp,:);
-% c95 = c95(tmp,:);
-% mu = mu(tmp,:);
-
 ks = ks(:,~all(isnan(ks)));
 
 end

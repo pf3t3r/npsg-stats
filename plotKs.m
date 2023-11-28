@@ -51,8 +51,39 @@ n = length(tr);
 annot = strings(1,n);
 anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
+tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'normal';
+% Default Case
+for i = 1:n
+    if vuongRes(i) == 1
+        annot(i) = "Normal";
+        anClr(i) = '#a6cee3';
+        if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
+            tmpEmph(i) = 'bold';
+        end
+    elseif vuongRes(i) == 2
+        annot(i) = "Lognormal";
+        anClr(i) = '#1f78b4';
+        if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
+            tmpEmph(i) = 'bold';
+        end
+    elseif vuongRes(i) == 3
+        annot(i) = "Weibull";
+        anClr(i) = '#b2df8a';
+        if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
+            tmpEmph(i) = 'bold';
+        end
+    elseif vuongRes(i) == 4
+        annot(i) = "Gamma";
+        anClr(i) = '#33a02c';
+        if pV(6,i) > 0.05 || pV(3,i) > 0.05 || pV(8,i) > 0.05
+            tmpEmph(i) = 'bold';
+        end
+    elseif vuongRes(i) == 0
+        annot(i) = "";
+    end
+end
 
-% % Default Case
+% % Normal-Lognormal Case
 % for i = 1:n
 %     if vuongRes(i) == 1
 %         annot(i) = "Normal";
@@ -60,29 +91,10 @@ anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 %     elseif vuongRes(i) == 2
 %         annot(i) = "Lognormal";
 %         anClr(i) = '#1f78b4';
-%     elseif vuongRes(i) == 3
-%         annot(i) = "Weibull";
-%         anClr(i) = '#b2df8a';
-%     elseif vuongRes(i) == 4
-%         annot(i) = "Gamma";
-%         anClr(i) = '#33a02c';
 %     elseif vuongRes(i) == 0
 %         annot(i) = "";
 %     end
 % end
-
-% Normal-Lognormal Case
-for i = 1:n
-    if vuongRes(i) == 1
-        annot(i) = "Normal";
-        anClr(i) = '#a6cee3';
-    elseif vuongRes(i) == 2
-        annot(i) = "Lognormal";
-        anClr(i) = '#1f78b4';
-    elseif vuongRes(i) == 0
-        annot(i) = "";
-    end
-end
 
 % Lognormal family: generate theoretical skewness and kurtosis
 sigTh = linspace(0,1,1000);
@@ -148,8 +160,8 @@ subplot(1,6,[2 3])
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-% plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-% plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;
 ylim(limits);
@@ -161,12 +173,14 @@ title('K-S p-values');
 subplot(1,6,4)
 zzs = 0.25*ones(n,1);
 for i = 1:n
-    %text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i));
-    if pV(1,i) > 0.05
-        text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight="bold");
-    else 
-        text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i));
-    end
+    % DEFAULT
+    text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight=tmpEmph(i));
+%     % Normal-Lognormal Comparison ONLY
+%     if pV(1,i) > 0.05
+%         text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight="bold");
+%     else 
+%         text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i));
+%     end
 end
 % % For Normal-Lognormal Comparison ONLY
 % hold on

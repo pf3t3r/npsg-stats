@@ -26,40 +26,56 @@ n = length(tr);
 annot = strings(1,n);
 anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
-
-% 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
-for i = 1:n
-    if vuongRes(i) == 1
-        annot(i) = "Normal";
-        anClr(i) = '#a6cee3';
-    elseif vuongRes(i) == 2
-        annot(i) = "Lognormal";
-        anClr(i) = '#1f78b4';
-    elseif vuongRes(i) == 3
-        %annot(i) = "";
-        annot(i) = "Weibull";
-        anClr(i) = '#b2df8a';
-    elseif vuongRes(i) == 4
-        %annot(i) = "";
-        annot(i) = "Gamma";
-        anClr(i) = '#33a02c';
-    elseif vuongRes(i) == 0
-        annot(i) = "";
-    end
-end
-
-% % 4.b. Vuong: Normal Vs. Lognormal Only
+tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'normal';
+% % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
 % for i = 1:n
 %     if vuongRes(i) == 1
 %         annot(i) = "Normal";
 %         anClr(i) = '#a6cee3';
+%         if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
+%             tmpEmph(i) = 'bold';
+%         end
 %     elseif vuongRes(i) == 2
 %         annot(i) = "Lognormal";
 %         anClr(i) = '#1f78b4';
-%     else
+%         if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
+%             tmpEmph(i) = 'bold';
+%         end
+%     elseif vuongRes(i) == 3
+%         annot(i) = "Weibull";
+%         anClr(i) = '#b2df8a';
+%         if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
+%             tmpEmph(i) = 'bold';
+%         end
+%     elseif vuongRes(i) == 4
+%         annot(i) = "Gamma";
+%         anClr(i) = '#33a02c';
+%         if pV(6,i) > 0.05 || pV(3,i) > 0.05 || pV(8,i) > 0.05
+%             tmpEmph(i) = 'bold';
+%         end
+%     elseif vuongRes(i) == 0
 %         annot(i) = "";
 %     end
 % end
+
+% 4.b. Vuong: Normal Vs. Lognormal Only
+for i = 1:n
+    if vuongRes(i) == 1
+        annot(i) = "Normal";
+        anClr(i) = '#a6cee3';
+        if pV(1,i) > 0.05
+            tmpEmph(i) = 'bold';
+        end
+    elseif vuongRes(i) == 2
+        annot(i) = "Lognormal";
+        anClr(i) = '#1f78b4';
+        if pV(1,i) > 0.05
+            tmpEmph(i) = 'bold';
+        end
+    else
+        annot(i) = "";
+    end
+end
 
 
 % Lognormal family: generate theoretical skewness and kurtosis
@@ -85,32 +101,6 @@ for i = 1:length(kWbl)
        ( gamma(1 + 2/kWbl(i)) - ( gamma(1 + 1/kWbl(i)) )^2 )^2;
 end
 
-% Only plot pV over 0.01
-% for i = 1:10
-%     for j = 1:n
-%         if pV(i,j) < 0.01
-%             pV(i,j) = nan;
-%         end
-%     end
-% end
-
-% Only plot pV related to DOMINANT Vuong LLR
-% for k = 1:n
-%     if vuongRes(k) == 1
-%         disp('a...');
-%         pV([4 5 6 7 8 9 10],k) = nan;
-%     elseif vuongRes(k) == 2
-%         disp('b...');
-%         pV([2 3 4 7 8 9 10],k) = nan;
-%     elseif vuongRes(k) == 3
-%         disp('c..');
-%         pV([1 3 4 6 7 9 10],k) = nan;
-%     else
-%         disp('d...');
-%         pV([1 2 4 5 7 9 10],k) = nan;
-%     end
-% end
-
 subplot(1,6,1)
 barh(obs(a:b),'FaceColor','#a6cee3');
 hold on
@@ -129,8 +119,8 @@ subplot(1,6,[2 3])
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;
 ylim([lim1 lim2]);
@@ -142,7 +132,7 @@ title('K-S Test');
 zzs = 0.25*ones(n,1);
 subplot(1,6,4)
 for i = 1:n
-    text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i));
+    text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight=tmpEmph(i));
 end
 % % For Normal-Lognormal Comparison ONLY
 % hold on

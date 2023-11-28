@@ -30,19 +30,19 @@ n = length(x);
 l_nl = l_norm - l_logn; % PETER: each depth
 R_nl = sum(l_nl); % PETER: complete depth
 m_nl = mean(l_nl);
-disp(n);
-disp(m_nl);
+% disp(n);
+% disp(m_nl);
 s_nl = std(l_nl);
-disp(s_nl);
+% disp(s_nl);
 v_nl = sqrt(n)*m_nl/s_nl;
-disp(v_nl);
+% disp(v_nl);
 p1_nl = cdf('norm',v_nl,0,1);
-disp(p1_nl);
+% disp(p1_nl);
 if p1_nl < 0.5
     p2_nl = 2*p1_nl;
 else p2_nl = 2*(1-p1_nl);
 end
-disp(p2_nl);
+% disp(p2_nl);
 % Normal vs Weibull
 l_nw = l_norm - l_wbl;
 R_nw = sum(l_nw);

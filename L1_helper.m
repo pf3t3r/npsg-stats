@@ -72,5 +72,5 @@ end
 ax = figure;
 plotKs(p,ks,obs,Sk,Ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120]);
 
-disp(vuongRes);
+% disp(vuongRes);
 end

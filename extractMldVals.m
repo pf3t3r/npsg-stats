@@ -36,7 +36,7 @@ for i = 1:L
     end
 end
 
-disp(stop);
+% disp(stop);
 
 for i = 1:stop-1
     % OPTION 2: MAX MLD per cruise. This is what we will use.

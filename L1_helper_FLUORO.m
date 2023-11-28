@@ -87,33 +87,33 @@ ks = ks(:,~all(isnan(ks)));
 % distribution at each depth.
 vuongRes = nan(1,length(tr));
 
-% % 4.a.i. Default Case.
-% for i = 1:length(tr)
-%     if rV(1,i) & rV(2,i) & rV(3,i) > 0
-%         disp('Normal');
-%         vuongRes(i) = 1;
-%     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
-%         disp('Lognormal');
-%         vuongRes(i) = 2;
-%     elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
-%         disp('Weibull');
-%         vuongRes(i) = 3;
-%     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
-%         disp('Gamma');
-%         vuongRes(i) = 4;
-%     end
-% end
-
-% 4.a.ii. Normal vs Lognormal Case.
+% 4.a.i. Default Case.
 for i = 1:length(tr)
-    if rV(1,i) > 0
+    if rV(1,i) & rV(2,i) & rV(3,i) > 0
         disp('Normal');
         vuongRes(i) = 1;
-    elseif rV(1,i) < 0
+    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
         disp('Lognormal');
         vuongRes(i) = 2;
+    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+        disp('Weibull');
+        vuongRes(i) = 3;
+    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+        disp('Gamma');
+        vuongRes(i) = 4;
     end
 end
+
+% % 4.a.ii. Normal vs Lognormal Case.
+% for i = 1:length(tr)
+%     if rV(1,i) > 0
+%         disp('Normal');
+%         vuongRes(i) = 1;
+%     elseif rV(1,i) < 0
+%         disp('Lognormal');
+%         vuongRes(i) = 2;
+%     end
+% end
 
 % 5. Plot results
 ax = figure;
