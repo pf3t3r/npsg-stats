@@ -1,9 +1,16 @@
-function [mN,mL,sN,sL,seN,seL] = testKurtosisBiasHelper(s,runs,dispFig)
+function [mN,mL,pN,pL] = testKurtosisBiasHelper(s,runs,dispFig)
 % INPUTS
 % s = sample size
+% runs = no. of random arrays generated in for loop
+% dispFig = set true if you want to see the figure, otherwise false
 % OUTPUTS
 % kn = kurtosis of normally-distributed random data
 % kl = kurtosis of lognormally-distributed random data
+% mN = mean kurtosis of normally-distributed random data
+% mL = mean kurtosis of lognormally-distributed random data
+% pN = lower and upper percentile of the normal kurtoses
+% pL = lower and upper percentile of the lognormal kurtoses
+
 
 if nargin < 3
     dispFig = false;
@@ -39,14 +46,16 @@ if dispFig == true
     exportgraphics(ax,'figures/kurtBias/' + str); clear ax;
 end
 
-% Get MEAN and STD of runs of kurtosis
+% Get MEAN and PRCTILE of runs of kurtosis
 mN = mean(kn);
 mL = mean(kl);
-sN = std(kn);
-sL = std(kl);
+% pN = std(kn);
+% pL = std(kl);
+pN = [prctile(kn,16) prctile(kn,84)];
+pL = [prctile(kl,16) prctile(kl,84)];
 
-% Standard Error
-seN = sN/sqrt(length(runs));
-seL = sL/sqrt(length(runs));
+% % Standard Error
+% seN = pN/sqrt(length(runs));
+% seL = pL/sqrt(length(runs));
 
 end

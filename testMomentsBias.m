@@ -8,7 +8,7 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 % there a similar bias for skewness?
 
 % Specify how many random arrays will be created in function.
-runs = 100;
+runs = 1000;
 
 %% Kurtosis Bias
 
@@ -31,20 +31,20 @@ ax = figure;
 subplot(1,2,1)
 scatter(16,n1);
 hold on
-scatter(16,n1+sn1,'k',"+"); scatter(16,n1-sn1,'k',"+");
-scatter(32,n2); scatter(32,n2+sn2,'k',"+"); scatter(32,n2-sn2,'k',"+");
-scatter(64,n3); scatter(64,n3+sn3,'k',"+"); scatter(64,n3-sn3,'k',"+");
-scatter(128,n4); scatter(128,n4+sn4,'k',"+"); scatter(128,n4-sn4,'k',"+");
-scatter(256,n5); scatter(256,n5+sn5,'k',"+"); scatter(256,n5-sn5,'k',"+");
-scatter(512,n6); scatter(512,n6+sn6,'k',"+"); scatter(512,n6-sn6,'k',"+");
-scatter(1028,n7); scatter(1028,n7+sn7,'k',"+"); scatter(1028,n7-sn7,'k',"+");
-scatter(2056,n8); scatter(2056,n8+sn8,'k',"+"); scatter(2056,n8-sn8,'k',"+");
-scatter(4128,n9); scatter(4128,n9+sn9,'k',"+"); scatter(4128,n9-sn9,'k',"+");
-scatter(8256,nX); scatter(8256,nX+snX,'k',"+"); scatter(8256,nX-snX,'k',"+");
-scatter(16384,n11); scatter(16384,n11+sn11,'k',"+"); scatter(16384,n11-sn11,'k',"+");
-scatter(32768,n12); scatter(32768,n12+sn12,'k',"+"); scatter(32768,n12-sn12,'k',"+");
-scatter(65536,n13); scatter(65536,n13+sn13,'k',"+"); scatter(65536,n13-sn13,'k',"+");
-scatter(131072,n14); scatter(131072,n14+sn14,'k',"+"); scatter(131072,n14-sn14,'k',"+");
+scatter(16,sn1(1),'k',"+"); scatter(16,sn1(2),'k',"+");
+scatter(32,n2); scatter(32,sn2(1),'k',"+"); scatter(32,sn2(2),'k',"+");
+scatter(64,n3); scatter(64,sn3(1),'k',"+"); scatter(64,sn3(2),'k',"+");
+scatter(128,n4); scatter(128,sn4(1),'k',"+"); scatter(128,sn4(2),'k',"+");
+scatter(256,n5); scatter(256,sn5(1),'k',"+"); scatter(256,sn5(2),'k',"+");
+scatter(512,n6); scatter(512,sn6(1),'k',"+"); scatter(512,sn6(2),'k',"+");
+scatter(1028,n7); scatter(1028,sn7(1),'k',"+"); scatter(1028,sn7(2),'k',"+");
+scatter(2056,n8); scatter(2056,sn8(1),'k',"+"); scatter(2056,sn8(2),'k',"+");
+scatter(4128,n9); scatter(4128,sn9(1),'k',"+"); scatter(4128,sn9(2),'k',"+");
+scatter(8256,nX); scatter(8256,snX(1),'k',"+"); scatter(8256,snX(2),'k',"+");
+scatter(16384,n11); scatter(16384,sn11(1),'k',"+"); scatter(16384,sn11(2),'k',"+");
+scatter(32768,n12); scatter(32768,sn12(1),'k',"+"); scatter(32768,sn12(2),'k',"+");
+scatter(65536,n13); scatter(65536,sn13(1),'k',"+"); scatter(65536,sn13(2),'k',"+");
+scatter(131072,n14); scatter(131072,sn14(1),'k',"+"); scatter(131072,sn14(2),'k',"+");
 hold off
 grid on;
 ylim([2 4]);
@@ -54,20 +54,20 @@ title('Normal');
 subplot(1,2,2)
 scatter(16,l1);
 hold on
-scatter(16,l1+sl1,'k',"+"); scatter(16,l1-sl1,'k',"+");
-scatter(32,l2); scatter(32,l2+sl2,'k',"+"); scatter(32,l2-sl2,'k',"+");
-scatter(64,l3); scatter(64,l3+sl3,'k',"+"); scatter(64,l3-sl3,'k',"+");
-scatter(128,l4); scatter(128,l4+sl4,'k',"+"); scatter(128,l4-sl4,'k',"+");
-scatter(256,l5); scatter(256,l5+sl5,'k',"+"); scatter(256,l5-sl5,'k',"+");
-scatter(512,l6); scatter(512,l6+sl6,'k',"+"); scatter(512,l6-sl6,'k',"+");
-scatter(1028,l7); scatter(1028,l7+sl7,'k',"+"); scatter(1028,l7-sl7,'k',"+");
-scatter(2056,l8); scatter(2056,l8+sl8,'k',"+"); scatter(2056,l8-sl8,'k',"+");
-scatter(4128,l9); scatter(4128,l9+sl9,'k',"+"); scatter(4128,l9-sl9,'k',"+");
-scatter(8256,lX); scatter(8256,lX+slX,'k',"+"); scatter(8256,lX-slX,'k',"+");
-scatter(16384,l11); scatter(16384,l11+sl11,'k',"+"); scatter(16384,l11-sl11,'k',"+");
-scatter(32768,l12); scatter(32768,l12+sl12,'k',"+"); scatter(32768,l12-sl12,'k',"+");
-scatter(65536,l13); scatter(65536,l13+sl13,'k',"+"); scatter(65536,l13-sl13,'k',"+");
-scatter(131072,l14); scatter(131072,l14+sl14,'k',"+"); scatter(131072,l14-sl14,'k',"+");
+scatter(16,sl1(1),'k',"+"); scatter(16,sl1(2),'k',"+");
+scatter(32,l2); scatter(32,sl2(1),'k',"+"); scatter(32,sl2(2),'k',"+");
+scatter(64,l3); scatter(64,sl3(1),'k',"+"); scatter(64,sl3(2),'k',"+");
+scatter(128,l4); scatter(128,sl4(1),'k',"+"); scatter(128,sl4(2),'k',"+");
+scatter(256,l5); scatter(256,sl5(1),'k',"+"); scatter(256,sl5(2),'k',"+");
+scatter(512,l6); scatter(512,sl6(1),'k',"+"); scatter(512,sl6(2),'k',"+");
+scatter(1028,l7); scatter(1028,sl7(1),'k',"+"); scatter(1028,sl7(2),'k',"+");
+scatter(2056,l8); scatter(2056,sl8(1),'k',"+"); scatter(2056,sl8(2),'k',"+");
+scatter(4128,l9); scatter(4128,sl9(1),'k',"+"); scatter(4128,sl9(2),'k',"+");
+scatter(8256,lX); scatter(8256,slX(1),'k',"+"); scatter(8256,slX(2),'k',"+");
+scatter(16384,l11); scatter(16384,sl11(1),'k',"+"); scatter(16384,sl11(2),'k',"+");
+scatter(32768,l12); scatter(32768,sl12(1),'k',"+"); scatter(32768,sl12(2),'k',"+");
+scatter(65536,l13); scatter(65536,sl13(1),'k',"+"); scatter(65536,sl13(2),'k',"+");
+scatter(131072,l14); scatter(131072,sl14(1),'k',"+"); scatter(131072,sl14(2),'k',"+");
 hold off
 grid on;
 ylim([1 7]);
@@ -76,7 +76,7 @@ title('Lognormal');
 stitle = "Kurtosis Bias (" + sprintf("%d",runs) + " runs)";
 sgtitle(stitle);
 
-fName = "figures/kurtBias/compOfBias_" + sprintf('%d',runs) + "runs.png";
+fName = "figures/kurtBias/__" + sprintf('%d',runs) + "runs.png";
 exportgraphics(ax,fName);
 
 clearvars -except runs;
@@ -102,20 +102,20 @@ ax = figure;
 subplot(1,2,1)
 scatter(16,mn1);
 hold on
-scatter(16,mn1 + sn1,"k","+"); scatter(16,mn1 - sn1,"k","+");
-scatter(32,mn2); scatter(32,mn2 + sn2,"k","+"); scatter(32,mn2 - sn2,"k","+");
-scatter(64,mn3); scatter(64,mn3 + sn3,"k","+"); scatter(64,mn3 - sn3,"k","+");
-scatter(128,mn4); scatter(128,mn4 + sn4,"k","+"); scatter(128,mn4 - sn4,"k","+");
-scatter(256,mn5); scatter(256,mn5 + sn5,"k","+"); scatter(256,mn5 - sn5,"k","+");
-scatter(512,mn6); scatter(512,mn6 + sn6,"k","+"); scatter(512,mn6 - sn6,"k","+");
-scatter(1024,mn7); scatter(1024,mn7 + sn7,"k","+"); scatter(1024,mn7 - sn7,"k","+");
-scatter(2048,mn8); scatter(2048,mn8 + sn8,"k","+"); scatter(2048,mn8 - sn8,"k","+");
-scatter(4096,mn9); scatter(4096,mn9 + sn9,"k","+"); scatter(4096,mn9 - sn9,"k","+");
-scatter(8192,mnX); scatter(8192,mnX + snX,"k","+"); scatter(8192,mnX - snX,"k","+");
-scatter(16384,mn11); scatter(16384,mn11 + sn11,"k","+"); scatter(16384,mn11 - sn11,"k","+");
-scatter(32768,mn12); scatter(32768,mn12 + sn12,"k","+"); scatter(32768,mn12 - sn12,"k","+");
-scatter(65536,mn13); scatter(65536,mn13 + sn13,"k","+"); scatter(65536,mn13 - sn13,"k","+");
-scatter(131072,mn14); scatter(131072,mn14 + sn14,"k","+"); scatter(131072,mn14 - sn14,"k","+");
+scatter(16,sn1(1),"k","+"); scatter(16,sn1(2),"k","+");
+scatter(32,mn2); scatter(32,sn2(1),"k","+"); scatter(32,sn2(2),"k","+");
+scatter(64,mn3); scatter(64,sn3(1),"k","+"); scatter(64,sn3(2),"k","+");
+scatter(128,mn4); scatter(128,sn4(1),"k","+"); scatter(128,sn4(2),"k","+");
+scatter(256,mn5); scatter(256,sn5(1),"k","+"); scatter(256,sn5(2),"k","+");
+scatter(512,mn6); scatter(512,sn6(1),"k","+"); scatter(512,sn6(2),"k","+");
+scatter(1024,mn7); scatter(1024,sn7(1),"k","+"); scatter(1024,sn7(2),"k","+");
+scatter(2048,mn8); scatter(2048,sn8(1),"k","+"); scatter(2048,sn8(2),"k","+");
+scatter(4096,mn9); scatter(4096,sn9(1),"k","+"); scatter(4096,sn9(2),"k","+");
+scatter(8192,mnX); scatter(8192,snX(1),"k","+"); scatter(8192,snX(2),"k","+");
+scatter(16384,mn11); scatter(16384,sn11(1),"k","+"); scatter(16384,sn11(2),"k","+");
+scatter(32768,mn12); scatter(32768,sn12(1),"k","+"); scatter(32768,sn12(2),"k","+");
+scatter(65536,mn13); scatter(65536,sn13(1),"k","+"); scatter(65536,sn13(2),"k","+");
+scatter(131072,mn14); scatter(131072,sn14(1),"k","+"); scatter(131072,sn14(2),"k","+");
 hold off
 grid on; ylim([-0.6 0.6]);
 set(gca,'xscale','log');
@@ -124,20 +124,20 @@ title('Normal');
 subplot(1,2,2)
 scatter(16,ml1);
 hold on
-scatter(16,ml1 + sl1,"k","+"); scatter(16,ml1 - sl1,"k","+");
-scatter(32,ml2); scatter(32,ml2 + sl2,"k","+"); scatter(32,ml2 - sl2,"k","+");
-scatter(64,ml3); scatter(64,ml3 + sl3,"k","+"); scatter(64,ml3 - sl3,"k","+");
-scatter(128,ml4); scatter(128,ml4 + sl4,"k","+"); scatter(128,ml4 - sl4,"k","+");
-scatter(256,ml5); scatter(256,ml5 + sl5,"k","+"); scatter(256,ml5 - sl5,"k","+");
-scatter(512,ml6); scatter(512,ml6 + sl6,"k","+"); scatter(512,ml6 - sl6,"k","+");
-scatter(1024,ml7); scatter(1024,ml7 + sl7,"k","+"); scatter(1024,ml7 - sl7,"k","+");
-scatter(2048,ml8); scatter(2048,ml8 + sl8,"k","+"); scatter(2048,ml8 - sl8,"k","+");
-scatter(4096,ml9); scatter(4096,ml9 + sl9,"k","+"); scatter(4096,ml9 - sl9,"k","+");
-scatter(8192,mlX); scatter(8192,mlX + slX,"k","+"); scatter(8192,mlX - slX,"k","+");
-scatter(16384,ml11); scatter(16384,ml11 + sl11,"k","+"); scatter(16384,ml11 - sl11,"k","+");
-scatter(32768,ml12); scatter(32768,ml12 + sl12,"k","+"); scatter(32768,ml12 - sl12,"k","+");
-scatter(65536,ml13); scatter(65536,ml13 + sl13,"k","+"); scatter(65536,ml13 - sl13,"k","+");
-scatter(131072,ml14); scatter(131072,ml14 + sl14,"k","+"); scatter(131072,ml14 - sl14,"k","+");
+scatter(16,sl1(1),"k","+"); scatter(16,sl1(2),"k","+");
+scatter(32,ml2); scatter(32,sl2(1),"k","+"); scatter(32,sl2(2),"k","+");
+scatter(64,ml3); scatter(64,sl3(1),"k","+"); scatter(64,sl3(2),"k","+");
+scatter(128,ml4); scatter(128,sl4(1),"k","+"); scatter(128,sl4(2),"k","+");
+scatter(256,ml5); scatter(256,sl5(1),"k","+"); scatter(256,sl5(2),"k","+");
+scatter(512,ml6); scatter(512,sl6(1),"k","+"); scatter(512,sl6(2),"k","+");
+scatter(1024,ml7); scatter(1024,sl7(1),"k","+"); scatter(1024,sl7(2),"k","+");
+scatter(2048,ml8); scatter(2048,sl8(1),"k","+"); scatter(2048,sl8(2),"k","+");
+scatter(4096,ml9); scatter(4096,sl9(1),"k","+"); scatter(4096,sl9(2),"k","+");
+scatter(8192,mlX); scatter(8192,slX(1),"k","+"); scatter(8192,slX(2),"k","+");
+scatter(16384,ml11); scatter(16384,sl11(1),"k","+"); scatter(16384,sl11(2),"k","+");
+scatter(32768,ml12); scatter(32768,sl12(1),"k","+"); scatter(32768,sl12(2),"k","+");
+scatter(65536,ml13); scatter(65536,sl13(1),"k","+"); scatter(65536,sl13(2),"k","+");
+scatter(131072,ml14); scatter(131072,sl14(1),"k","+"); scatter(131072,sl14(2),"k","+");
 hold off
 grid on; ylim([-0.2 1.6]);
 set(gca,'xscale','log');
@@ -145,7 +145,7 @@ title('Lognormal');
 
 stitle = "Skewness Bias (" + sprintf("%d",runs) + " runs)";
 sgtitle(stitle);
-fName = "figures/skewBias/compOfBias_" + sprintf('%d',runs) + "runs.png";
+fName = "figures/skewBias/__" + sprintf('%d',runs) + "runs.png";
 exportgraphics(ax,fName);
 
 clearvars -except runs;
@@ -154,8 +154,8 @@ clearvars -except runs;
 
 tmp = 5:5:350;
 for i=1:length(tmp)
-    [n1(i),l1(i),sn1(i),sl1(i)] = testKurtosisBiasHelper(tmp(i),runs);
-    [mn1(i),ml1(i),ssn1(i),ssl1(i)] = testSkewnessBiasHelper(tmp(i),runs);
+    [n1(i),l1(i),sn1(i,:),sl1(i,:)] = testKurtosisBiasHelper(tmp(i),runs);
+    [mn1(i),ml1(i),ssn1(i,:),ssl1(i,:)] = testSkewnessBiasHelper(tmp(i),runs);
 end
 
 %%
@@ -163,59 +163,59 @@ ax1 = figure;
 subplot(1,2,1)
 plot(tmp,n1,Marker="+");
 hold on
-plot(tmp,n1+sn1,Marker=".",Color=[0.6 0.6 0.6]);
-plot(tmp,n1-sn1,Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,sn1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,sn1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
 subplot(1,2,2)
 plot(tmp,l1);
 hold on
-plot(tmp,l1+sl1,Marker=".",Color=[0.6 0.6 0.6]);
-plot(tmp,l1-sl1,Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,sl1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,sl1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
 stitle = "Kurtosis Bias (" + sprintf('%d',runs) + " runs)";
 sgtitle(stitle);
 
-fName = "figures/kurtBias/_350_" + sprintf('%d',runs) + "runs.png";
+fName = "figures/kurtBias/__350_" + sprintf('%d',runs) + "runs.png";
 exportgraphics(ax1,fName);
 
 ax2 = figure;
 subplot(1,2,1)
 plot(tmp,mn1,Marker="+");
 hold on
-plot(tmp,mn1+ssn1,Marker=".",Color=[0.6 0.6 0.6]);
-plot(tmp,mn1-ssn1,Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,ssn1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,ssn1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
 subplot(1,2,2)
 plot(tmp,ml1);
 hold on
-plot(tmp,ml1+ssl1,Marker=".",Color=[0.6 0.6 0.6]);
-plot(tmp,ml1-ssl1,Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,ssl1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,ssl1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
 stitle = "Skewness Bias (" + sprintf('%d',runs) + " runs)";
 sgtitle(stitle);
 
-fName = "figures/skewBias/_350_" + sprintf('%d',runs) + "runs.png";
+fName = "figures/skewBias/__350_" + sprintf('%d',runs) + "runs.png";
 exportgraphics(ax2,fName);
 
 clearvars -except runs;
 
-%% Test Z-values
-tmp = 10:10:500;
-for i=1:length(tmp)
-    [kn(i),kl(i),knSD(i),klSD(i),knSE(i),klSE(i)] = testKurtosisBiasHelper(tmp(i),runs);
-    %[mn1(i),ml1(i),ssn1(i),ssl1(i),seN(i),seL(i)] = testSkewnessBiasHelper(tmp(i),runs);
-end
-
-% z-values
-zn = kn./knSE;
-zl = kl./klSE;
-
-figure;
-plot(tmp,kn);
-hold on
-plot(tmp,kl);
-hold off
+% %% Test Z-values
+% tmp = 10:10:500;
+% for i=1:length(tmp)
+%     [kn(i),kl(i),knSD(i),klSD(i),knSE(i),klSE(i)] = testKurtosisBiasHelper(tmp(i),runs);
+%     %[mn1(i),ml1(i),ssn1(i),ssl1(i),seN(i),seL(i)] = testSkewnessBiasHelper(tmp(i),runs);
+% end
+% 
+% % z-values
+% zn = kn./knSE;
+% zl = kl./klSE;
+% 
+% figure;
+% plot(tmp,kn);
+% hold on
+% plot(tmp,kl);
+% hold off

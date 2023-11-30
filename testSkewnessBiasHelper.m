@@ -1,4 +1,4 @@
-function [mN,mL,sN,sL] = testSkewnessBiasHelper(s,runs,dispFig)
+function [mN,mL,pN,pL] = testSkewnessBiasHelper(s,runs,dispFig)
 % INPUTS
 % s = sample size
 % OUTPUTS
@@ -42,7 +42,9 @@ end
 % Get MEAN and STD of runs of skewness
 mN = mean(sn);
 mL = mean(sl);
-sN = std(sn);
-sL = std(sl);
+% pN = std(sn);
+% pL = std(sl);
+pN = [prctile(sn,16) prctile(sn,84)];
+pL = [prctile(sl,16) prctile(sl,84)];
 
 end

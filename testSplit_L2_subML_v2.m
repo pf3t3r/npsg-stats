@@ -243,16 +243,16 @@ clear ax p ks obs sk ku;
 
 %% Particulate Phosphorus: 11-21
 
-% % Load data
-% tmp = importdata("data\L2\parp_11-21_200.txt");
-% 
-% % Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% % and kurtosis; and plot.
-% [ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
-% sgtitle('Particulate Phosphorus 11-21: L2');
-% exportgraphics(ax,'figures/L2/pp.png'); clear ax;
-% save("output\L2\pp.mat","p","ks","obs","sk","ku");
-% clear ax p ks obs sk ku;
+% Load data
+tmp = importdata("data\L2\parp_11-21_200.txt");
+
+% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
+% and kurtosis; and plot.
+[ax,p,ks,obs,sk,ku] = L2_helper(tmp,pMaxMld,dcm);
+sgtitle('Particulate Phosphorus 11-21: L2');
+exportgraphics(ax,'figures/L2/pp.png'); clear ax;
+save("output\L2\pp.mat","p","ks","obs","sk","ku");
+clear ax p ks obs sk ku;
 
 %% Particulate Silica: 96-21
 
