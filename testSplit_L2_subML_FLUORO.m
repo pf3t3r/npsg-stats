@@ -19,8 +19,15 @@ chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
 % and kurtosis; and plot.
 [ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
 sgtitle('[Chl a] 01-21: L2');
-exportgraphics(ax,'figures/L2/ctd/chla.png'); clear ax;
-% save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+exportgraphics(ax,'figures/L2/ctd/chla.png');
+save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+
+ax2 = figure;
+plot(chla,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
+set(gca,"YDir","reverse");
+xlabel('Chl-a [mg m^{-3}]'); ylabel('P [dbar]'); title('Chl-a','P = 0 dbar => DCM');
+exportgraphics(ax2,'figures/L2/chla.png');
+
 clearvars -except maxMld dcm lowerP pIn chla sk ku tr2;
 
 %% Temperature: 88-21
@@ -52,6 +59,13 @@ end
 sgtitle('T 88-21: L2');
 exportgraphics(ax,'figures/L2/ctd/T.png'); clear ax;
 save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
+
+ax2 = figure;
+plot(T,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
+set(gca,"YDir","reverse");
+xlabel('T [Celsius]'); ylabel('P [dbar]'); title('Temperature','P = 0 dbar => DCM');
+exportgraphics(ax2,'figures/L2/T.png');
+
 clearvars -except maxMld dcm lowerP pIn chla T ctdData cRm;
 
 %% Salinity: 88-21
@@ -76,7 +90,14 @@ end
 sgtitle('S_p 88-21: L2');
 exportgraphics(ax,'figures/L2/ctd/Sp.png'); clear ax;
 save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
-clearvars -except maxMld dcm lowerP pIn chla T Sp ctdData cRm;
+
+ax2 = figure;
+plot(Sp,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
+set(gca,"YDir","reverse");
+xlabel('S_p [g/kg]'); ylabel('P [dbar]'); title('Salinity','P = 0 dbar => DCM');
+exportgraphics(ax2,'figures/L2/Sp.png');
+
+% clearvars -except maxMld dcm lowerP pIn chla T Sp ctdData cRm;
 
 %% O2: 88-21
 
@@ -98,8 +119,15 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(o2,pIn,maxMld,dcm);
 sgtitle('O_2 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/o2.png'); clear ax;
+exportgraphics(ax,'figures/L2/ctd/o2.png');
 save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
+
+ax2 = figure;
+plot(o2,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
+set(gca,"YDir","reverse");
+xlabel('O_2 [mmol m^{-3}]'); ylabel('P [dbar]'); title('O_2','P = 0 dbar => DCM');
+exportgraphics(ax2,'figures/L2/o2.png');
+
 clearvars -except maxMld dcm lowerP pIn chla T Sp o2 ctdData cRm;
 
 %% No3-: 88-21
@@ -122,6 +150,13 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(no3,pIn,maxMld,dcm);
 sgtitle('NO_3^{-} 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/no3.png'); clear ax;
+exportgraphics(ax,'figures/L2/ctd/no3.png');
 save("output\L2\ctd\no3.mat","pL","ks","obs","sk","ku","pV","rV");
+
+ax2 = figure;
+plot(no3,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
+set(gca,"YDir","reverse");
+xlabel('NO_3^{-} [mmol m^{-3}]'); ylabel('P [dbar]'); title('NO_3','P = 0 dbar => DCM');
+exportgraphics(ax2,'figures/L2/no3.png');
+
 clearvars -except maxMld dcm lowerP pIn chla T Sp o2 no3 ctdData cRm;
