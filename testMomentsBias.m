@@ -8,7 +8,7 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 % there a similar bias for skewness?
 
 % Specify how many random arrays will be created in function.
-runs = 1000;
+runs = 5000;
 
 %% Kurtosis Bias
 

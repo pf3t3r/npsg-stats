@@ -25,7 +25,7 @@ tmp = importdata('data/L2/hplcChla_88-21_200.txt');
 [ax,p,ks,obs,sk,ku,sd,rV,pSubml,pV] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
 sgtitle('[Chl a] 88-21: L2');
-exportgraphics(ax,'figures/L2/bottle/chla_NL.png'); clear ax;
+exportgraphics(ax,'figures/L2/bottle/chla_L.png'); clear ax;
 save("output\L2\chla.mat","p","ks","obs","sk","ku");
 % clear ax p ks obs sk ku;
 

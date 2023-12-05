@@ -116,12 +116,12 @@ set(gca,"YTick",1:1:length(tix),"YTickLabel",lim1:10:lim2);
 title('No. of Observations');
 
 subplot(1,6,[2 3])
-plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-hold on
+% plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+% hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 % plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 % plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
-hold off
+% hold off
 grid minor;
 ylim([lim1 lim2]);
 set(gca,'YDir','reverse');
