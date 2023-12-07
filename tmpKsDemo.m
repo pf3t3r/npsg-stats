@@ -1,29 +1,35 @@
 close all;clc;clear;
 addpath 'C:\Users\pfarrell\AppData\Roaming\MathWorks\MATLAB Add-Ons\Functions\Shapiro-Wilk and Shapiro-Francia normality tests'
 
-
-
 %%
-% figure;
-% histogram(tmp,25);
 
-%%
-r = 300;
-s = 250;
+expRun = 25;
+tmpMin = nan(expRun,1);
+tmpMinId = nan(expRun,1);
 
-for i = 1:r
-    tmp = randn(s,1);
-    [h(i),p(i)] = kstest(tmp);
-    [h1(i),p1(i)] = lillietest(tmp);
-    [h2(i),p2(i)] = adtest(tmp);
-    [h3(i),p3(i)] = swtest(tmp);
-    [h4(i),p4(i)] = chi2gof(tmp);
-    [h5(i),p5(i)] = jbtest(tmp);
+for i = 1:expRun
+
+    r = 5000;
+    s = 200;
+    
+    for j = 1:r
+        tmp = randn(s,1);
+        [h(j),p(j)] = kstest(tmp);
+        [h1(j),p1(j)] = lillietest(tmp);
+        [h2(j),p2(j)] = adtest(tmp);
+        [h3(j),p3(j)] = swtest(tmp);
+        [h4(j),p4(j)] = chi2gof(tmp);
+        [h5(j),p5(j)] = jbtest(tmp);
+    end
+    
+    X0 = length(find(h(h==1)))/r;
+    X1 = length(find(h1(h1==1)))/r;
+    X2 = length(find(h2(h2==1)))/r;
+    X3 = length(find(h3(h3==1)))/r;
+    X4 = length(find(h4(h4==1)))/r;
+    X5 = length(find(h5(h5==1)))/r;
+    
+    tmp1 = [X0 X1 X2 X3 X4 X5];
+    [tmpMin(i),tmpMinId(i)] = min(tmp1);
+    disp(i);
 end
-
-% clear h h1 h2 h3 h4 h5 tmp;
-H = [h h1 h2 h3 h4 h5];
-
-% Percentage of incorrect results
-% i.e. where a test reports that the distribution is NOT normal
-X = length(find(H(H==1)))/length(H);
