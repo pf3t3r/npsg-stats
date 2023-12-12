@@ -10,7 +10,7 @@ tmpMinId = nan(expRun,1);
 for i = 1:expRun
 
     r = 5000;
-    s = 200;
+    s = 250;
     
     for j = 1:r
         tmp = randn(s,1);

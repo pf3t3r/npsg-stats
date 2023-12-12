@@ -244,16 +244,16 @@ for i = 1:n
 end
 
 subplot(1,6,[5 6])
-errorbar(sk,ku,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
+scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
 hold on
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#a6cee3',LineStyle='-',LineWidth=1);
-plot(skGam,kuGam,'DisplayName','Gam.','Color','#1f78b4',LineStyle='--',LineWidth=1);
-plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle=':',LineWidth=1);
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
+plot(skGam,kuGam,'DisplayName','Gam.','Color','#33a02c',LineStyle='--',LineWidth=1.7);
+plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle='-',LineWidth=1.7);
 scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
-scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
-scatter(0,3,'DisplayName','Norm.',Marker='*',LineWidth=1);
+scatter(0,9/5,'DisplayName','Uni.',Marker='*',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
+errorbar(sk,ku,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,flipud(colormap("hot")));
