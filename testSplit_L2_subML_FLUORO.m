@@ -19,7 +19,7 @@ chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
 % and kurtosis; and plot.
 [ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
 sgtitle('[Chl a] 01-21: L2');
-exportgraphics(ax,'figures/L2/ctd/chla_NL.png');
+exportgraphics(ax,'figures/L2/ctd/chla.png');
 save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
 
 ax2 = figure;
@@ -57,7 +57,7 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(T,pIn,maxMld,dcm);
 sgtitle('T 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/T_NL.png'); clear ax;
+exportgraphics(ax,'figures/L2/ctd/T.png'); clear ax;
 save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
 
 ax2 = figure;
@@ -88,7 +88,7 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(Sp,pIn,maxMld,dcm);
 sgtitle('S_p 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/Sp_NL.png'); clear ax;
+exportgraphics(ax,'figures/L2/ctd/Sp.png'); clear ax;
 save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
 
 ax2 = figure;
@@ -119,7 +119,7 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(o2,pIn,maxMld,dcm);
 sgtitle('O_2 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/o2_NL.png');
+exportgraphics(ax,'figures/L2/ctd/o2.png');
 save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
 
 ax2 = figure;
@@ -150,7 +150,7 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(no3,pIn,maxMld,dcm);
 sgtitle('NO_3^{-} 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/no3_NL.png');
+exportgraphics(ax,'figures/L2/ctd/no3.png');
 save("output\L2\ctd\no3.mat","pL","ks","obs","sk","ku","pV","rV");
 
 ax2 = figure;

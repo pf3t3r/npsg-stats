@@ -80,20 +80,30 @@ for i = 1:length(sigTh)
 end
 
 % Gamma family: generate theoretical skewness and kurtosis
-kTh = linspace(0.2,5000,10000);
+% kTh = linspace(0.2,5000,10000);
+kTh = linspace(0.04,3000,1500000);
 for i = 1:length(kTh)
     skGam(i) = 2/sqrt(kTh(i));
     kuGam(i) = 6/kTh(i) + 3;
 end
 
 % Weibull family: generate theoretical skewness and kurtosis
-kWbl = linspace(0,5,10000);
+% kWbl = linspace(0,5,10000);
+kWbl = linspace(0.1,3.5,10000);
 for i = 1:length(kWbl)
     skWbl(i) = ( gamma(1 + 3/kWbl(i)) - 3*gamma(1 + 1/kWbl(i))*gamma(1 + 2/kWbl(i)) + 2*(gamma(1 + 1/kWbl(i)))^3 ) ./ ...
         ( gamma(1 + 2/kWbl(i)) -  (gamma(1 + 1/kWbl(i)))^2 )^(3/2);
     kuWbl(i) = ( gamma(1 + 4/kWbl(i)) - 4*gamma(1 + 1/kWbl(i))*gamma(1 + 3/kWbl(i)) + 6*( (gamma(1 + 1/kWbl(i)) )^2)*gamma(1 + 2/kWbl(i)) - 3*( (gamma(1 + 1/kWbl(i)))^4 ) ) ./ ...
        ( gamma(1 + 2/kWbl(i)) - ( gamma(1 + 1/kWbl(i)) )^2 )^2;
 end
+
+% Negative Distributions
+skLognN = -skLogn;
+kuLognN = kuLogn;
+skGamN= -skGam;
+kuGamN = kuGam;
+skWblN = -skWbl;
+kuWblN = kuWbl;
 
 subplot(1,6,1)
 barh(obs(a:b),'FaceColor','#a6cee3');
@@ -224,8 +234,11 @@ subplot(1,6,[5 6])
 scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
 hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
+plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle='-',LineWidth=1.7);
+plot(skWblN,kuWblN,'Color','#b2df8a',LineStyle='-',LineWidth=1.7,HandleVisibility='off');
 plot(skGam,kuGam,'DisplayName','Gam.','Color','#33a02c',LineStyle='--',LineWidth=1.7);
+plot(skGamN,kuGamN,'Color','#33a02c',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
