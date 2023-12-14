@@ -97,63 +97,63 @@ vuongRes = zeros(1,n2);
 annot = strings(1,n2);
 anClr = strings(1,n2);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
-tmpEmph = strings(1,n2); tmpEmph(cellfun(@isempty,tmpEmph)) = 'normal';
+tmpEmph = strings(1,n2); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 rV(isnan(rV)) = 0;
 
-% 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
-for i = 1:n2
-    if rV(1,i) & rV(2,i) & rV(3,i) > 0
-        vuongRes(i) = 1;
-        annot(i) = "Normal";
-        anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
-            tmpEmph(i) = 'bold';
-        end
-    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
-        vuongRes(i) = 2;
-        annot(i) = "Lognormal";
-        anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
-            tmpEmph(i) = 'bold';
-        end
-    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
-        vuongRes(i) = 3;
-        annot(i) = "Weibull";
-        anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
-            tmpEmph(i) = 'bold';
-        end
-    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
-        vuongRes(i) = 4;
-        annot(i) = "Gamma";
-        anClr(i) = '#33a02c';
-        if pV(3,i) > 0.05 || pV(6,i) > 0.05 || pV(8,i) > 0.05
-            tmpEmph(i) = 'bold';
-        end
-    end
-end
-rV(rV==0) = nan;
-
-% % 4.b. Vuong: Normal Vs. Lognormal Only
+% % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
 % for i = 1:n2
-%     if rV(1,i) > 0 
+%     if rV(1,i) & rV(2,i) & rV(3,i) > 0
 %         vuongRes(i) = 1;
 %         annot(i) = "Normal";
 %         anClr(i) = '#a6cee3';
-%         if pV(1,i) > 0.05
-%             tmpEmph(i) = 'bold';
+%         if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
+%             tmpEmph(i) = 'normal';
 %         end
-%     elseif rV(1,i) < 0
+%     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
 %         vuongRes(i) = 2;
 %         annot(i) = "Lognormal";
 %         anClr(i) = '#1f78b4';
-%         if pV(1,i) > 0.05
-%             tmpEmph(i) = 'bold';
+%         if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
+%             tmpEmph(i) = 'normal';
 %         end
-%     else
-%         annot(i) = "";
+%     elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+%         vuongRes(i) = 3;
+%         annot(i) = "Weibull";
+%         anClr(i) = '#b2df8a';
+%         if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
+%             tmpEmph(i) = 'normal';
+%         end
+%     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+%         vuongRes(i) = 4;
+%         annot(i) = "Gamma";
+%         anClr(i) = '#33a02c';
+%         if pV(3,i) > 0.05 || pV(6,i) > 0.05 || pV(8,i) > 0.05
+%             tmpEmph(i) = 'normal';
+%         end
 %     end
 % end
+% rV(rV==0) = nan;
+
+% 4.b. Vuong: Normal Vs. Lognormal Only
+for i = 1:n2
+    if rV(1,i) > 0 
+        vuongRes(i) = 1;
+        annot(i) = "Normal";
+        anClr(i) = '#a6cee3';
+        if pV(1,i) > 0.05
+            tmpEmph(i) = 'normal';
+        end
+    elseif rV(1,i) < 0
+        vuongRes(i) = 2;
+        annot(i) = "Lognormal";
+        anClr(i) = '#1f78b4';
+        if pV(1,i) > 0.05
+            tmpEmph(i) = 'normal';
+        end
+    else
+        annot(i) = "";
+    end
+end
 
 % 5. Generate theoretical skewness-kurtosis curves for the...
 % Lognormal family,
@@ -200,8 +200,8 @@ subplot(1,6,[2 3])
 plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;
 ylim([l1+40 l2-60]);
@@ -249,7 +249,43 @@ else
     skewLimB = 2.5;
 end
 
+% error bars for sk-ku
+obsTmp = obs(obs>=50);
+n2 = length(obsTmp);
+yneg = nan(n2,1); ypos = nan(n2,1); xneg = nan(n2,1); xpos = nan(n2,1);
+for i = 1:n2
+    if obsTmp(i) > 300
+        yneg(i) = -1.02; ypos(i) = 0.92;
+        xneg(i) = -0.23; xpos(i) = 0.22;
+    elseif obsTmp(i) > 250
+        yneg(i) = -1.06; ypos(i) = 0.96;
+        xneg(i) = -0.24; xpos(i) = 0.25;
+    elseif obsTmp(i) > 200
+        yneg(i) = -1.13; ypos(i) = 0.96;
+        xneg(i) = -0.27; xpos(i) = 0.26;
+    elseif obsTmp(i) > 150
+        yneg(i) = -1.22; ypos(i) = 1.08;
+        xneg(i) = -0.30; xpos(i) = 0.29;
+    elseif obsTmp(i) > 100
+        yneg(i) = -1.30; ypos(i) = 1.15;
+        xneg(i) = -0.34; xpos(i) = 0.33;
+    else
+        yneg(i) = -1.24; ypos(i) = 1.11;
+        xneg(i) = -0.51; xpos(i) = 0.38;
+    end
+end
+
 subplot(1,6,[5 6])
+scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
+hold on
+plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
+% plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle='-',LineWidth=1.7);
+% plot(skGam,kuGam,'DisplayName','Gam.','Color','#33a02c',LineStyle='--',LineWidth=1.7);
+% scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
+% scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
+% scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
+% scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
+errorbar(sk2,ku2,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
 clr = 1:1:length(tr2);
 scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,flipud(colormap("hot")));
@@ -258,15 +294,6 @@ cbar.Direction = "reverse";
 cbar.Ticks = 1:10:length(tr2);
 cbar.TickLabels = tr2(1):20:tr2(end);
 cbar.Label.String = "P [dbar]";
-hold on
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color','k',LineWidth=2);
-plot(skGam,kuGam,'DisplayName','Gam.','Color','#a6cee3',LineWidth=2);
-plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#1f78b4',LineStyle=':',LineWidth=2);
-scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
-scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
-scatter(0,3,'DisplayName','Norm.',Marker='*',LineWidth=1);
-scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
-scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);

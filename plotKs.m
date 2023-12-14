@@ -51,50 +51,56 @@ n = length(tr);
 annot = strings(1,n);
 anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
-tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'normal';
-% Default Case
+tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
+% % Default Case
+% for i = 1:n
+%     if vuongRes(i) == 1
+%         annot(i) = "Normal";
+%         anClr(i) = '#a6cee3';
+%         if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
+%             tmpEmph(i) = 'normal';
+%         end
+%     elseif vuongRes(i) == 2
+%         annot(i) = "Lognormal";
+%         anClr(i) = '#1f78b4';
+%         if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
+%             tmpEmph(i) = 'normal';
+%         end
+%     elseif vuongRes(i) == 3
+%         annot(i) = "Weibull";
+%         anClr(i) = '#b2df8a';
+%         if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
+%             tmpEmph(i) = 'normal';
+%         end
+%     elseif vuongRes(i) == 4
+%         annot(i) = "Gamma";
+%         anClr(i) = '#33a02c';
+%         if pV(6,i) > 0.05 || pV(3,i) > 0.05 || pV(8,i) > 0.05
+%             tmpEmph(i) = 'normal';
+%         end
+%     elseif vuongRes(i) == 0
+%         annot(i) = "";
+%     end
+% end
+
+% Normal-Lognormal Case
 for i = 1:n
     if vuongRes(i) == 1
         annot(i) = "Normal";
         anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
-            tmpEmph(i) = 'bold';
+        if pV(1,i) > 0.05
+            tmpEmph(i) = 'normal';
         end
     elseif vuongRes(i) == 2
         annot(i) = "Lognormal";
         anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
-            tmpEmph(i) = 'bold';
-        end
-    elseif vuongRes(i) == 3
-        annot(i) = "Weibull";
-        anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
-            tmpEmph(i) = 'bold';
-        end
-    elseif vuongRes(i) == 4
-        annot(i) = "Gamma";
-        anClr(i) = '#33a02c';
-        if pV(6,i) > 0.05 || pV(3,i) > 0.05 || pV(8,i) > 0.05
-            tmpEmph(i) = 'bold';
+        if pV(1,i) > 0.05
+            tmpEmph(i) = 'normal';
         end
     elseif vuongRes(i) == 0
         annot(i) = "";
     end
 end
-
-% % Normal-Lognormal Case
-% for i = 1:n
-%     if vuongRes(i) == 1
-%         annot(i) = "Normal";
-%         anClr(i) = '#a6cee3';
-%     elseif vuongRes(i) == 2
-%         annot(i) = "Lognormal";
-%         anClr(i) = '#1f78b4';
-%     elseif vuongRes(i) == 0
-%         annot(i) = "";
-%     end
-% end
 
 % Lognormal family: generate theoretical skewness and kurtosis
 sigTh = linspace(0,1,1000);
@@ -160,8 +166,8 @@ subplot(1,6,[2 3])
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 hold on
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+% plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;
 ylim(limits);
@@ -247,12 +253,12 @@ subplot(1,6,[5 6])
 scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
 hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
-plot(skGam,kuGam,'DisplayName','Gam.','Color','#33a02c',LineStyle='--',LineWidth=1.7);
-plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle='-',LineWidth=1.7);
-scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
-scatter(0,9/5,'DisplayName','Uni.',Marker='*',LineWidth=1);
-scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
-scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
+% plot(skGam,kuGam,'DisplayName','Gam.','Color','#33a02c',LineStyle='--',LineWidth=1.7);
+% plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle='-',LineWidth=1.7);
+% scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
+% scatter(0,9/5,'DisplayName','Uni.',Marker='*',LineWidth=1);
+% scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
+% scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 errorbar(sk,ku,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");

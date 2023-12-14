@@ -45,32 +45,32 @@ clear tmp;
 vuongRes = zeros(1,length(pr));
 rV(isnan(rV)) = 0;
 
-% for i = 1:length(pr)
-%     %disp(i);
-%     if rV(1,i) & rV(2,i) & rV(3,i) > 0
-%         %disp('Normal');
-%         vuongRes(i) = 1;
-%     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
-%         %disp('Lognormal');
-%         vuongRes(i) = 2;
-%     elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
-%         %disp('Weibull');
-%         vuongRes(i) = 3;
-%     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
-%         %disp('Gamma');
-%         vuongRes(i) = 4;
-%     end
-% end
-% rV(rV==0) = nan;
-
 for i = 1:length(pr)
-    if rV(1,i)  > 0
+    %disp(i);
+    if rV(1,i) & rV(2,i) & rV(3,i) > 0
+        %disp('Normal');
         vuongRes(i) = 1;
-    elseif rV(1,i) < 0
+    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
+        %disp('Lognormal');
         vuongRes(i) = 2;
+    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+        %disp('Weibull');
+        vuongRes(i) = 3;
+    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+        %disp('Gamma');
+        vuongRes(i) = 4;
     end
 end
 rV(rV==0) = nan;
+
+% for i = 1:length(pr)
+%     if rV(1,i)  > 0
+%         vuongRes(i) = 1;
+%     elseif rV(1,i) < 0
+%         vuongRes(i) = 2;
+%     end
+% end
+% rV(rV==0) = nan;
 
 limits = [pr(tmpLts(1)) pr(tmpLts(2))];
 obsId = [tmpLts(1) tmpLts(2)];
