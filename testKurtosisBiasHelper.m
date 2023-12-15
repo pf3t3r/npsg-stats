@@ -1,4 +1,4 @@
-function [mN,mL,pN,pL] = testKurtosisBiasHelper(s,runs,dispFig)
+function [mN,mL,pN,pL,mG,mW,pG,pW] = testKurtosisBiasHelper(s,runs,dispFig)
 % INPUTS
 % s = sample size
 % runs = no. of random arrays generated in for loop
@@ -11,6 +11,10 @@ function [mN,mL,pN,pL] = testKurtosisBiasHelper(s,runs,dispFig)
 % pN = lower and upper percentile of the normal kurtoses
 % pL = lower and upper percentile of the lognormal kurtoses
 
+if nargout < 5
+    mG = []; mW = [];
+    pG = []; pW = [];
+end
 
 if nargin < 3
     dispFig = false;
@@ -23,15 +27,40 @@ end
 % NORMAL case
 kn = nan(runs,1);
 for i = 1:runs
-    a = randn(s,1);
+    %a = randn(s,1);
+    a = normrnd(0,0.5,[s 1]);
     kn(i) = kurtosis(a);
 end
 
 % LOGNORMAL case
 kl = nan(runs,1);
 for i = 1:runs
-    b = lognrnd(1,0.3,[s 1]);
+    b = lognrnd(0,0.5,[s 1]);
     kl(i) = kurtosis(b);
+end
+
+if nargout > 5
+    % GAMMA case
+    kg = nan(runs,1);
+    for i = 1:runs
+        %[0.5 2 5 9],[0.5 1 1.5 2]
+        c = gamrnd(2,0.5,[s 1]);
+        kg(i) = kurtosis(c);
+    end
+    
+    % WEIBULL case
+    kw = nan(runs,1);
+    for i = 1:runs
+        %0.5 1 1.5 2],[0.5 1.75 3.5 5]
+        d = wblrnd(1,3,[s 1]);
+        kw(i) = kurtosis(d);
+    end
+
+    mG = mean(kg);
+    mW = mean(kw);
+
+    pG = [prctile(kg,16) prctile(kg,84)];
+    pW = [prctile(kw,16) prctile(kw,84)];
 end
 
 if dispFig == true
@@ -39,6 +68,8 @@ if dispFig == true
     plot(kn,DisplayName='Random Normal');
     hold on
     plot(kl,DisplayName='Random Lognormal');
+    %plot(kg,DisplayName='Random Gamma');
+    %plot(kw,DisplayName='Random Weibull');
     hold off
     legend();
     title('Kurtosis of randomly-generated arrays',sprintf('Sample Size = %d',s));
@@ -49,13 +80,9 @@ end
 % Get MEAN and PRCTILE of runs of kurtosis
 mN = mean(kn);
 mL = mean(kl);
-% pN = std(kn);
-% pL = std(kl);
+
 pN = [prctile(kn,16) prctile(kn,84)];
 pL = [prctile(kl,16) prctile(kl,84)];
 
-% % Standard Error
-% seN = pN/sqrt(length(runs));
-% seL = pL/sqrt(length(runs));
 
 end

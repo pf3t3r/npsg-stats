@@ -2,6 +2,10 @@ clear; clc; close all;
 addpath("figures\kurtBias");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
+%% TODO: Add Weibull and Gamma Analysis.
+
+%% What does this script do?
+
 % This script will evaluate the performance of random data of varying
 % sample size versus kurtosis and skewness. We aim to answer the following
 % question: is there a bias for high kurtosis at low sample sizes? And is
@@ -154,68 +158,92 @@ clearvars -except runs;
 
 tmp = 5:5:350;
 for i=1:length(tmp)
-    [n1(i),l1(i),sn1(i,:),sl1(i,:)] = testKurtosisBiasHelper(tmp(i),runs);
-    [mn1(i),ml1(i),ssn1(i,:),ssl1(i,:)] = testSkewnessBiasHelper(tmp(i),runs);
+    [n1(i),l1(i),sn1(i,:),sl1(i,:),g1(i),w1(i),pg1(i,:),pw1(i,:)] = testKurtosisBiasHelper(tmp(i),runs);
+    [mn1(i),ml1(i),ssn1(i,:),ssl1(i,:),g2(i),w2(i),pg2(i,:),pw2(i,:)] = testSkewnessBiasHelper(tmp(i),runs);
 end
 
 %%
 ax1 = figure;
-subplot(1,2,1)
+subplot(2,2,1)
 plot(tmp,n1,Marker="+");
 hold on
 plot(tmp,sn1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
 plot(tmp,sn1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
-subplot(1,2,2)
+title("Normal");
+subplot(2,2,2)
 plot(tmp,l1);
 hold on
 plot(tmp,sl1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
 plot(tmp,sl1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
+title("Lognormal");
+subplot(2,2,3)
+plot(tmp,g1);
+hold on
+plot(tmp,pg1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,pg1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
+hold off
+grid on;
+title("Gamma");
+subplot(2,2,4)
+plot(tmp,w1);
+hold on
+plot(tmp,pw1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,pw1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
+hold off
+grid on;
+title("Weibull");
 stitle = "Kurtosis Bias (" + sprintf('%d',runs) + " runs)";
 sgtitle(stitle);
 
 fName = "figures/kurtBias/__350_" + sprintf('%d',runs) + "runs.png";
 exportgraphics(ax1,fName);
 
+save("output\skku\kurtBias.mat","n1","sn1","l1","sl1","g1","pg1","w1","pw1");
+
 ax2 = figure;
-subplot(1,2,1)
+subplot(2,2,1)
 plot(tmp,mn1,Marker="+");
 hold on
 plot(tmp,ssn1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
 plot(tmp,ssn1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
-subplot(1,2,2)
+title("Normal");
+subplot(2,2,2)
 plot(tmp,ml1);
 hold on
 plot(tmp,ssl1(:,1),Marker=".",Color=[0.6 0.6 0.6]);
 plot(tmp,ssl1(:,2),Marker=".",Color=[0.6 0.6 0.6]);
 hold off
 grid on;
+title("Lognormal");
+subplot(2,2,3)
+plot(tmp,g2);
+hold on
+plot(tmp,pg2(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,pg2(:,2),Marker=".",Color=[0.6 0.6 0.6]);
+hold off
+grid on;
+title("Gamma");
+subplot(2,2,4)
+plot(tmp,w2);
+hold on
+plot(tmp,pw2(:,1),Marker=".",Color=[0.6 0.6 0.6]);
+plot(tmp,pw2(:,2),Marker=".",Color=[0.6 0.6 0.6]);
+hold off
+grid on;
+title("Weibull");
 stitle = "Skewness Bias (" + sprintf('%d',runs) + " runs)";
 sgtitle(stitle);
 
 fName = "figures/skewBias/__350_" + sprintf('%d',runs) + "runs.png";
 exportgraphics(ax2,fName);
 
-clearvars -except runs;
+save("output\skku\skewBias.mat","mn1","ssn1","ml1","ssl1","g2","pg2","w2","pw2");
 
-% %% Test Z-values
-% tmp = 10:10:500;
-% for i=1:length(tmp)
-%     [kn(i),kl(i),knSD(i),klSD(i),knSE(i),klSE(i)] = testKurtosisBiasHelper(tmp(i),runs);
-%     %[mn1(i),ml1(i),ssn1(i),ssl1(i),seN(i),seL(i)] = testSkewnessBiasHelper(tmp(i),runs);
-% end
-% 
-% % z-values
-% zn = kn./knSE;
-% zl = kl./klSE;
-% 
-% figure;
-% plot(tmp,kn);
-% hold on
-% plot(tmp,kl);
-% hold off
+
+clearvars -except runs;
