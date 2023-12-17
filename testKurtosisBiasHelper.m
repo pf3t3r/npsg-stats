@@ -1,4 +1,4 @@
-function [mN,mL,pN,pL,mG,mW,pG,pW] = testKurtosisBiasHelper(s,runs,dispFig)
+function [mN,mL,pN,pL,mG,mW,pG,pW] = testKurtosisBiasHelper(s,runs,dispFig,Nps,Lps,Gps,Wps)
 % INPUTS
 % s = sample size
 % runs = no. of random arrays generated in for loop
@@ -16,6 +16,13 @@ if nargout < 5
     pG = []; pW = [];
 end
 
+if nargin < 4
+    Nps = [1 0.5];
+    Lps = [0 0.5];
+    Gps = [2 0.5];
+    Wps = [1 3];
+end
+
 if nargin < 3
     dispFig = false;
 end
@@ -28,14 +35,14 @@ end
 kn = nan(runs,1);
 for i = 1:runs
     %a = randn(s,1);
-    a = normrnd(0,0.5,[s 1]);
+    a = normrnd(Nps(1),Nps(2),[s 1]);
     kn(i) = kurtosis(a);
 end
 
 % LOGNORMAL case
 kl = nan(runs,1);
 for i = 1:runs
-    b = lognrnd(0,0.5,[s 1]);
+    b = lognrnd(Lps(1),Lps(2),[s 1]);
     kl(i) = kurtosis(b);
 end
 
@@ -44,7 +51,7 @@ if nargout > 5
     kg = nan(runs,1);
     for i = 1:runs
         %[0.5 2 5 9],[0.5 1 1.5 2]
-        c = gamrnd(2,0.5,[s 1]);
+        c = gamrnd(Gps(1),Gps(2),[s 1]);
         kg(i) = kurtosis(c);
     end
     
@@ -52,7 +59,7 @@ if nargout > 5
     kw = nan(runs,1);
     for i = 1:runs
         %0.5 1 1.5 2],[0.5 1.75 3.5 5]
-        d = wblrnd(1,3,[s 1]);
+        d = wblrnd(Wps(1),Wps(2),[s 1]);
         kw(i) = kurtosis(d);
     end
 

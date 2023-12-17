@@ -1,4 +1,4 @@
-function [mN,mL,pN,pL,mG,mW,pG,pW] = testSkewnessBiasHelper(s,runs,dispFig)
+function [mN,mL,pN,pL,mG,mW,pG,pW] = testSkewnessBiasHelper(s,runs,dispFig,Nps,Lps,Gps,Wps)
 % INPUTS
 % s = sample size
 % OUTPUTS
@@ -8,6 +8,13 @@ function [mN,mL,pN,pL,mG,mW,pG,pW] = testSkewnessBiasHelper(s,runs,dispFig)
 if nargout < 5
     mG = []; mW = [];
     pG = []; pW = [];
+end
+
+if nargin < 4
+    Nps = [1 0.5];
+    Lps = [0 0.5];
+    Gps = [2 0.5];
+    Wps = [1 3];
 end
 
 if nargin < 3
@@ -22,14 +29,14 @@ end
 sn = nan(runs,1);
 for i = 1:runs
     %a = randn(s,1);
-    a = normrnd(0,0.5,[s 1]);
+    a = normrnd(Nps(1),Nps(2),[s 1]);
     sn(i) = skewness(a);
 end
 
 % LOGNORMAL case
 sl = nan(runs,1);
 for i = 1:runs
-    b = lognrnd(0,0.5,[s 1]);
+    b = lognrnd(Lps(1),Lps(2),[s 1]);
     sl(i) = skewness(b);
 end
 
@@ -38,7 +45,7 @@ if nargout > 5
     sg = nan(runs,1);
     for i = 1:runs
         %[0.5 2 5 9],[0.5 1 1.5 2]
-        c = gamrnd(2,0.5,[s 1]);
+        c = gamrnd(Gps(1),Gps(2),[s 1]);
         sg(i) = skewness(c);
     end
     
@@ -46,7 +53,7 @@ if nargout > 5
     sw = nan(runs,1);
     for i = 1:runs
         %0.5 1 1.5 2],[0.5 1.75 3.5 5]
-        d = wblrnd(1,3,[s 1]);
+        d = wblrnd(Wps(1),Wps(2),[s 1]);
         sw(i) = skewness(d);
     end
 
