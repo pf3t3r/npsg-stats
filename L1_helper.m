@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,threshold)
+function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,unc,threshold)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -15,10 +15,14 @@ function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,threshold)
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
+if nargin < 3
+    unc = nan(70,16);
+end
+
 % Set default threshold
 % Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
-if nargin < 3
+if nargin < 4
     threshold = 50;
 end
 
@@ -70,7 +74,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(p,ks,obs,Sk,Ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120]);
+plotKs(p,ks,obs,Sk,Ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120],unc);
 
 % disp(vuongRes);
 end

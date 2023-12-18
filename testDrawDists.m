@@ -1,6 +1,6 @@
 clear;clc;close all;
 
-chla = importdata("data\L0\chlaCtd0dbar.txt").data(:,4);
+chla = importdata("data\L0\chlaCtd250dbar.txt").data(:,4);
 chla(chla==-9 | chla<=0) = nan;
 % N = makedist("Normal","mu",1,"sigma",0.5);
 % L = makedist("Lognormal","mu",-2.5,"sigma",0.5);

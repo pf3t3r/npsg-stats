@@ -1,10 +1,14 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,fluoOveride)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,unc,fluoOveride)
 %plotKs
 % INPUT: 
 % OUTPUT: 
 
-if nargin < 13
+if nargin < 14
     fluoOveride = false;
+end
+
+if nargin < 13
+    unc = nan(70,16);
 end
 
 if nargin < 10
@@ -236,26 +240,77 @@ end
 obsTmp = obs(obs>=50);
 disp(length(obsTmp));
 disp(n);
-yneg = nan(n,1); ypos = nan(n,1); xneg = nan(n,1); xpos = nan(n,1);
+ynegL = nan(n,1); yposL = nan(n,1); xnegL = nan(n,1); xposL = nan(n,1);
+ynegN = nan(n,1); yposN = nan(n,1); xnegN = nan(n,1); xposN = nan(n,1);
+ynegG = nan(n,1); yposG = nan(n,1); xnegG = nan(n,1); xposG = nan(n,1);
+ynegW = nan(n,1); yposW = nan(n,1); xnegW = nan(n,1); xposW = nan(n,1);
 for i = 1:n
     if obsTmp(i) > 300
-        yneg(i) = -1.02; ypos(i) = 0.92;
-        xneg(i) = -0.23; xpos(i) = 0.22;
+        ynegL(i) = unc(60,5); yposL(i) = unc(60,6);
+        %ynegL(i) = -1.02; yposL(i) = 0.92;
+        xnegL(i) = unc(60,7); xposL(i) = unc(60,8);
+        %xnegL(i) = -0.23; xposL(i) = 0.22;
+        ynegN(i) = unc(60,1); yposN(i) = unc(60,2);
+        xnegN(i) = unc(60,3); xposN(i) = unc(60,4);
+        ynegG(i) = unc(60,9); yposG(i) = unc(60,10);
+        xnegG(i) = unc(60,11); xposG(i) = unc(60,12);
+        ynegW(i) = unc(60,13); yposW(i) = unc(60,14);
+        xnegW(i) = unc(60,15); xposW(i) = unc(60,16);
     elseif obsTmp(i) > 250
-        yneg(i) = -1.06; ypos(i) = 0.96;
-        xneg(i) = -0.24; xpos(i) = 0.25;
+        ynegL(i) = unc(50,5); yposL(i) = unc(50,6);
+        %ynegL(i) = -1.06; yposL(i) = 0.96;
+        xnegL(i) = unc(50,7); xposL(i) = unc(50,8);
+        %xnegL(i) = -0.24; xposL(i) = 0.25;
+        ynegN(i) = unc(50,1); yposN(i) = unc(50,2);
+        xnegN(i) = unc(50,3); xposN(i) = unc(50,4);
+        ynegG(i) = unc(50,9); yposG(i) = unc(50,10);
+        xnegG(i) = unc(50,11); xposG(i) = unc(50,12);
+        ynegW(i) = unc(50,13); yposW(i) = unc(50,14);
+        xnegW(i) = unc(50,15); xposW(i) = unc(50,16);
     elseif obsTmp(i) > 200
-        yneg(i) = -1.13; ypos(i) = 0.96;
-        xneg(i) = -0.27; xpos(i) = 0.26;
+        ynegL(i) = unc(40,5); yposL(i) = unc(40,6);
+        %ynegL(i) = -1.13; yposL(i) = 0.96;
+        xnegL(i) = unc(40,7); xposL(i) = unc(40,8);
+        %xnegL(i) = -0.27; xposL(i) = 0.26;
+        ynegN(i) = unc(40,1); yposN(i) = unc(40,2);
+        xnegN(i) = unc(40,3); xposN(i) = unc(40,4);
+        ynegG(i) = unc(40,9); yposG(i) = unc(40,10);
+        xnegG(i) = unc(40,11); xposG(i) = unc(40,12);
+        ynegW(i) = unc(40,13); yposW(i) = unc(40,14);
+        xnegW(i) = unc(40,15); xposW(i) = unc(40,16);
     elseif obsTmp(i) > 150
-        yneg(i) = -1.22; ypos(i) = 1.08;
-        xneg(i) = -0.30; xpos(i) = 0.29;
+        ynegL(i) = unc(30,5); yposL(i) = unc(30,6);
+        %ynegL(i) = -1.22; yposL(i) = 1.08;
+        xnegL(i) = unc(30,7); xposL(i) = unc(30,8);
+        %xnegL(i) = -0.30; xposL(i) = 0.29;
+        ynegN(i) = unc(30,1); yposN(i) = unc(30,2);
+        xnegN(i) = unc(30,3); xposN(i) = unc(30,4);
+        ynegG(i) = unc(30,9); yposG(i) = unc(30,10);
+        xnegG(i) = unc(30,11); xposG(i) = unc(30,12);
+        ynegW(i) = unc(30,13); yposW(i) = unc(30,14);
+        xnegW(i) = unc(30,15); xposW(i) = unc(30,16);
     elseif obsTmp(i) > 100
-        yneg(i) = -1.30; ypos(i) = 1.15;
-        xneg(i) = -0.34; xpos(i) = 0.33;
+        ynegL(i) = unc(20,5); yposL(i) = unc(20,6);
+        %ynegL(i) = -1.30; yposL(i) = 1.15;
+        xnegL(i) = unc(20,7); xposL(i) = unc(20,8);
+        %xnegL(i) = -0.34; xposL(i) = 0.33;
+        ynegN(i) = unc(20,1); yposN(i) = unc(20,2);
+        xnegN(i) = unc(20,3); xposN(i) = unc(20,4);
+        ynegG(i) = unc(20,9); yposG(i) = unc(20,10);
+        xnegG(i) = unc(20,11); xposG(i) = unc(20,12);
+        ynegW(i) = unc(20,13); yposW(i) = unc(20,14);
+        xnegW(i) = unc(20,15); xposW(i) = unc(20,16);
     else
-        yneg(i) = -1.24; ypos(i) = 1.11;
-        xneg(i) = -0.51; xpos(i) = 0.38;
+        ynegL(i) = unc(10,5); yposL(i) = unc(10,6);
+        %ynegL(i) = -1.24; yposL(i) = 1.11;
+        xnegL(i) = unc(10,7); xposL(i) = unc(10,8);
+        %xnegL(i) = -0.51; xposL(i) = 0.38;
+        ynegN(i) = unc(10,1); yposN(i) = unc(10,2);
+        xnegN(i) = unc(10,3); xposN(i) = unc(10,4);
+        ynegG(i) = unc(10,9); yposG(i) = unc(10,10);
+        xnegG(i) = unc(10,11); xposG(i) = unc(10,12);
+        ynegW(i) = unc(10,13); yposW(i) = unc(10,14);
+        xnegW(i) = unc(10,15); xposW(i) = unc(10,16);
     end
 end
 
@@ -272,7 +327,10 @@ scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='*',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
-errorbar(sk,ku,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
+errorbar(sk,ku,ynegL,yposL,xnegL,xposL,'o','Color','#1f78b4','HandleVisibility','off',LineWidth=1.9);
+errorbar(sk,ku,ynegG,yposG,xnegG,xposG,'o','Color','#33a02c','HandleVisibility','off',LineWidth=1.6);
+errorbar(sk,ku,ynegW,yposW,xnegW,xposW,'o','Color','#b2df8a','HandleVisibility','off',LineWidth=1.3);
+errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,flipud(colormap("hot")));

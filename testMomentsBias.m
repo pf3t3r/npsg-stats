@@ -156,10 +156,10 @@ runs = 5000;
 
 %% Test 0-350 samples in steps of 5
 
-N = [0.1134 0.0557];
-L = [-2.2926 0.4956];
-G = [4.4678 0.0254];
-W = [0.1284 2.1612];
+N = [0.0456 0.0249];
+L = [-3.3046 0.7849];
+G = [2.4675 0.0185];
+W = [0.0510 1.8469];
 
 tmp = 5:5:350;
 for i=1:length(tmp)
@@ -204,10 +204,10 @@ title("Weibull");
 stitle = "Kurtosis Bias (" + sprintf('%d',runs) + " runs)";
 sgtitle(stitle);
 
-fName = "figures/kurtBias/__350_" + sprintf('%d',runs) + "runs_C6.png";
+fName = "figures/kurtBias/__350_" + sprintf('%d',runs) + "runs_C7.png";
 exportgraphics(ax1,fName);
 
-save("output\skku\kurtBiasC6.mat","n1","sn1","l1","sl1","g1","pg1","w1","pw1");
+save("output\skku\kurtBiasC7.mat","n1","sn1","l1","sl1","g1","pg1","w1","pw1");
 
 ax2 = figure;
 subplot(2,2,1)
@@ -245,10 +245,10 @@ title("Weibull");
 stitle = "Skewness Bias (" + sprintf('%d',runs) + " runs)";
 sgtitle(stitle);
 
-fName = "figures/skewBias/__350_" + sprintf('%d',runs) + "runs_C6.png";
+fName = "figures/skewBias/__350_" + sprintf('%d',runs) + "runs_C7.png";
 exportgraphics(ax2,fName);
 
-save("output\skku\skewBiasC6.mat","mn1","ssn1","ml1","ssl1","g2","pg2","w2","pw2");
+save("output\skku\skewBiasC7.mat","mn1","ssn1","ml1","ssl1","g2","pg2","w2","pw2");
 
 
 clearvars -except runs;
