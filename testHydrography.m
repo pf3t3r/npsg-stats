@@ -43,6 +43,7 @@ ylabel('P [dbar]'); xlabel('Density [kg m$^{-3}$]','Interpreter','latex');
 figure
 scatter(Nsquared,pmid,[],[0.4 0.4 0.4],'.');
 set(gca,'YDir','reverse'); xlim([-1e-3 1e-3]);
+ylim([50 180]);
 ylabel('P [dbar]'); xlabel('N$^2$ [rad$^2 s^{-2}$]','Interpreter','latex');
 
 %%

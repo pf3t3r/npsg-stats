@@ -7,6 +7,7 @@ function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,unc,threshold)
 % concentration are used.
 % maxMld: the maximum mixed layer depth per cruise. Only values shallower
 % than this will be considered.
+% unc: uncertainty. To be removed...
 % OUTPUTS
 % ax = figure identifier, needed for labelling and export,
 % p = pressures where sufficient measurements exist in mixed layer,
