@@ -2,8 +2,8 @@ clear; clc; close all; addpath("baroneRoutines\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28 15]);
 
 % Label for figures
-tmpT = "_NL";
-% tmpT = "";
+% tmpT = "_NL";
+tmpT = "";
 
 %% Load MLD and DCM
 pMaxMld = load("mldVals.mat").maxMld;
