@@ -59,29 +59,69 @@ tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 % Default Case
 for i = 1:n
     if vuongRes(i) == 1
-        annot(i) = "Normal";
+        tmp = "Normal";
         anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
+        if pV(1,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," L");
         end
+        if pV(2,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," W");
+        end
+        if pV(3,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," G");
+        end
+        annot(i) = tmp;
     elseif vuongRes(i) == 2
-        annot(i) = "Lognormal";
+        tmp = "Lognormal";
         anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
+        if pV(1,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," N");
         end
+        if pV(5,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," W");
+        end
+        if pV(6,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," G");
+        end
+        annot(i) = tmp;
     elseif vuongRes(i) == 3
-        annot(i) = "Weibull";
+        tmp = "Weibull";
         anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
+        if pV(2,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," N");
         end
+        if pV(5,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," L");
+        end
+        if pV(8,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," G");
+        end
+        annot(i) = tmp;
     elseif vuongRes(i) == 4
-        annot(i) = "Gamma";
+        tmp = "Gamma";
         anClr(i) = '#33a02c';
-        if pV(6,i) > 0.05 || pV(3,i) > 0.05 || pV(8,i) > 0.05
+        if pV(6,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," L");
         end
+        if pV(3,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," N");
+        end
+        if pV(8,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," W");
+        end
+        annot(i) = tmp;
     elseif vuongRes(i) == 0
         annot(i) = "";
     end
@@ -177,8 +217,9 @@ set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 title('No. of Observations');
 
 subplot(1,6,[2 3])
-plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+xline(0.05,HandleVisibility="off");
 hold on
+plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
@@ -327,10 +368,10 @@ scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='*',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
-errorbar(sk,ku,ynegL,yposL,xnegL,xposL,'o','Color','#1f78b4','HandleVisibility','off',LineWidth=1.9);
-errorbar(sk,ku,ynegG,yposG,xnegG,xposG,'o','Color','#33a02c','HandleVisibility','off',LineWidth=1.6);
-errorbar(sk,ku,ynegW,yposW,xnegW,xposW,'o','Color','#b2df8a','HandleVisibility','off',LineWidth=1.3);
-errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
+% errorbar(sk,ku,ynegL,yposL,xnegL,xposL,'o','Color','#1f78b4','HandleVisibility','off',LineWidth=1.9);
+% errorbar(sk,ku,ynegG,yposG,xnegG,xposG,'o','Color','#33a02c','HandleVisibility','off',LineWidth=1.6);
+% errorbar(sk,ku,ynegW,yposW,xnegW,xposW,'o','Color','#b2df8a','HandleVisibility','off',LineWidth=1.3);
+% errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,flipud(colormap("hot")));

@@ -38,7 +38,7 @@ clear tmp;
 % 3. Bin data
 [~,pOutB,cOutB,~,~] = cleanAndBin(pOut,cOut,idOut');
 
-% 4. Calculate KS p-value, skewness, kurtosis
+% 4. Calculate KS p-value, skewness, kurtosis, Vuong Parameters
 [ks,obs,p,Sk,Ku,sd,rV,pV] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
 
 % 4.a. Intercomparison of results from Vuong's Test: easily see best
