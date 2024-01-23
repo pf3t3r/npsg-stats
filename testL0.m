@@ -13,7 +13,7 @@ n = length(pIn);
 
 tmpT = "";
 
-chlaCtd = load("output\CTD\chla.mat").meanEpN(1:101,:);
+chlaCtd = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
 pCtd = 0:2:200;
 %% Bin
 pB = discretize(pIn,0:10:200);
