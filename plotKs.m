@@ -213,8 +213,10 @@ else
     ylim([obsLimA obsLimB]);
 end
 ylabel('Pressure [dbar]');
-set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
-title('No. of Observations');
+% set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
+yticks(0.5:2:19.5);
+yticklabels(0:20:200);
+title('# Observations');
 
 subplot(1,6,[2 3])
 xline(0.05,HandleVisibility="off");
@@ -229,6 +231,7 @@ ylim(limits);
 set(gca,'YDir','reverse');
 legend(Location="best");
 xlabel('p-value');
+yticklabels({});
 title('K-S p-values');
 
 subplot(1,6,4)
@@ -255,6 +258,7 @@ end
 grid minor;
 set(gca,"Xtick",[]);
 ylim(limits); set(gca,'YDir','reverse');
+yticklabels({});
 % legend(Location="south");
 title('Vuong LLR');
 

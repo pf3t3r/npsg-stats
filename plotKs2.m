@@ -156,8 +156,8 @@ set(gca,'XDir','reverse');
 % ylim([1 length(tix)]);
 ylim([1 length(tix)]);
 ylabel('Pressure [dbar]');
-set(gca,"YTick",1:1:length(tix),"YTickLabel",lim1:10:lim2);
-title('No. of Observations');
+set(gca,"YTick",1:2:length(tix),"YTickLabel",lim1:20:lim2);
+title('# Observations');
 
 subplot(1,6,[2 3])
 xline(0.05,HandleVisibility="off");
@@ -172,6 +172,7 @@ ylim([lim1 lim2]);
 set(gca,'YDir','reverse');
 legend('Location','best','FontSize',6);
 xlabel('p-value');
+yticklabels({});
 title('K-S Test');
 
 zzs = 0.25*ones(n,1);
@@ -190,6 +191,7 @@ end
 % hold off
 grid minor;
 ylim(limits); set(gca,'YDir','reverse');
+yticklabels({});
 title('Vuong LLR');
 
 
