@@ -33,3 +33,6 @@ datafiles/f_all.mat
 datafiles/flagged.mat
 datafiles/flagged.mat
 datafiles/flagged.mat
+
+# Ignore MAT files in general
+*.mat
