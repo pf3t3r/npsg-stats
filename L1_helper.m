@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,unc,threshold)
+function [ax,p,ks,obs,Sk,Ku,sd,rV,pV,cOutB,pOutB] = L1_helper(tmp,maxMld,unc,threshold)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS

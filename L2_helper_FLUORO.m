@@ -104,32 +104,72 @@ rV(isnan(rV)) = 0;
 for i = 1:n2
     if rV(1,i) & rV(2,i) & rV(3,i) > 0
         vuongRes(i) = 1;
-        annot(i) = "Normal";
+        tmp = "Normal";
         anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05 || pV(2,i) > 0.05 || pV(3,i) > 0.05
+        if pV(1,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," L");
         end
+        if pV(2,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," W");
+        end
+        if pV(3,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," G");
+        end
+        annot(i) = tmp;
     elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
         vuongRes(i) = 2;
-        annot(i) = "Lognormal";
+        tmp = "Lognormal";
         anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05 || pV(5,i) > 0.05 || pV(6,i) > 0.05
+        if pV(1,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," N");
         end
+        if pV(5,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," W");
+        end
+        if pV(6,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," G");
+        end
+        annot(i) = tmp;
     elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
         vuongRes(i) = 3;
-        annot(i) = "Weibull";
+        tmp = "Weibull";
         anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05 || pV(5,i) > 0.05 || pV(8,i) > 0.05
+        if pV(2,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," N");
         end
+        if pV(5,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," L");
+        end
+        if pV(8,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," G");
+        end
+        annot(i) = tmp;
     elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
         vuongRes(i) = 4;
-        annot(i) = "Gamma";
+        tmp = "Gamma";
         anClr(i) = '#33a02c';
-        if pV(3,i) > 0.05 || pV(6,i) > 0.05 || pV(8,i) > 0.05
+        if pV(6,i) > 0.05
             tmpEmph(i) = 'normal';
+            tmp = append(tmp," L");
         end
+        if pV(3,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," N");
+        end
+        if pV(8,i) > 0.05
+            tmpEmph(i) = 'normal';
+            tmp = append(tmp," W");
+        end
+        annot(i) = tmp;
     end
 end
 rV(rV==0) = nan;
@@ -201,9 +241,10 @@ hold off
 set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
 ylabel('Pressure [dbar]');
+xlabel('# Observations');
 set(gca,"YTick",1:5:n2,"YTickLabel",range(1):10:range(end));
 ylim([rangeLen(21) rangeLen(end-30)]);
-title('No. of Observations');
+% title('No. of Observations');
 
 subplot(1,6,[2 3])
 plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
@@ -216,8 +257,8 @@ grid minor;
 ylim([l1+40 l2-60]);
 set(gca,'YDir','reverse');
 legend('Location','best');
-xlabel('$p$-value','Interpreter','latex');
-title('K-S Test');
+xlabel('K-S $p$-value','Interpreter','latex');
+% title('K-S Test');
 
 zzs = 0.25*ones(n2,1);
 subplot(1,6,4)
@@ -226,7 +267,9 @@ for i = 1:n2
 end
 ylim([l1+40 l2-60]); 
 set(gca,'YDir','reverse');
-title('Vuong LLR');
+xlabel('Vuong LLR');
+set(gca,'xtick',[]);
+% title('Vuong LLR');
 
 tmp = [];
 for i = 1:n2
@@ -297,10 +340,10 @@ scatter(2,9,'DisplayName','Exp.',Marker='+',LineWidth=1);
 scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
-errorbar(sk2,ku2,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
+% errorbar(sk2,ku2,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
 clr = 1:1:length(tr2);
 scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
-colormap(gca,flipud(colormap("hot")));
+colormap(gca,cbrewer2("RdYlBu"));
 cbar = colorbar;
 cbar.Direction = "reverse";
 cbar.Ticks = 1:10:length(tr2);
@@ -312,7 +355,7 @@ ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
 lgd = legend('Location','best');
 title(lgd,'Distributions');
-title('Skewness vs. Kurtosis');
+% title('Skewness vs. Kurtosis');
 
 sk = sk2; ku = ku2; tr = tr2;
 

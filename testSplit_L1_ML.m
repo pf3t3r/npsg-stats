@@ -442,11 +442,11 @@ save("output\L1\perid.mat","p","ks","obs","Sk","Ku");
 tmp = importdata("data\L1\but19_88-21_150.txt");
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+[ax,p,ks,obs,Sk,Ku,~,~,~,cOut,pOut] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC 19 Butanoyloxyfucoxanthin 88-21: L1");
 exportgraphics(ax,"figures/L1/bottle/but19" + tmpT + ".png"); clear ax;
-save("output\L1\but19.mat","p","ks","obs","Sk","Ku");
+save("output\L1\but19.mat","p","ks","obs","Sk","Ku","cOut","pOut");
 
 %% HPLC Fucoxanthin: 88-21
 % Two significant digits => unreliable!
@@ -468,11 +468,11 @@ save("output\L1\fuco.mat","p","ks","obs","Sk","Ku");
 tmp = importdata("data\L1\hex19_88-21_150.txt");
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+[ax,p,ks,obs,Sk,Ku,~,~,~,cOut,pOut] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC 19' Hexanoyloxyfucoxanthin 88-21: L1");
 exportgraphics(ax,"figures/L1/bottle/hex19" + tmpT + ".png"); clear ax;
-save("output\L1\hex19.mat","p","ks","obs","Sk","Ku");
+save("output\L1\hex19.mat","p","ks","obs","Sk","Ku","cOut","pOut");
 
 %% HPLC Prasinoxanthin: 88-21
 % One significant digits => very unreliable!
@@ -549,11 +549,11 @@ save("output\L1\chlb.mat","p","ks","obs","Sk","Ku");
 tmp = importdata("data\L1\acar_94-21_150.txt");
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+[ax,p,ks,obs,Sk,Ku,~,~,~,cOut,pOut] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC alpha-Carotene 94-21: L1");
 exportgraphics(ax,"figures/L1/bottle/acar" + tmpT + ".png"); clear ax;
-save("output\L1\acar.mat","p","ks","obs","Sk","Ku");
+save("output\L1\acar.mat","p","ks","obs","Sk","Ku","cOut","pOut");
 
 %% HPLC beta-Carotene: 94-21
 % One or two significant digits => unreliable!

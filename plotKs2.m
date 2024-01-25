@@ -157,7 +157,7 @@ set(gca,'XDir','reverse');
 ylim([1 length(tix)]);
 ylabel('Pressure [dbar]');
 set(gca,"YTick",1:2:length(tix),"YTickLabel",lim1:20:lim2);
-title('# Observations');
+xlabel('# Observations');
 
 subplot(1,6,[2 3])
 xline(0.05,HandleVisibility="off");
@@ -171,9 +171,9 @@ grid minor;
 ylim([lim1 lim2]);
 set(gca,'YDir','reverse');
 legend('Location','best','FontSize',6);
-xlabel('p-value');
+xlabel('K-S $p$-value',Interpreter='latex');
 yticklabels({});
-title('K-S Test');
+% title('K-S Test');
 
 zzs = 0.25*ones(n,1);
 subplot(1,6,4)
@@ -192,7 +192,8 @@ end
 grid minor;
 ylim(limits); set(gca,'YDir','reverse');
 yticklabels({});
-title('Vuong LLR');
+set(gca,"XTick",[]);
+xlabel('Vuong LLR');
 
 
 % subplot(1,4,3)
@@ -303,6 +304,6 @@ ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
 lgd = legend('Location','best');
 title(lgd,'Distributions');
-title('Skewness vs. Kurtosis');
+% title('Skewness vs. Kurtosis');
 
 end

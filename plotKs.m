@@ -216,7 +216,7 @@ ylabel('Pressure [dbar]');
 % set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 yticks(0.5:2:19.5);
 yticklabels(0:20:200);
-title('# Observations');
+xlabel('# Observations');
 
 subplot(1,6,[2 3])
 xline(0.05,HandleVisibility="off");
@@ -230,9 +230,9 @@ grid minor;
 ylim(limits);
 set(gca,'YDir','reverse');
 legend(Location="best");
-xlabel('p-value');
+xlabel('K-S $p$-value',Interpreter='latex');
 yticklabels({});
-title('K-S p-values');
+% title('K-S p-values');
 
 subplot(1,6,4)
 zzs = 0.25*ones(n,1);
@@ -258,9 +258,9 @@ end
 grid minor;
 set(gca,"Xtick",[]);
 ylim(limits); set(gca,'YDir','reverse');
-yticklabels({});
+set(gca,'xtick',[]);
 % legend(Location="south");
-title('Vuong LLR');
+xlabel('Vuong LLR');
 
 kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
 if max(ku) > 10 & min(sk) < 0
@@ -378,7 +378,7 @@ scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
-colormap(gca,flipud(colormap("hot")));
+colormap(gca,cbrewer2("RdYlBu"));
 cbar = colorbar;
 cbar.Direction = "reverse";
 cbar.Ticks = 1:1:length(tr);
@@ -392,6 +392,6 @@ ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness'); ylabel('Kurtosis');
 lgd = legend('Location','best','FontSize',6);
 title(lgd,'P [dbar]');
-title('Skewness vs. Kurtosis');
+% title('Skewness vs. Kurtosis');
 
 end

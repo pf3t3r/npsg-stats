@@ -1,4 +1,4 @@
-function [ax,tr,ks,obs,sk,ku,sd,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold)
+function [ax,tr,ks,obs,sk,ku,sd,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold,unc)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -19,6 +19,10 @@ function [ax,tr,ks,obs,sk,ku,sd,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold
 % & Zahediasl (2012), and Ahad et al (2011).
 if nargin < 4
     threshold = 50;
+end
+
+if nargin < 5
+    unc = nan(70,16);
 end
 
 % for i = 1:length(epN(1,:))
@@ -117,7 +121,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(tr,ks,obs,sk,ku,0,94,true,threshold,vuongRes,pV,[0 94],true);
+plotKs(tr,ks,obs,sk,ku,0,94,true,threshold,vuongRes,pV,[0 94],unc,true);
 % 
 % disp(vuongRes);
 end

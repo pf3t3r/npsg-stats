@@ -175,3 +175,85 @@ title("Skewness-Kurtosis");
 
 sgtitle("L0: CTD Chl-a");
 exportgraphics(ax2,"figures/L0/ctd/chla" + tmpT + ".png"); clear ax;
+
+%%
+close all;
+
+tmpAlpha = importdata('data/L0/alphaCaro_50-60.txt');
+tmpBut19 = importdata('data\L0\but19_50-60.txt');
+tmpHex19 = importdata('data\L0\hex19_50-60.txt');
+
+alphaCar = tmpAlpha.data(:,5);
+but19 = tmpBut19.data(:,5);
+hex19 = tmpHex19.data(:,5);
+
+%%
+figure; histogram(alphaCar,max(alphaCar)); title('alpha-carotene');
+
+figure; histogram(but19,max(but19)); title('But-19');
+
+figure; histogram(hex19,max(hex19)); title('Hex-19');
+
+%%
+[mleA,ksA] = statsplot2(alphaCar);
+[~,ksB] = statsplot2(but19);
+[~,ksH] = statsplot2(hex19);
+
+
+pd = makedist("Gamma","a",mleA(4,1),"b",mleA(4,2));
+
+[~,pAdA] = adtest(alphaCar,"Distribution",pd);
+[~,pAdB] = adtest(but19,"Distribution",pd);
+[~,pAdH] = adtest(hex19,"Distribution",pd);
+
+[rA,pA] = bbvuong(alphaCar);
+[rB,pB] = bbvuong(but19);
+[rH,pH] = bbvuong(hex19);
+
+%%
+dAcar = load("output\L1\acar.mat");
+pOutA = dAcar.pOut;
+cOutA = dAcar.cOut;
+
+dHex19 = load("output\L1\hex19.mat");
+pOutH = dHex19.pOut;
+cOutH = dHex19.cOut;
+
+dBut19 = load("output\L1\but19.mat");
+pOutB = dBut19.pOut;
+cOutB = dBut19.cOut;
+%%
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 36 10]);
+
+figure;
+subplot(1,3,1)
+histogram(alphaCar); title("alpha-caro");
+subplot(1,3,2)
+histogram(but19); title("but-19");
+subplot(1,3,3)
+histogram(hex19); title("hex-19");
+sgtitle('50-60 dbar bin: L0');
+
+%%
+figure;
+subplot(1,3,1)
+histogram(cOutA(pOutA==6)); title("alpha-caro");
+subplot(1,3,2)
+histogram(cOutB(pOutB==6)); title("but-19");
+subplot(1,3,3)
+histogram(cOutH(pOutH==6)); title("hex-19");
+sgtitle('50-60 dbar bin: L1');
+
+%% remove outlier in hex-19 L0
+
+hex19o = hex19;
+hex19o(40) = [];
+% show
+figure
+plot(hex19);
+hold on
+plot(hex19o);
+hold off
+
+[~,ksHo] = statsplot2(hex19o);
+[rHo,pHo] = bbvuong(hex19o);
