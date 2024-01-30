@@ -21,17 +21,17 @@ clear ctdData i;
 
 %% Load 3rd and 4th Moments Bias
 
-% For now use "Case 3" (parameters based on estimation for chla at 100
-% dbar)
-tmpK = importdata("output\skku\kurtBiasC3.mat");
-tmpS = importdata("output\skku\skewBiasC3.mat");
-
-uN = [tmpK.n1'-tmpK.sn1(:,1) tmpK.sn1(:,2)-tmpK.n1' tmpS.mn1'-tmpS.ssn1(:,1) tmpS.ssn1(:,2)-tmpS.mn1'];
-uL = [tmpK.l1'-tmpK.sl1(:,1) tmpK.sl1(:,2)-tmpK.l1' tmpS.ml1'-tmpS.ssl1(:,1) tmpS.ssl1(:,2)-tmpS.ml1'];
-uG = [tmpK.g1'-tmpK.pg1(:,1) tmpK.pg1(:,2)-tmpK.g1' tmpS.g2'-tmpS.pg2(:,1) tmpS.pg2(:,2)-tmpS.g2'];
-uW = [tmpK.w1'-tmpK.pw1(:,1) tmpK.pw1(:,2)-tmpK.w1' tmpS.w2'-tmpS.pw2(:,1) tmpS.pw2(:,2)-tmpS.w2'];
-
-unc = [uN uL uG uW];
+% % For now use "Case 3" (parameters based on estimation for chla at 100
+% % dbar)
+% tmpK = importdata("output\skku\kurtBiasC3.mat");
+% tmpS = importdata("output\skku\skewBiasC3.mat");
+% 
+% uN = [tmpK.n1'-tmpK.sn1(:,1) tmpK.sn1(:,2)-tmpK.n1' tmpS.mn1'-tmpS.ssn1(:,1) tmpS.ssn1(:,2)-tmpS.mn1'];
+% uL = [tmpK.l1'-tmpK.sl1(:,1) tmpK.sl1(:,2)-tmpK.l1' tmpS.ml1'-tmpS.ssl1(:,1) tmpS.ssl1(:,2)-tmpS.ml1'];
+% uG = [tmpK.g1'-tmpK.pg1(:,1) tmpK.pg1(:,2)-tmpK.g1' tmpS.g2'-tmpS.pg2(:,1) tmpS.pg2(:,2)-tmpS.g2'];
+% uW = [tmpK.w1'-tmpK.pw1(:,1) tmpK.pw1(:,2)-tmpK.w1' tmpS.w2'-tmpS.pw2(:,1) tmpS.pw2(:,2)-tmpS.w2'];
+% 
+% unc = [uN uL uG uW];
 %% README
 % How is this script organised?
 % At the highest level we have each variable in "blocks".
@@ -60,7 +60,7 @@ unc = [uN uL uG uW];
 tmp = importdata("data/L1/hplcChla_88-21_150.txt");
 
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld,unc);
+[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld);
 
 sgtitle("[Chl a] 88-21: L1");
 exportgraphics(ax,"figures/L1/bottle/chla" + tmpT + ".png"); clear ax;
