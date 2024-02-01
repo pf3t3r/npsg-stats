@@ -27,8 +27,8 @@ l_exp = log(pdf('exp',x,MLEp(5,1)));
 n = length(x);
 
 % Normal vs Log-normal
-l_nl = l_norm - l_logn; % PETER: each depth
-R_nl = sum(l_nl); % PETER: complete depth
+l_nl = l_norm - l_logn;
+R_nl = sum(l_nl);
 m_nl = mean(l_nl);
 % disp(n);
 % disp(m_nl);

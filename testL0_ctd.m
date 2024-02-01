@@ -23,7 +23,7 @@ for i = 1:n3
     % results
     X_i(isnan(X_i)) = [];
     if length(X_i) > 3
-        [~,ksC(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
+        [~,ksC(:,i),~] = statsplot2(X_i,'noplot');
         [rVC(:,i),pVC(:,i)] = bbvuong(X_i);
         skC(i) = skewness(X_i);
         kuC(i) = kurtosis(X_i);
@@ -73,7 +73,7 @@ subplot(1,2,1)
 plot(ksC(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5);
 xline(0.05);
 set(gca,'YDir','reverse');
-ylabel('P [dbar]'); xlabel('$p$-value','Interpreter','latex'); title('K-S');
+ylabel('P [dbar]'); xlabel('K-S $p$-value','Interpreter','latex');
 
 clr = 1:1:length(pCtd);
 subplot(1,2,2)
@@ -82,7 +82,7 @@ hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 scatter(skC,kuC,24,clr,"filled","o",HandleVisibility="off");
 hold off
-colormap(gca,flipud(colormap("hot")));
+colormap(gca,cbrewer2("RdYlBu"));
 cbar = colorbar;
 cbar.Direction = "reverse";
 cbar.Ticks = 1:10:length(pCtd);
@@ -90,9 +90,8 @@ cbar.TickLabels = pCtd(1):20:pCtd(101);
 cbar.Label.String = "P [dbar]";
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 ylabel('Kurtosis'); xlabel('Skewness');
-title("Skewness-Kurtosis");
 
-sgtitle("L0: CTD Chl-a");
+sgtitle("L0: CTD Chl $a$","Interpreter","latex");
 exportgraphics(ax2,"figures/L0/ctd/chla" + tmpT + ".png"); clear ax;
 
 %%

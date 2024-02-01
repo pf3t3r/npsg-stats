@@ -33,7 +33,7 @@ for i = 1:n2
     X_i(X_i <= 0) = [];
     % apply KS test to X_i (only when at least 3 values at binned pressure)
     if length(X_i) > 3
-        [~,ks(:,i),~,~,~,~] = statsplot2(X_i,'noplot');
+        [~,ks(:,i),~] = statsplot2(X_i,'noplot');
         [rV(:,i),pV(:,i)] = bbvuong(X_i);
         sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
