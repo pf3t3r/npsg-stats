@@ -1,4 +1,4 @@
-function [tr,ks,obs,sk,ku,sd,rV,pV] = ksOfLagrangian(id,p,dcm,X,threshold)
+function [tr,ks,obs,sk,ku,rV,pV] = ksOfLagrangian(id,p,dcm,X,threshold)
 %ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
@@ -91,20 +91,20 @@ for i = 1:length(tr)
     tmp(isnan(tmp)) = [];
     obs(i) = length(tmp);
     if length(tmp) > 3
-        [~,ks(:,i),~,tmpC95,tmpMle,muMle] = statsplot2(tmp,'noplot');
+        [~,ks(:,i),~] = statsplot2(tmp,'noplot');
         [rV(:,i),pV(:,i)] = bbvuong(tmp);
         sk(i) = skewness(tmp);
         ku(i) = kurtosis(tmp);
-        tmpDat = [std(tmp) std(log(tmp))];
-        tmpDatMu = [mean(tmp) mean(log(tmp))];
-        tmpComp = [tmpMle(1)/tmpDat(1) tmpMle(2)/tmpDat(2)];
-        tmpCompMu = [muMle(1)/tmpDatMu(1) muMle(2)/tmpDatMu(2)];
-        mu(i,:) = [muMle(1) muMle(2) tmpDatMu(1) tmpDatMu(2) tmpCompMu(1) tmpCompMu(2)];
-        sd(i,:) = [tmpMle(1) tmpMle(2) tmpDat(1) tmpDat(2) tmpComp(1) tmpComp(2)];
-        c95(i,1:2) = [tmpC95(1,1) tmpC95(2,1)];
-        c95(i,3:4) = [tmpC95(1,2) tmpC95(2,2)];
-        c95(i,5:6) = [tmpC95(1,3) tmpC95(2,3)];
-        c95(i,7:8) = [tmpC95(1,4) tmpC95(2,4)];
+%         tmpDat = [std(tmp) std(log(tmp))];
+%         tmpDatMu = [mean(tmp) mean(log(tmp))];
+%         tmpComp = [tmpMle(1)/tmpDat(1) tmpMle(2)/tmpDat(2)];
+%         tmpCompMu = [muMle(1)/tmpDatMu(1) muMle(2)/tmpDatMu(2)];
+%         mu(i,:) = [muMle(1) muMle(2) tmpDatMu(1) tmpDatMu(2) tmpCompMu(1) tmpCompMu(2)];
+%         sd(i,:) = [tmpMle(1) tmpMle(2) tmpDat(1) tmpDat(2) tmpComp(1) tmpComp(2)];
+%         c95(i,1:2) = [tmpC95(1,1) tmpC95(2,1)];
+%         c95(i,3:4) = [tmpC95(1,2) tmpC95(2,2)];
+%         c95(i,5:6) = [tmpC95(1,3) tmpC95(2,3)];
+%         c95(i,7:8) = [tmpC95(1,4) tmpC95(2,4)];
     end
 end
 
@@ -114,9 +114,9 @@ for i = 1:length(tr)
         rV(:,i) = nan;
         sk(i) = nan;
         ku(i) = nan;
-        sd(i,:) = nan;
-        c95(i,:) = nan;
-        mu(i,:) = nan;
+%         sd(i,:) = nan;
+%         c95(i,:) = nan;
+%         mu(i,:) = nan;
     end
 end
 

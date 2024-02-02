@@ -4,7 +4,7 @@ function [ax,ks,obs] = L0_helper(tmp)
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
 % SAVE and OUTPUT bottle ID: reminder!
 
-threshold = 50; tmpT = "";
+threshold = 50; tmpT = ""; alphaKs = 0.05;
 
 pIn = tmp.data(:,4);
 X = tmp.data(:,5);
@@ -44,6 +44,8 @@ for i = 1:n2
 end
 
 ks(:,obs<threshold) = nan;
+sk(obs<threshold) = nan;
+ku(obs<threshold) = nan;
 
 % Lognormal family: generate theoretical skewness and kurtosis
 sigTh = linspace(0,1,1000);
@@ -99,6 +101,13 @@ subplot(1,3,3)
 plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
+for i = 1:n2
+    if ks(2,i) < alphaKs
+        plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off');
+    else
+        plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+    end
+end
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 hold off
 colormap(gca,cbrewer2("RdYlBu"));

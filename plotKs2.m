@@ -288,6 +288,7 @@ scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk2,ku2,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
+scatter(sk2,ku2,Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
 clr = 1:1:length(tr2);
 scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
 % colormap(gca,flipud(colormap("hot")));
