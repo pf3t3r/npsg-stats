@@ -2,6 +2,7 @@ function [ax,ks,obs] = L0_helper(tmp)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
+% SAVE and OUTPUT bottle ID: reminder!
 
 threshold = 50; tmpT = "";
 

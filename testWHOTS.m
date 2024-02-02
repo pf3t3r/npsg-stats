@@ -1,4 +1,6 @@
 clear; clc; close all;
+addpath("baroneRoutines\");
+addpath("C:\Users\pfarrell\AppData\Roaming\MathWorks\MATLAB Add-Ons\Functions\Shapiro-Wilk and Shapiro-Francia normality tests");
 
 % import whots-16 mooring and met station data
 x = ncinfo("data\whots\OS_WHOTS_201910_D_MICROCAT-120m.nc");
@@ -56,3 +58,33 @@ ku = kurtosis(Sp);
 [R,p2] = bbvuong(abs(vwnd));
 
 [Ru,p2u] = bbvuong(abs(uwnd));
+
+%% Sum Wind Components
+
+U = sqrt(uwnd.^2 + vwnd.^2);
+
+
+%% Test FOUR hypothesis tests vs NORMAL RANDOM
+
+% testL = normrnd(10,1,[250 1]);
+
+UU = randsample(U,400);
+
+DIST = "Logn";
+
+phat = mle(UU,distribution=DIST);
+x_cdf = linspace(min(UU)-2*std(UU),max(UU)+2*std(UU),2000);
+y_cdf_norm = cdf(DIST,x_cdf,phat(1),phat(2));
+[hK,pK] = kstest(UU,[x_cdf' y_cdf_norm']);
+
+
+[hT,pT] = adtest(UU,"Distribution",DIST);
+% [hS,pS] = swtest(UU);
+if DIST == "Logn"
+    DIST = "norm";
+    UU = log(UU);
+end
+[hL,pL] = lillietest(log(UU),Distr=DIST);
+
+figure;
+histfit(UU,[],DIST);
