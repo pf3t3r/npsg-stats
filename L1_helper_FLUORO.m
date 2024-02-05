@@ -1,4 +1,4 @@
-function [ax,tr,ks,obs,sk,ku,sd,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold,unc)
+function [ax,tr,ks,obs,sk,ku,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold,unc)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -43,15 +43,15 @@ end
 
 
 % init
-ks = nan(5,n); rV = nan(10,n); pV = nan(10,n); sd = nan(n,2); sk = nan(1,n);
-ku = nan(1,n); obs = nan(1,n);
+ks = nan(5,n); rV = nan(10,n); pV = nan(10,n);
+sk = nan(1,n); ku = nan(1,n); obs = nan(1,n);
 
 for i = 1:n
     tmp = copyX(i,:);
     tmp(isnan(tmp) | tmp<0) = 0;
     tmp(tmp==0) = [];
     if length(tmp) > 3
-        [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(tmp,'noplot');
+        [~,ks(:,i),~] = statsplot2(tmp,'noplot');
         [rV(:,i),pV(:,i)] = bbvuong(tmp);
         sk(i) = skewness(tmp);
         ku(i) = kurtosis(tmp);
@@ -66,7 +66,6 @@ for i = 1:n
         ks(:,i) = nan;   
         sk(i) = nan;
         ku(i) = nan;
-        sd(i,:) = nan;
         rV(:,i) = nan;
         pV(:,i) = nan;
     end
@@ -81,7 +80,6 @@ end
 tr = pIn(tmp);
 sk = sk(tmp);
 ku = ku(tmp);
-sd = sd(tmp,:);
 rV = rV(:,tmp);
 pV = pV(:,tmp);
 

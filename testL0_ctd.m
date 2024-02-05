@@ -7,6 +7,7 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 chlaCtd = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
 pCtd = 0:2:200;
 tmpT = "";
+alphaKs = 0.05;
 
 n3 = 101;
 ksC = nan(5,n3);
@@ -80,6 +81,13 @@ subplot(1,2,2)
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
+for i = 1:n3
+    if ksC(2,i) < alphaKs
+        plot(skC(i),kuC(i),Marker="o",Color='k',HandleVisibility='off');
+    else
+        plot(skC(i),kuC(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+    end
+end
 scatter(skC,kuC,24,clr,"filled","o",HandleVisibility="off");
 hold off
 colormap(gca,cbrewer2("RdYlBu"));

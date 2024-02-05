@@ -114,31 +114,31 @@ title("$NO_3^{-}$ (mmol m$^{-3}$)",Interpreter="latex");
 %% L1 ANALYSIS
 
 %% CHL-A
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(epN,pIn,maxMld);
+[ax,p,ks,obs,Sk,Ku,rV,pV] = L1_helper_FLUORO(epN,pIn,maxMld);
 sgtitle("CTD Chl a 01-21: L1");
 exportgraphics(ax,"figures/L1/ctd/chla" + tmpT + ".png"); clear ax;
 % save("output\L1\ctd\chla.mat","p","ks","obs","Sk","Ku");
 
 %% T
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(meanT,pIn,maxMld);
+[ax,p,ks,obs,Sk,Ku,rV,pV] = L1_helper_FLUORO(meanT,pIn,maxMld);
 sgtitle("CTD Temperature 88-21: L1");
 exportgraphics(ax,"figures/L1/ctd/temp" + tmpT + ".png"); clear ax;
 % save("output\L1\ctd\t.mat","p","ks","obs","Sk","Ku");
 
 %% SP
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(meanSp,pIn,maxMld);
+[ax,p,ks,obs,Sk,Ku,rV,pV] = L1_helper_FLUORO(meanSp,pIn,maxMld);
 sgtitle("CTD S_P 88-21: L1");
 exportgraphics(ax,"figures/L1/ctd/sp" + tmpT + ".png"); clear ax;
 % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
 
 %% O2
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(meanO2,pIn,maxMld);
+[ax,p,ks,obs,Sk,Ku,rV,pV] = L1_helper_FLUORO(meanO2,pIn,maxMld);
 sgtitle("CTD O2 88-21: L1");
 exportgraphics(ax,"figures/L1/ctd/o2" + tmpT + ".png"); clear ax;
 % save("output\L1\ctd\o2.mat","p","ks","obs","Sk","Ku");
 
 %% NO3-
-[ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper_FLUORO(meanNO3,pIn,maxMld);
+[ax,p,ks,obs,Sk,Ku,rV,pV] = L1_helper_FLUORO(meanNO3,pIn,maxMld);
 sgtitle("CTD NO3- 88-21: L1");
-exportgraphics(ax,"figures/L1/ctd/no3" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/ctd/notUsed/no3" + tmpT + ".png"); clear ax;
 % save("output\L1\ctd\no3.mat","p","ks","obs","Sk","Ku");

@@ -150,7 +150,7 @@ end
 
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(no3,pIn,maxMld,dcm);
 sgtitle('NO_3^{-} 88-21: L2');
-exportgraphics(ax,'figures/L2/ctd/no3.png');
+exportgraphics(ax,'figures/L2/ctd/notUsed/no3.png');
 save("output\L2\ctd\no3.mat","pL","ks","obs","sk","ku","pV","rV");
 
 % ax2 = figure;

@@ -79,7 +79,7 @@ end
 
 pXX = 5:10:195;
 ax = figure;
-subplot(1,3,1)
+subplot(1,5,1)
 barh(obs);
 xline(50);
 ylim([0.5 20.5]);
@@ -89,7 +89,7 @@ set(gca,"YDir","reverse");
 xlabel("# Observations");
 ylabel("P [dbar]");
 
-subplot(1,3,2)
+subplot(1,5,[2 3])
 plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5);
 xline(0.05); ylim([0 200]);
 set(gca,'YDir','reverse');
@@ -97,7 +97,7 @@ yticklabels([]);
 xlabel('K-S $p$-value',Interpreter='latex');
 
 clr = 1:1:length(pXX);
-subplot(1,3,3)
+subplot(1,5,[4 5])
 plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');

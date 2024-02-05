@@ -39,7 +39,7 @@ for i = 1:n
     % change limit below to >3 to fix error with picoeu -> may change other
     % results
     if length(X_i) > 3
-        [~,ks(:,i),~,~,sd(i,:),~] = statsplot2(X_i,'noplot');
+        [~,ks(:,i),~] = statsplot2(X_i,'noplot');
         [rV(:,i),pV(:,i)] = bbvuong(X_i);
         sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);

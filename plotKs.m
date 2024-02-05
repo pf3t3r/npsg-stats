@@ -376,6 +376,7 @@ scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk,ku,ynegG,yposG,xnegG,xposG,'o','Color','#33a02c','HandleVisibility','off',LineWidth=1.6);
 % errorbar(sk,ku,ynegW,yposW,xnegW,xposW,'o','Color','#b2df8a','HandleVisibility','off',LineWidth=1.3);
 % errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
+scatter(sk,ku,Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));

@@ -75,7 +75,7 @@ tmp = importdata("data/L1/pro_05-21_150.txt");
 [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld);
 
 sgtitle("Prochlorococcus 05-21: L1");
-exportgraphics(ax,"figures/L1/bottle/pbact21" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pbact21" + tmpT + ".png"); clear ax;
 % save("output\L1\pbact21.mat","p","ks","obs","Sk","Ku");
 
 %% Prochlorococcus: 90-05
@@ -87,7 +87,7 @@ tmp = importdata("data/L1/pro_90-05_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Prochlorococcus 90-05: L1");
-exportgraphics(ax,"figures/L1/bottle/pbact05" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pbact05" + tmpT + ".png"); clear ax;
 save("output\L1\pbact05.mat","p","ks","obs","Sk","Ku");
 
 %% Bottle Dissolved Oxygen: 88-21
@@ -111,7 +111,7 @@ tmp = importdata("data/L1/dic_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Dissolved Inorganic Carbon 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/dic" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/dic" + tmpT + ".png"); clear ax;
 save("output\L1\dic.mat","p","ks","obs","Sk","Ku");
 
 %% pH: 92-21
@@ -123,7 +123,7 @@ tmp = importdata("data/L1/pH_92-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("pH 92-21: L1");
-exportgraphics(ax,"figures/L1/bottle/pH" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pH" + tmpT + ".png"); clear ax;
 save("output\L1\pH.mat","p","ks","obs","Sk","Ku");
 
 %% Alkalinity: 89-21
@@ -135,7 +135,7 @@ tmp = importdata("data/L1/alk_89-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Alkalinity 89-21: L1");
-exportgraphics(ax,"figures/L1/bottle/alk" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/alk" + tmpT + ".png"); clear ax;
 save("output\L1\alk.mat","p","ks","obs","Sk","Ku");
 
 %% Phosphate: 88-21
@@ -147,7 +147,7 @@ tmp = importdata("data/L1/pho_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Phosphate 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/phos" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/phos" + tmpT + ".png"); clear ax;
 save("output\L1\phos.mat","p","ks","obs","Sk","Ku");
 
 %% Nitrate + Nitrite: 88-21
@@ -207,7 +207,7 @@ tmp = importdata("data\L1\sil_88-22_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Silicate 88-22: L1");
-exportgraphics(ax,"figures/L1/bottle/sil" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/sil" + tmpT + ".png"); clear ax;
 save("output\L1\sil.mat","p","ks","obs","Sk","Ku");
 
 %% Dissolved Organic Phosphorus: 88-01
@@ -219,7 +219,7 @@ tmp = importdata("data/L1/dop_88-01_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Dissolved Organic Phosphorus 88-01: L1");
-exportgraphics(ax,"figures/L1/bottle/dop" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/dop" + tmpT + ".png"); clear ax;
 save("output\L1\dop.mat","p","ks","obs","Sk","Ku");
 
 %% Dissolved Organic Nitrogen: 88-17
@@ -231,7 +231,7 @@ tmp = importdata("data\L1\don_88-17_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("DON 88-17: L1");
-exportgraphics(ax,"figures/L1/bottle/don" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/don" + tmpT + ".png"); clear ax;
 save("output\L1\don.mat","p","ks","obs","Sk","Ku");
 
 %% Dissolved Organic Carbon (DOC): 93-17
@@ -243,7 +243,7 @@ tmp = importdata("data\L1\doc_93-17_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("DOC 93-17: L1");
-exportgraphics(ax,"figures/L1/bottle/doc" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/doc" + tmpT + ".png"); clear ax;
 save("output\L1\doc.mat","p","ks","obs","Sk","Ku");
 
 %% Total Dissolved Phosphorus (TDP): 88-01
@@ -255,7 +255,7 @@ tmp = importdata("data\L1\tdp_88-01_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Total Dissolved Phosphorus 88-01: L1");
-exportgraphics(ax,"figures/L1/bottle/tdp" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/tdp" + tmpT + ".png"); clear ax;
 save("output\L1\tdp.mat","p","ks","obs","Sk","Ku");
 
 %% Total Dissolved Nitrogen: 88-17
@@ -267,7 +267,7 @@ tmp = importdata("data\L1\tdn_88-17_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Total Dissolved Nitrogen 88-17: L1");
-exportgraphics(ax,"figures/L1/bottle/tdn" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/tdn" + tmpT + ".png"); clear ax;
 save("output\L1\tdn.mat","p","ks","obs","Sk","Ku");
 
 %% Particulate Phosphorus: 11-21
@@ -279,7 +279,7 @@ tmp = importdata("data\L1\parp_11-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Particulate Phosphorus 11-21: L1");
-exportgraphics(ax,"figures/L1/bottle/pp" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pp" + tmpT + ".png"); clear ax;
 save("output\L1\pp.mat","p","ks","obs","Sk","Ku");
 
 %% Particulate Nitrogen: 89-21
@@ -367,7 +367,7 @@ tmp = importdata("data\L1\chlFlu_88-22_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Fluorometric Chlorophyll a 89-22: L1");
-exportgraphics(ax,"figures/L1/bottle/chlaFluo" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/chlaFluo" + tmpT + ".png"); clear ax;
 save("output\L1\chlaFluo.mat","p","ks","obs","Sk","Ku");
 
 %% Phaeopigments: 88-22
@@ -379,7 +379,7 @@ tmp = importdata("data\L1\pheo_88-22_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Phaeopigments 88-22: L1");
-exportgraphics(ax,"figures/L1/bottle/phaeo" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/phaeo" + tmpT + ".png"); clear ax;
 save("output\L1\phaeo.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Chlorophyll C3: 88-21
@@ -392,7 +392,7 @@ tmp = importdata("data\L1\chl3_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC Chl c3: L1");
-exportgraphics(ax,"figures/L1/bottle/chl3" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/chl3" + tmpT + ".png"); clear ax;
 save("output\L1\chl3.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Chlorophyll C1 + C2: 88-21
@@ -405,7 +405,7 @@ tmp = importdata("data\L1\chl12_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC Chl c1 + c2: L1");
-exportgraphics(ax,"figures/L1/bottle/chl12" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/chl12" + tmpT + ".png"); clear ax;
 save("output\L1\chl12.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Chlorophyll C1 + C2 + C3: 88-21
@@ -432,7 +432,7 @@ tmp = importdata("data\L1\per_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Peridinin: L1");
-exportgraphics(ax,"figures/L1/bottle/perid" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/perid" + tmpT + ".png"); clear ax;
 save("output\L1\perid.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC 19' Butanoyloxyfucoxanthin: 88-21
@@ -458,7 +458,7 @@ tmp = importdata("data\L1\fuco_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Fucoxanthin 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/fuco" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/fuco" + tmpT + ".png"); clear ax;
 save("output\L1\fuco.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC 19" Hexanoyloxyfucoxanthin: 88-21
@@ -499,7 +499,7 @@ tmp = importdata("data\L1\diadino_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC Diadinoxanthin 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/diadino" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/diadino" + tmpT + ".png"); clear ax;
 save("output\L1\diadino.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Zeaxanthin: 88-21
@@ -565,7 +565,7 @@ tmp = importdata("data\L1\bcar_94-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC beta-Carotene 94-21: L1");
-exportgraphics(ax,"figures/L1/bottle/bcar" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/bcar" + tmpT + ".png"); clear ax;
 save("output\L1\bcar.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Carotenes: 88-21
@@ -578,7 +578,7 @@ tmp = importdata("data\L1\caroten_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC Carotenes 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/caroten" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/caroten" + tmpT + ".png"); clear ax;
 save("output\L1\caroten.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Chlorophyllide a: 94-21
@@ -591,7 +591,7 @@ tmp = importdata("data\L1\chlda_94-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC Chlorophyllide a 94-21: L1");
-exportgraphics(ax,"figures/L1/bottle/chlda" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/chlda" + tmpT + ".png"); clear ax;
 save("output\L1\chlda.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Violaxanthin: 94-21
@@ -618,7 +618,7 @@ tmp = importdata("data\L1\lutein_94-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("HPLC Lutein 94-21: L1");
-exportgraphics(ax,"figures/L1/bottle/lutein" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/lutein" + tmpT + ".png"); clear ax;
 save("output\L1\lutein.mat","p","ks","obs","Sk","Ku");
 
 %% HPLC Monovinyl chlorophyll a: 94-21
@@ -657,7 +657,7 @@ tmp = importdata("data\L1\pe4_00-08_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Phycoerythrin 0.4u fraction 00-08: L1");
-exportgraphics(ax,"figures/L1/bottle/pe4" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pe4" + tmpT + ".png"); clear ax;
 save("output\L1\pe4.mat","p","ks","obs","Sk","Ku");
 
 %% Phycoerythrin 5u fraction: 00-08
@@ -670,7 +670,7 @@ tmp = importdata("data\L1\pe5_00-08_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Phycoerythrin 5u fraction 00-08: L1");
-exportgraphics(ax,"figures/L1/bottle/pe5" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pe5" + tmpT + ".png"); clear ax;
 save("output\L1\pe5.mat","p","ks","obs","Sk","Ku");
 
 %% Phycoerythrin 10u fraction: 00-08
@@ -683,7 +683,7 @@ tmp = importdata("data\L1\pe10_00-08_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Phycoerythrin 10u fraction 00-08: L1");
-exportgraphics(ax,"figures/L1/bottle/pe10" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/pe10" + tmpT + ".png"); clear ax;
 save("output\L1\pe10.mat","p","ks","obs","Sk","Ku");
 
 %% Heterotrophic Bacteria: 05-21
@@ -696,7 +696,7 @@ tmp = importdata("data\L1\hbact_05-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Heterotrophic Bacteria 05-21: L1");
-exportgraphics(ax,"figures/L1/bottle/hbact" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/hbact" + tmpT + ".png"); clear ax;
 save("output\L1\hbact.mat","p","ks","obs","Sk","Ku");
 
 % %% Prochlorococcus: 05-21
@@ -722,7 +722,7 @@ tmp = importdata("data\L1\sbact_05-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Synechococcus 05-21: L1");
-exportgraphics(ax,"figures/L1/bottle/sbact" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/sbact" + tmpT + ".png"); clear ax;
 save("output\L1\sbact.mat","p","ks","obs","Sk","Ku");
 
 %% PicoEukaryotes: 05-21
@@ -735,7 +735,7 @@ tmp = importdata("data\L1\ebact_05-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("Picoeukaryotes 05-21: L1");
-exportgraphics(ax,"figures/L1/bottle/ebact" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/ebact" + tmpT + ".png"); clear ax;
 save("output\L1\ebact.mat","p","ks","obs","Sk","Ku");
 
 %% ATP: 88-22
@@ -748,7 +748,7 @@ tmp = importdata("data\L1\atp_88-22_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("ATP 88-22: L1");
-exportgraphics(ax,"figures/L1/bottle/atp" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/atp" + tmpT + ".png"); clear ax;
 save("output\L1\atp.mat","p","ks","obs","Sk","Ku");
 
 %% Nitrous Oxide: 93-01
@@ -788,7 +788,7 @@ tmp = importdata("data\L1\d12_89-00_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 
 sgtitle("PProd Dark-12 89-00: L1");
-exportgraphics(ax,"figures/L1/bottle/d12" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L1/bottle/notUsed/d12" + tmpT + ".png"); clear ax;
 save("output\L1\d12.mat","p","ks","obs","Sk","Ku");
 
 %% Visualise ML Extraction
