@@ -3,7 +3,7 @@ set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28
 
 % Label for figures
 % tmpT = "_NL";
-tmpT = "";
+tmpT = "_S";
 
 %% Load MLD and DCM
 pMaxMld = load("mldVals.mat").maxMld;

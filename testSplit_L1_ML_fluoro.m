@@ -4,7 +4,7 @@ set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 32
 
 % Label for figures
 % tmpT = "_NL";
-tmpT = "";
+tmpT = "_S";
 
 %% Load MaxMld and Chl-a (EpN)
 

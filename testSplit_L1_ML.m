@@ -5,7 +5,7 @@ set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28
 
 % Label for figures
 % tmpT = "NL";
-tmpT = "";
+tmpT = "_S";
 
 %% Extract Maximum Mixed Layer Depth (per cruise) "maxMld"
 

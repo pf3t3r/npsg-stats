@@ -57,67 +57,88 @@ anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 % Default Case
+alphaKs = 0.05;
 for i = 1:n
-    if vuongRes(i) == 1
-        tmp = "Normal";
+    if vuongRes(i) == 1 && ks(1,i) > alphaKs
+        % Remove label if only one dist is not rejected by K-S.
+        if length(find(ks(:,i)>alphaKs)) == 1
+            tmp = "";
+        else
+            tmp = "Normal";
+        end
         anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05
+        if pV(1,i) > alphaKs && ks(2,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," L");
         end
-        if pV(2,i) > 0.05
+        if pV(2,i) > alphaKs && ks(3,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," W");
         end
-        if pV(3,i) > 0.05
+        if pV(3,i) > alphaKs && ks(4,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," G");
         end
         annot(i) = tmp;
-    elseif vuongRes(i) == 2
-        tmp = "Lognormal";
+    elseif vuongRes(i) == 2 && ks(2,i) > alphaKs
+        % Remove label if only one dist is not rejected by K-S.
+        if length(find(ks(:,i)>alphaKs)) == 1
+            tmp = "";
+        else
+            tmp = "Lognormal";
+        end
         anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05
+        if pV(1,i) > alphaKs && ks(1,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," N");
         end
-        if pV(5,i) > 0.05
+        if pV(5,i) > alphaKs && ks(3,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," W");
         end
-        if pV(6,i) > 0.05
+        if pV(6,i) > alphaKs && ks(4,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," G");
         end
         annot(i) = tmp;
-    elseif vuongRes(i) == 3
-        tmp = "Weibull";
+    elseif vuongRes(i) == 3 && ks(3,i) > alphaKs
+        % Remove label if only one dist is not rejected by K-S.
+        if length(find(ks(:,i)>alphaKs)) == 1
+            tmp = "";
+        else
+            tmp = "Weibull";
+        end
         anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05
+        if pV(2,i) > alphaKs && ks(1,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," N");
         end
-        if pV(5,i) > 0.05
+        if pV(5,i) > alphaKs && ks(2,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," L");
         end
-        if pV(8,i) > 0.05
+        if pV(8,i) > alphaKs && ks(4,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," G");
         end
         annot(i) = tmp;
-    elseif vuongRes(i) == 4
-        tmp = "Gamma";
+    elseif vuongRes(i) == 4 && ks(4,i) > alphaKs
+        % Remove label if only one dist is not rejected by K-S.
+        if length(find(ks(:,i)>alphaKs)) == 1
+            tmp = "";
+        else
+            tmp = "Gamma";
+        end
         anClr(i) = '#33a02c';
-        if pV(6,i) > 0.05
+        if pV(6,i) > alphaKs && ks(2,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," L");
         end
-        if pV(3,i) > 0.05
+        if pV(3,i) > alphaKs && ks(1,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," N");
         end
-        if pV(8,i) > 0.05
+        if pV(8,i) > alphaKs && ks(3,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," W");
         end
@@ -219,7 +240,7 @@ yticklabels(0:20:200);
 xlabel('# Observations');
 
 subplot(1,6,[2 3])
-xline(0.05,HandleVisibility="off");
+xline(alphaKs,HandleVisibility="off");
 hold on
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -376,7 +397,7 @@ scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk,ku,ynegG,yposG,xnegG,xposG,'o','Color','#33a02c','HandleVisibility','off',LineWidth=1.6);
 % errorbar(sk,ku,ynegW,yposW,xnegW,xposW,'o','Color','#b2df8a','HandleVisibility','off',LineWidth=1.3);
 % errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
-scatter(sk,ku,Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+scatter(sk,ku,[],[0.8 0.8 0.8]);
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));

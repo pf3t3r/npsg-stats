@@ -21,7 +21,7 @@ threshold = 50;         % Default threshold = 50 [Mishra et al (2019),
                         % Ghasemi & Zahediasl (2012), Ahad et al (2011)]
 n = length(pIn);        % Depth range
 nT = length(X(1,:));    % Time range
-
+alphaKs = 0.05;         % Alpha for K-S p-value
 
 % 1. Extract data beneath ML
 
@@ -102,70 +102,70 @@ rV(isnan(rV)) = 0;
 
 % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
 for i = 1:n2
-    if rV(1,i) & rV(2,i) & rV(3,i) > 0
+    if rV(1,i) & rV(2,i) & rV(3,i) > 0 & ks(1,i) > alphaKs
         vuongRes(i) = 1;
         tmp = "Normal";
         anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05
+        if pV(1,i) > 0.05 && ks(2,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," L");
         end
-        if pV(2,i) > 0.05
+        if pV(2,i) > 0.05 && ks(3,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," W");
         end
-        if pV(3,i) > 0.05
+        if pV(3,i) > 0.05 && ks(4,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," G");
         end
         annot(i) = tmp;
-    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
+    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0 & ks(2,i) > alphaKs
         vuongRes(i) = 2;
         tmp = "Lognormal";
         anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05
+        if pV(1,i) > 0.05 & ks(1,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," N");
         end
-        if pV(5,i) > 0.05
+        if pV(5,i) > 0.05 && ks(3,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," W");
         end
-        if pV(6,i) > 0.05
+        if pV(6,i) > 0.05 && ks(4,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," G");
         end
         annot(i) = tmp;
-    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0 & ks(3,i) > alphaKs
         vuongRes(i) = 3;
         tmp = "Weibull";
         anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05
+        if pV(2,i) > 0.05 && ks(1,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," N");
         end
-        if pV(5,i) > 0.05
+        if pV(5,i) > 0.05 && ks(2,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," L");
         end
-        if pV(8,i) > 0.05
+        if pV(8,i) > 0.05 && ks(4,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," G");
         end
         annot(i) = tmp;
-    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0 & ks(4,i) > alphaKs
         vuongRes(i) = 4;
         tmp = "Gamma";
         anClr(i) = '#33a02c';
-        if pV(6,i) > 0.05
+        if pV(6,i) > 0.05 && ks(2,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," L");
         end
-        if pV(3,i) > 0.05
+        if pV(3,i) > 0.05 && ks(1,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," N");
         end
-        if pV(8,i) > 0.05
+        if pV(8,i) > 0.05 && ks(3,i) > alphaKs
             tmpEmph(i) = 'normal';
             tmp = append(tmp," W");
         end
@@ -247,8 +247,9 @@ ylim([rangeLen(21) rangeLen(end-30)]);
 % title('No. of Observations');
 
 subplot(1,6,[2 3])
-plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+xline(alphaKs,HandleVisibility="off");
 hold on
+plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
@@ -341,7 +342,7 @@ scatter(0,9/5,'DisplayName','Uni.',Marker='o',LineWidth=1);
 scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk2,ku2,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
-scatter(sk2,ku2,Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+scatter(sk2,ku2,[],[0.8 0.8 0.8],HandleVisibility="off");
 clr = 1:1:length(tr2);
 scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));
