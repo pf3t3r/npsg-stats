@@ -9,6 +9,85 @@ tmp = importdata('data/L0/hplcChla_88-21_200.txt');
 sgtitle("L0: Chl $a$","Interpreter","latex");
 exportgraphics(ax,"figures/L0/bot/chla" + tmpT + ".png");
 clearvars -except tmpT;
+
+%% Chl-a: 2001-2021 (from CRN 131, to match newer fluorometer)
+tmp = importdata('data/L0/hplcChla_01-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2001-2021)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_01-21" + tmpT + ".png");
+clearvars -except tmpT;
+
+%% Chl-a: 2001-2022, NIGHT-TIME
+
+tmp = importdata('data/L0/hplcChla_01-22_200.txt');
+
+hms = char(string(tmp.data(:,3)));
+mdy = char(string(tmp.data(:,2)));
+
+% test = "0" + t2(1,1:end-1);
+for i = 1:length(tmp.data)
+    if hms(i,end) == " "
+        hms(i,:) = "0" + hms(i,1:end-1);
+    end
+    if mdy(i,end) == " "
+        mdy(i,:) = "0" + mdy(i,1:end-1);
+    end
+end
+
+Y = double("20" + mdy(:,5:6));
+M = double("" + mdy(:,1:2));
+D = double("" + mdy(:,3:4));
+h = double("" + hms(:,1:2));
+m = double("" + hms(:,3:4));
+s = double("" + hms(:,5:6));
+
+T = datetime(Y,M,D,h,m,s);
+T2 = datetime(Y,M,D);
+T3 = datenum(T);
+
+Lat = 22.75;
+Lon = -158;
+[SunRiseSet,~,~,~,~,~] = suncycle(Lat,Lon,T2);
+for i = 1:length(SunRiseSet)
+    tmp = SunRiseSet(i,:) - 10;
+    for j = 1:2
+        if tmp(j) < 0
+            tmp(j) = tmp(j) + 24;
+        end
+    end
+    rs(i,:) = tmp;
+end
+rs2 = hours(rs);
+rs2.Format = 'hh:mm';
+
+sunriseTime = hours(rs2(:,1)');
+sunsetTime = hours(rs2(:,2)');
+
+dayFrac = rem(T3,1);
+castTime = dayFrac*24;
+
+castAtNight = nan(length(T),1);
+
+for i = 1:length(T)
+    if castTime(i) < sunriseTime(i) || castTime(i) > sunsetTime(i)
+        castAtNight(i) = 1;
+    end
+end
+
+nightCastIDs = [];
+
+for i=1:length(T)
+    if(~isnan(castAtNight(i)))
+        disp(i);
+        nightCastIDs = [nightCastIDs i];
+    end
+end
+
+tmp = importdata('data/L0/pc_89-22_200.txt').data(nightCastIDs,:);
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2001-2021, NIGHT)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_01-21_night" + tmpT + ".png");
+clearvars -except tmpT;
 %%
 tmp = importdata('data/L0/pc_89-22_200.txt');
 [ax,~,~] = L0_helper(tmp);

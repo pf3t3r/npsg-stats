@@ -6,8 +6,13 @@ function [ax,ks,obs] = L0_helper(tmp)
 
 threshold = 50; tmpT = ""; alphaKs = 0.05;
 
-pIn = tmp.data(:,4);
-X = tmp.data(:,5);
+if isstruct(tmp)
+    pIn = tmp.data(:,4);
+    X = tmp.data(:,5);
+else
+    pIn = tmp(:,4);
+    X = tmp(:,5);
+end
 n = length(pIn);
 
 %% Bin
