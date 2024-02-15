@@ -62,7 +62,7 @@ tmp = importdata("data/L1/hplcChla_88-21_150.txt");
 % 2-5: Extract; Bin; Calculate KS p-value, skewness, and kurtosis; and plot.
 [ax,p,ks,obs,Sk,Ku,sd,rV,pV] = L1_helper(tmp,maxMld);
 
-sgtitle("[Chl a] 88-21: L1");
+% sgtitle("[Chl a] 88-21: L1");
 exportgraphics(ax,"figures/L1/bottle/chla" + tmpT + ".png"); clear ax;
 save("output\L1\chla.mat","p","ks","obs","Sk","Ku");
 

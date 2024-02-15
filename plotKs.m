@@ -233,14 +233,14 @@ if fluoOveride
 else
     ylim([obsLimA obsLimB]);
 end
-ylabel('Pressure [dbar]');
+ylabel('Pressure [dbar]','FontSize',15);
 % set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
 yticks(0.5:2:19.5);
 yticklabels(0:20:200);
-xlabel('# Observations');
+xlabel('# Observations','FontSize',15);
 
 subplot(1,6,[2 3])
-xline(alphaKs,HandleVisibility="off");
+xline(alphaKs,DisplayName='\alpha');
 hold on
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -250,16 +250,16 @@ hold off
 grid minor;
 ylim(limits);
 set(gca,'YDir','reverse');
-legend(Location="best");
-xlabel('K-S $p$-value',Interpreter='latex');
+legend(Location="best",FontSize=13);
+xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
 yticklabels({});
 % title('K-S p-values');
 
 subplot(1,6,4)
-zzs = 0.25*ones(n,1);
+zzs = 0.05*ones(n,1);
 for i = 1:n
     % DEFAULT
-    text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight=tmpEmph(i));
+    text(zzs(i),tr(i),annot(i),FontSize=11,Color=anClr(i),FontWeight=tmpEmph(i));
 %     % Normal-Lognormal Comparison ONLY
 %     if pV(1,i) > 0.05
 %         text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight="bold");
@@ -277,11 +277,10 @@ end
 % end
 % hold off
 grid minor;
-set(gca,"Xtick",[]);
 ylim(limits); set(gca,'YDir','reverse');
-set(gca,'xtick',[]);
-% legend(Location="south");
-xlabel('Vuong LLR');
+yticklabels({});
+xticklabels({' ' ,' '});
+xlabel('Vuong LLR','FontSize',15);
 
 kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
 if max(ku) > 10 & min(sk) < 0
@@ -380,7 +379,7 @@ for i = 1:n
     end
 end
 
-subplot(1,6,[5 6])
+subplot(1,6,[5.1 6])
 scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
 hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
@@ -397,7 +396,7 @@ scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk,ku,ynegG,yposG,xnegG,xposG,'o','Color','#33a02c','HandleVisibility','off',LineWidth=1.6);
 % errorbar(sk,ku,ynegW,yposW,xnegW,xposW,'o','Color','#b2df8a','HandleVisibility','off',LineWidth=1.3);
 % errorbar(sk,ku,ynegN,yposN,xnegN,xposN,'o','Color',[0.6509803921568628 0.807843137254902 0.8901960784313725],'HandleVisibility','off',LineWidth=1);
-scatter(sk,ku,[],[0.8 0.8 0.8]);
+scatter(sk,ku,[],[0.8 0.8 0.8],HandleVisibility="off");
 clr = 1:1:length(tr);
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));
@@ -411,9 +410,9 @@ cbar.Label.String = "P [dbar]";
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-xlabel('Skewness'); ylabel('Kurtosis');
-lgd = legend('Location','best','FontSize',6);
-title(lgd,'P [dbar]');
+xlabel('Skewness','FontSize',15); ylabel('Kurtosis',FontSize=15);
+lgd = legend('Location','best');
+title(lgd,'Distributions');
 % title('Skewness vs. Kurtosis');
 
 end

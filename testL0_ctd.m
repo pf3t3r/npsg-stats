@@ -2,8 +2,48 @@ clear; clc; close all;
 addpath("baroneRoutines\");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
+%% CTD casts where hplc chl-a samples taken
+
+% CRN 131 - 339?
+
+data = importdata("data\L0\hplcChla_01-22_200.txt").data;
+botid = char(string(data(:,1)));
+crn = str2num(botid(:,1:3));
+cast = str2num(botid(:,6:8));
+
+crnCast = [crn cast];
+
+crnCastCombo = unique(crnCast,"rows");
+id = 1:1:200;
+
+crnCastCombo = [id' crnCastCombo];
+
+crn2 = unique(crn);
+
+fuck = load("datafiles\ctd_iso_ALL.mat").ctd;
+j = 0;
+
+% CRN 181
+% f181 = mean(fuck(181).f(1:101,[8 15]),2);
+
+for i = 1:191
+    disp(crnCastCombo(i,:));
+    tmp = crnCastCombo(i,:);
+    f(:,i) = fuck(tmp(2)).f(1:101,tmp(3));
+    time(i) = fuck(tmp(2)).decimal_hour(tmp(3));
+end
+
+time = time - 10;
+for i = 1:length(time)
+    if time(i) < 0
+        time(i) = time(i) + 24;
+    end
+end
 %% CTD data
 
+% This data is mean of all casts. Downloaded via FTP and averaged in other
+% file. It SHOULD be equivalent to the CTD chloropigment we find on the
+% HOT-DOGS system.
 chlaCtd = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
 pCtd = 0:2:200;
 tmpT = "";
@@ -65,25 +105,27 @@ else
     skewLimB = 2.5;
 end
 
-%%
+%% K-S SK-KU Figure
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 18 15]);
 
 % pXX = 5:10:195;
 ax2 = figure;
 subplot(1,2,1)
-plot(ksC(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5);
-xline(0.05);
+plot(ksC(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+xline(0.05,DisplayName="\alpha");
 set(gca,'YDir','reverse');
-ylabel('P [dbar]'); xlabel('K-S $p$-value','Interpreter','latex');
+grid minor;
+legend(FontSize=15);
+ylabel('P [dbar]',FontSize=15); xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
 
 clr = 1:1:length(pCtd);
 subplot(1,2,2)
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
+plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 for i = 1:n3
     if ksC(2,i) < alphaKs
-        plot(skC(i),kuC(i),Marker="o",Color='k',HandleVisibility='off');
+        plot(skC(i),kuC(i),Marker="pentagram",Color='k',HandleVisibility='off',MarkerSize=9);
     else
         plot(skC(i),kuC(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
     end
@@ -95,11 +137,13 @@ cbar = colorbar;
 cbar.Direction = "reverse";
 cbar.Ticks = 1:10:length(pCtd);
 cbar.TickLabels = pCtd(1):20:pCtd(101);
-cbar.Label.String = "P [dbar]";
+% cbar.Label.String = "P [dbar]";
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-ylabel('Kurtosis'); xlabel('Skewness');
+ylabel('Kurtosis',FontSize=15); xlabel('Skewness','FontSize',15);
+legend(fontsize=15);
+grid minor;
 
-sgtitle("L0: CTD Chl $a$","Interpreter","latex");
+% sgtitle("L0: CTD Chl $a$","Interpreter","latex");
 exportgraphics(ax2,"figures/L0/ctd/chla" + tmpT + ".png"); clear ax;
 
 %%

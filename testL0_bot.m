@@ -6,7 +6,7 @@ tmpT = "";
 %%
 tmp = importdata('data/L0/hplcChla_88-21_200.txt');
 [ax,~,~] = L0_helper(tmp);
-sgtitle("L0: Chl $a$","Interpreter","latex");
+% sgtitle("L0: Chl $a$","Interpreter","latex");
 exportgraphics(ax,"figures/L0/bot/chla" + tmpT + ".png");
 clearvars -except tmpT;
 

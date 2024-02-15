@@ -28,7 +28,7 @@ tmp = importdata("data/L2/hplcChla_88-21_200.txt");
 % and kurtosis; and plot.
 [ax,p,ks,obs,sk,ku,rV,pSubml,pV] = L2_helper(tmp,pMaxMld,dcm,[3 23]);
 
-sgtitle("[Chl a] 88-21: L2");
+% sgtitle("[Chl a] 88-21: L2");
 exportgraphics(ax,"figures/L2/bottle/chla" + tmpT + ".png"); clear ax;
 save("output\L2\chla.mat","p","ks","obs","sk","ku");
 % clear ax p ks obs sk ku;

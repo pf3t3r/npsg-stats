@@ -91,24 +91,26 @@ ylim([0.5 20.5]);
 yticks(0.5:2:20.5);
 yticklabels(0:20:200);
 set(gca,"YDir","reverse");
-xlabel("# Observations");
-ylabel("P [dbar]");
+xlabel("# Observations",FontSize=15);
+ylabel("P [dbar]",FontSize=15);
 
 subplot(1,5,[2 3])
-plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5);
-xline(0.05); ylim([0 200]);
+plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+xline(0.05,DisplayName='\alpha'); ylim([0 200]);
 set(gca,'YDir','reverse');
 yticklabels([]);
-xlabel('K-S $p$-value',Interpreter='latex');
+grid minor;
+legend(FontSize=15);
+xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
 
 clr = 1:1:length(pXX);
-subplot(1,5,[4 5])
+subplot(1,5,[4.1 5])
 plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 for i = 1:n2
     if ks(2,i) < alphaKs
-        plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off');
+        plot(sk(i),ku(i),Marker="pentagram",Color='k',HandleVisibility='off',MarkerSize=9);
     else
         plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
     end
@@ -121,9 +123,10 @@ cbar.Direction = "reverse";
 cbar.Ticks = 1:1:length(pXX);
 cbar.TickLabels = pXX;
 cbar.Label.String = "P [dbar]";
-legend(Location="best");
+legend(Location="best",FontSize=15);
+grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-ylabel('Kurtosis'); xlabel('Skewness');
+ylabel('Kurtosis',FontSize=15); xlabel('Skewness',FontSize=15);
 
 % sgtitle("L0: Bottle Chl-a");
 % exportgraphics(ax,"figures/L0/bottle/chla" + tmpT + ".png"); clear ax;

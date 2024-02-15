@@ -176,12 +176,12 @@ set(gca,'XDir','reverse');
 % ylim([1 n]);
 % ylim([1 length(tix)]);
 ylim([1 length(tix)]);
-ylabel('Pressure [dbar]');
+ylabel('Pressure [dbar]',FontSize=15);
 set(gca,"YTick",1:2:length(tix),"YTickLabel",lim1:20:lim2);
-xlabel('# Observations');
+xlabel('# Observations',FontSize=15);
 
 subplot(1,6,[2 3])
-xline(alphaKs,HandleVisibility="off");
+xline(alphaKs,DisplayName='\alpha');
 hold on
 plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -191,15 +191,15 @@ hold off
 grid minor;
 ylim([lim1 lim2]);
 set(gca,'YDir','reverse');
-legend('Location','best','FontSize',6);
-xlabel('K-S $p$-value',Interpreter='latex');
+legend('Location','best',Orientation='horizontal',NumColumns=2);
+xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
 yticklabels({});
 % title('K-S Test');
 
-zzs = 0.25*ones(n,1);
+zzs = 0.1*ones(n,1);
 subplot(1,6,4)
 for i = 1:n
-    text(zzs(i),tr(i),annot(i),FontSize=8,Color=anClr(i),FontWeight=tmpEmph(i));
+    text(zzs(i),tr(i),annot(i),FontSize=10,Color=anClr(i),FontWeight=tmpEmph(i));
 end
 % % For Normal-Lognormal Comparison ONLY
 % hold on
@@ -213,8 +213,9 @@ end
 grid minor;
 ylim(limits); set(gca,'YDir','reverse');
 yticklabels({});
-set(gca,"XTick",[]);
-xlabel('Vuong LLR');
+xticklabels({' ' ,' '});
+% set(gca,"XTick",[]);
+xlabel('Vuong LLR',FontSize=15);
 
 
 % subplot(1,4,3)
@@ -295,7 +296,7 @@ for i = 1:n2
     end
 end
 
-subplot(1,6,[5 6])
+subplot(1,6,[5.1 6])
 scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
 hold on
 plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
@@ -323,7 +324,7 @@ cbar.Label.String = "P [dbar]";
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-xlabel('Skewness'); ylabel('Kurtosis');
+xlabel('Skewness',FontSize=15); ylabel('Kurtosis',FontSize=15);
 lgd = legend('Location','best');
 title(lgd,'Distributions');
 % title('Skewness vs. Kurtosis');

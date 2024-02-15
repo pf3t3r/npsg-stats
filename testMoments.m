@@ -9,15 +9,15 @@ set(0,'defaultAxesFontSize',10);
 
 %% Load Test Data
 chlE = load("datafiles\chloro.mat"','chloro256').chloro256;
-chlL = load("datafiles\chloro.mat",'chloro256l').chloro256l;
+% chlL = load("datafiles\chloro.mat",'chloro256l').chloro256l;
 pE = load('datafiles\chloro.mat','pgrid256').pgrid256(:,1);
-pL = load('datafiles\chloro.mat','pgrid256l').pgrid256l(:,1);
+% pL = load('datafiles\chloro.mat','pgrid256l').pgrid256l(:,1);
 
 n = length(pE);
 
 %% Chloropigment Median: E+L
 medChloro = median(chlE,2,'omitnan');
-medChloroL = median(chlL,2,'omitnan');
+% medChloroL = median(chlL,2,'omitnan');
 
 %% Chloropigment SD
 
@@ -32,16 +32,16 @@ SE_stdE = stdChloro/(2*n - 2);
 y1_stdE = stdChloro + SE_stdE;
 y2_stdE = stdChloro - SE_stdE;
 
-% LAGRANGIAN
-% Standard Deviation
-stdChloroL = std(chlL,0,2,'omitnan');
-% Standard Error of Median (= Standard Deviation)
-y1_medL = medChloroL + stdChloroL;
-y2_medL = medChloroL - stdChloroL;
-% Standard Error of Standard Deviation
-SE_stdL = stdChloroL/(2*n - 2);
-y1_stdL = stdChloroL + SE_stdL;
-y2_stdL = stdChloroL - SE_stdL;
+% % LAGRANGIAN
+% % Standard Deviation
+% stdChloroL = std(chlL,0,2,'omitnan');
+% % Standard Error of Median (= Standard Deviation)
+% y1_medL = medChloroL + stdChloroL;
+% y2_medL = medChloroL - stdChloroL;
+% % Standard Error of Standard Deviation
+% SE_stdL = stdChloroL/(2*n - 2);
+% y1_stdL = stdChloroL + SE_stdL;
+% y2_stdL = stdChloroL - SE_stdL;
 
 %% Chloropigment Skewness
 
@@ -53,13 +53,13 @@ SES_E = sqrt((6*n*(n-1))/((n-2)*(n+1)*(n+3)));
 y1_skeE = skewChloro + SES_E;
 y2_skeE = skewChloro - SES_E;
 
-% LAGRANGIAN
-% Skewness
-skewChloroL = skewness(chlL,0,2);
-% Standard Error of Skewness
-SES_L = SES_E;
-y1_skeL = skewChloroL + SES_L;
-y2_skeL = skewChloroL - SES_L;
+% % LAGRANGIAN
+% % Skewness
+% skewChloroL = skewness(chlL,0,2);
+% % Standard Error of Skewness
+% SES_L = SES_E;
+% y1_skeL = skewChloroL + SES_L;
+% y2_skeL = skewChloroL - SES_L;
 
 %% Chloropigment Excess Kurtosis
 
@@ -71,13 +71,13 @@ SEK_E = 4*(n^2-1)*SES_E / ((n-3)*(n+5));
 y1_kurE = kurtChloro + SEK_E;
 y2_kurE = kurtChloro - SEK_E;
 
-% LAGRANGIAN
-% Excess Kurtosis
-kurtChloroL = kurtosis(chlL,0,2);
-% Standard Error on Excess Kurtosis
-SEK_L = SEK_E;
-y1_kurL = kurtChloroL + SEK_L;
-y2_kurL = kurtChloroL - SEK_L;
+% % LAGRANGIAN
+% % Excess Kurtosis
+% kurtChloroL = kurtosis(chlL,0,2);
+% % Standard Error on Excess Kurtosis
+% SEK_L = SEK_E;
+% y1_kurL = kurtChloroL + SEK_L;
+% y2_kurL = kurtChloroL - SEK_L;
 
 
 %% Average Profile
@@ -92,7 +92,7 @@ hold off
 set(gca, 'YDir','reverse');
 % xlim([0 1]);
 ylim([0 250]);
-ylabel('Pressure [dbar]'); xlabel('Chl $\textit{a}$ [$\mu$g L$^{-1}$]',Interpreter='latex');
+ylabel('Pressure [dbar]',FontSize=15); xlabel('Chl $\textit{a}$ [$\mu$g L$^{-1}$]',Interpreter='latex',FontSize=15);
 % title('Median');
 
 exportgraphics(ax0,'figures/moments-Eulerian_1988_2021.png');
@@ -145,45 +145,45 @@ title('Excess Kurtosis');
 
 exportgraphics(ax1,'figures/moments-Eulerian_1988_2021.png');
 
-%% Lagrangian Moments
-
-ax2 = figure;
-sgtitle('Chloropigment Moments (Lagrangian)');
-
-subplot(1,4,1)
-patch([y1_medL; flipud(y2_medL)], [pL; flipud(pL)], [0.8 0.8 0.8]);
-hold on
-plot(medChloroL,pL,'LineWidth',1);
-hold off
-set(gca, 'YDir','reverse');
-ylim([-120 120]); xlim([0 1]);
-title('Median');
-
-subplot(1,4,2)
-patch([y1_stdL; flipud(y2_stdL)], [pL; flipud(pL)], [0.8 0.8 0.8]);
-hold on
-plot(stdChloroL,pL,'LineWidth',1);
-hold off
-set(gca, 'YDir','reverse');
-ylim([-120 120]); xlim([0 0.2]);
-title('StD');
-
-subplot(1,4,3)
-patch([y1_skeL; flipud(y2_skeL)], [pL; flipud(pL)], [0.8 0.8 0.8]);
-hold on
-plot(skewChloroL,pL,'LineWidth',1);
-hold off
-set(gca, 'YDir','reverse');
-ylim([-120 120]); xlim([0 5]);
-title('Skewness');
-
-subplot(1,4,4)
-patch([y1_kurL-3; flipud(y2_kurL-3)], [pL; flipud(pL)], [0.8 0.8 0.8]);
-hold on
-plot(kurtChloroL-3,pL,'LineWidth',1);
-hold off
-set(gca, 'YDir','reverse');
-ylim([-120 120]); xlim([0 10]);
-title('Excess Kurtosis');
-
-exportgraphics(ax2,'figures/moments-Lagrangian_1988_2021.png');
+% %% Lagrangian Moments
+% 
+% ax2 = figure;
+% sgtitle('Chloropigment Moments (Lagrangian)');
+% 
+% subplot(1,4,1)
+% patch([y1_medL; flipud(y2_medL)], [pL; flipud(pL)], [0.8 0.8 0.8]);
+% hold on
+% plot(medChloroL,pL,'LineWidth',1);
+% hold off
+% set(gca, 'YDir','reverse');
+% ylim([-120 120]); xlim([0 1]);
+% title('Median');
+% 
+% subplot(1,4,2)
+% patch([y1_stdL; flipud(y2_stdL)], [pL; flipud(pL)], [0.8 0.8 0.8]);
+% hold on
+% plot(stdChloroL,pL,'LineWidth',1);
+% hold off
+% set(gca, 'YDir','reverse');
+% ylim([-120 120]); xlim([0 0.2]);
+% title('StD');
+% 
+% subplot(1,4,3)
+% patch([y1_skeL; flipud(y2_skeL)], [pL; flipud(pL)], [0.8 0.8 0.8]);
+% hold on
+% plot(skewChloroL,pL,'LineWidth',1);
+% hold off
+% set(gca, 'YDir','reverse');
+% ylim([-120 120]); xlim([0 5]);
+% title('Skewness');
+% 
+% subplot(1,4,4)
+% patch([y1_kurL-3; flipud(y2_kurL-3)], [pL; flipud(pL)], [0.8 0.8 0.8]);
+% hold on
+% plot(kurtChloroL-3,pL,'LineWidth',1);
+% hold off
+% set(gca, 'YDir','reverse');
+% ylim([-120 120]); xlim([0 10]);
+% title('Excess Kurtosis');
+% 
+% exportgraphics(ax2,'figures/moments-Lagrangian_1988_2021.png');
