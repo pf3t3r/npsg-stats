@@ -1,4 +1,5 @@
 close all; clc; clear;
+addpath("func\");
 
 % I am doing this wrong. I need to consider the depths. o_o
 

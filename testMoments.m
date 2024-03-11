@@ -92,7 +92,7 @@ hold off
 set(gca, 'YDir','reverse');
 % xlim([0 1]);
 ylim([0 250]);
-ylabel('Pressure [dbar]',FontSize=15); xlabel('Chl $\textit{a}$ [$\mu$g L$^{-1}$]',Interpreter='latex',FontSize=15);
+ylabel('Pressure [dbar]',FontSize=15); xlabel('chloropigment [$\mu$g/L]',Interpreter='latex',FontSize=15);
 % title('Median');
 
 exportgraphics(ax0,'figures/moments-Eulerian_1988_2021.png');

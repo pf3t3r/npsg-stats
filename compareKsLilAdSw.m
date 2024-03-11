@@ -1,6 +1,7 @@
 clear; clc; close all;
 addpath("baroneRoutines\");
 addpath("packages\");
+addpath("func\");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
 %% Extract Maximum Mixed Layer Depth (per cruise) 'maxMld'

@@ -1,4 +1,4 @@
-function [ks,obs,tr,sk,ku,sd,rV,pV] = ksOfBinnedCon(X, p, binning, threshold)
+function [ks,obs,tr,sk,ku,rV,pV] = ksOfBinnedCon(X, p, binning, threshold)
 %ksOfBinnedCon find the KS statistic
 % INPUTS:
 % X = substance concentration,
@@ -53,7 +53,7 @@ for i = 1:n
         ks(:,i) = nan;   
         sk(i) = nan;
         ku(i) = nan;
-        sd(i,:) = nan;
+        %sd(i,:) = nan;
         rV(:,i) = nan;
         pV(:,i) = nan;
     end
@@ -68,7 +68,7 @@ end
 tr = depth(tmp);
 sk = sk(tmp);
 ku = ku(tmp);
-sd = sd(tmp,:);
+%sd = sd(tmp,:);
 rV = rV(:,tmp);
 pV = pV(:,tmp);
 ks = ks(:,~all(isnan(ks)));

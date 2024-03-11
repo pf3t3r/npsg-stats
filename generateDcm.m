@@ -1,4 +1,4 @@
-dcm = load("dcm.mat").dcm;
+dcm = load("output/dcm.mat").dcm;
 
 test = load("datafiles\ctd_iso_ALL.mat").ctd;
 
@@ -18,4 +18,4 @@ for i = 1:329
 end
 
 %% save
-save dcm.mat meanPcm minPcm maxPcm stdPcm -append;
+save output/dcm.mat meanPcm minPcm maxPcm stdPcm -append;

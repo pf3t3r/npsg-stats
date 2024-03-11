@@ -1,5 +1,6 @@
 clear; clc; close all;
 addpath("baroneRoutines\");
+addpath("func\");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
 tmpT = "";

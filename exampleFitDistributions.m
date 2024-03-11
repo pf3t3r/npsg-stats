@@ -9,13 +9,13 @@ L = fitdist(chla,"Lognormal");
 G = fitdist(chla,"Gamma");
 W = fitdist(chla,"Weibull");
 
-B = fitdist(chla,"Burr");
+% B = fitdist(chla,"Burr");
 
 figure;
 plot(N); hold on
 plot(L);
 plot(G);
 plot(W); 
-plot(B);
+% plot(B);
 hold off
 legend("Normal","Lognormal","Gamma","Weibull");

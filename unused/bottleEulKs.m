@@ -106,7 +106,7 @@ fuc = importdata('data/fuc_88_21.txt').data(:,5);
 figure
 for i = 5:5
     tmp = chlOut_hplc(pb10_hplc==i);
-    [~,testks(:,i),~,~,~,~] = statsplot2(tmp);
+    [~,testks(:,i),] = statsplot2(tmp);
 end
 
 %% Apply KS Test to chl-a across all pressures

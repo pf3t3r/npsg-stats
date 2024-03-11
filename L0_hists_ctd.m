@@ -6,12 +6,12 @@ close all;clc;clear;
 % Change ONLY this section.
 
 tmp = importdata("data\L0\chlaCtd_200.txt").data;   % import data
-NAME = "chla-120";                                   % set name for file + plot title
-xlab = "chl $a$ [$\mu$g/l]";                        % set xlabel
-pressure = 120;                                        % pressure at which to evaluate histogram
+NAME = "chla-20";                                   % set name for file + plot title
+xlab = "chloropigment [$\mu$g/l]";                        % set xlabel
+pressure = 20;                                        % pressure at which to evaluate histogram
 histBins = 45;                                          % no. of bins in histogram
 showTitle = false;                                  % true = show figure title
-showDist = false;                                    % true = show fitted distribution
+showDist = true;                                    % true = show fitted distribution
 multipleDist = true;                                % false = lognormal only;
                                                     % true = show logn./norm./weib./gamma
 
