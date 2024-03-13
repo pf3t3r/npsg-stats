@@ -1,9 +1,9 @@
+% Draw mathematical moments [1] for time series of chloropigment (1988-2021).
+% [1]: mean, standard deviation, skewness, and (excess) kurtosis.
+
 clear; clc; close all;
 addpath("baroneRoutines\");
-
-% Set Figure Parameters
-set(groot,'defaultAxesXGrid','on');
-set(groot,'defaultAxesYGrid','on');
+set(groot,'defaultAxesXGrid','on'); set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 28 12]);
 set(0,'defaultAxesFontSize',10);
 
@@ -97,11 +97,8 @@ ylabel('Pressure [dbar]',FontSize=15); xlabel('chloropigment [$\mu$g/L]',Interpr
 
 exportgraphics(ax0,'figures/moments-Eulerian_1988_2021.png');
 
-
 %% Eulerian Moments
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 28 12]);
-
-
 
 ax1 = figure;
 sgtitle('Chloropigment Moments (Eulerian)');

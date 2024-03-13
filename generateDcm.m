@@ -1,14 +1,16 @@
-dcm = load("output/dcm.mat").dcm;
+% Calculate and save the depth of the DCM [1] across all HOT cruises.
 
-test = load("datafiles\ctd_iso_ALL.mat").ctd;
+clc; close all; clear;
+% dcm = load("output/dcm.mat").dcm;
+ctdData = load("datafiles\ctd_iso_ALL.mat").ctd;
 
-%%
+%% Calculate the DCM depth
 maxPcm = nan(329,1); minPcm = nan(329,1);
 meanPcm = nan(329,1); stdPcm = nan(329,1);
 
 for i = 1:329
     %fcm(i,:) = test.fcm;
-    tmp = test(i).pcm;
+    tmp = ctdData(i).pcm;
     if ~isempty(tmp)
         maxPcm(i) = max(tmp,[],'omitnan');
         minPcm(i) = min(tmp,[],'omitnan');
@@ -17,5 +19,8 @@ for i = 1:329
     end
 end
 
-%% save
+%% Save the DCM depth
 save output/dcm.mat meanPcm minPcm maxPcm stdPcm -append;
+clear i tmp;
+
+% [1] the max, min, mean, and std of the DCM depth

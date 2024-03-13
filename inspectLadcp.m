@@ -1,3 +1,5 @@
+% Look at lowered ADCP (LADCP) data from a given HOT cruise.
+
 clc;clear;close all;
 
 d1 = load("data\HOT-341_LADCP\s2c1_2hz.mat");

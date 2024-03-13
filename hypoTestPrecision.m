@@ -1,9 +1,14 @@
-clc; close all; clear;
+% This code checks whether there is any relationship between the p-value of
+% three hypothesis tests [1] run on random lognormal data and the (i) mean* 
+% and (ii) sample size [2] chosen for that data. It appears that there is 
+% no significant dependence on mean or sample size. It may be worth
+% rerunning the test with a more representative (of chl-a) parameter
+% selection or with varying STD*.
+% [1] K-S, Lil, A-D.
+% [2] See variables a1 - a6.
+% *For this test, the STD parameter was kept constant.
 
-%% Compare to real mean and std from chla (not used)
-% tmp = importdata('data\L1\hplcChla_88-21_150.txt').data(:,5);
-% testMean = mean(tmp);
-% testSd = std(tmp);
+clc; close all; clear;
 
 %% Initialise MEAN and STD
 
