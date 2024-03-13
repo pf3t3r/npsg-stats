@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,sd,rV,pV,cOutB,pOutB] = L1_helper(tmp,maxMld,unc,threshold)
+function [ax,p,ks,obs,Sk,Ku,rV,pV,cOutB,pOutB] = L1_helper(tmp,maxMld,unc,threshold)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -39,7 +39,7 @@ clear tmp;
 [~,pOutB,cOutB,~,~] = cleanAndBin(pOut,cOut,idOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis, Vuong Parameters
-[ks,obs,p,Sk,Ku,sd,rV,pV] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
+[ks,obs,p,Sk,Ku,rV,pV] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
 
 % 4.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.

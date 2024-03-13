@@ -22,6 +22,7 @@ if nargin < 3
     threshold = 50;
 end
 
+alphaKs = 0.05;
 pIn = tmp.data(:,4);
 cIn = tmp.data(:,5);
 idIn = tmp.data(:,1);
@@ -51,8 +52,9 @@ set(gca,"YTick",1:1:length(5:10:205),"YTickLabel",5:10:205);
 title('No. of Observations');
 
 subplot(1,5,2)
-plot(pKs(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+xline(alphaKs,DisplayName='\alpha');
 hold on
+plot(pKs(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(pKs(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(pKs(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 plot(pKs(4,:),p,'o-','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
@@ -64,8 +66,9 @@ xlabel('p-value');
 title('Kolmogorov-Smirnov');
 
 subplot(1,5,3)
-plot(pLil(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+xline(alphaKs,DisplayName='\alpha');
 hold on
+plot(pLil(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(pLil(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(pLil(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 grid minor;
@@ -76,8 +79,9 @@ xlabel('p-value');
 title('Lilliefors');
 
 subplot(1,5,4)
-plot(pAd(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+xline(alphaKs,DisplayName='\alpha');
 hold on
+plot(pAd(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(pAd(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 plot(pAd(3,:),p,'o-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
 plot(pAd(4,:),p,'o-','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
@@ -89,8 +93,9 @@ xlabel('p-value');
 title('Anderson-Darling');
 
 subplot(1,5,5)
-plot(pSw(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+xline(alphaKs,DisplayName='\alpha');
 hold on
+plot(pSw(1,:),p,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
 plot(pSw(2,:),p,'o-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
 hold off
 grid minor;

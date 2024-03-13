@@ -18,9 +18,9 @@ time = load("datafiles\chloro.mat","time256").time256;
 % running the 89-01 vs 01-21 comparison on the cruise-averaged night time
 % code.
 
-% depthMeasurements = 129;
-% eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
-% lagrangianDepth = linspace(-128,128,depthMeasurements);
+depthMeasurements = 129;
+eulerianDepth = linspace(0,2*depthMeasurements,depthMeasurements);
+lagrangianDepth = linspace(-128,128,depthMeasurements);
 % 
 % ksE = NaN(5,depthMeasurements);
 % ksL = NaN(5,depthMeasurements);
@@ -729,11 +729,11 @@ set(gca,'YDir','reverse');
 title('Eulerian')
 
 subplot(1,2,2)
-plot(ks_allcastL(1,:),p1,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4)
+plot(ks_allcastL(1,:),pL,'o-','Color',[0 0 0],'DisplayName','Normal','LineWidth',1.4,'MarkerSize',4)
 hold on
-plot(ks_allcastL(2,:),p1,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
-plot(ks_allcastL(3,:),p1,'xr-','DisplayName','Weibull','MarkerSize',4);
-plot(ks_allcastL(4,:),p1,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
+plot(ks_allcastL(2,:),pL,'+--','Color',[0 0 0],'DisplayName','Lognormal','LineWidth',1.4,'MarkerSize',4);
+plot(ks_allcastL(3,:),pL,'xr-','DisplayName','Weibull','MarkerSize',4);
+plot(ks_allcastL(4,:),pL,'r.--','LineStyle','--','DisplayName','Gamma','MarkerSize',4);
 hold off
 ylim([-125 125]);
 set(gca,'YDir','reverse');

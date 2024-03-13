@@ -1,9 +1,14 @@
 close all;clc;clear;
 addpath 'C:\Users\pfarrell\AppData\Roaming\MathWorks\MATLAB Add-Ons\Functions\Shapiro-Wilk and Shapiro-Francia normality tests'
 
+% This code evaluates how often a set of hypothesis tests reject the null
+% hypothesis (that the data is lognormal) incorrectly.
+% X0 - X5 represent the Type 1 Error Rate (% of incorrect H0 rejections).
+% The higher this rate is the less reliable the test is.
+
 %%
 
-expRun = 25;
+expRun = 2;
 tmpMin = nan(expRun,1);
 tmpMinId = nan(expRun,1);
 

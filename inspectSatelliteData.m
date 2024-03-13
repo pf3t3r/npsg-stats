@@ -1,6 +1,7 @@
 %% Preamble
 clear; clc; close all;
 addpath("baroneRoutines\");
+addpath("output\");
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
@@ -80,7 +81,7 @@ tmp = squeeze(chl(6,6,:));
 tmp(isnan(tmp)) = [];
 
 ax4 = figure;
-[mle,ks,~,~,~,~] = statsplot2(tmp);
+[mle,ks,~] = statsplot2(tmp);
 exportgraphics(ax4,'figures/satellite/hists.png');
 
 %% Sensitivity Analysis

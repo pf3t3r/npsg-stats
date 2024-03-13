@@ -9,7 +9,7 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 28
 set(0,'defaultAxesFontSize',12);
 
 %% Load Test Data
-chloro = load("datafiles\chloro.mat"','chloro256_n').chloro256_n;
+chloro = load("datafiles\chloro.mat"','chloro256n').chloro256n;
 time = load("datafiles\chloro.mat","time256").time256;
 
 %% Calculate Vuong's Test Statistics
