@@ -1,4 +1,5 @@
-%% Preamble
+% Try out Vuong's Log-Likelihood Test on sample chl-a data.
+
 clear; clc; close all;
 addpath("baroneRoutines\");
 

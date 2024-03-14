@@ -1,5 +1,5 @@
-%% L0_hists.m
-% Script to make histograms of bottle data at a single, binned depth.
+% Examine histograms of CTD data at a single, binned depth.
+
 close all;clc;clear;
 
 %% IMPORT data.

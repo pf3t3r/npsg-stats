@@ -1,4 +1,5 @@
-%% Preamble
+% View satellite chl-a at/around Station ALOHA.
+
 clear; clc; close all;
 addpath("baroneRoutines\");
 addpath("output\");

@@ -1,3 +1,9 @@
+% Quickly run a suite [1] of hypothesis tests for a given dataset against a
+% specified distribution. Depending on which distribution is selected,
+% different combinations of the tests will be (in)appropriate.
+% [1] Kolmogorov-Smirnov (K-S), Lilliefors (Lil), Anderson-Darling (A-D),
+% and Shapiro-Wilks (S-W).
+
 close all;clc;clear;
 %% Data import / prep.
 

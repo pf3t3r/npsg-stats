@@ -1,3 +1,5 @@
+% Script to output L1 ctd results for the statistical analysis.
+
 close all; clc; clear;
 addpath("baroneRoutines\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 32 20]);

@@ -1,3 +1,7 @@
+% Check how sensitive the Kolmogorov-Smirnov (K-S) test is to 
+% - the number of significant digits in a dataset, and
+% - the size of that dataset.
+
 clc;close all;clear;
 
 % Sample

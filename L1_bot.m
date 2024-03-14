@@ -1,3 +1,5 @@
+% Script to output L1 bottle results for the statistical analysis.
+
 clear; clc; close all;
 addpath("baroneRoutines\");
 

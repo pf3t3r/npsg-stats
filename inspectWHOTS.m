@@ -1,3 +1,6 @@
+% Inspect hydrological variables from WHOTS Mooring.
+% For this example I look at data from WHOTS-16.
+
 clear; clc; close all;
 addpath("baroneRoutines\");
 addpath("C:\Users\pfarrell\AppData\Roaming\MathWorks\MATLAB Add-Ons\Functions\Shapiro-Wilk and Shapiro-Francia normality tests");
