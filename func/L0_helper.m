@@ -1,10 +1,13 @@
-function [ax,ks,obs] = L0_helper(tmp)
+function [ax,ks,obs] = L0_helper(tmp,threshold)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
 % SAVE and OUTPUT bottle ID: reminder!
 
-threshold = 50; tmpT = ""; alphaKs = 0.05;
+if nargin <2
+    threshold = 50;
+end
+tmpT = ""; alphaKs = 0.05;
 
 if isstruct(tmp)
     pIn = tmp.data(:,4);
@@ -86,7 +89,7 @@ pXX = 5:10:195;
 ax = figure;
 subplot(1,5,1)
 barh(obs);
-xline(50);
+xline(threshold);
 ylim([0.5 20.5]);
 yticks(0.5:2:20.5);
 yticklabels(0:20:200);
