@@ -1,3 +1,9 @@
+% Load skewness and kurtosis from a single-parameter file (e.g. chl-a). 
+% Visualise this skewness and kurtosis at one depth.
+% Compare this observational data with estimates of skewness and kurtosis
+% from random data based on distributions using parameters estimated on
+% that same data. (cf. inspectMomentsBias.m)
+
 close all;clc;clear;
 
 data = load("output\L1\chla.mat");

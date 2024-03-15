@@ -1,3 +1,7 @@
+% Compare upcast and downcast from individual casts. Upcasts are generally
+% more reliable; it appears that downcasts occasionally record excess
+% fluorescence at surface.
+
 close all; clc; clear;
 
 % Set Figure Parameters
