@@ -22,6 +22,78 @@ clearvars -except tmpT;
 
 %% Chl-a: Go back year-by-year.
 
+% 2011-2022
+tmp = importdata('data/L0/hplcChla_11-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2011-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_11-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2010-2022
+tmp = importdata('data/L0/hplcChla_10-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2010-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_10-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2009-2022
+tmp = importdata('data/L0/hplcChla_09-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2009-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_09-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2008-2022
+tmp = importdata('data/L0/hplcChla_08-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2008-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_08-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2007-2022
+tmp = importdata('data/L0/hplcChla_07-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2007-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_07-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2006-2022
+tmp = importdata('data/L0/hplcChla_06-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2006-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_06-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2005-2022
+tmp = importdata('data/L0/hplcChla_05-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2005-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_05-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2004-2022
+tmp = importdata('data/L0/hplcChla_04-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2004-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_04-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2003-2022
+tmp = importdata('data/L0/hplcChla_03-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2003-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_03-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2002-2022
+tmp = importdata('data/L0/hplcChla_02-22_200.txt');
+[ax,~,~] = L0_helper(tmp);
+sgtitle("L0: Chl $a$ (2002-2022)","Interpreter","latex");
+exportgraphics(ax,"figures/L0/bot/chla_02-22" + tmpT + ".png");
+clearvars -except tmpT;
+
+% 2001-2002 done above.
+
 % 2000-2022
 tmp = importdata('data/L0/hplcChla_00-22_200.txt');
 [ax,~,~] = L0_helper(tmp);

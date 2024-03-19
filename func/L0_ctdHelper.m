@@ -1,0 +1,100 @@
+function ax = L0_ctdHelper(X)
+%L0_CTDHELPER 
+
+n = 101;
+ks = nan(5,n);
+sk = nan(1,n); ku = nan(1,n);
+% rVC = nan(10,n); pVC = nan(10,n);
+obs = nan(1,n);
+pCtd = 0:2:200;
+alphaKs = 0.05;
+
+% 4. Calculate KS p-value, skewness, kurtosis
+for i = 1:n
+    % find concentration X_i at binned pressure i
+    X_i = X(i,:);
+    % apply KS test to X_i
+    % change limit below to >3 to fix error with picoeu -> may change other
+    % results
+    X_i(isnan(X_i)) = [];
+    if length(X_i) > 3
+        [~,ks(:,i),~] = statsplot2(X_i,'noplot');
+        [rVC(:,i),pVC(:,i)] = bbvuong(X_i);
+        sk(i) = skewness(X_i);
+        ku(i) = kurtosis(X_i);
+    end
+    obs(i) = length(X_i);
+    %clear X_i;
+end
+
+%%
+% Lognormal family: generate theoretical skewness and kurtosis
+sigTh = linspace(0,1,1000);
+for i = 1:length(sigTh)
+    skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
+    kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
+end
+
+% Negative Distributions
+skLognN = -skLogn;
+kuLognN = kuLogn;
+
+kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
+if max(ku) > 10 & min(sk) < 0
+    kurtLimB = max(ku) + 1;
+    skewLimA = min(sk) - 0.1;
+    skewLimB = max(sk) + 0.1;
+elseif max(ku) > 10
+    kurtLimB = max(ku) + 1;
+    skewLimB = max(sk) + 0.1;
+elseif min(sk) < 0 
+    skewLimA = min(sk) - 0.1;
+elseif max(sk) > 2.5
+    kurtLimB = max(ku) + 1;
+    skewLimB = max(sk) + 0.1;
+else 
+    kurtLimB = 10;
+    skewLimA = 0;
+    skewLimB = 2.5;
+end
+
+%% K-S SK-KU Figure
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 18 15]);
+
+% pXX = 5:10:195;
+ax = figure;
+subplot(1,2,1)
+plot(ks(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+xline(0.05,DisplayName="\alpha");
+set(gca,'YDir','reverse');
+grid minor;
+legend(FontSize=15);
+ylabel('P [dbar]',FontSize=15); xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
+
+clr = 1:1:length(pCtd);
+subplot(1,2,2)
+plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
+hold on
+plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
+for i = 1:n
+    if ks(2,i) < alphaKs
+        plot(sk(i),ku(i),Marker="pentagram",Color='k',HandleVisibility='off',MarkerSize=9);
+    else
+        plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+    end
+end
+scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
+hold off
+colormap(gca,cbrewer2("RdYlBu"));
+cbar = colorbar;
+cbar.Direction = "reverse";
+cbar.Ticks = 1:10:length(pCtd);
+cbar.TickLabels = pCtd(1):20:pCtd(101);
+% cbar.Label.String = "P [dbar]";
+ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
+ylabel('Kurtosis',FontSize=15); xlabel('Skewness','FontSize',15);
+legend(fontsize=15);
+grid minor;
+
+end
+
