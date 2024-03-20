@@ -1,8 +1,12 @@
-function ax = L0_ctdHelper(X)
+function ax = L0_ctdHelper(X,hypTest)
 %L0_CTDHELPER 
 
+if nargin <2
+    hypTest = "ks";
+end
+
 n = 101;
-ks = nan(5,n);
+ks = nan(5,n); ad = nan(1,n);
 sk = nan(1,n); ku = nan(1,n);
 % rVC = nan(10,n); pVC = nan(10,n);
 obs = nan(1,n);
@@ -18,7 +22,11 @@ for i = 1:n
     % results
     X_i(isnan(X_i)) = [];
     if length(X_i) > 3
-        [~,ks(:,i),~] = statsplot2(X_i,'noplot');
+        if strcmp(hypTest,"ks")
+            [~,ks(:,i),~] = statsplot2(X_i,'noplot');
+        else
+            [~,ad(i)] = adtest(X_i,"Distribution","logn");
+        end
         [rVC(:,i),pVC(:,i)] = bbvuong(X_i);
         sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
@@ -64,12 +72,18 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 18
 % pXX = 5:10:195;
 ax = figure;
 subplot(1,2,1)
-plot(ks(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+if strcmp(hypTest,"ks")
+    plot(ks(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+    xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
+else
+    plot(ad,pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+    xlabel('A-D $p$-value','Interpreter','latex',FontSize=15);
+end
 xline(0.05,DisplayName="\alpha");
 set(gca,'YDir','reverse');
 grid minor;
 legend(FontSize=15);
-ylabel('P [dbar]',FontSize=15); xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
+ylabel('P [dbar]',FontSize=15);
 
 clr = 1:1:length(pCtd);
 subplot(1,2,2)
@@ -77,10 +91,18 @@ plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',Li
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 for i = 1:n
-    if ks(2,i) < alphaKs
-        plot(sk(i),ku(i),Marker="pentagram",Color='k',HandleVisibility='off',MarkerSize=9);
+    if strcmp(hypTest,"ks")
+        if ks(2,i) < alphaKs
+            plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
+        else
+            plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+        end
     else
-        plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+        if ad(i) < alphaKs
+            plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
+        else
+            plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+        end
     end
 end
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");

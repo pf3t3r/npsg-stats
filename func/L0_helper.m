@@ -1,8 +1,12 @@
-function [ax,ks,obs] = L0_helper(tmp,threshold)
+function [ax,ks,obs] = L0_helper(tmp,threshold,hypTest)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
 % SAVE and OUTPUT bottle ID: reminder!
+
+if nargin < 3
+    hypTest = 'ks';
+end
 
 if nargin <2
     threshold = 50;
@@ -33,6 +37,7 @@ ks = nan(5,n2);
 sk = nan(1,n2); ku = nan(1,n2);
 rV = nan(10,n2); pV = nan(10,n2);
 obs = nan(1,n2);
+ad = nan(1,n2);
 
 % Calculate KS p-value, skewness, kurtosis
 for i = 1:n2
@@ -42,7 +47,11 @@ for i = 1:n2
     X_i(X_i <= 0) = [];
     % apply KS test to X_i (only when at least 3 values at binned pressure)
     if length(X_i) > 3
-        [~,ks(:,i),~] = statsplot2(X_i,'noplot');
+        if strcmp(hypTest,'ks')
+            [~,ks(:,i),~] = statsplot2(X_i,'noplot');
+        else
+            [~,ad(i)] = adtest(X_i,'Distribution','logn');
+        end
         [rV(:,i),pV(:,i)] = bbvuong(X_i);
         sk(i) = skewness(X_i);
         ku(i) = kurtosis(X_i);
@@ -52,6 +61,7 @@ for i = 1:n2
 end
 
 ks(:,obs<threshold) = nan;
+ad(obs<threshold) = nan;
 sk(obs<threshold) = nan;
 ku(obs<threshold) = nan;
 
@@ -98,13 +108,18 @@ xlabel("# Observations",FontSize=15);
 ylabel("P [dbar]",FontSize=15);
 
 subplot(1,5,[2 3])
-plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+if strcmp(hypTest,'ks')
+    plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+    xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
+else
+    plot(ad,pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+    xlabel('A-D $p$-value',Interpreter='latex',FontSize=15);
+end
 xline(0.05,DisplayName='\alpha'); ylim([0 200]);
 set(gca,'YDir','reverse');
 yticklabels([]);
 grid minor;
 legend(FontSize=15);
-xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
 
 clr = 1:1:length(pXX);
 subplot(1,5,[4.1 5])
@@ -112,10 +127,18 @@ plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',Li
 hold on
 plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
 for i = 1:n2
-    if ks(2,i) < alphaKs
-        plot(sk(i),ku(i),Marker="pentagram",Color='k',HandleVisibility='off',MarkerSize=9);
+    if strcmp(hypTest,'ks')
+        if ks(2,i) < alphaKs
+            plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
+        else
+            plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+        end
     else
-        plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+        if ad(i) < alphaKs
+            plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
+        else
+            plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+        end
     end
 end
 scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");

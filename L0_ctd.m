@@ -48,6 +48,7 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 % file. It SHOULD be equivalent to the CTD chloropigment we find on the
 % HOT-DOGS system.
 
+%% K-S
 % 2001-2021 (crn 131-)
 tmpT = "";
 chla = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
@@ -118,6 +119,160 @@ ax = L0_ctdHelper(chla);
 sgtitle("chl-a " + tmpT);
 exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
 
+% 2011-2021 (crn 228-)
+tmpT = "11";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,228:329);
+ax = L0_ctdHelper(chla);
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2012-2021 (crn 239-)
+tmpT = "12";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,239:329);
+ax = L0_ctdHelper(chla);
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2013-2021 (crn 249-)
+tmpT = "13";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,249:329);
+ax = L0_ctdHelper(chla);
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2014-2021 (crn 259-)
+tmpT = "14";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,259:329);
+ax = L0_ctdHelper(chla);
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2015-2021 (crn 269-)
+tmpT = "15";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,269:329);
+ax = L0_ctdHelper(chla);
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2016-2021 (crn 280-)
+tmpT = "16";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,280:329);
+ax = L0_ctdHelper(chla);
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+%% A-D
+% 2001-2021 (crn 131-)
+tmpT = "ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2002-2021 (crn 134-)
+tmpT = "02-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,134:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2003-2021 (crn 144-)
+tmpT = "03-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,144:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2004-2021 (crn 155-)
+tmpT = "04-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,155:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2005-2021 (crn 167-)
+tmpT = "05-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,167:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2006-2021 (crn 177-)
+tmpT = "06-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,177:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2007-2021 (crn 189-)
+tmpT = "07-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,189:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2008-2021 (crn 199-)
+tmpT = "08-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,199:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2009-2021 (crn 208-)
+tmpT = "09-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,208:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2010-2021 (crn 219-)
+tmpT = "10-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,219:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2011-2021 (crn 228-)
+tmpT = "11-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,228:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2012-2021 (crn 239-)
+tmpT = "12-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,239:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2013-2021 (crn 249-)
+tmpT = "13-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,249:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2014-2021 (crn 259-)
+tmpT = "14-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,259:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2015-2021 (crn 269-)
+tmpT = "15-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,269:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
+
+% 2016-2021 (crn 280-)
+tmpT = "16-ad";
+chla = load("output\CTD\chla.mat").meanEpN(1:101,280:329);
+ax = L0_ctdHelper(chla,"ad");
+sgtitle("chl-a " + tmpT);
+exportgraphics(ax,"figures/L0/ctd/chla" + tmpT + ".png"); clear;
 %%
 % close all;
 % 
