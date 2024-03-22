@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,rV,pV,cOutB,pOutB] = L1_helper(tmp,maxMld,unc,threshold)
+function [ax,p,ks,obs,Sk,Ku,rV,pV,ad] = L1_helper(tmp,maxMld,threshold,testSel,hypTest)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -16,14 +16,21 @@ function [ax,p,ks,obs,Sk,Ku,rV,pV,cOutB,pOutB] = L1_helper(tmp,maxMld,unc,thresh
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
-if nargin < 3
-    unc = nan(70,16);
+% % 'unc' unused for now
+% if nargin < 3
+%     unc = nan(70,16);
+% end
+if nargin < 4
+    testSel = 4;
+end
+if nargin < 5
+    hypTest = "ks";
 end
 
 % Set default threshold
 % Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
-if nargin < 4
+if nargin < 3
     threshold = 50;
 end
 
@@ -39,43 +46,45 @@ clear tmp;
 [~,pOutB,cOutB,~,~] = cleanAndBin(pOut,cOut,idOut');
 
 % 4. Calculate KS p-value, skewness, kurtosis, Vuong Parameters
-[ks,obs,p,Sk,Ku,rV,pV] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
+[ks,obs,p,Sk,Ku,rV,pV,ad] = ksOfBinnedCon(cOutB,pOutB,10,threshold);
 
 % 4.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.
 vuongRes = nan(1,length(p));
 
 % 4.a.i Default Case.
-for i = 1:length(p)
-    if rV(1,i) & rV(2,i) & rV(3,i) > 0
-        disp('Normal');
-        vuongRes(i) = 1;
-    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
-        disp('Lognormal');
-        vuongRes(i) = 2;
-    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
-        disp('Weibull');
-        vuongRes(i) = 3;
-    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
-        disp('Gamma');
-        vuongRes(i) = 4;
+if testSel == 4
+    for i = 1:length(p)
+        if rV(1,i) & rV(2,i) & rV(3,i) > 0
+            disp('Normal');
+            vuongRes(i) = 1;
+        elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
+            disp('Lognormal');
+            vuongRes(i) = 2;
+        elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+            disp('Weibull');
+            vuongRes(i) = 3;
+        elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+            disp('Gamma');
+            vuongRes(i) = 4;
+        end
+    end
+elseif testSel == 2
+% 4.a.ii. Normal-Lognormal Case ONLY.
+    for i = 1:length(p)
+        if rV(1,i) > 0
+            disp('Normal');
+            vuongRes(i) = 1;
+        elseif rV(1,i) < 0
+            disp('Lognormal');
+            vuongRes(i) = 2;
+        end
     end
 end
 
-% % 4.a.ii. Normal-Lognormal Case ONLY.
-% for i = 1:length(p)
-%     if rV(1,i) > 0
-%         disp('Normal');
-%         vuongRes(i) = 1;
-%     elseif rV(1,i) < 0
-%         disp('Lognormal');
-%         vuongRes(i) = 2;
-%     end
-% end
-
 % 5. Plot results
 ax = figure;
-plotKs(p,ks,obs,Sk,Ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120],unc);
+plotKs(p,ks,obs,Sk,Ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120],false,hypTest,ad,testSel);
 
 % disp(vuongRes);
 end
