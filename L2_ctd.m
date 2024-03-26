@@ -16,11 +16,7 @@ pIn = 0:2:2*(lowerP-1);
 tmpT = "_S";
 %% Chlorophyll a: 88-21
 
-% 1. Load data
 chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
-
-% Extract data below ML and centre on DCM; calculate KS p-value, skewness,
-% and kurtosis; and plot.
 [ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
 sgtitle('[Chl a] 01-21: L2');
 exportgraphics(ax,"figures/L2/ctd/chla" + tmpT + ".png");
@@ -134,33 +130,35 @@ save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
 
 clearvars -except maxMld dcm lowerP pIn chla T Sp o2 ctdData cRm tmpT;
 
-%% No3-: 88-21
+%% Unused: NO3-.
 
-NO3in = nan(329,lowerP,31);
-no3 = nan(lowerP,329);
-
-for i = cRm
-    tmp = ctdData(i).n(1:lowerP,:);
-    if length(tmp) > 3
-        for j = 1:length(tmp(1,:))
-            NO3in(i,:,j) = tmp(:,j);
-        end
-    end
-end
-
-for i = 1:329
-    no3(:,i) = mean(squeeze(NO3in(i,:,:)),2,"omitnan");
-end
-
-[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(no3,pIn,maxMld,dcm);
-sgtitle('NO_3^{-} 88-21: L2');
-exportgraphics(ax,"figures/L2/ctd/notUsed/no3" + tmpT + ".png");
-save("output\L2\ctd\no3.mat","pL","ks","obs","sk","ku","pV","rV");
-
-% ax2 = figure;
-% plot(no3,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
-% set(gca,"YDir","reverse");
-% xlabel('NO_3^{-} [mmol m^{-3}]'); ylabel('P [dbar]'); title('NO_3','P = 0 dbar => DCM');
-% exportgraphics(ax2,'figures/L2/no3.png');
-
-clearvars -except maxMld dcm lowerP pIn chla T Sp o2 no3 ctdData cRm tmpT;
+% %% No3-: 88-21
+% 
+% NO3in = nan(329,lowerP,31);
+% no3 = nan(lowerP,329);
+% 
+% for i = cRm
+%     tmp = ctdData(i).n(1:lowerP,:);
+%     if length(tmp) > 3
+%         for j = 1:length(tmp(1,:))
+%             NO3in(i,:,j) = tmp(:,j);
+%         end
+%     end
+% end
+% 
+% for i = 1:329
+%     no3(:,i) = mean(squeeze(NO3in(i,:,:)),2,"omitnan");
+% end
+% 
+% [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(no3,pIn,maxMld,dcm);
+% sgtitle('NO_3^{-} 88-21: L2');
+% exportgraphics(ax,"figures/L2/ctd/notUsed/no3" + tmpT + ".png");
+% save("output\L2\ctd\no3.mat","pL","ks","obs","sk","ku","pV","rV");
+% 
+% % ax2 = figure;
+% % plot(no3,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
+% % set(gca,"YDir","reverse");
+% % xlabel('NO_3^{-} [mmol m^{-3}]'); ylabel('P [dbar]'); title('NO_3','P = 0 dbar => DCM');
+% % exportgraphics(ax2,'figures/L2/no3.png');
+% 
+% clearvars -except maxMld dcm lowerP pIn chla T Sp o2 no3 ctdData cRm tmpT;

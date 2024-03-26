@@ -1,4 +1,4 @@
-function [tr,ks,obs,sk,ku,rV,pV] = ksOfLagrangian(id,p,dcm,X,threshold)
+function [tr,ks,obs,sk,ku,rV,pV,ad] = ksOfLagrangian(id,p,dcm,X,threshold)
 %ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
@@ -79,6 +79,7 @@ tr = tmin:10:tmax;
 chl = bottleArray(:,7);
 pB = bottleArray(:,6);
 ks = nan(5,length(tr));
+ad = nan(5,length(tr));
 rV = nan(10,length(tr));
 pV = nan(10,length(tr));
 obs = nan(1,length(tr));
@@ -91,7 +92,13 @@ for i = 1:length(tr)
     tmp(isnan(tmp)) = [];
     obs(i) = length(tmp);
     if length(tmp) > 3
+        gammaParams = mle(tmp,"distribution","Gamma");
+        pdG = makedist("Gamma",gammaParams(1),gammaParams(2));
         [~,ks(:,i),~] = statsplot2(tmp,'noplot');
+        [~,ad(2,i)] = adtest(tmp,"Distribution","logn");
+        [~,ad(1,i)] = adtest(tmp,"Distribution","norm");
+        [~,ad(3,i)] = adtest(tmp,"Distribution","weibull");
+        [~,ad(4,i)] = adtest(tmp,Distribution=pdG,MCTol=0.05);
         [rV(:,i),pV(:,i)] = bbvuong(tmp);
         sk(i) = skewness(tmp);
         ku(i) = kurtosis(tmp);
@@ -111,6 +118,7 @@ end
 for i = 1:length(tr)
     if obs(i) < threshold
         ks(:,i) = nan;
+        ad(:,i) = nan;
         rV(:,i) = nan;
         sk(i) = nan;
         ku(i) = nan;

@@ -172,14 +172,6 @@ exportgraphics(ax,"figures/L1/bottle/boxy" + tmpT + ".png");
 save("output\L1\boxy.mat","p","ks","obs","Sk","Ku");
 clearvars -except tmpT maxMld;
 
-% Dissolved Organic Phosphate 
-tmp = importdata("data\L1\pho_88-21_150.txt");
-[ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
-sgtitle("Phosphate 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/phos" + tmpT + ".png");
-save("output\L1\phos.mat","p","ks","obs","Sk","Ku");
-clearvars -except tmpT maxMld;
-
 % PProd Light-12 (89-22) (4 significant digits => very good!)
 tmp = importdata("data\L1\l12_89-22_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
@@ -520,4 +512,12 @@ clearvars -except tmpT maxMld;
 % sgtitle("PProd Dark-12 89-00: L1");
 % exportgraphics(ax,"figures/L1/bottle/notUsed/d12" + tmpT + ".png");
 % save("output\L1\d12.mat","p","ks","obs","Sk","Ku");
+% clearvars -except tmpT maxMld;
+
+% Dissolved Organic Phosphate 
+% tmp = importdata("data\L1\pho_88-21_150.txt");
+% [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
+% sgtitle("Phosphate 88-21: L1");
+% exportgraphics(ax,"figures/L1/bottle/phos" + tmpT + ".png");
+% save("output\L1\phos.mat","p","ks","obs","Sk","Ku");
 % clearvars -except tmpT maxMld;

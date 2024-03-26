@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,sk,ku,rV,pSubml,pV] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold)
+function [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold,testSel,hypTest)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -17,6 +17,12 @@ function [ax,p,ks,obs,sk,ku,rV,pSubml,pV] = L2_helper(tmp,maxMld,dcm,tmpLts,thre
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
+if nargin < 6
+    testSel = 4;
+end
+if nargin < 7
+    hypTest = "ks";
+end
 % Set default threshold
 % Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
@@ -38,45 +44,47 @@ clear tmp;
 
 % 3. Calculate KS p-value, skewness, kurtosis
 % ..., centre around DCM (?)
-[pr,ks,obs,sk,ku,rV,pV] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
+[pr,ks,obs,sk,ku,rV,pV,ad] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
 
 % 3.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.
 vuongRes = zeros(1,length(pr));
 rV(isnan(rV)) = 0;
 
-for i = 1:length(pr)
-    %disp(i);
-    if rV(1,i) & rV(2,i) & rV(3,i) > 0
-        %disp('Normal');
-        vuongRes(i) = 1;
-    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
-        %disp('Lognormal');
-        vuongRes(i) = 2;
-    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
-        %disp('Weibull');
-        vuongRes(i) = 3;
-    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
-        %disp('Gamma');
-        vuongRes(i) = 4;
+if testSel==4
+    for i = 1:length(pr)
+        %disp(i);
+        if rV(1,i) & rV(2,i) & rV(3,i) > 0
+            %disp('Normal');
+            vuongRes(i) = 1;
+        elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
+            %disp('Lognormal');
+            vuongRes(i) = 2;
+        elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0
+            %disp('Weibull');
+            vuongRes(i) = 3;
+        elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0
+            %disp('Gamma');
+            vuongRes(i) = 4;
+        end
     end
+    rV(rV==0) = nan;
+else
+    for i = 1:length(pr)
+        if rV(1,i)  > 0
+            vuongRes(i) = 1;
+        elseif rV(1,i) < 0
+            vuongRes(i) = 2;
+        end
+    end
+    rV(rV==0) = nan;
 end
-rV(rV==0) = nan;
-
-% for i = 1:length(pr)
-%     if rV(1,i)  > 0
-%         vuongRes(i) = 1;
-%     elseif rV(1,i) < 0
-%         vuongRes(i) = 2;
-%     end
-% end
-% rV(rV==0) = nan;
 
 limits = [pr(tmpLts(1)) pr(tmpLts(2))];
 obsId = [tmpLts(1) tmpLts(2)];
 
 % 4. Plot results
 ax = figure;
-plotKs2(pr,ks,obs,sk,ku,limits(1),limits(end),threshold,vuongRes,obsId,pV);
+plotKs2(pr,ks,obs,sk,ku,limits(1),limits(end),threshold,vuongRes,obsId,pV,hypTest,ad,testSel);
 
 end

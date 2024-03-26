@@ -19,17 +19,19 @@ function [ax,tr,ks,obs,sk,ku,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold,te
 % if nargin < 3
 %     unc = nan(70,16);
 % end
-if nargin < 5
-    testSel = 4;
-end
-if nargin < 6
-    hypTest = "ks";
-end
 
 % Default threshold = 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
 if nargin < 4
     threshold = 50;
+end
+
+if nargin < 5
+    testSel = 4;
+end
+
+if nargin < 6
+    hypTest = "ks";
 end
 
 % for i = 1:length(epN(1,:))

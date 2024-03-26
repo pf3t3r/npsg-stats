@@ -1,13 +1,13 @@
 % Script to output L1 ctd results for the statistical analysis.
 
 close all; clc; clear;
-addpath("baroneRoutines\");
+addpath("baroneRoutines\"); addpath("func\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 32 20]);
 
 % Label for figures
 % tmpT = "_NL";
 % tmpT = "_S";
-tmpT = "";
+% tmpT = "";
 
 %% Load MaxMld and Chl-a (EpN)
 
@@ -84,6 +84,7 @@ plot(meanO2,pIn); set(gca,"YDir","reverse");
 title("$O_2$ (mmol m$^{-3}$)",Interpreter="latex");
 
 %% K-S
+tmpT = "";
 
 % CHL-A
 ax = L1_helper_FLUORO(epN,pIn,maxMld);

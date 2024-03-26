@@ -3,7 +3,7 @@ function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,p
 % INPUT: 
 % OUTPUT: 
 
-if nargin< 15
+if nargin < 16
     testSel = 4;
 end
 
@@ -373,7 +373,6 @@ grid minor;
 ylim(limits);
 set(gca,'YDir','reverse');
 legend(Location="best",FontSize=13);
-
 yticklabels({});
 % title('K-S p-values');
 
