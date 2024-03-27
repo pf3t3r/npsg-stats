@@ -84,7 +84,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(p,ks,obs,Sk,Ku,0.5,12.5,true,threshold,vuongRes,pV,[0 120],false,hypTest,ad,testSel);
+plotKs(p,ks,obs,Sk,Ku,0.5,10.5,true,threshold,vuongRes,pV,[0 100],false,hypTest,ad,testSel);
 
 % disp(vuongRes);
 end

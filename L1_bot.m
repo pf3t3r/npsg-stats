@@ -8,7 +8,7 @@ set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28
 
 % Label for figures
 % tmpT = "NL";
-tmpT = "_S";
+% tmpT = "_S";
 
 %% Extract Maximum Mixed Layer Depth (per cruise) "maxMld"
 
@@ -59,6 +59,7 @@ clear ctdData i;
 % 5. Plot results
 
 %% K-S Analysis.
+tmpT = "";
 
 % chl-a (88-21)
 tmp = importdata("data/L1/hplcChla_88-21_150.txt");
@@ -96,7 +97,7 @@ clearvars -except tmpT maxMld;
 tmp = importdata("data\L1\chl123_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 sgtitle("HPLC Chl c1 + c2 + c3: L1");
-exportgraphics(ax,"figures/L1/bottle/chl123" + tmpT + ".png");
+exportgraphics(ax,"figures/L1/bottle/chlc123" + tmpT + ".png");
 save("output\L1\chl123.mat","p","ks","obs","Sk","Ku");
 clearvars -except tmpT maxMld;
 
@@ -128,7 +129,7 @@ clearvars -except tmpT maxMld;
 tmp = importdata("data\L1\zeaxan_88-21_150.txt");
 [ax,p,ks,obs,Sk,Ku] = L1_helper(tmp,maxMld);
 sgtitle("HPLC Zeaxanthin 88-21: L1");
-exportgraphics(ax,"figures/L1/bottle/zeaxan" + tmpT + ".png");
+exportgraphics(ax,"figures/L1/bottle/zeax" + tmpT + ".png");
 save("output\L1\zeaxan.mat","p","ks","obs","Sk","Ku");
 clearvars -except tmpT maxMld;
 

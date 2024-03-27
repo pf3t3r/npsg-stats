@@ -139,7 +139,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(tr,ks,obs,sk,ku,0,94,true,threshold,vuongRes,pV,[0 94],true,hypTest,ad,testSel);
+plotKs(tr,ks,obs,sk,ku,0,100,true,threshold,vuongRes,pV,[0 100],true,hypTest,ad,testSel,"ctd");
 % 
 % disp(vuongRes);
 end

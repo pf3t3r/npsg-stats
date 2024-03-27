@@ -71,17 +71,17 @@ end
 
 %% Show vertical profiles
 
-figure
-plot(meanT,pIn); set(gca,"YDir","reverse");
-title("Temperature (C): 88-21");
-
-figure
-plot(meanSp,pIn); set(gca,"YDir","reverse");
-title("Practical Salinity (g/kg): 88-21");
-
-figure
-plot(meanO2,pIn); set(gca,"YDir","reverse");
-title("$O_2$ (mmol m$^{-3}$)",Interpreter="latex");
+% figure
+% plot(meanT,pIn); set(gca,"YDir","reverse");
+% title("Temperature (C): 88-21");
+% 
+% figure
+% plot(meanSp,pIn); set(gca,"YDir","reverse");
+% title("Practical Salinity (g/kg): 88-21");
+% 
+% figure
+% plot(meanO2,pIn); set(gca,"YDir","reverse");
+% title("$O_2$ (mmol m$^{-3}$)",Interpreter="latex");
 
 %% K-S
 tmpT = "";

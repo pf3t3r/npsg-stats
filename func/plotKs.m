@@ -1,7 +1,11 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,fluoOveride,hypTest,ad,testSel)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,fluoOveride,hypTest,ad,testSel,botCtd)
 %plotKs
 % INPUT: 
 % OUTPUT: 
+
+if nargin < 17
+    botCtd = "bot";
+end
 
 if nargin < 16
     testSel = 4;
@@ -338,8 +342,13 @@ else
 end
 ylabel('Pressure [dbar]','FontSize',15);
 % set(gca,"YTick",1:1:length(ytix),"YTickLabel",ytix);
-yticks(0.5:2:19.5);
-yticklabels(0:20:200);
+if botCtd == "bot"
+    yticks(0.5:1:19.5);
+    yticklabels(0:10:200);
+elseif botCtd == "ctd"
+    yticks(1:5:55);
+    yticklabels(0:10:150);
+end
 xlabel('# Observations','FontSize',15);
 
 subplot(1,6,[2 3])

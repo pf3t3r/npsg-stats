@@ -1,4 +1,4 @@
-function [ax,pL,ks,obs,sk,ku,pV,rV,tr] = L2_helper_FLUORO(X,pIn,maxMld,dcm)
+function [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad] = L2_helper_FLUORO(X,pIn,maxMld,dcm,testSel,hypTest)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -22,6 +22,13 @@ threshold = 50;         % Default threshold = 50 [Mishra et al (2019),
 n = length(pIn);        % Depth range
 nT = length(X(1,:));    % Time range
 alphaKs = 0.05;         % Alpha for K-S p-value
+
+if nargin < 5
+    testSel = 4;
+end
+if nargin < 6
+    hypTest = "ks";
+end
 
 % 1. Extract data beneath ML
 
@@ -70,7 +77,13 @@ for i = rangeLen
     tmp(isnan(tmp)) = [];
     obs(i) = length(tmp);
     if length(tmp) > 3
+        gammaParams = mle(tmp,"distribution","Gamma");
+        pdG = makedist("Gamma",gammaParams(1),gammaParams(2));
         [~,ks(:,i),~] = statsplot2(tmp,'noplot');
+        [~,ad(2,i)] = adtest(tmp,"Distribution","logn");
+        [~,ad(1,i)] = adtest(tmp,"Distribution","norm");
+        [~,ad(3,i)] = adtest(tmp,"Distribution","weibull");
+        [~,ad(4,i)] = adtest(tmp,Distribution=pdG,MCTol=0.05);
         [rV(:,i),pV(:,i)] = bbvuong(tmp);
         %[adH(i),adP(i)] = lillietest(log(tmp),MCTol=1e-2); % optional Lilliefors Test
         sk(i) = skewness(tmp);
@@ -82,6 +95,7 @@ end
 for i = rangeLen
     if obs(i) < threshold
         ks(:,i) = nan;
+        ad(:,i) = nan;
         ku(i) = nan;
         pV(:,i) = nan;
         rV(:,i) = nan;
@@ -101,99 +115,102 @@ tmpEmph = strings(1,n2); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 rV(isnan(rV)) = 0;
 
 % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
-for i = 1:n2
-    if rV(1,i) & rV(2,i) & rV(3,i) > 0 & ks(1,i) > alphaKs
-        vuongRes(i) = 1;
-        tmp = "Normal";
-        anClr(i) = '#a6cee3';
-        if pV(1,i) > 0.05 && ks(2,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," L");
+if testSel==4
+    for i = 1:n2
+        if rV(1,i) & rV(2,i) & rV(3,i) > 0 & ks(1,i) > alphaKs
+            vuongRes(i) = 1;
+            tmp = "Normal";
+            anClr(i) = '#a6cee3';
+            if pV(1,i) > 0.05 && ks(2,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," L");
+            end
+            if pV(2,i) > 0.05 && ks(3,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," W");
+            end
+            if pV(3,i) > 0.05 && ks(4,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," G");
+            end
+            annot(i) = tmp;
+        elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0 & ks(2,i) > alphaKs
+            vuongRes(i) = 2;
+            tmp = "Lognormal";
+            anClr(i) = '#1f78b4';
+            if pV(1,i) > 0.05 & ks(1,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," N");
+            end
+            if pV(5,i) > 0.05 && ks(3,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," W");
+            end
+            if pV(6,i) > 0.05 && ks(4,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," G");
+            end
+            annot(i) = tmp;
+        elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0 & ks(3,i) > alphaKs
+            vuongRes(i) = 3;
+            tmp = "Weibull";
+            anClr(i) = '#b2df8a';
+            if pV(2,i) > 0.05 && ks(1,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," N");
+            end
+            if pV(5,i) > 0.05 && ks(2,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," L");
+            end
+            if pV(8,i) > 0.05 && ks(4,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," G");
+            end
+            annot(i) = tmp;
+        elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0 & ks(4,i) > alphaKs
+            vuongRes(i) = 4;
+            tmp = "Gamma";
+            anClr(i) = '#33a02c';
+            if pV(6,i) > 0.05 && ks(2,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," L");
+            end
+            if pV(3,i) > 0.05 && ks(1,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," N");
+            end
+            if pV(8,i) > 0.05 && ks(3,i) > alphaKs
+                tmpEmph(i) = 'normal';
+                tmp = append(tmp," W");
+            end
+            annot(i) = tmp;
         end
-        if pV(2,i) > 0.05 && ks(3,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," W");
-        end
-        if pV(3,i) > 0.05 && ks(4,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," G");
-        end
-        annot(i) = tmp;
-    elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0 & ks(2,i) > alphaKs
-        vuongRes(i) = 2;
-        tmp = "Lognormal";
-        anClr(i) = '#1f78b4';
-        if pV(1,i) > 0.05 & ks(1,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," N");
-        end
-        if pV(5,i) > 0.05 && ks(3,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," W");
-        end
-        if pV(6,i) > 0.05 && ks(4,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," G");
-        end
-        annot(i) = tmp;
-    elseif rV(2,i) < 0 & rV(5,i) < 0 & rV(8,i) > 0 & ks(3,i) > alphaKs
-        vuongRes(i) = 3;
-        tmp = "Weibull";
-        anClr(i) = '#b2df8a';
-        if pV(2,i) > 0.05 && ks(1,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," N");
-        end
-        if pV(5,i) > 0.05 && ks(2,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," L");
-        end
-        if pV(8,i) > 0.05 && ks(4,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," G");
-        end
-        annot(i) = tmp;
-    elseif rV(3,i) < 0 & rV(6,i) < 0 & rV(8,i) < 0 & ks(4,i) > alphaKs
-        vuongRes(i) = 4;
-        tmp = "Gamma";
-        anClr(i) = '#33a02c';
-        if pV(6,i) > 0.05 && ks(2,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," L");
-        end
-        if pV(3,i) > 0.05 && ks(1,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," N");
-        end
-        if pV(8,i) > 0.05 && ks(3,i) > alphaKs
-            tmpEmph(i) = 'normal';
-            tmp = append(tmp," W");
-        end
-        annot(i) = tmp;
     end
+    rV(rV==0) = nan;
+elseif testSel == 2
+    % 4.b. Vuong: Normal Vs. Lognormal Only
+    for i = 1:n2
+        if rV(1,i) > 0 
+            vuongRes(i) = 1;
+            annot(i) = "Normal";
+            anClr(i) = '#a6cee3';
+            if pV(1,i) > 0.05
+                tmpEmph(i) = 'normal';
+            end
+        elseif rV(1,i) < 0
+            vuongRes(i) = 2;
+            annot(i) = "Lognormal";
+            anClr(i) = '#1f78b4';
+            if pV(1,i) > 0.05
+                tmpEmph(i) = 'normal';
+            end
+        else
+            annot(i) = "";
+        end
+    end
+    rV(rV==0) = nan;
 end
-rV(rV==0) = nan;
-
-% % 4.b. Vuong: Normal Vs. Lognormal Only
-% for i = 1:n2
-%     if rV(1,i) > 0 
-%         vuongRes(i) = 1;
-%         annot(i) = "Normal";
-%         anClr(i) = '#a6cee3';
-%         if pV(1,i) > 0.05
-%             tmpEmph(i) = 'normal';
-%         end
-%     elseif rV(1,i) < 0
-%         vuongRes(i) = 2;
-%         annot(i) = "Lognormal";
-%         anClr(i) = '#1f78b4';
-%         if pV(1,i) > 0.05
-%             tmpEmph(i) = 'normal';
-%         end
-%     else
-%         annot(i) = "";
-%     end
-% end
 
 % 5. Generate theoretical skewness-kurtosis curves for the...
 % Lognormal family,
@@ -204,7 +221,6 @@ for i = 1:length(sigTh)
 end
 
 % Gamma family, and
-% kTh = linspace(0.2,5000,10000);
 kTh = linspace(0.04,3000,1500000);
 for i = 1:length(kTh)
     skGam(i) = 2/sqrt(kTh(i));
@@ -212,7 +228,6 @@ for i = 1:length(kTh)
 end
 
 % Weibull family
-% kWbl = linspace(0,5,10000);
 kWbl = linspace(0.1,3.5,10000);
 for i = 1:length(kWbl)
     skWbl(i) = ( gamma(1 + 3/kWbl(i)) - 3*gamma(1 + 1/kWbl(i))*gamma(1 + 2/kWbl(i)) + 2*(gamma(1 + 1/kWbl(i)))^3 ) ./ ...
@@ -240,25 +255,45 @@ xline(threshold);
 hold off
 set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
-ylabel('Pressure [dbar]');
-xlabel('# Observations');
-set(gca,"YTick",1:5:n2,"YTickLabel",range(1):10:range(end));
+ylabel('Pressure [dbar]',FontSize=15);
+xlabel('# Observations','FontSize',15);
+set(gca,"YTick",2:10:n2,"YTickLabel",range(2):20:range(end));
 ylim([rangeLen(21) rangeLen(end-30)]);
 % title('No. of Observations');
 
 subplot(1,6,[2 3])
 xline(alphaKs,HandleVisibility="off");
 hold on
-plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
-plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+if strcmp(hypTest,"ks")
+    if testSel==4
+        plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+    elseif testSel==2
+        plot(ks(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+    end
+    xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
+elseif strcmp(hypTest,"ad")
+    if testSel==4
+        plot(ad(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(3,:),range,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+    elseif testSel==2
+        plot(ad(1,:),range,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(2,:),range,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+    end
+    xlabel('A-D $p$-value','Interpreter','latex',FontSize=15);
+end
 hold off
 grid minor;
 ylim([l1+40 l2-60]);
+set(gca,"YTick",-80:20:140,"YTickLabel",-80:20:140);
+yticklabels({});
 set(gca,'YDir','reverse');
-legend('Location','best');
-xlabel('K-S $p$-value','Interpreter','latex');
+legend(Location="best");
 % title('K-S Test');
 
 zzs = 0.25*ones(n2,1);
@@ -267,9 +302,12 @@ for i = 1:n2
     text(zzs(i),range(i),annot(i),FontSize=8,Color=anClr(i),FontWeight=tmpEmph(i));
 end
 ylim([l1+40 l2-60]); 
+set(gca,"YTick",-80:20:140,"YTickLabel",-80:20:140);
+yticklabels({});
 set(gca,'YDir','reverse');
-xlabel('Vuong LLR');
-set(gca,'xtick',[]);
+xticklabels({' ' ,' '});
+xlabel('Vuong LLR','FontSize',15);
+% set(gca,'xtick',[]);
 % title('Vuong LLR');
 
 tmp = [];
@@ -348,13 +386,13 @@ scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));
 cbar = colorbar;
 cbar.Direction = "reverse";
-cbar.Ticks = 1:10:length(tr2);
-cbar.TickLabels = tr2(1):20:tr2(end);
+cbar.Ticks = 3:10:length(tr2);
+cbar.TickLabels = tr2(3):20:tr2(end);
 cbar.Label.String = "P [dbar]";
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-xlabel('Skewness'); ylabel('Kurtosis');
+xlabel('Skewness','FontSize',15); ylabel('Kurtosis',FontSize=15);
 lgd = legend('Location','best');
 title(lgd,'Distributions');
 % title('Skewness vs. Kurtosis');

@@ -1,38 +1,20 @@
 % Script to output L2 ctd results for the statistical analysis.
 
-clear; clc; close all; addpath("baroneRoutines\");
-set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
+clear; clc; close all;
+addpath("baroneRoutines\"); addpath("func\"); addpath("output\");
+set(groot,'defaultFigureUnits','centimeters','defaultFigurePosition',[3 3 28 15]);
 
-%% Load MLD and DCM
+% Load MLD and DCM
 maxMld = load('mldVals.mat').maxMld;
 dcm = load("dcm.mat").meanPcm;  
 
-%% Assign lower pressure we measure until...
-
+% Assign lower pressure we measure until...
 lowerP = 129;
 pIn = 0:2:2*(lowerP-1);
 
-% file suffix
-tmpT = "_S";
-%% Chlorophyll a: 88-21
+%% Load hydrographical variables
 
-chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
-[ax,pL,ks,obs,sk,ku,pV,rV,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
-sgtitle('[Chl a] 01-21: L2');
-exportgraphics(ax,"figures/L2/ctd/chla" + tmpT + ".png");
-save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
-
-% ax2 = figure;
-% plot(chla,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
-% set(gca,"YDir","reverse");
-% xlabel('Chl-a [mg m^{-3}]'); ylabel('P [dbar]'); title('Chl-a','P = 0 dbar => DCM');
-% exportgraphics(ax2,'figures/L2/chla.png');
-
-clearvars -except maxMld dcm lowerP pIn chla sk ku tr2 tmpT;
-
-%% Temperature: 88-21
-
-% Load Data
+% Temperature
 ctdData = load("datafiles\ctd_iso_ALL.mat").iso;
 msng = [21, 48, 207, 218, 276];
 cR = 1:1:329;
@@ -55,21 +37,7 @@ for i = 1:329
     T(:,i) = mean(squeeze(Tin(i,:,:)),2,"omitnan");
 end
 
-[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(T,pIn,maxMld,dcm);
-sgtitle('T 88-21: L2');
-exportgraphics(ax,"figures/L2/ctd/T" + tmpT + ".png"); clear ax;
-save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
-
-% ax2 = figure;
-% plot(T,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
-% set(gca,"YDir","reverse");
-% xlabel('T [Celsius]'); ylabel('P [dbar]'); title('Temperature','P = 0 dbar => DCM');
-% exportgraphics(ax2,'figures/L2/T.png');
-
-clearvars -except maxMld dcm lowerP pIn chla T ctdData cRm tmpT;
-
-%% Salinity: 88-21
-
+% Salinity
 SPin = nan(329,lowerP,31);
 Sp = nan(lowerP,329);
 
@@ -85,21 +53,6 @@ end
 for i = 1:329
     Sp(:,i) = mean(squeeze(SPin(i,:,:)),2,"omitnan");
 end
-
-[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(Sp,pIn,maxMld,dcm);
-sgtitle('S_p 88-21: L2');
-exportgraphics(ax,"figures/L2/ctd/Sp" + tmpT + ".png"); clear ax;
-save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
-
-% ax2 = figure;
-% plot(Sp,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
-% set(gca,"YDir","reverse");
-% xlabel('S_p [g/kg]'); ylabel('P [dbar]'); title('Salinity','P = 0 dbar => DCM');
-% exportgraphics(ax2,'figures/L2/Sp.png');
-
-% clearvars -except maxMld dcm lowerP pIn chla T Sp ctdData cRm;
-
-%% O2: 88-21
 
 O2in = nan(329,lowerP,31);
 o2 = nan(lowerP,329);
@@ -117,18 +70,77 @@ for i = 1:329
     o2(:,i) = mean(squeeze(O2in(i,:,:)),2,"omitnan");
 end
 
+clear i j cRm ctdData O2in SPin Tin tmp;
+% keep dcm lowerP maxMld pIn o2 Sp T
+%% K-S
+
+% file suffix
+tmpT = "";
+
+% Chlorophyll a (88-21)
+chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(chla,pIn,maxMld,dcm);
+sgtitle('[Chl a] 01-21: L2');
+exportgraphics(ax,"figures/L2/ctd/chla" + tmpT + ".png");
+save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax lowerP ks ku obs pL pV rV sk;
+
+% Temperature (88-21)
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(T,pIn,maxMld,dcm);
+sgtitle('T 88-21: L2');
+exportgraphics(ax,"figures/L2/ctd/T" + tmpT + ".png"); clear ax;
+save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax ks ku obs pL pV rV sk;
+
+% Practical Salinity (88-21)
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(Sp,pIn,maxMld,dcm);
+sgtitle('S_p 88-21: L2');
+exportgraphics(ax,"figures/L2/ctd/Sp" + tmpT + ".png"); clear ax;
+save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax ks ku obs pL pV rV sk;
+
+% O2 (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(o2,pIn,maxMld,dcm);
 sgtitle('O_2 88-21: L2');
 exportgraphics(ax,"figures/L2/ctd/o2" + tmpT + ".png");
 save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax ks ku obs pL pV rV sk;
 
-% ax2 = figure;
-% plot(o2,pL,LineStyle=":",Color=[0.6 0.6 0.6]);
-% set(gca,"YDir","reverse");
-% xlabel('O_2 [mmol m^{-3}]'); ylabel('P [dbar]'); title('O_2','P = 0 dbar => DCM');
-% exportgraphics(ax2,'figures/L2/o2.png');
+%% A-D
 
-clearvars -except maxMld dcm lowerP pIn chla T Sp o2 ctdData cRm tmpT;
+% file suffix
+tmpT = "-ad";
+
+% To-do...
+
+% Chlorophyll a (88-21)
+% chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(chla,pIn,maxMld,dcm,4,"ad");
+sgtitle('[Chl a] 01-21: L2'+tmpT);
+exportgraphics(ax,"figures/L2/ctd/chla" + tmpT + ".png");
+save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax lowerP ks ku obs pL pV rV sk;
+
+% Temperature (88-21)
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(T,pIn,maxMld,dcm,4,"ad");
+sgtitle('T 88-21: L2'+tmpT);
+exportgraphics(ax,"figures/L2/ctd/T" + tmpT + ".png");
+save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax ks ku obs pL pV rV sk;
+
+% Practical Salinity (88-21)
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(Sp,pIn,maxMld,dcm,4,"ad");
+sgtitle('S_p 88-21: L2'+tmpT);
+exportgraphics(ax,"figures/L2/ctd/Sp" + tmpT + ".png");
+save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax ks ku obs pL pV rV sk;
+
+% O2 (88-21)
+[ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(o2,pIn,maxMld,dcm,4,"ad");
+sgtitle('O_2 88-21: L2'+tmpT);
+exportgraphics(ax,"figures/L2/ctd/o2" + tmpT + ".png");
+save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
+clear ax ks ku obs pL pV rV sk;
 
 %% Unused: NO3-.
 
