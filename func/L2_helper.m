@@ -85,6 +85,6 @@ obsId = [tmpLts(1) tmpLts(2)];
 
 % 4. Plot results
 ax = figure;
-plotKs2(pr,ks,obs,sk,ku,limits(1),limits(end),threshold,vuongRes,obsId,pV,hypTest,ad,testSel);
+plotKs2(pr,ks,obs,sk,ku,limits(1),limits(2),threshold,vuongRes,obsId,pV,hypTest,ad,testSel);
 
 end

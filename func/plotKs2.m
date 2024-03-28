@@ -21,6 +21,7 @@ end
 
 limits = [lim1 lim2];
 tix = lim1:10:lim2;
+disp(tix);
 a = idObs(1); b = idObs(2);
 n = length(tr);
 
@@ -184,9 +185,9 @@ set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
 % ylim([1 n]);
 % ylim([1 length(tix)]);
-ylim([1 length(tix)]);
+ylim([find(tix==-60) find(tix==60)]);
 ylabel('Pressure [dbar]',FontSize=15);
-set(gca,"YTick",1:2:length(tix),"YTickLabel",lim1:20:lim2);
+set(gca,"YTick",1:1:length(tix),"YTickLabel",lim1:10:lim2);
 xlabel('# Observations',FontSize=15);
 
 subplot(1,6,[2 3])
@@ -202,6 +203,7 @@ if strcmp(hypTest,"ks")
         plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
         plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
     end
+    xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
 else
     if testSel == 4
         plot(ad(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
@@ -216,10 +218,12 @@ else
 end
 hold off
 grid minor;
-ylim([lim1 lim2]);
+% ylim([lim1 lim2]);
+ylim([-60 60]);
 set(gca,'YDir','reverse');
-legend('Location','best',Orientation='horizontal',NumColumns=2);
+set(gca,"YTick",lim1:10:lim2);
 yticklabels({});
+legend('Location','best',Orientation='horizontal',NumColumns=2);
 % title('K-S Test');
 
 zzs = 0.1*ones(n,1);
@@ -237,7 +241,8 @@ end
 % end
 % hold off
 grid minor;
-ylim(limits); set(gca,'YDir','reverse');
+ylim([-60 60]); set(gca,'YDir','reverse');
+set(gca,"YTick",lim1:10:lim2);
 yticklabels({});
 xticklabels({' ' ,' '});
 % set(gca,"XTick",[]);
@@ -296,31 +301,31 @@ else
     skewLimB = 2.5;
 end
 
-% error bars for sk-ku
-obsTmp = obs(obs>=50);
-n2 = length(obsTmp);
-yneg = nan(n2,1); ypos = nan(n2,1); xneg = nan(n2,1); xpos = nan(n2,1);
-for i = 1:n2
-    if obsTmp(i) > 300
-        yneg(i) = -1.02; ypos(i) = 0.92;
-        xneg(i) = -0.23; xpos(i) = 0.22;
-    elseif obsTmp(i) > 250
-        yneg(i) = -1.06; ypos(i) = 0.96;
-        xneg(i) = -0.24; xpos(i) = 0.25;
-    elseif obsTmp(i) > 200
-        yneg(i) = -1.13; ypos(i) = 0.96;
-        xneg(i) = -0.27; xpos(i) = 0.26;
-    elseif obsTmp(i) > 150
-        yneg(i) = -1.22; ypos(i) = 1.08;
-        xneg(i) = -0.30; xpos(i) = 0.29;
-    elseif obsTmp(i) > 100
-        yneg(i) = -1.30; ypos(i) = 1.15;
-        xneg(i) = -0.34; xpos(i) = 0.33;
-    else
-        yneg(i) = -1.24; ypos(i) = 1.11;
-        xneg(i) = -0.51; xpos(i) = 0.38;
-    end
-end
+% % error bars for sk-ku
+% obsTmp = obs(obs>=50);
+% n2 = length(obsTmp);
+% yneg = nan(n2,1); ypos = nan(n2,1); xneg = nan(n2,1); xpos = nan(n2,1);
+% for i = 1:n2
+%     if obsTmp(i) > 300
+%         yneg(i) = -1.02; ypos(i) = 0.92;
+%         xneg(i) = -0.23; xpos(i) = 0.22;
+%     elseif obsTmp(i) > 250
+%         yneg(i) = -1.06; ypos(i) = 0.96;
+%         xneg(i) = -0.24; xpos(i) = 0.25;
+%     elseif obsTmp(i) > 200
+%         yneg(i) = -1.13; ypos(i) = 0.96;
+%         xneg(i) = -0.27; xpos(i) = 0.26;
+%     elseif obsTmp(i) > 150
+%         yneg(i) = -1.22; ypos(i) = 1.08;
+%         xneg(i) = -0.30; xpos(i) = 0.29;
+%     elseif obsTmp(i) > 100
+%         yneg(i) = -1.30; ypos(i) = 1.15;
+%         xneg(i) = -0.34; xpos(i) = 0.33;
+%     else
+%         yneg(i) = -1.24; ypos(i) = 1.11;
+%         xneg(i) = -0.51; xpos(i) = 0.38;
+%     end
+% end
 
 subplot(1,6,[5.1 6])
 scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);

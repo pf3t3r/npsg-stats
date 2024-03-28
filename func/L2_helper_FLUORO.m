@@ -1,4 +1,4 @@
-function [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad] = L2_helper_FLUORO(X,pIn,maxMld,dcm,testSel,hypTest)
+function [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2] = L2_helper_FLUORO(X,pIn,maxMld,dcm,testSel,hypTest,limits)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -28,6 +28,9 @@ if nargin < 5
 end
 if nargin < 6
     hypTest = "ks";
+end
+if nargin < 7
+    limits = [-80 140];
 end
 
 % 1. Extract data beneath ML
@@ -61,9 +64,18 @@ l2 = max(max(pL));
 range = l1:2:l2;
 rangeLen = 1:1:length(range);
 n2 = length(range);
+disp(n2);
+
+% Automate limit setting
+bottom = floor((l1 - limits(1))./2);
+top = floor((l2 - limits(2))./2); 
+% indexOne = find(pL==limits(1));
+% indexTwo = find(pL==limits(2));
+disp(bottom);
+disp(top);
 
 ks = nan(5,n2);
-rV = nan(10,n2);
+rV = nan(10,n2); 
 pV = nan(10,n2);
 obs = nan(1,n2);
 sk = nan(1,n2);
@@ -72,7 +84,7 @@ ku = nan(1,n2);
 
 for i = rangeLen
     tmp = xSubml(pL==range(i));
-    disp(i);
+    %disp(i);
     tmp(tmp<=0) = nan;
     tmp(isnan(tmp)) = [];
     obs(i) = length(tmp);
@@ -257,8 +269,8 @@ set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
 ylabel('Pressure [dbar]',FontSize=15);
 xlabel('# Observations','FontSize',15);
-set(gca,"YTick",2:10:n2,"YTickLabel",range(2):20:range(end));
-ylim([rangeLen(21) rangeLen(end-30)]);
+set(gca,"YTick",2:5:n2,"YTickLabel",range(2):10:range(end));
+ylim([rangeLen(1-bottom) rangeLen(end-top)]);
 % title('No. of Observations');
 
 subplot(1,6,[2 3])
@@ -289,21 +301,23 @@ elseif strcmp(hypTest,"ad")
 end
 hold off
 grid minor;
-ylim([l1+40 l2-60]);
-set(gca,"YTick",-80:20:140,"YTickLabel",-80:20:140);
-yticklabels({});
+% ylim([l1+40 l2-60]);
+ylim(limits);
+set(gca,"YTick",limits(1):10:limits(2),"YTickLabel",limits(1):10:limits(2));
+% yticklabels({});
 set(gca,'YDir','reverse');
 legend(Location="best");
 % title('K-S Test');
 
 zzs = 0.25*ones(n2,1);
 subplot(1,6,4)
-for i = 1:n2
+for i = 1-bottom:n2-top
     text(zzs(i),range(i),annot(i),FontSize=8,Color=anClr(i),FontWeight=tmpEmph(i));
 end
-ylim([l1+40 l2-60]); 
-set(gca,"YTick",-80:20:140,"YTickLabel",-80:20:140);
-yticklabels({});
+% ylim([l1+40 l2-60]); 
+ylim(limits);
+set(gca,"YTick",limits(1):10:limits(2),"YTickLabel",limits(1):10:limits(2));
+% yticklabels({});
 set(gca,'YDir','reverse');
 xticklabels({' ' ,' '});
 xlabel('Vuong LLR','FontSize',15);
@@ -320,6 +334,13 @@ tr2 = range(tmp);
 sk2 = sk(tmp);
 ku2 = ku(tmp);
 clear tmp;
+
+kLim = [find(tr2==limits(1)) find(tr2==limits(2))];
+disp(kLim);
+
+tr2 = tr2(kLim(1):kLim(2));
+sk2 = sk2(kLim(1):kLim(2));
+ku2 = ku2(kLim(1):kLim(2));
 
 kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
 if max(ku2) > 10 & min(sk2) < 0
@@ -341,30 +362,30 @@ else
 end
 
 % error bars for sk-ku
-obsTmp = obs(obs>=50);
-n2 = length(obsTmp);
-yneg = nan(n2,1); ypos = nan(n2,1); xneg = nan(n2,1); xpos = nan(n2,1);
-for i = 1:n2
-    if obsTmp(i) > 300
-        yneg(i) = -1.02; ypos(i) = 0.92;
-        xneg(i) = -0.23; xpos(i) = 0.22;
-    elseif obsTmp(i) > 250
-        yneg(i) = -1.06; ypos(i) = 0.96;
-        xneg(i) = -0.24; xpos(i) = 0.25;
-    elseif obsTmp(i) > 200
-        yneg(i) = -1.13; ypos(i) = 0.96;
-        xneg(i) = -0.27; xpos(i) = 0.26;
-    elseif obsTmp(i) > 150
-        yneg(i) = -1.22; ypos(i) = 1.08;
-        xneg(i) = -0.30; xpos(i) = 0.29;
-    elseif obsTmp(i) > 100
-        yneg(i) = -1.30; ypos(i) = 1.15;
-        xneg(i) = -0.34; xpos(i) = 0.33;
-    else
-        yneg(i) = -1.24; ypos(i) = 1.11;
-        xneg(i) = -0.51; xpos(i) = 0.38;
-    end
-end
+% obsTmp = obs(obs>=50);
+% n2 = length(obsTmp);
+% yneg = nan(n2,1); ypos = nan(n2,1); xneg = nan(n2,1); xpos = nan(n2,1);
+% for i = 1:n2
+%     if obsTmp(i) > 300
+%         yneg(i) = -1.02; ypos(i) = 0.92;
+%         xneg(i) = -0.23; xpos(i) = 0.22;
+%     elseif obsTmp(i) > 250
+%         yneg(i) = -1.06; ypos(i) = 0.96;
+%         xneg(i) = -0.24; xpos(i) = 0.25;
+%     elseif obsTmp(i) > 200
+%         yneg(i) = -1.13; ypos(i) = 0.96;
+%         xneg(i) = -0.27; xpos(i) = 0.26;
+%     elseif obsTmp(i) > 150
+%         yneg(i) = -1.22; ypos(i) = 1.08;
+%         xneg(i) = -0.30; xpos(i) = 0.29;
+%     elseif obsTmp(i) > 100
+%         yneg(i) = -1.30; ypos(i) = 1.15;
+%         xneg(i) = -0.34; xpos(i) = 0.33;
+%     else
+%         yneg(i) = -1.24; ypos(i) = 1.11;
+%         xneg(i) = -0.51; xpos(i) = 0.38;
+%     end
+% end
 
 subplot(1,6,[5 6])
 scatter(0,3,[],[0.6509803921568628 0.807843137254902 0.8901960784313725],'DisplayName','Norm.',Marker='o',LineWidth=3);
@@ -386,8 +407,12 @@ scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));
 cbar = colorbar;
 cbar.Direction = "reverse";
-cbar.Ticks = 3:10:length(tr2);
-cbar.TickLabels = tr2(3):20:tr2(end);
+cbar.Ticks = 1:5:(kLim(2)-kLim(1));
+cbar.TickLabels = limits(1):10:limits(2);
+% cbar.Ticks = 1:5:(limits(2)-limits(1))/2;
+% cbar.TickLabels = limits(1):10:limits(2);
+% cbar.Ticks = 3:10:length(tr2);
+% cbar.TickLabels = tr2(3):20:tr2(end);
 cbar.Label.String = "P [dbar]";
 hold off
 grid minor;
