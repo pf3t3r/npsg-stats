@@ -17,6 +17,8 @@ function [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2] = L2_helper_FLUORO(X,pIn,maxMld,dc
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
+logAxis = true; % true => output p-values in log x-axis, otherwise no log plot.
+
 threshold = 50;         % Default threshold = 50 [Mishra et al (2019), 
                         % Ghasemi & Zahediasl (2012), Ahad et al (2011)]
 n = length(pIn);        % Depth range
@@ -274,7 +276,7 @@ ylim([rangeLen(1-bottom) rangeLen(end-top)]);
 % title('No. of Observations');
 
 subplot(1,6,[2 3])
-xline(alphaKs,HandleVisibility="off");
+xline(alphaKs,DisplayName='\alpha');
 hold on
 if strcmp(hypTest,"ks")
     if testSel==4
@@ -301,7 +303,11 @@ elseif strcmp(hypTest,"ad")
 end
 hold off
 grid minor;
-% ylim([l1+40 l2-60]);
+if logAxis == true
+    set(gca, 'XScale', 'log');
+    xline(0.005,'--',HandleVisibility='off');
+    xline(0.1,'--',HandleVisibility='off');
+end
 ylim(limits);
 set(gca,"YTick",limits(1):10:limits(2),"YTickLabel",limits(1):10:limits(2));
 % yticklabels({});
@@ -407,7 +413,7 @@ scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
 colormap(gca,cbrewer2("RdYlBu"));
 cbar = colorbar;
 cbar.Direction = "reverse";
-cbar.Ticks = 1:5:(kLim(2)-kLim(1));
+cbar.Ticks = 1:5:(kLim(2)-kLim(1)+5);
 cbar.TickLabels = limits(1):10:limits(2);
 % cbar.Ticks = 1:5:(limits(2)-limits(1))/2;
 % cbar.TickLabels = limits(1):10:limits(2);

@@ -82,28 +82,28 @@ clc;
 chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
 [ax,pL,ks,obs,sk,ku,pV,rV,~,~,tr2] = L2_helper_FLUORO(chla,pIn,maxMld,dcm,4,"ks",[-60 60]);
 sgtitle('[Chl a] 01-21: L2');
-exportgraphics(ax,"figures/L2/ctd/chla" + tmpT + ".png");
+exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
 save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
 % Temperature (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(T,pIn,maxMld,dcm,4,"ks",[-60 60]);
 sgtitle('T 88-21: L2');
-exportgraphics(ax,"figures/L2/ctd/T" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
 save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
 % Practical Salinity (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(Sp,pIn,maxMld,dcm,4,"ks",[-60 60]);
 sgtitle('S_p 88-21: L2');
-exportgraphics(ax,"figures/L2/ctd/Sp" + tmpT + ".png"); clear ax;
+exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
 save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
 % O2 (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(o2,pIn,maxMld,dcm,4,"ks",[-60 60]);
 sgtitle('O_2 88-21: L2');
-exportgraphics(ax,"figures/L2/ctd/o2" + tmpT + ".png");
+exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
 save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
@@ -118,28 +118,28 @@ tmpT = "-ad";
 % chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(chla,pIn,maxMld,dcm,4,"ad",[-60 60]);
 sgtitle('[Chl a] 01-21: L2'+tmpT);
-exportgraphics(ax,"figures/L2/ctd/chla" + tmpT + ".png");
+exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
 save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax lowerP ks ku obs pL pV rV sk;
 
 % Temperature (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(T,pIn,maxMld,dcm,4,"ad",[-60 60]);
 sgtitle('T 88-21: L2'+tmpT);
-exportgraphics(ax,"figures/L2/ctd/T" + tmpT + ".png");
+exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png");
 save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
 % Practical Salinity (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(Sp,pIn,maxMld,dcm,4,"ad",[-60 60]);
 sgtitle('S_p 88-21: L2'+tmpT);
-exportgraphics(ax,"figures/L2/ctd/Sp" + tmpT + ".png");
+exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png");
 save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
 % O2 (88-21)
 [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(o2,pIn,maxMld,dcm,4,"ad",[-60 60]);
 sgtitle('O_2 88-21: L2'+tmpT);
-exportgraphics(ax,"figures/L2/ctd/o2" + tmpT + ".png");
+exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
 save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
 clear ax ks ku obs pL pV rV sk;
 
@@ -165,7 +165,7 @@ clear ax ks ku obs pL pV rV sk;
 % 
 % [ax,pL,ks,obs,sk,ku,pV,rV] = L2_helper_FLUORO(no3,pIn,maxMld,dcm);
 % sgtitle('NO_3^{-} 88-21: L2');
-% exportgraphics(ax,"figures/L2/ctd/notUsed/no3" + tmpT + ".png");
+% exportgraphics(ax,"figures/L2/ctd/log/notUsed/no3" + tmpT + ".png");
 % save("output\L2\ctd\no3.mat","pL","ks","obs","sk","ku","pV","rV");
 % 
 % % ax2 = figure;

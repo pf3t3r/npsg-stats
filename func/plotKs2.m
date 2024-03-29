@@ -1,26 +1,26 @@
-function [] = plotKs2(tr,ks,obs,sk,ku,lim1,lim2,threshold,vuongRes,idObs,pV,hypTest,ad,testSel)
+function [] = plotKs2(tr,ks,obs,sk,ku,limits,threshold,vuongRes,idObs,pV,hypTest,ad,testSel,logAxis)
 %plotKs2
 % INPUT: 
 % OUTPUT: 
-
-if nargin< 14
+if nargin < 14
+    logAxis = false;
+end
+if nargin < 13
     testSel = 4;
 end
-
-if nargin < 12
+if nargin < 11
     hypTest = "ks";
 end
-
 if nargin < 8
+    vuongRes = 0;
+end
+if nargin < 7
     threshold = 50;
 end
 
-if nargin < 9
-    vuongRes = 0;
-end
-
-limits = [lim1 lim2];
-tix = lim1:10:lim2;
+% limits = [lim1 lim2];
+% limits = limits;
+tix = limits(1):10:limits(2);
 disp(tix);
 a = idObs(1); b = idObs(2);
 n = length(tr);
@@ -31,6 +31,11 @@ anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 alphaKs = 0.05;
+
+vuongRes2 = nan(length(vuongRes));
+vuongRes2(a:b) = vuongRes(a:b);
+vuongRes = vuongRes2;
+
 % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
 if testSel == 4
     for i = 1:n
@@ -183,12 +188,14 @@ xline(threshold);
 hold off
 set(gca,'YDir','reverse');
 set(gca,'XDir','reverse');
-% ylim([1 n]);
-% ylim([1 length(tix)]);
-ylim([find(tix==-60) find(tix==60)]);
 ylabel('Pressure [dbar]',FontSize=15);
-set(gca,"YTick",1:1:length(tix),"YTickLabel",lim1:10:lim2);
 xlabel('# Observations',FontSize=15);
+% if b-a > 14 % b/c of bug with yticklabel
+%     set(gca,"YTickLabel",limits(1):5:limits(2));
+% else
+set(gca,"YTickLabel",limits(1):10:limits(2),"YTick",1:1+b-a);
+% end
+ylim([1 1+b-a]);
 
 subplot(1,6,[2 3])
 xline(alphaKs,DisplayName='\alpha');
@@ -216,12 +223,16 @@ else
     end
     xlabel('A-D $p$-value',Interpreter='latex',FontSize=15);
 end
+if logAxis == true
+    set(gca, 'XScale', 'log');
+    xline(0.005,':');
+    xline(0.1,':');
+end
 hold off
 grid minor;
-% ylim([lim1 lim2]);
-ylim([-60 60]);
+ylim([limits(1) limits(2)]);
 set(gca,'YDir','reverse');
-set(gca,"YTick",lim1:10:lim2);
+set(gca,"YTick",limits(1):10:limits(2));
 yticklabels({});
 legend('Location','best',Orientation='horizontal',NumColumns=2);
 % title('K-S Test');
@@ -241,8 +252,9 @@ end
 % end
 % hold off
 grid minor;
-ylim([-60 60]); set(gca,'YDir','reverse');
-set(gca,"YTick",lim1:10:lim2);
+ylim([limits(1) limits(2)]); 
+set(gca,'YDir','reverse');
+set(gca,"YTick",limits(1):10:limits(2));
 yticklabels({});
 xticklabels({' ' ,' '});
 % set(gca,"XTick",[]);
@@ -252,12 +264,12 @@ xlabel('Vuong LLR',FontSize=15);
 % subplot(1,4,3)
 % yyaxis left
 % plot(sk,tr,'DisplayName','Skewness'); hold on
-% ylim([lim1 lim2]);
+% ylim([limits(1) limits(2)]);
 % set(gca,'YDir','reverse');
 % % yticklabels({});
 % yyaxis right
 % plot(ku,tr,'DisplayName','Kurtosis');
-% ylim([lim1 lim2]); 
+% ylim([limits(1) limits(2)]); 
 % set(gca,'YDir','reverse');
 % % set(gca,'YTickLabel',{tr(5:5:n)},'YColor','Black')
 % xline(3,'.','Mesokurtic','HandleVisibility','off');
@@ -271,8 +283,10 @@ xlabel('Vuong LLR',FontSize=15);
 % legend('Location','south');
 % title('Moments');
 
+% SK-KU plot: output only skewness/kurtosis values at depths defined by
+% y-limits in function.
 tmp = [];
-for i = 1:n
+for i = a:b
     if ~isnan(sum(ks(:,i)))
         tmp = [tmp i];
     end

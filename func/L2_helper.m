@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad] = L2_helper(tmp,maxMld,dcm,tmpLts,threshold,testSel,hypTest)
+function [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,maxMld,dcm,threshold,testSel,hypTest,yLimits,yLimitsObs)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -17,21 +17,31 @@ function [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad] = L2_helper(tmp,maxMld,dcm,tmpLts,t
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
-if nargin < 6
-    testSel = 4;
-end
-if nargin < 7
-    hypTest = "ks";
-end
-% Set default threshold
-% Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
-% & Zahediasl (2012), and Ahad et al (2011).
-if nargin < 5
+logAxis = true; % true => output p-values in log x-axis, otherwise no log plot.
+
+% 1. Assign default parameter values.
+% Default threshold of 50 based on Mishra et al (2019), Ghasemi & Zahediasl 
+% (2012), and Ahad et al (2011).
+if nargin < 4
     threshold = 50;
 end
-
-if nargin < 4
-    tmpLts = [2 22];
+% Default to test against four distributions in K-S or A-D.
+if nargin < 5
+    testSel = 4;
+end
+% Default = "ks" (alternative = "ad").
+if nargin < 6
+    hypTest = "ks";
+end
+% Default y-limits for K-S/A-D and Vuong plots.
+if nargin < 7
+    yLimits = [-60 60];
+end
+% Default y-limits for horizontal bar chart showing no. of observations per
+% depth. This should vary in a similar way to yLimits above. Test run the
+% code to output "pr" to check this.
+if nargin < 8
+    yLimitsObs = [7 19];
 end
 
 id = num2str(tmp.data(:,1));
@@ -80,11 +90,12 @@ else
     rV(rV==0) = nan;
 end
 
-limits = [pr(tmpLts(1)) pr(tmpLts(2))];
-obsId = [tmpLts(1) tmpLts(2)];
+% limits = [pr(barchartLimits(1)) pr(barchartLimits(2))];
+limits = yLimits;
+obsId = [yLimitsObs(1) yLimitsObs(2)];
 
 % 4. Plot results
 ax = figure;
-plotKs2(pr,ks,obs,sk,ku,limits(1),limits(2),threshold,vuongRes,obsId,pV,hypTest,ad,testSel);
+plotKs2(pr,ks,obs,sk,ku,limits,threshold,vuongRes,obsId,pV,hypTest,ad,testSel,logAxis);
 
 end
