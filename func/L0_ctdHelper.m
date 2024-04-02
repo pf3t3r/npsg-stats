@@ -1,6 +1,9 @@
-function ax = L0_ctdHelper(X,hypTest)
+function ax = L0_ctdHelper(X,hypTest,logAxis)
 %L0_CTDHELPER 
 
+if nargin <3
+    logAxis = false;
+end
 if nargin <2
     hypTest = "ks";
 end
@@ -72,6 +75,8 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 18
 % pXX = 5:10:195;
 ax = figure;
 subplot(1,2,1)
+xline(0.05,DisplayName="\alpha");
+hold on
 if strcmp(hypTest,"ks")
     plot(ks(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
     xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
@@ -79,7 +84,12 @@ else
     plot(ad,pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
     xlabel('A-D $p$-value','Interpreter','latex',FontSize=15);
 end
-xline(0.05,DisplayName="\alpha");
+if logAxis == true
+    set(gca, 'XScale', 'log');
+    xline(0.005,'--',HandleVisibility='off');
+    xline(0.1,'--',HandleVisibility='off');
+end
+hold off
 set(gca,'YDir','reverse');
 grid minor;
 legend(FontSize=15);

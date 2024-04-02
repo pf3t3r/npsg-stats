@@ -225,8 +225,8 @@ else
 end
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.005,':');
-    xline(0.1,':');
+    xline(0.005,':',HandleVisibility='off');
+    xline(0.1,':',HandleVisibility='off');
 end
 hold off
 grid minor;

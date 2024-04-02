@@ -1,8 +1,13 @@
-function [ax,ks,obs] = L0_helper(tmp,threshold,hypTest)
+function [ax,ks,obs] = L0_helper(tmp,threshold,hypTest,logAxis)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
 % SAVE and OUTPUT bottle ID: reminder!
+
+if nargin < 4
+    logAxis = true;
+    % true => output p-values in log x-axis, otherwise no log plot.
+end
 
 if nargin < 3
     hypTest = 'ks';
@@ -108,6 +113,8 @@ xlabel("# Observations",FontSize=15);
 ylabel("P [dbar]",FontSize=15);
 
 subplot(1,5,[2 3])
+xline(0.05,DisplayName='\alpha'); 
+hold on
 if strcmp(hypTest,'ks')
     plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
     xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
@@ -115,7 +122,12 @@ else
     plot(ad,pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
     xlabel('A-D $p$-value',Interpreter='latex',FontSize=15);
 end
-xline(0.05,DisplayName='\alpha'); ylim([0 200]);
+if logAxis == true
+    set(gca, 'XScale', 'log');
+    xline(0.005,'--',HandleVisibility='off');
+    xline(0.1,'--',HandleVisibility='off');
+end
+ylim([0 200]);
 set(gca,'YDir','reverse');
 yticklabels([]);
 grid minor;
