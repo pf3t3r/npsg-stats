@@ -1,8 +1,14 @@
-function [ax,ks,obs] = L0_helper(tmp,threshold,hypTest,logAxis)
+function [ax,ks,obs,winter] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
 % SAVE and OUTPUT bottle ID: reminder!
+
+if nargin < 5
+    season = 0;
+    % 0 = no seasonal analysis, 1 = winter, 1 = spring, 'su' = summer,
+    % 'a' = autumn
+end
 
 if nargin < 4
     logAxis = true;
@@ -19,13 +25,34 @@ end
 tmpT = ""; alphaKs = 0.05;
 
 if isstruct(tmp)
+    botId = num2str(tmp.data(:,2));
     pIn = tmp.data(:,4);
     X = tmp.data(:,5);
 else
+    botId = num2str(tmp(:,2));
     pIn = tmp(:,4);
     X = tmp(:,5);
 end
 n = length(pIn);
+
+% CONTINUE WORKING ON
+% Extract month from bottle ID
+% botMth = str2num(botId(:,1:end-4));
+% winter = nan(n,1);
+% for i = 1:n
+%     if (botMth == 1) || (botMth == 2) || (botMth == 3)
+%         winter(i) = 1;
+%     end
+% %     if (botMth == 4) || (botMth == 5) || (botMth == 6)
+% %         spring(i) = 1;
+% %     end
+% %     if (botMth == 7) || (botMth == 8) || (botMth == 9)
+% %         summer(i) = 1;
+% %     end
+% %     if (botMth == 10) || (botMth == 11) || (botMth == 12)
+% %         autumn(i) = 1;
+% %     end
+% end
 
 %% Bin
 pB = discretize(pIn,0:10:200);
