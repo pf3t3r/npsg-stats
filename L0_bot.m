@@ -8,13 +8,13 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 
 % Possible test cases.
 principleAnalysis = false;  % main analysis
-seasonalAnalysis = false;   % seasonality of statistics
+seasonalAnalysis = true;   % seasonality of statistics
 analyseYearByYear = false;  % analyse effect (if any) of varying start year 
                             % on distributions
 crn131 = false;             % analyse 2001-2021 data (to mirror CTD results)
 nightAnalysis = false;      % analyse night-time 2001-2021 (to mirror CTD 
                             % results)
-logAxes = false;            % output p-values as log values
+logAxes = true;            % output p-values as log values
 
 if logAxes == true
     lp = "log/";
@@ -25,16 +25,66 @@ end
 
 %% Seasonal Analysis
 if seasonalAnalysis == true
- % K-S
-    tmpT = "";
-    
     % chla
+    % K-S
+    % winter
+    tmpT = "-01";
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
-    sgtitle("L0: Chl $a$ (1988-2021)","Interpreter","latex");
+    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
+    % spring
+    tmpT = "-02";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
+    % summer
+    tmpT = "-03";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
+    % autumn
+    tmpT = "-04";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
     
+    % A-D
+    % winter
+    tmpT = "-ad-01";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
+    % spring
+    tmpT = "-ad-02";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
+    % summer
+    tmpT = "-ad-03";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
+    % autumn
+    tmpT = "-ad-04";
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
+    clearvars -except tmpT analyseYearByYear crn131 seasonalAnalysis nightAnalysis logAxes lp;
 end
 %% Principal Analysis
 if principleAnalysis == true    
@@ -43,7 +93,7 @@ if principleAnalysis == true
     
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~,botMth] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1988-2021)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
     clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;

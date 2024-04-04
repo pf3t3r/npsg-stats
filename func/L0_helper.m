@@ -1,4 +1,4 @@
-function [ax,ks,obs,winter] = L0_helper(tmp,threshold,hypTest,logAxis,season)
+function [ax,ks,obs] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
@@ -6,8 +6,8 @@ function [ax,ks,obs,winter] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 
 if nargin < 5
     season = 0;
-    % 0 = no seasonal analysis, 1 = winter, 1 = spring, 'su' = summer,
-    % 'a' = autumn
+    % 0 = no seasonal analysis, 1 = winter, 2 = spring, 3 = summer,
+    % 4 = autumn
 end
 
 if nargin < 4
@@ -25,41 +25,93 @@ end
 tmpT = ""; alphaKs = 0.05;
 
 if isstruct(tmp)
-    botId = num2str(tmp.data(:,2));
+    botId = tmp.data(:,2);
     pIn = tmp.data(:,4);
     X = tmp.data(:,5);
 else
-    botId = num2str(tmp(:,2));
+    botId = tmp(:,2);
     pIn = tmp(:,4);
     X = tmp(:,5);
 end
 n = length(pIn);
+nB = length(botId);
+n3 = length(X);
 
 % CONTINUE WORKING ON
-% Extract month from bottle ID
-% botMth = str2num(botId(:,1:end-4));
-% winter = nan(n,1);
-% for i = 1:n
-%     if (botMth == 1) || (botMth == 2) || (botMth == 3)
-%         winter(i) = 1;
-%     end
-% %     if (botMth == 4) || (botMth == 5) || (botMth == 6)
-% %         spring(i) = 1;
-% %     end
-% %     if (botMth == 7) || (botMth == 8) || (botMth == 9)
-% %         summer(i) = 1;
-% %     end
-% %     if (botMth == 10) || (botMth == 11) || (botMth == 12)
-% %         autumn(i) = 1;
-% %     end
-% end
+if season ~= 0
+    botId(botId==-9) = nan;
+    botId2 = num2str(botId);
+    botMth = nan(n,1);
+    for i = 1:n
+        tmpX = str2num(botId2(i,1:end-4));
+        if ~isnan(tmpX)
+            botMth(i) = tmpX;
+        end
+    end
+    winter = nan(n,1); spring = nan(n,1); summer = nan(n,1); autumn = nan(n,1);
+    for i = 1:n
+        tmpY = botMth(i);
+        if (tmpY == 1) || (tmpY == 2) || (tmpY == 3)
+            winter(i) = 1;
+        end
+        if (tmpY == 4) || (tmpY == 5) || (tmpY == 6)
+            spring(i) = 1;
+        end
+        if (tmpY == 7) || (tmpY == 8) || (tmpY == 9)
+            summer(i) = 1;
+        end
+        if (tmpY == 10) || (tmpY == 11) || (tmpY == 12)
+            autumn(i) = 1;
+        end
+    end
+
+    winIds = []; sprIds = []; sumIds = []; autIds = []; 
+    for i = 1:n
+        if winter(i) == 1
+            winIds = [winIds i];
+        end
+        if spring(i) == 1
+            sprIds = [sprIds i];
+        end
+        if summer(i) == 1
+            sumIds = [sumIds i];
+        end
+        if autumn(i) == 1
+            autIds = [autIds i];
+        end
+    end
+
+    if season == 1
+        X = X(winIds);
+        pIn = pIn(winIds);
+        nSea = length(winIds);
+    elseif season == 2
+        X = X(sprIds);
+        pIn = pIn(sprIds);
+        nSea = length(sprIds);
+    elseif season == 3
+        X = X(sumIds);
+        pIn = pIn(sumIds);
+        nSea = length(sumIds);
+    elseif season == 4
+        X = X(autIds);
+        pIn = pIn(autIds);
+        nSea = length(autIds);
+    end
+end
 
 %% Bin
 pB = discretize(pIn,0:10:200);
 pX = nan(n,1);
 
-for i = 1:n
-    pX(i) = pB(i)*10 - 5;
+if season == 0
+    for i = 1:n
+        pX(i) = pB(i)*10 - 5;
+    end
+else
+    for i = 1:nSea
+        pX(i) = pB(i)*10 - 5;
+    end
 end
 
 %% K-S: bottle chla
