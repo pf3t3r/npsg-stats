@@ -37,7 +37,6 @@ n = length(pIn);
 nB = length(botId);
 n3 = length(X);
 
-% CONTINUE WORKING ON
 if season ~= 0
     botId(botId==-9) = nan;
     botId2 = num2str(botId);

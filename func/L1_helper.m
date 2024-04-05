@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,Sk,Ku,rV,pV,ad] = L1_helper(tmp,maxMld,threshold,testSel,hypTest)
+function [ax,p,ks,obs,Sk,Ku,rV,pV,ad] = L1_helper(tmp,maxMld,threshold,testSel,hypTest,logAxis,season)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -16,18 +16,20 @@ function [ax,p,ks,obs,Sk,Ku,rV,pV,ad] = L1_helper(tmp,maxMld,threshold,testSel,h
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
-% % 'unc' unused for now
-% if nargin < 3
-%     unc = nan(70,16);
-% end
-if nargin < 4
-    testSel = 4;
+if nargin < 7
+    season = 0;
+    % 0 = no seasonal analysis, 1 = winter, 2 = spring, 3 = summer,
+    % 4 = autumn
+end
+if nargin < 6
+    logAxis = true;
 end
 if nargin < 5
     hypTest = "ks";
 end
-
-% Set default threshold
+if nargin < 4
+    testSel = 4;
+end
 % Default threshold of 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
 if nargin < 3
@@ -37,7 +39,78 @@ end
 pIn = tmp.data(:,4);
 cIn = tmp.data(:,5);
 idIn = tmp.data(:,1);
-clear tmp;
+
+%%% seasonal analysis
+if season ~= 0
+    botidIn = tmp.data(:,2);
+    n = length(pIn);
+    botidIn(botidIn==-9) = nan;
+    botId2 = num2str(botidIn);
+    botMth = nan(n,1);
+    for i = 1:n
+        tmpX = str2num(botId2(i,1:end-4));
+        if ~isnan(tmpX)
+            botMth(i) = tmpX;
+        end
+    end
+    winter = nan(n,1); spring = nan(n,1); summer = nan(n,1); autumn = nan(n,1);
+    for i = 1:n
+        tmpY = botMth(i);
+        if (tmpY == 1) || (tmpY == 2) || (tmpY == 3)
+            winter(i) = 1;
+        end
+        if (tmpY == 4) || (tmpY == 5) || (tmpY == 6)
+            spring(i) = 1;
+        end
+        if (tmpY == 7) || (tmpY == 8) || (tmpY == 9)
+            summer(i) = 1;
+        end
+        if (tmpY == 10) || (tmpY == 11) || (tmpY == 12)
+            autumn(i) = 1;
+        end
+    end
+
+    winIds = []; sprIds = []; sumIds = []; autIds = []; 
+    for i = 1:n
+        if winter(i) == 1
+            winIds = [winIds i];
+        end
+        if spring(i) == 1
+            sprIds = [sprIds i];
+        end
+        if summer(i) == 1
+            sumIds = [sumIds i];
+        end
+        if autumn(i) == 1
+            autIds = [autIds i];
+        end
+    end
+
+    if season == 1
+        cIn = cIn(winIds);
+        pIn = pIn(winIds);
+        idIn = idIn(winIds);
+        %nSea = length(winIds);
+    elseif season == 2
+        cIn = cIn(sprIds);
+        pIn = pIn(sprIds);
+        idIn = idIn(sprIds);
+        %nSea = length(sprIds);
+    elseif season == 3
+        cIn = cIn(sumIds);
+        pIn = pIn(sumIds);
+        idIn = idIn(sumIds);
+        %nSea = length(sumIds);
+    elseif season == 4
+        cIn = cIn(autIds);
+        pIn = pIn(autIds);
+        idIn = idIn(autIds);
+        %nSea = length(autIds);
+    end
+end
+%%% end seasonal analysis
+
+
 
 % 2. Extract data in ML
 [idOut,pOut,cOut] = extractMldVals(idIn,pIn,cIn,maxMld);
@@ -86,5 +159,4 @@ end
 ax = figure;
 plotKs(p,ks,obs,Sk,Ku,0.5,10.5,true,threshold,vuongRes,pV,[0 100],false,hypTest,ad,testSel);
 
-% disp(vuongRes);
 end

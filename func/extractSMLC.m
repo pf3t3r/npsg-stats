@@ -26,6 +26,9 @@ for i = 1:length(crn)
     if crn(i) == 330
         stop = i;
         break
+    elseif crn(i) > 330
+        stop = i;
+        break
     else
         stop = length(p) + 1;
     end

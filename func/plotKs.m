@@ -1,7 +1,11 @@
-function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,fluoOveride,hypTest,ad,testSel,botCtd)
+function [] = plotKs(tr,ks,obs,sk,ku,obsLimA,obsLimB,EulLan,threshold,vuongRes,pV,limitOveride,fluoOveride,hypTest,ad,testSel,botCtd,logAxis)
 %plotKs
 % INPUT: 
 % OUTPUT: 
+
+if nargin < 18
+    logAxis = true;
+end
 
 if nargin < 17
     botCtd = "bot";
@@ -378,6 +382,11 @@ else
     xlabel('A-D $p$-value',Interpreter='latex',FontSize=15);
 end
 hold off
+if logAxis == true
+    set(gca, 'XScale', 'log');
+    xline(0.005,'--',HandleVisibility='off');
+    xline(0.1,'--',HandleVisibility='off');
+end
 grid minor;
 ylim(limits);
 set(gca,'YDir','reverse');

@@ -1,4 +1,4 @@
-function [] = plotKs2(tr,ks,obs,sk,ku,limits,threshold,vuongRes,idObs,pV,hypTest,ad,testSel,logAxis)
+function [a,b] = plotKs2(tr,ks,obs,sk,ku,limits,threshold,vuongRes,idObs,pV,hypTest,ad,testSel,logAxis)
 %plotKs2
 % INPUT: 
 % OUTPUT: 
@@ -32,7 +32,10 @@ anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 alphaKs = 0.05;
 
-vuongRes2 = nan(length(vuongRes));
+vuongRes2 = nan(length(vuongRes),1);
+if b > length(vuongRes)
+    b = length(vuongRes);
+end
 vuongRes2(a:b) = vuongRes(a:b);
 vuongRes = vuongRes2;
 

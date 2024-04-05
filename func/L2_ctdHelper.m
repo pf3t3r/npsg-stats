@@ -1,4 +1,5 @@
-function [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2] = L2_helper_FLUORO(X,pIn,maxMld,dcm,testSel,hypTest,limits)
+function [ax,kLim,tr2,ks] = L2_ctdHelper(X,pIn,maxMld,dcm,testSel,hypTest,limits,threshold,logAxis)
+% [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2]
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -17,29 +18,31 @@ function [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2] = L2_helper_FLUORO(X,pIn,maxMld,dc
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
-logAxis = true; % true => output p-values in log x-axis, otherwise no log plot.
-
-threshold = 50;         % Default threshold = 50 [Mishra et al (2019), 
-                        % Ghasemi & Zahediasl (2012), Ahad et al (2011)]
-n = length(pIn);        % Depth range
-nT = length(X(1,:));    % Time range
-alphaKs = 0.05;         % Alpha for K-S p-value
-
-if nargin < 5
-    testSel = 4;
+if nargin < 9
+    logAxis = true; % true => output p-values in log x-axis, otherwise no log plot.
+end
+if nargin < 8
+    threshold = 50;         % Default threshold = 50 [Mishra et al (2019), 
+end                        % Ghasemi & Zahediasl (2012), Ahad et al (2011)]
+if nargin < 7
+    limits = [-80 140];
 end
 if nargin < 6
     hypTest = "ks";
 end
-if nargin < 7
-    limits = [-80 140];
+if nargin < 5
+    testSel = 4;
 end
+n = length(pIn);        % Depth range
+nT = length(X(1,:));    % Time range
+alphaKs = 0.05;         % Alpha for K-S/A-D p-value
 
 % 1. Extract data beneath ML
 
 pSubml = nan(n,nT);
 xSubml = nan(n,nT);
 for i = 1:n-1
+    %disp(i);
     for j = 1:nT
         if pIn(i) >= maxMld(j)
             pSubml(i,j) = pIn(i+1);
@@ -66,15 +69,15 @@ l2 = max(max(pL));
 range = l1:2:l2;
 rangeLen = 1:1:length(range);
 n2 = length(range);
-disp(n2);
+% disp(n2);
 
 % Automate limit setting
 bottom = floor((l1 - limits(1))./2);
 top = floor((l2 - limits(2))./2); 
 % indexOne = find(pL==limits(1));
 % indexTwo = find(pL==limits(2));
-disp(bottom);
-disp(top);
+% disp(bottom);
+% disp(top);
 
 ks = nan(5,n2);
 rV = nan(10,n2); 
@@ -336,13 +339,19 @@ for i = 1:n2
         tmp = [tmp i];
     end
 end
+% disp(tmp);
 tr2 = range(tmp);
 sk2 = sk(tmp);
 ku2 = ku(tmp);
 clear tmp;
 
-kLim = [find(tr2==limits(1)) find(tr2==limits(2))];
-disp(kLim);
+if ismember(tr2,limits(1))
+    kLimA = find(tr2==limits(2));
+else
+    kLimA = 1;
+end
+
+kLim = [kLimA find(tr2==limits(2))];
 
 tr2 = tr2(kLim(1):kLim(2));
 sk2 = sk2(kLim(1):kLim(2));

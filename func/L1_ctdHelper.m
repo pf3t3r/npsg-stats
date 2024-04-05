@@ -1,4 +1,4 @@
-function [ax,tr,ks,obs,sk,ku,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold,testSel,hypTest)
+function [ax,tr,ks,obs,sk,ku,rV,pV] = L1_ctdHelper(X,pIn,maxMld,threshold,testSel,hypTest,logAxis)
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -20,18 +20,19 @@ function [ax,tr,ks,obs,sk,ku,rV,pV] = L1_helper_FLUORO(X,pIn,maxMld,threshold,te
 %     unc = nan(70,16);
 % end
 
+if nargin < 7
+    logAxis = true;
+end
+if nargin < 6
+    hypTest = "ks";
+end
+if nargin < 5
+    testSel = 4;
+end
 % Default threshold = 50 based on findings of Mishra et al (2019), Ghasemi
 % & Zahediasl (2012), and Ahad et al (2011).
 if nargin < 4
     threshold = 50;
-end
-
-if nargin < 5
-    testSel = 4;
-end
-
-if nargin < 6
-    hypTest = "ks";
 end
 
 % for i = 1:length(epN(1,:))
@@ -139,7 +140,7 @@ end
 
 % 5. Plot results
 ax = figure;
-plotKs(tr,ks,obs,sk,ku,0,100,true,threshold,vuongRes,pV,[0 100],true,hypTest,ad,testSel,"ctd");
+plotKs(tr,ks,obs,sk,ku,0,100,true,threshold,vuongRes,pV,[0 100],true,hypTest,ad,testSel,"ctd",logAxis);
 % 
 % disp(vuongRes);
 end

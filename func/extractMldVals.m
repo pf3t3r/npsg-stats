@@ -31,6 +31,9 @@ for i = 1:L
     if bottleCRN(i) == 330
         stop = i;
         break
+    elseif bottleCRN(i) > 330
+        stop = i;
+        break
     else
         stop = L+1;
     end
