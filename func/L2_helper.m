@@ -1,5 +1,4 @@
-function [ax,vuongRes,a,b] = L2_helper(tmp,maxMld,dcm,threshold,testSel,hypTest,yLimits,yLimitsObs,season)
-% [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes]
+function [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,maxMld,dcm,threshold,testSel,hypTest,yLimits,yLimitsObs,season)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 

@@ -10,7 +10,7 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = true;  % main analysis
+principleAnalysis = false;  % main analysis
 seasonalAnalysis = true;   % seasonality of statistics
 
 % TEMPLATE (XX-YY)
@@ -28,28 +28,28 @@ if seasonalAnalysis == true
 
     % winter
     tmpT = "-01";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19],1);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19],1);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
 
     % spring
     tmpT = "-02";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19],2);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
 
     % summer
     tmpT = "-03";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19],3);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[5 17],3);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
 
     % autumn
     tmpT = "-04";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ks",[-30 30],[10 16],4);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-50 50],[1 11],4);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
@@ -57,28 +57,28 @@ if seasonalAnalysis == true
     % A-D
     % winter
     tmpT = "-ad-01";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19],1);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19],1);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
 
     % spring
     tmpT = "-ad-02";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19],2);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
 
     % summer
     tmpT = "-ad-03";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19],3);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[5 17],3);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
 
     % autumn
     tmpT = "-ad-04";
-    [ax,vuongRes,a,b] = L2_helper(tmp,mld,dcm,50,4,"ad",[-30 30],[10 16],4);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-50 50],[1 11],4);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clearvars -except mld dcm tmp principleAnalysis seasonalAnalysis;
@@ -163,7 +163,7 @@ if principleAnalysis == true
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-80 80],[6 22]);
     sgtitle("Particulate Carbon 89-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     save("output\L2\pc.mat","p","ks","obs","sk","ku");
@@ -171,7 +171,7 @@ if principleAnalysis == true
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[8 20]);
     sgtitle("Particulate Nitrogen 89-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     save("output\L2\pn.mat","p","ks","obs","sk","ku");
@@ -195,7 +195,7 @@ if principleAnalysis == true
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[6 18]);
     sgtitle("Dissolved Oxygen 88-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     save("output\L2\boxy.mat","p","ks","obs","sk","ku");
@@ -203,7 +203,7 @@ if principleAnalysis == true
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[6 18]);
     sgtitle("PProd Light-12 (89-22): L2");
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     save("output\L2\l12.mat","p","ks","obs","sk","ku");
@@ -286,7 +286,7 @@ if principleAnalysis == true
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-80 80],[6 22]);
     sgtitle("Particulate Carbon 89-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     % save("output\L2\pc.mat","p","ks","obs","sk","ku");
@@ -294,7 +294,7 @@ if principleAnalysis == true
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[8 20]);
     sgtitle("Particulate Nitrogen 89-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     % save("output\L2\pn.mat","p","ks","obs","sk","ku");
@@ -318,7 +318,7 @@ if principleAnalysis == true
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[6 18]);
     sgtitle("Dissolved Oxygen 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     % save("output\L2\boxy.mat","p","ks","obs","sk","ku");
@@ -326,7 +326,7 @@ if principleAnalysis == true
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[6 18]);
     sgtitle("PProd Light-12 (89-22): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     % save("output\L2\l12.mat","p","ks","obs","sk","ku");
