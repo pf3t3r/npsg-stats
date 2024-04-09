@@ -6,7 +6,7 @@ addpath("func\");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
 % Test Cases
-principleAnalysis = false;       % main analysis
+principleAnalysis = true;       % main analysis
 startYearAnalysis = false;      % effect of altering start year on HTs
 seasonalAnalysis = true;       % seasonality of statistics
 logAxes = true;                 % output p-values as log values (true)

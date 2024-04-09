@@ -5,9 +5,9 @@ addpath("baroneRoutines\"); addpath("func\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 32 20]);
 
 % Test Cases
-principleAnalysis = true;       % main analysis
+principleAnalysis = false;       % main analysis
 %startYearAnalysis = false;      % effect of altering start year on HTs
-seasonalAnalysis = false;       % seasonality of statistics
+seasonalAnalysis = true;       % seasonality of statistics
 logAxes = true;                 % output p-values as log values (true)
 if logAxes == true
     lp = "log/";
