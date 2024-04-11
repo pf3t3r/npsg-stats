@@ -6,7 +6,6 @@ set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 32
 
 % Test Cases
 principleAnalysis = false;       % main analysis
-%startYearAnalysis = false;      % effect of altering start year on HTs
 seasonalAnalysis = true;       % seasonality of statistics
 logAxes = true;                 % output p-values as log values (true)
 if logAxes == true
@@ -100,9 +99,9 @@ if principleAnalysis == true
     % save("output\L1\ctd\chla.mat","p","ks","obs","Sk","Ku");
     
     % T
-    ax = L1_ctdHelper(meanT,pIn,maxMld);
+    [ax,mldCon,rV,pV,ks,vuongRes] = L1_ctdHelper(meanT,pIn,maxMld);
     sgtitle("CTD Temperature 88-21: L1");
-    exportgraphics(ax,"figures/L1/ctd/"+lp+"temp" + tmpT + ".png"); clear ax;
+    exportgraphics(ax,"figures/L1/ctd/"+lp+"T" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\t.mat","p","ks","obs","Sk","Ku");
     
     % SP
@@ -112,7 +111,7 @@ if principleAnalysis == true
     % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
     
     % O2
-    ax = L1_ctdHelper(meanO2,pIn,maxMld);
+    [ax,mldCon] = L1_ctdHelper(meanO2,pIn,maxMld);
     sgtitle("CTD O2 88-21: L1");
     exportgraphics(ax,"figures/L1/ctd/"+lp+"o2" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\o2.mat","p","ks","obs","Sk","Ku");
@@ -129,11 +128,11 @@ if principleAnalysis == true
     % T
     ax = L1_ctdHelper(meanT,pIn,maxMld,50,4,"ad");
     sgtitle("CTD Temperature 88-21: L1"+tmpT);
-    exportgraphics(ax,"figures/L1/ctd/"+lp+"temp" + tmpT + ".png"); clear ax;
+    exportgraphics(ax,"figures/L1/ctd/"+lp+"T" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\t.mat","p","ks","obs","Sk","Ku");
     
     % SP
-    ax = L1_ctdHelper(meanSp,pIn,maxMld,50,4,"ad");
+    [ax,mldCon,rV,pV,ad,V] = L1_ctdHelper(meanSp,pIn,maxMld,50,4,"ad");
     sgtitle("CTD S_P 88-21: L1"+tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"sp" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
@@ -197,6 +196,7 @@ end
 
 % Naming scheme
 % -01 = winter, -02 = spring, -03 = summer, -04 = autumn
+adThresh = 30; % only for chl-a in A-D
 
 if seasonalAnalysis == true
 
@@ -298,7 +298,7 @@ if seasonalAnalysis == true
     tmpT = "-ad-01";
 
     chla = load("output\CTD\chla.mat").meanEpN(1:101,winIds(36:end));
-    ax = L1_ctdHelper(chla,pIn,maxMld,50,4,"ad");
+    ax = L1_ctdHelper(chla,pIn,maxMld,adThresh,4,"ad");
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -321,7 +321,7 @@ if seasonalAnalysis == true
     tmpT = "-ad-02";
 
     chla = load("output\CTD\chla.mat").meanEpN(1:101,sprIds(33:end));
-    ax = L1_ctdHelper(chla,pIn,maxMld,50,4,"ad");
+    ax = L1_ctdHelper(chla,pIn,maxMld,adThresh,4,"ad");
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -344,7 +344,7 @@ if seasonalAnalysis == true
     tmpT = "-ad-03";
 
     chla = load("output\CTD\chla.mat").meanEpN(1:101,sumIds(33:end));
-    ax = L1_ctdHelper(chla,pIn,maxMld,50,4,"ad");
+    ax = L1_ctdHelper(chla,pIn,maxMld,adThresh,4,"ad");
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -367,7 +367,7 @@ if seasonalAnalysis == true
     tmpT = "-ad-04";
 
     chla = load("output\CTD\chla.mat").meanEpN(1:101,sumIds(30:end));
-    ax = L1_ctdHelper(chla,pIn,maxMld,50,4,"ad");
+    ax = L1_ctdHelper(chla,pIn,maxMld,adThresh,4,"ad");
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"chla" + tmpT + ".png");
 

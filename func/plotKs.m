@@ -74,7 +74,10 @@ anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 % Default Case
+
 alphaHy = 0.05;
+alphaLlr = 0.10;
+
 if testSel == 4
     for i = 1:n
         if strcmp(hypTest,"ks")
@@ -86,15 +89,15 @@ if testSel == 4
                     tmp = "Normal";
                 end
                 anClr(i) = '#a6cee3';
-                if pV(1,i) > alphaHy && ks(2,i) > alphaHy
+                if pV(1,i) > alphaLlr && ks(2,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," L");
                 end
-                if pV(2,i) > alphaHy && ks(3,i) > alphaHy
+                if pV(2,i) > alphaLlr && ks(3,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," W");
                 end
-                if pV(3,i) > alphaHy && ks(4,i) > alphaHy
+                if pV(3,i) > alphaLlr && ks(4,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," G");
                 end
@@ -107,15 +110,15 @@ if testSel == 4
                     tmp = "Lognormal";
                 end
                 anClr(i) = '#1f78b4';
-                if pV(1,i) > alphaHy && ks(1,i) > alphaHy
+                if pV(1,i) > alphaLlr && ks(1,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," N");
                 end
-                if pV(5,i) > alphaHy && ks(3,i) > alphaHy
+                if pV(5,i) > alphaLlr && ks(3,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," W");
                 end
-                if pV(6,i) > alphaHy && ks(4,i) > alphaHy
+                if pV(6,i) > alphaLlr && ks(4,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," G");
                 end
@@ -128,15 +131,15 @@ if testSel == 4
                     tmp = "Weibull";
                 end
                 anClr(i) = '#b2df8a';
-                if pV(2,i) > alphaHy && ks(1,i) > alphaHy
+                if pV(2,i) > alphaLlr && ks(1,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," N");
                 end
-                if pV(5,i) > alphaHy && ks(2,i) > alphaHy
+                if pV(5,i) > alphaLlr && ks(2,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," L");
                 end
-                if pV(8,i) > alphaHy && ks(4,i) > alphaHy
+                if pV(8,i) > alphaLlr && ks(4,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," G");
                 end
@@ -149,15 +152,15 @@ if testSel == 4
                     tmp = "Gamma";
                 end
                 anClr(i) = '#33a02c';
-                if pV(6,i) > alphaHy && ks(2,i) > alphaHy
+                if pV(6,i) > alphaLlr && ks(2,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," L");
                 end
-                if pV(3,i) > alphaHy && ks(1,i) > alphaHy
+                if pV(3,i) > alphaLlr && ks(1,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," N");
                 end
-                if pV(8,i) > alphaHy && ks(3,i) > alphaHy
+                if pV(8,i) > alphaLlr && ks(3,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," W");
                 end
@@ -175,15 +178,15 @@ if testSel == 4
                     tmp = "Normal";
                 end
                 anClr(i) = '#a6cee3';
-                if pV(1,i) > alphaHy && ad(2,i) > alphaHy
+                if pV(1,i) > alphaLlr && ad(2,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," L");
                 end
-                if pV(2,i) > alphaHy && ad(3,i) > alphaHy
+                if pV(2,i) > alphaLlr && ad(3,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," W");
                 end
-                if pV(3,i) > alphaHy && ad(4,i) > alphaHy
+                if pV(3,i) > alphaLlr && ad(4,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," G");
                 end
@@ -196,15 +199,15 @@ if testSel == 4
                     tmp = "Lognormal";
                 end
                 anClr(i) = '#1f78b4';
-                if pV(1,i) > alphaHy && ad(1,i) > alphaHy
+                if pV(1,i) > alphaLlr && ad(1,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," N");
                 end
-                if pV(5,i) > alphaHy && ad(3,i) > alphaHy
+                if pV(5,i) > alphaLlr && ad(3,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," W");
                 end
-                if pV(6,i) > alphaHy && ad(4,i) > alphaHy
+                if pV(6,i) > alphaLlr && ad(4,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," G");
                 end
@@ -217,15 +220,15 @@ if testSel == 4
                     tmp = "Weibull";
                 end
                 anClr(i) = '#b2df8a';
-                if pV(2,i) > alphaHy && ad(1,i) > alphaHy
+                if pV(2,i) > alphaLlr && ad(1,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," N");
                 end
-                if pV(5,i) > alphaHy && ad(2,i) > alphaHy
+                if pV(5,i) > alphaLlr && ad(2,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," L");
                 end
-                if pV(8,i) > alphaHy && ad(4,i) > alphaHy
+                if pV(8,i) > alphaLlr && ad(4,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," G");
                 end
@@ -238,15 +241,15 @@ if testSel == 4
                     tmp = "Gamma";
                 end
                 anClr(i) = '#33a02c';
-                if pV(6,i) > alphaHy && ad(2,i) > alphaHy
+                if pV(6,i) > alphaLlr && ad(2,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," L");
                 end
-                if pV(3,i) > alphaHy && ad(1,i) > alphaHy
+                if pV(3,i) > alphaLlr && ad(1,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," N");
                 end
-                if pV(8,i) > alphaHy && ad(3,i) > alphaHy
+                if pV(8,i) > alphaLlr && ad(3,i) > alphaHy
                     tmpEmph(i) = 'normal';
                     tmp = append(tmp," W");
                 end
@@ -263,13 +266,13 @@ elseif testSel == 2
         if vuongRes(i) == 1
             annot(i) = "Normal";
             anClr(i) = '#a6cee3';
-            if pV(1,i) > 0.05
+            if pV(1,i) > alphaLlr
                 tmpEmph(i) = 'normal';
             end
         elseif vuongRes(i) == 2
             annot(i) = "Lognormal";
             anClr(i) = '#1f78b4';
-            if pV(1,i) > 0.05
+            if pV(1,i) > alphaLlr
                 tmpEmph(i) = 'normal';
             end
         elseif vuongRes(i) == 0

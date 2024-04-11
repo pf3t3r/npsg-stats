@@ -13,8 +13,8 @@ lowerP = 129;
 pIn = 0:2:2*(lowerP-1);
 
 % Cases studied here
-principalAnalysis = false;
-seasonalAnalysis = true;
+principalAnalysis = true;
+seasonalAnalysis = false;
 logAxes = true;                 % output p-values as log values (true)
 if logAxes == true
     lp = "log/";
@@ -140,13 +140,14 @@ if seasonalAnalysis == true
 
     %% Apply Seasonal Analysis
 
+    thresh = 30;
     % K-S
     % winter
     tmpT = "-01";
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,winIds(36:end));
-    [ax,kLim,tr2,ks] = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -170,7 +171,7 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,sprIds(33:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -194,7 +195,7 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,sumIds(33:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -218,7 +219,7 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,autIds(30:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ks",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -245,12 +246,12 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,winIds(36:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
     % T
-    ax = L2_ctdHelper(T(:,winIds),pIn,maxMld,dcm,4,"ad",[-60 60]);
+    [ax,rV,pV,ad,vuongRes] = L2_ctdHelper(T(:,winIds),pIn,maxMld,dcm,4,"ad",[-60 60]);
     sgtitle('T 88-21: L2'+tmpT);
     exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
 
@@ -269,7 +270,7 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,sprIds(33:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -293,7 +294,7 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,sumIds(33:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
@@ -308,7 +309,7 @@ if seasonalAnalysis == true
     exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png");
 
     % O2
-    [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2] = L2_ctdHelper(o2(:,sumIds),pIn,maxMld,dcm,4,"ad",[-60 60]);
+    ax = L2_ctdHelper(o2(:,sumIds),pIn,maxMld,dcm,4,"ad",[-60 60]);
     sgtitle('O_2 88-21: L2'+tmpT);
     exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
 
@@ -317,12 +318,12 @@ if seasonalAnalysis == true
 
     % chla
     chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,autIds(30:end));
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],25);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,4,"ad",[-60 60],thresh);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L2/ctd/"+lp+"chla" + tmpT + ".png");
 
     % T
-    ax = L2_ctdHelper(T(:,autIds),pIn,maxMld,dcm,4,"ad",[-60 60]);
+    [ax,rV,pV,ad,vuongRes] = L2_ctdHelper(T(:,autIds),pIn,maxMld,dcm,4,"ad",[-60 60]);
     sgtitle('T 88-21: L2'+tmpT);
     exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png");
 
@@ -353,26 +354,23 @@ if principalAnalysis == true
     clear ax ks ku obs pL pV rV sk;
     
     % Temperature (88-21)
-    [ax,pL,ks,obs,sk,ku,pV,rV] = L2_ctdHelper(T,pIn,maxMld,dcm,4,"ks",[-60 60]);
+    ax = L2_ctdHelper(T,pIn,maxMld,dcm,4,"ks",[-60 60]);
     sgtitle('T 88-21: L2');
     exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
     %save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
-    
+       
     % Practical Salinity (88-21)
-    [ax,pL,ks,obs,sk,ku,pV,rV] = L2_ctdHelper(Sp,pIn,maxMld,dcm,4,"ks",[-60 60]);
+    ax = L2_ctdHelper(Sp,pIn,maxMld,dcm,4,"ks",[-60 60]);
     sgtitle('S_p 88-21: L2');
     exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
     %save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
-    
+        
     % O2 (88-21)
-    [ax,pL,ks,obs,sk,ku,pV,rV] = L2_ctdHelper(o2,pIn,maxMld,dcm,4,"ks",[-60 60]);
+    ax = L2_ctdHelper(o2,pIn,maxMld,dcm,4,"ks",[-60 60]);
     sgtitle('O_2 88-21: L2');
     exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
     %save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
-    
+   
     % A-D
     tmpT = "-ad";
     
@@ -385,25 +383,22 @@ if principalAnalysis == true
     clear ax lowerP ks ku obs pL pV rV sk;
     
     % Temperature (88-21)
-    [ax,pL,ks,obs,sk,ku,pV,rV] = L2_ctdHelper(T,pIn,maxMld,dcm,4,"ad",[-60 60]);
+    ax = L2_ctdHelper(T,pIn,maxMld,dcm,4,"ad",[-60 60]);
     sgtitle('T 88-21: L2'+tmpT);
-    exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png");
+    exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
     %save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
     
     % Practical Salinity (88-21)
-    [ax,pL,ks,obs,sk,ku,pV,rV] = L2_ctdHelper(Sp,pIn,maxMld,dcm,4,"ad",[-60 60]);
+    ax = L2_ctdHelper(Sp,pIn,maxMld,dcm,4,"ad",[-60 60]);
     sgtitle('S_p 88-21: L2'+tmpT);
-    exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png");
+    exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
     %save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
     
     % O2 (88-21)
-    [ax,pL,ks,obs,sk,ku,pV,rV] = L2_ctdHelper(o2,pIn,maxMld,dcm,4,"ad",[-60 60]);
+    ax = L2_ctdHelper(o2,pIn,maxMld,dcm,4,"ad",[-60 60]);
     sgtitle('O_2 88-21: L2'+tmpT);
-    exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
+    exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png"); clear ax;
     %save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
 
 end
 %% Unused: NO3-.

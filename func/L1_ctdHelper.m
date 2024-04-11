@@ -1,4 +1,5 @@
-function [ax,tr,ks,obs,sk,ku,rV,pV] = L1_ctdHelper(X,pIn,maxMld,threshold,testSel,hypTest,logAxis)
+function [ax,mldCon,rV,pV,ks,vuongRes] = L1_ctdHelper(X,pIn,maxMld,threshold,testSel,hypTest,logAxis)
+% [ax,tr,ks,obs,sk,ku,rV,pV]
 %%L1_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L1 (the mixed layer). 
 % INPUTS
@@ -42,11 +43,11 @@ end
 
 n = length(pIn);
 
-copyX = nan(size(X));
+mldCon = nan(size(X));
 for k = 1:length(X(1,:))
     for j = 1:n
         if pIn(j) < maxMld(k)
-            copyX(j,k) = X(j,k);
+            mldCon(j,k) = X(j,k);
         end
     end
 end
@@ -58,7 +59,7 @@ rV = nan(10,n); pV = nan(10,n);
 sk = nan(1,n); ku = nan(1,n); obs = nan(1,n);
 
 for i = 1:n
-    tmp = copyX(i,:);
+    tmp = mldCon(i,:);
     tmp(isnan(tmp) | tmp<0) = 0;
     tmp(tmp==0) = [];
     if length(tmp) > 3
@@ -111,7 +112,7 @@ vuongRes = nan(1,length(tr));
 % 4.a.i. 
 if testSel == 4 % Default Case.
     for i = 1:length(tr)
-        if rV(1,i) & rV(2,i) & rV(3,i) > 0
+        if rV(1,i) > 0 & rV(2,i) > 0 & rV(3,i) > 0
             disp('Normal');
             vuongRes(i) = 1;
         elseif rV(1,i) < 0 & rV(5,i) > 0 & rV(6,i) > 0
