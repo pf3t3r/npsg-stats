@@ -1,7 +1,7 @@
 % Script to output L1 ctd results for the statistical analysis.
 
 close all; clc; clear;
-addpath("baroneRoutines\"); addpath("func\");
+addpath("baroneRoutines\"); addpath("func\"); addpath("output\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 32 20]);
 
 % Test Cases
@@ -191,6 +191,19 @@ for i = 1:329
         autIds = [autIds i];
     end
 end
+
+% Calculate average mld per season
+mldW = mean(maxMld(winIds),"omitnan");
+mldSp = mean(maxMld(sprIds),"omitnan");
+mldSu = mean(maxMld(sumIds),"omitnan");
+mldA = mean(maxMld(autIds),"omitnan");
+
+% Average dcm per season
+dcm = load("dcm.mat").meanPcm;  
+dcmW = mean(dcm(winIds),"omitnan");
+dcmSp = mean(dcm(sprIds),"omitnan");
+dcmSu = mean(dcm(sumIds),"omitnan");
+dcmA = mean(dcm(autIds),"omitnan");
 
 %% Test Seasonal Analysis
 

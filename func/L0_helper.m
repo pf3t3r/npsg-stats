@@ -1,4 +1,4 @@
-function [ax,ks,obs] = L0_helper(tmp,threshold,hypTest,logAxis,season)
+function [ax,ks,obs,pIn] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
@@ -25,9 +25,15 @@ end
 tmpT = ""; alphaKs = 0.05;
 
 if isstruct(tmp)
-    botId = tmp.data(:,2);
-    pIn = tmp.data(:,4);
-    X = tmp.data(:,5);
+    if length(tmp.data(1,:))==6
+        botId = tmp.data(:,2);
+        pIn = tmp.data(:,5);
+        X = tmp.data(:,6);
+    else 
+        botId = tmp.data(:,2);
+        pIn = tmp.data(:,4);
+        X = tmp.data(:,5);
+    end
 else
     botId = tmp(:,2);
     pIn = tmp(:,4);

@@ -7,9 +7,9 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 % tmpT = "";
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
+principleAnalysis = true;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics: K-S
-seasonalAnalysisAd = true;  % seasonality of statistics: A-D
+seasonalAnalysisAd = false;  % seasonality of statistics: A-D
 analyseYearByYear = false;  % analyse effect (if any) of varying start year 
                             % on distributions
 crn131 = false;             % analyse 2001-2021 data (to mirror CTD results)
@@ -1014,7 +1014,7 @@ end
 if principleAnalysis == true    
     % K-S
     tmpT = "";
-    
+
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
@@ -1133,6 +1133,13 @@ if principleAnalysis == true
     sgtitle("L0: Primary Production (Light-12)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
     clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    
+    % macrozooplankton
+    tmp = importdata('data/L0/macrozoo_94-22_200.txt');
+    [ax,~,~,pIn] = L0_helper(tmp,50,"ks",logAxes);
+    sgtitle("L0: Macrozooplankton (1994-2021)","Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"macrozoo" + tmpT + ".png");
+    %clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
     
     %%%
 
@@ -1257,6 +1264,14 @@ if principleAnalysis == true
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
     clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+
+    % macrozooplankton
+    tmp = importdata('data/L0/macrozoo_94-22_200.txt');
+    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes);
+    sgtitle("L0: Macrozooplankton (1994-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/"+lp+"macrozoo" + tmpT + ".png");
+    %clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    
 end
 
 %% 2001-2021 chla (starting CRN 131, to match newer fluorometer)

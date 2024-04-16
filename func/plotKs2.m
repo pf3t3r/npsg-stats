@@ -30,7 +30,9 @@ annot = strings(1,n);
 anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
-alphaKs = 0.05;
+
+alphaHy = 0.05;
+alphaLlr = 0.1;
 
 vuongRes2 = nan(length(vuongRes),1);
 if b > length(vuongRes)
@@ -42,92 +44,182 @@ vuongRes = vuongRes2;
 % 4.a. Vuong: Normal vs Lognormal vs Weibull vs Gamma
 if testSel == 4
     for i = 1:n
-        if vuongRes(i) == 1 && ks(1,i) > alphaKs
-            % Remove label if only one dist is not rejected by K-S.
-            if length(find(ks(:,i)>alphaKs)) == 1
-                tmp = "";
-            else
-                tmp = "Normal";
+        if strcmp(hypTest,"ks")
+            if vuongRes(i) == 1 && ks(1,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ks(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Normal";
+                end
+                anClr(i) = '#a6cee3';
+                if pV(1,i) > alphaLlr && ks(2,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," L");
+                end
+                if pV(2,i) > alphaLlr && ks(3,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," W");
+                end
+                if pV(3,i) > alphaLlr && ks(4,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," G");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 2 && ks(2,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ks(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Lognormal";
+                end
+                anClr(i) = '#1f78b4';
+                if pV(1,i) > alphaLlr && ks(1,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," N");
+                end
+                if pV(5,i) > alphaLlr && ks(3,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," W");
+                end
+                if pV(6,i) > alphaLlr && ks(4,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," G");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 3 && ks(3,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ks(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Weibull";
+                end
+                anClr(i) = '#b2df8a';
+                if pV(2,i) > alphaLlr && ks(1,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," N");
+                end
+                if pV(5,i) > alphaLlr && ks(2,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," L");
+                end
+                if pV(8,i) > alphaLlr && ks(4,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," G");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 4 && ks(4,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ks(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Gamma";
+                end
+                anClr(i) = '#33a02c';
+                if pV(6,i) > alphaLlr && ks(2,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," L");
+                end
+                if pV(3,i) > alphaLlr && ks(1,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," N");
+                end
+                if pV(8,i) > alphaLlr && ks(3,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," W");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 0
+                annot(i) = "";
             end
-            anClr(i) = '#a6cee3';
-            if pV(1,i) > alphaKs && ks(2,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," L");
+        elseif strcmp(hypTest,"ad")
+            if vuongRes(i) == 1 && ad(1,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ad(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Normal";
+                end
+                anClr(i) = '#a6cee3';
+                if pV(1,i) > alphaLlr && ad(2,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," L");
+                end
+                if pV(2,i) > alphaLlr && ad(3,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," W");
+                end
+                if pV(3,i) > alphaLlr && ad(4,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," G");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ad(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Lognormal";
+                end
+                anClr(i) = '#1f78b4';
+                if pV(1,i) > alphaLlr && ad(1,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," N");
+                end
+                if pV(5,i) > alphaLlr && ad(3,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," W");
+                end
+                if pV(6,i) > alphaLlr && ad(4,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," G");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 3 && ad(3,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ad(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Weibull";
+                end
+                anClr(i) = '#b2df8a';
+                if pV(2,i) > alphaLlr && ad(1,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," N");
+                end
+                if pV(5,i) > alphaLlr && ad(2,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," L");
+                end
+                if pV(8,i) > alphaLlr && ad(4,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," G");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 4 && ad(4,i) > alphaHy
+                % Remove label if only one dist is not rejected by K-S.
+                if length(find(ad(:,i)>alphaHy)) == 1
+                    tmp = "";
+                else
+                    tmp = "Gamma";
+                end
+                anClr(i) = '#33a02c';
+                if pV(6,i) > alphaLlr && ad(2,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," L");
+                end
+                if pV(3,i) > alphaLlr && ad(1,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," N");
+                end
+                if pV(8,i) > alphaLlr && ad(3,i) > alphaHy
+                    tmpEmph(i) = 'normal';
+                    tmp = append(tmp," W");
+                end
+                annot(i) = tmp;
+            elseif vuongRes(i) == 0
+                annot(i) = "";
             end
-            if pV(2,i) > alphaKs && ks(3,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," W");
-            end
-            if pV(3,i) > alphaKs && ks(4,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," G");
-            end
-            annot(i) = tmp;
-        elseif vuongRes(i) == 2 && ks(2,i) > alphaKs
-            % Remove label if only one dist is not rejected by K-S.
-            if length(find(ks(:,i)>alphaKs)) == 1
-                tmp = "";
-            else
-                tmp = "Lognormal";
-            end
-            anClr(i) = '#1f78b4';
-            if pV(1,i) > alphaKs && ks(1,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," N");
-            end
-            if pV(5,i) > alphaKs && ks(3,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," W");
-            end
-            if pV(6,i) > alphaKs && ks(4,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," G");
-            end
-            annot(i) = tmp;
-        elseif vuongRes(i) == 3 && ks(3,i) > alphaKs
-            % Remove label if only one dist is not rejected by K-S.
-            if length(find(ks(:,i)>alphaKs)) == 1
-                tmp = "";
-            else
-                tmp = "Weibull";
-            end
-            anClr(i) = '#b2df8a';
-            if pV(2,i) > alphaKs && ks(1,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," N");
-            end
-            if pV(5,i) > alphaKs && ks(2,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," L");
-            end
-            if pV(8,i) > alphaKs && ks(4,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," G");
-            end
-            annot(i) = tmp;
-        elseif vuongRes(i) == 4 && ks(4,i) > alphaKs
-            % Remove label if only one dist is not rejected by K-S.
-            if length(find(ks(:,i)>alphaKs)) == 1
-                tmp = "";
-            else
-                tmp = "Gamma";
-            end
-            anClr(i) = '#33a02c';
-            if pV(6,i) > alphaKs && ks(2,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," L");
-            end
-            if pV(3,i) > alphaKs && ks(1,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," N");
-            end
-            if pV(8,i) > alphaKs && ks(3,i) > alphaKs
-                tmpEmph(i) = 'normal';
-                tmp = append(tmp," W");
-            end
-            annot(i) = tmp;
-        elseif vuongRes(i) == 0
-            annot(i) = "";
         end
     end
 elseif testSel == 2
@@ -136,13 +228,13 @@ elseif testSel == 2
         if vuongRes(i) == 1
             annot(i) = "Normal";
             anClr(i) = '#a6cee3';
-            if pV(1,i) > alphaKs
+            if pV(1,i) > alphaLlr
                 tmpEmph(i) = 'normal';
             end
         elseif vuongRes(i) == 2
             annot(i) = "Lognormal";
             anClr(i) = '#1f78b4';
-            if pV(1,i) > 0.05
+            if pV(1,i) > alphaLlr
                 tmpEmph(i) = 'normal';
             end
         else
@@ -201,7 +293,7 @@ set(gca,"YTickLabel",limits(1):10:limits(2),"YTick",1:1+b-a);
 ylim([1 1+b-a]);
 
 subplot(1,6,[2 3])
-xline(alphaKs,DisplayName='\alpha');
+xline(alphaHy,DisplayName='\alpha');
 hold on
 if strcmp(hypTest,"ks")
     if testSel == 4

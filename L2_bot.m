@@ -1023,6 +1023,14 @@ if principleAnalysis == true
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     save("output\L2\l12.mat","p","ks","obs","sk","ku");
     clearvars -except mld dcm tmpT;
+
+    % Macrozooplankton (94-22)
+    tmp = importdata("data/L0/macrozoo_94-22_200.txt");
+    ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    sgtitle("Macrozooplankton 94-21: L2");
+    exportgraphics(ax,"figures/L2/bottle/log/macrozoo" + tmpT + ".png");
+    %save("output\L2\chla.mat","p","ks","obs","sk","ku");
+    %clearvars -except mld dcm tmpT;
     
     % A-D
     tmpT = "-ad";
