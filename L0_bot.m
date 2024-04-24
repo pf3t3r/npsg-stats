@@ -7,10 +7,10 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 % tmpT = "";
 
 % Possible test cases.
-principleAnalysis = true;  % main analysis
+principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics: K-S
 seasonalAnalysisAd = false;  % seasonality of statistics: A-D
-analyseYearByYear = false;  % analyse effect (if any) of varying start year 
+analyseYearByYear = true;  % analyse effect (if any) of varying start year 
                             % on distributions
 crn131 = false;             % analyse 2001-2021 data (to mirror CTD results)
 nightAnalysis = false;      % analyse night-time 2001-2021 (to mirror CTD 
@@ -1148,7 +1148,7 @@ if principleAnalysis == true
     
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,pB,X] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla" + tmpT + ".png");
     clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
@@ -1380,6 +1380,11 @@ end
 % Here we move the start date of the analysis forward in time to see if
 % the distribution of data has some dependence on time. It will only be
 % checked if "analyseYearByYear" is true.
+
+% save p-values per year
+yearList = 1988:1:2016;
+pVals = [];
+
 if analyseYearByYear==true
     
     % K-S
@@ -1387,194 +1392,206 @@ if analyseYearByYear==true
     
     % 2016-2022
     tmp = importdata('data/L0/hplcChla_16-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2016-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_16-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2015-2022
     tmp = importdata('data/L0/hplcChla_15-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2015-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_15-22" + tmpT + ".png");
-    clearvars -except tmpT;
-    
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];    
+
     % 2013-2022
     tmp = importdata('data/L0/hplcChla_13-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2013-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_13-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2012-2022
     tmp = importdata('data/L0/hplcChla_12-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2012-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_12-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2011-2022
     tmp = importdata('data/L0/hplcChla_11-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2011-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_11-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2011-2022
     tmp = importdata('data/L0/hplcChla_11-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2011-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_11-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2010-2022
     tmp = importdata('data/L0/hplcChla_10-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2010-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_10-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2009-2022
     tmp = importdata('data/L0/hplcChla_09-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2009-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_09-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2008-2022
     tmp = importdata('data/L0/hplcChla_08-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2008-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_08-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2007-2022
     tmp = importdata('data/L0/hplcChla_07-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2007-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_07-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2006-2022
     tmp = importdata('data/L0/hplcChla_06-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2006-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_06-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2005-2022
     tmp = importdata('data/L0/hplcChla_05-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2005-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_05-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2004-2022
     tmp = importdata('data/L0/hplcChla_04-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2004-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_04-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2003-2022
     tmp = importdata('data/L0/hplcChla_03-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2003-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_03-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2002-2022
     tmp = importdata('data/L0/hplcChla_02-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2002-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_02-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 2001-2022 done above.
-    
+    tmp = importdata('data/L0/hplcChla_01-22_200.txt');
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
+    sgtitle("L0: Chl $a$ (2001-2021)","Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/" + lp + "chla_01-21" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
     % 2000-2022
     tmp = importdata('data/L0/hplcChla_00-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2000-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_00-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1999-2022
     tmp = importdata('data/L0/hplcChla_99-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1999-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_99-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1998-2022
     tmp = importdata('data/L0/hplcChla_98-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1998-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_98-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1997-2022
     tmp = importdata('data/L0/hplcChla_97-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1997-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_97-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1996-2022
     tmp = importdata('data/L0/hplcChla_96-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1996-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_96-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1995-2022
     tmp = importdata('data/L0/hplcChla_95-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1995-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_95-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1994-2022
     tmp = importdata('data/L0/hplcChla_94-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1994-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_94-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1993-2022
     tmp = importdata('data/L0/hplcChla_93-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1993-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_93-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1992-2022
     tmp = importdata('data/L0/hplcChla_92-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1992-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_92-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1991-2022
     tmp = importdata('data/L0/hplcChla_91-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1991-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_91-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1990-2022
     tmp = importdata('data/L0/hplcChla_90-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1990-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_90-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     % 1989-2022
     tmp = importdata('data/L0/hplcChla_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1989-2022)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_89-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % 1988-2022
+    tmp = importdata('data/L0/hplcChla_88-22_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2022)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/" + lp + "chla_88-22" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
     
     %% chla (A-D): go back year by year.
@@ -1582,194 +1599,222 @@ if analyseYearByYear==true
     
     % 2016-2022
     tmp = importdata('data/L0/hplcChla_16-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2016-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_16-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2015-2022
     tmp = importdata('data/L0/hplcChla_15-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2015-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_15-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2014-2022
     tmp = importdata('data/L0/hplcChla_14-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2014-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_14-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2013-2022
     tmp = importdata('data/L0/hplcChla_13-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2013-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_13-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2012-2022
     tmp = importdata('data/L0/hplcChla_12-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2012-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_12-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2011-2022
     tmp = importdata('data/L0/hplcChla_11-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2011-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_11-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2010-2022
     tmp = importdata('data/L0/hplcChla_10-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2010-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_10-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2009-2022
     tmp = importdata('data/L0/hplcChla_09-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2009-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_09-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2008-2022
     tmp = importdata('data/L0/hplcChla_08-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2008-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_08-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2007-2022
     tmp = importdata('data/L0/hplcChla_07-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2007-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_07-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2006-2022
     tmp = importdata('data/L0/hplcChla_06-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2006-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_06-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2005-2022
     tmp = importdata('data/L0/hplcChla_05-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2005-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_05-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2004-2022
     tmp = importdata('data/L0/hplcChla_04-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2004-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_04-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2003-2022
     tmp = importdata('data/L0/hplcChla_03-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2003-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_03-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2002-2022
     tmp = importdata('data/L0/hplcChla_02-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2002-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_02-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 2001-2022 done above.
-    
+    tmp = importdata('data/L0/hplcChla_01-22_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (2001-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/" + lp + "chla_01-21" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
     % 2000-2022
     tmp = importdata('data/L0/hplcChla_00-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2000-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_00-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1999-2022
     tmp = importdata('data/L0/hplcChla_99-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1999-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_99-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1998-2022
     tmp = importdata('data/L0/hplcChla_98-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1998-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_98-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1997-2022
     tmp = importdata('data/L0/hplcChla_97-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1997-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_97-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1996-2022
     tmp = importdata('data/L0/hplcChla_96-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1996-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_96-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1995-2022
     tmp = importdata('data/L0/hplcChla_95-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1995-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_95-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1994-2022
     tmp = importdata('data/L0/hplcChla_94-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1994-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_94-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1993-2022
     tmp = importdata('data/L0/hplcChla_93-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1993-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_93-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1992-2022
     tmp = importdata('data/L0/hplcChla_92-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1992-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_92-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1991-2022
     tmp = importdata('data/L0/hplcChla_91-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1991-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_91-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1990-2022
     tmp = importdata('data/L0/hplcChla_90-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1990-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_90-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
     
     % 1989-2022
     tmp = importdata('data/L0/hplcChla_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,'ad');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1989-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_89-22" + tmpT + ".png");
-    clearvars -except tmpT;
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1988-2022
+    tmp = importdata('data/L0/hplcChla_88-22_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1989-2022)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/" + lp + "chla_89-22" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    %% start-year analysis synthesis plot
+    ax = figure;
+    subplot(1,2,1)
+    semilogy(flip(yearList),pVals(1:29,:)); grid on;
+    hold on; yline(0.05,"-","$\alpha$ = 0.05",Interpreter="latex"); yline(0.005,'--',"$\alpha$ = 0.005",Interpreter="latex");
+    yline(0.1,'--',"$\alpha$ = 0.1",Interpreter="latex"); hold off; title("K-S"); xlim([1988 2016]);
+    legend("5 dbar","25 dbar",Location="northwest"); xlabel("starting year"); ylabel("$p$-value",Interpreter="latex");
+    subplot(1,2,2)
+    semilogy(flip(yearList),pVals(30:58,:)); grid on;
+    hold on; yline(0.05,"-","$\alpha$ = 0.05",Interpreter="latex"); yline(0.005,'--',"$\alpha$ = 0.005",Interpreter="latex");
+    yline(0.1,'--',"$\alpha$ = 0.1",Interpreter="latex"); hold off; title("A-D"); xlim([1988 2016]);
+    legend("5 dbar","25 dbar",Location="northwest"); xlabel("starting year"); ylabel("$p$-value",Interpreter="latex");
+    sgtitle("does lognormality of surface chl $a$ depend on the start year of the analysis?","Interpreter","latex")
+    exportgraphics(ax,"figures/L0/bot/startYear/surfaceChla.png");
+
 
 else
     disp("Not analysing year by year...");

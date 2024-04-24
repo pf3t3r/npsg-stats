@@ -1,4 +1,4 @@
-function [ax,ks,obs,pIn] = L0_helper(tmp,threshold,hypTest,logAxis,season)
+function [ax,ks,obs,pB,X,ad] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 %L0_helper
 %INPUT: tmp = text-file with pressure, bottle concentration, and bottle ID;
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
