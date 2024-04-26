@@ -37,3 +37,31 @@ y_cdf_norm = cdf(DIST,x_cdf,phat(1),phat(2));
 
 figure;
 histfit(UU,[],"weibull");
+
+%% method 2
+% fitdist() uses MLE internally so maybe this is a quicker and easier
+% alternative to statsplot2().
+
+test1 = fitdist(UU,DIST);
+
+% 'Beta' 'Binomial' 'Burr' 'Generalized Pareto' 'Negative Binomial' 'Stable'
+dists = ["BirnbaumSaunders" "Exponential" "Extreme Value" "Gamma" "Generalized Extreme Value" "Half Normal" "InverseGaussian" "Kernel" "Logistic" "Loglogistic" "Lognormal"	"Nakagami" "Normal" "Poisson" "Rayleigh" "Rician" "tLocationScale" "Weibull"];
+
+hArray = []; pArray = [];
+for i = 1:length(dists)
+    tmp = fitdist(UU,dists(i));
+    [tmpH,tmpP] = kstest(UU,tmp);
+    hArray = [hArray tmpH];
+    pArray = [pArray tmpP];
+end
+
+%%
+
+wbl = fitdist(UU,dists(18));
+nrm = fitdist(UU,dists(13));
+
+% test Vuong
+lW = log(pdf("weibull",UU,wbl.A,wbl.B));
+lN = log(pdf("Normal",UU,nrm.mu,nrm.sigma));
+lWN = lW - lN;
+R = sum(lWN);

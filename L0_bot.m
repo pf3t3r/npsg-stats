@@ -10,8 +10,9 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics: K-S
 seasonalAnalysisAd = false;  % seasonality of statistics: A-D
-analyseYearByYear = true;  % analyse effect (if any) of varying start year 
+analyseStartYear = false;  % analyse effect (if any) of varying start year 
                             % on distributions
+analyseEndYear = true;      % effect of varying end year
 crn131 = false;             % analyse 2001-2021 data (to mirror CTD results)
 nightAnalysis = false;      % analyse night-time 2001-2021 (to mirror CTD 
                             % results)
@@ -26,618 +27,634 @@ end
 
 %% Seasonal Analysis: K-S
 if seasonalAnalysisKs == true
+
+    pVals = [];
     
     % WINTER
     tmpT = "-01";
 
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,1);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,1);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % SPRING
     tmpT = "-02";
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,2);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,2);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % SUMMER
     tmpT = "-03";
     
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,3);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,3);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % AUTUMN
     tmpT = "-04";
 
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ks",logAxes,4);
+    [ax,ks] = L0_helper(tmp,50,"ks",logAxes,4);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ks(2,[1 3])];
+
+    season = [1 2 3 4];
+    ax = figure;
+    semilogy(season,pVals([1 18 35 52],:));
+    lgd = legend("5","25",Location="south");
+    lgd.Title.String = "pressure (dbar)";
+    hold on; yline(0.05,"-","$\alpha$ = 0.05",Interpreter="latex",HandleVisibility="off"); yline(0.005,'--',"$\alpha$ = 0.005",Interpreter="latex",HandleVisibility="off");
+    yline(0.1,'--',"$\alpha$ = 0.1",Interpreter="latex",HandleVisibility="off"); hold off; title("chl $a$ (K-S)",Interpreter="latex");
+    set(gca,"XTick",1:1:4,"XTickLabel",["winter","spring","summer","autumn"]);
+    xlabel("season"); ylabel("$p$-value",Interpreter="latex");
+    exportgraphics(ax,"figures/L0/bot/synthSsnl/chla_ks.png");
+
 end
 
 %% Seasonal Analysis: A-D
 if seasonalAnalysisAd == true
+
+    pVals = [];
 
     % WINTER
     tmpT = "-ad-01";
 
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,1);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,1);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
 
     % SPRING
@@ -645,122 +662,122 @@ if seasonalAnalysisAd == true
 
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,pB,X,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,2);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,2);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
 
     % SUMMER
@@ -768,122 +785,122 @@ if seasonalAnalysisAd == true
     
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,3);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,3);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
 
     % AUTUMN
@@ -891,123 +908,133 @@ if seasonalAnalysisAd == true
     
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
-    [ax,~,~] = L0_helper(tmp,50,"ad",logAxes,4);
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,"ad",logAxes,4);
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clear tmp ax;
+    clear tmp ax; pVals = [pVals; ad([1 3])];
 
+    season = [1 2 3 4];
+    ax = figure;
+    semilogy(season,pVals([1 18 35 52],:));
+    lgd = legend("5","25",Location="south");
+    lgd.Title.String = "pressure (dbar)";
+    hold on; yline(0.05,"-","$\alpha$ = 0.05",Interpreter="latex",HandleVisibility="off"); yline(0.005,'--',"$\alpha$ = 0.005",Interpreter="latex",HandleVisibility="off");
+    yline(0.1,'--',"$\alpha$ = 0.1",Interpreter="latex",HandleVisibility="off"); hold off; title("chl $a$ (A-D)",Interpreter="latex");
+    set(gca,"XTick",1:1:4,"XTickLabel",["winter","spring","summer","autumn"]);
+    xlabel("season"); ylabel("$p$-value",Interpreter="latex");
+    exportgraphics(ax,"figures/L0/bot/synthSsnl/chla_ad.png");
 end
 
 %% Principal Analysis
@@ -1020,126 +1047,126 @@ if principleAnalysis == true
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (1988-2021)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"chla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Monovinyl Chl $a$","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Divinyl Chl $a$","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $b$","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $c1 + c2 + c3$","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: $\alpha$-carotene","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: 19' Butanoyloxyfucoxanthin","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Zeaxanthin","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Particulate Carbon","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Particulate Nitrogen","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Low-Level Phosphorus","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Low-Level Nitrogen","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Nitrate + Nitrite","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Phosphate","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Dissolved Oxygen","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Primary Production (Light-12)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % macrozooplankton
     tmp = importdata('data/L0/macrozoo_94-22_200.txt');
     [ax,~,~,pIn] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Macrozooplankton (1994-2021)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"macrozoo" + tmpT + ".png");
-    %clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    %clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     %%%
 
@@ -1151,126 +1178,126 @@ if principleAnalysis == true
     [ax,~,~,pB,X] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % mvchla 
     tmp = importdata('data/L0/mvchla_94-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Monovinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "mvchla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % dvchla
     tmp = importdata('data/L0/dvchla_94-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Divinyl Chl $a$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "dvchla" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % chlb
     tmp = importdata('data/L0/chlb_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $b$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlb" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % chlc123
     tmp = importdata('data/L0/chlc123_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $c1 + c2 + c3$"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chlc123" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % alpha-caro
     tmp = importdata('data/L0/acar_94-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: $\alpha$-carotene"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "acar" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % but-19
     tmp = importdata('data/L0/but19_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: 19' Butanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "but19" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % hex-19
     tmp = importdata('data/L0/hex19_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: 19' Hexanoyloxyfucoxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "hex19" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % zeax
     tmp = importdata('data/L0/zeax_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Zeaxanthin"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "zeax" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % pc
     tmp = importdata('data/L0/pc_89-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Particulate Carbon"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pc" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % pn
     tmp = importdata('data/L0/pn_89-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Particulate Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "pn" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % llp
     tmp = importdata('data/L0/llp_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Low-Level Phosphorus"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "llp" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % lln
     tmp = importdata('data/L0/lln_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Low-Level Nitrogen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "lln" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % nit + nit
     tmp = importdata('data/L0/nitNit_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Nitrate + Nitrite"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "nit2" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % phos
     tmp = importdata('data/L0/phos_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Phosphate"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "phos" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % boxy
     tmp = importdata('data/L0/boxy_88-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Dissolved Oxygen"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "boxy" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % L-12 PP
     tmp = importdata('data/L0/l12_89-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Primary Production (Light-12)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "l12" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
 
     % macrozooplankton
     tmp = importdata('data/L0/macrozoo_94-22_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ad",logAxes);
     sgtitle("L0: Macrozooplankton (1994-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/"+lp+"macrozoo" + tmpT + ".png");
-    %clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    %clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
 end
 
@@ -1284,7 +1311,7 @@ if crn131 == true
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2001-2021)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_01-21" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     
     % A-D
     tmpT = "-ad";
@@ -1292,7 +1319,7 @@ if crn131 == true
     [ax,~,~] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (2001-2021)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_01-21" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
 
 else
     disp("Not analysing CRN 131 only data...");
@@ -1370,7 +1397,7 @@ if nightAnalysis == true
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
     sgtitle("L0: Chl $a$ (2001-2021, NIGHT)","Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_01-21_night" + tmpT + ".png");
-    clearvars -except tmpT analyseYearByYear crn131 nightAnalysis logAxes lp;
+    clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
 
 else
     disp("Not analysing night-time only data...");
@@ -1379,14 +1406,14 @@ end
 %% Year-by-year analysis for chla
 % Here we move the start date of the analysis forward in time to see if
 % the distribution of data has some dependence on time. It will only be
-% checked if "analyseYearByYear" is true.
+% checked if "analyseStartYear" is true.
 
-% save p-values per year
-yearList = 1988:1:2016;
-pVals = [];
-
-if analyseYearByYear==true
+if analyseStartYear==true
     
+    % save p-values per year
+    yearList = 1988:1:2016;
+    pVals = [];
+
     % K-S
     tmpT = "";
     
@@ -1593,7 +1620,6 @@ if analyseYearByYear==true
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_88-22" + tmpT + ".png");
     clear ax tmp; pVals = [pVals; ks(2,[1 3])];
     
-    
     %% chla (A-D): go back year by year.
     tmpT = "-ad";
     
@@ -1796,7 +1822,7 @@ if analyseYearByYear==true
     % 1988-2022
     tmp = importdata('data/L0/hplcChla_88-22_200.txt');
     [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
-    sgtitle("L0: Chl $a$ (1989-2022)"+tmpT,"Interpreter","latex");
+    sgtitle("L0: Chl $a$ (1988-2022)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla_89-22" + tmpT + ".png");
     clear ax tmp; pVals = [pVals; ad([1 3])];
 
@@ -1818,4 +1844,217 @@ if analyseYearByYear==true
 
 else
     disp("Not analysing year by year...");
+end
+
+%% Analyse by end year
+if analyseEndYear
+
+    yearList = 2010:1:2022;
+    pVals = [];
+    % K-S
+    tmpT = "-ks";
+
+    % -2022
+    tmp = importdata('data/L0/hplcChla_88-22_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2022)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-22" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2021
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-21" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2020
+    tmp = importdata('data/L0/hplcChla_88-20_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2020)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-20" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2019
+    tmp = importdata('data/L0/hplcChla_88-19_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2019)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-19" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2018
+    tmp = importdata('data/L0/hplcChla_88-18_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2018)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-18" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2017
+    tmp = importdata('data/L0/hplcChla_88-17_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2017)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-17" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2016
+    tmp = importdata('data/L0/hplcChla_88-16_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2016)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-16" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2015
+    tmp = importdata('data/L0/hplcChla_88-15_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2015)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-15" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2014
+    tmp = importdata('data/L0/hplcChla_88-14_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2014)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-14" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2013
+    tmp = importdata('data/L0/hplcChla_88-13_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2013)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-13" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2012
+    tmp = importdata('data/L0/hplcChla_88-12_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2012)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-12" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2011
+    tmp = importdata('data/L0/hplcChla_88-11_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2011)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-11" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2010
+    tmp = importdata('data/L0/hplcChla_88-10_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2010)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-10" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+
+    % A-D
+    tmpT = "-ad";
+
+    % -2022
+    tmp = importdata('data/L0/hplcChla_88-22_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2022)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-22" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % -2021
+    tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-21" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % -2020
+    tmp = importdata('data/L0/hplcChla_88-20_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2020)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-20" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2019
+    tmp = importdata('data/L0/hplcChla_88-19_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2019)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-19" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2018
+    tmp = importdata('data/L0/hplcChla_88-18_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2018)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-18" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2017
+    tmp = importdata('data/L0/hplcChla_88-17_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2017)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-17" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2016
+    tmp = importdata('data/L0/hplcChla_88-16_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2016)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-16" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2015
+    tmp = importdata('data/L0/hplcChla_88-15_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2015)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-15" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2014
+    tmp = importdata('data/L0/hplcChla_88-14_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2014)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-14" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2013
+    tmp = importdata('data/L0/hplcChla_88-13_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2013)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-13" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2012
+    tmp = importdata('data/L0/hplcChla_88-12_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2012)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-12" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2011
+    tmp = importdata('data/L0/hplcChla_88-11_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2011)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-11" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2010  
+    tmp = importdata('data/L0/hplcChla_88-10_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2010)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-10" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % end-year analysis synthesis plot
+    ax = figure;
+    subplot(1,2,1)
+    semilogy(flip(yearList),pVals(1:length(pVals(:,1))/2,:)); grid on;
+    hold on; yline(0.05,"-","$\alpha$ = 0.05",Interpreter="latex"); yline(0.005,'--',"$\alpha$ = 0.005",Interpreter="latex");
+    yline(0.1,'--',"$\alpha$ = 0.1",Interpreter="latex"); hold off; title("K-S"); xlim([yearList(1) yearList(end)]);
+    legend("5 dbar","25 dbar",Location="northwest"); xlabel("ending year"); ylabel("$p$-value",Interpreter="latex");
+    %set(gca,"XTick",1:1:length(yearList),"XTickLabel",yearList);
+
+    subplot(1,2,2)
+    semilogy(flip(yearList),pVals(length(pVals(:,1))/2 + 1:end,:)); grid on;
+    hold on; yline(0.05,"-","$\alpha$ = 0.05",Interpreter="latex"); yline(0.005,'--',"$\alpha$ = 0.005",Interpreter="latex");
+    yline(0.1,'--',"$\alpha$ = 0.1",Interpreter="latex"); hold off; title("A-D"); xlim([yearList(1) yearList(end)]);
+    legend("5 dbar","25 dbar",Location="northwest"); xlabel("ending year"); ylabel("$p$-value",Interpreter="latex");
+    sgtitle("does lognormality of surface chl $a$ depend on the end year of the analysis?","Interpreter","latex")
+    %set(gca,"XTick",1:1:length(yearList),"XTickLabel",yearList);
+    exportgraphics(ax,"figures/L0/bot/endYear/"+lp+"surfaceChla.png");
 end
