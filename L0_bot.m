@@ -1849,7 +1849,7 @@ end
 %% Analyse by end year
 if analyseEndYear
 
-    yearList = 2010:1:2022;
+    yearList = 1994:1:2022;
     pVals = [];
     % K-S
     tmpT = "-ks";
@@ -1945,6 +1945,118 @@ if analyseEndYear
     exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-10" + tmpT + ".png");
     clear ax tmp; pVals = [pVals; ks(2,[1 3])];
 
+    % -2009
+    tmp = importdata('data/L0/hplcChla_88-09_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2009)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-09" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2008
+    tmp = importdata('data/L0/hplcChla_88-08_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2008)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-08" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2007
+    tmp = importdata('data/L0/hplcChla_88-07_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2007)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-07" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2006
+    tmp = importdata('data/L0/hplcChla_88-06_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2006)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-06" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2005
+    tmp = importdata('data/L0/hplcChla_88-05_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2005)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-05" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2004
+    tmp = importdata('data/L0/hplcChla_88-04_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2004)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-04" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2003
+    tmp = importdata('data/L0/hplcChla_88-03_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2003)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-03" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2002
+    tmp = importdata('data/L0/hplcChla_88-02_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2002)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-02" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2001
+    tmp = importdata('data/L0/hplcChla_88-01_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2001)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-01" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -2000
+    tmp = importdata('data/L0/hplcChla_88-00_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-2000)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-00" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -1999
+    tmp = importdata('data/L0/hplcChla_88-99_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-1999)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-99" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -1998
+    tmp = importdata('data/L0/hplcChla_88-98_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-1998)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-98" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -1997
+    tmp = importdata('data/L0/hplcChla_88-97_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-1997)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-97" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -1996
+    tmp = importdata('data/L0/hplcChla_88-96_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-1996)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-96" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -1995
+    tmp = importdata('data/L0/hplcChla_88-95_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-1995)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-95" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
+    % -1994
+    tmp = importdata('data/L0/hplcChla_88-94_200.txt');
+    [ax,ks] = L0_helper(tmp,50,'ks');
+    sgtitle("L0: Chl $a$ (1988-1994)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_88-94" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ks(2,[1 3])];
+
 
     % A-D
     tmpT = "-ad";
@@ -2038,6 +2150,118 @@ if analyseEndYear
     [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
     sgtitle("L0: Chl $a$ (1988-2010)"+tmpT,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-10" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2009  
+    tmp = importdata('data/L0/hplcChla_88-09_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2009)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-09" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2008  
+    tmp = importdata('data/L0/hplcChla_88-08_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2008)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-08" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2007  
+    tmp = importdata('data/L0/hplcChla_88-07_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2007)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-07" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2006  
+    tmp = importdata('data/L0/hplcChla_88-06_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2006)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-06" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2005  
+    tmp = importdata('data/L0/hplcChla_88-05_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2005)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-05" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2004  
+    tmp = importdata('data/L0/hplcChla_88-04_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2004)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-04" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2003  
+    tmp = importdata('data/L0/hplcChla_88-03_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2003)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-03" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2002 
+    tmp = importdata('data/L0/hplcChla_88-02_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2002)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-02" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2001 
+    tmp = importdata('data/L0/hplcChla_88-01_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2001)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-01" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 2000
+    tmp = importdata('data/L0/hplcChla_88-00_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-2000)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-00" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1999
+    tmp = importdata('data/L0/hplcChla_88-99_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-1999)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-99" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1998
+    tmp = importdata('data/L0/hplcChla_88-98_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-1998)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-98" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1997
+    tmp = importdata('data/L0/hplcChla_88-97_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-1997)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-97" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1996
+    tmp = importdata('data/L0/hplcChla_88-96_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-1996)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-96" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1995
+    tmp = importdata('data/L0/hplcChla_88-95_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-1995)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-95" + tmpT + ".png");
+    clear ax tmp; pVals = [pVals; ad([1 3])];
+
+    % 1994
+    tmp = importdata('data/L0/hplcChla_88-94_200.txt');
+    [ax,~,~,~,~,ad] = L0_helper(tmp,50,'ad');
+    sgtitle("L0: Chl $a$ (1988-1994)"+tmpT,"Interpreter","latex");
+    exportgraphics(ax,"figures/L0/bot/endYear/" + lp + "chla_89-94" + tmpT + ".png");
     clear ax tmp; pVals = [pVals; ad([1 3])];
 
     % end-year analysis synthesis plot
