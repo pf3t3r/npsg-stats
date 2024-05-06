@@ -8,11 +8,11 @@ set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28
 
 % Possible test cases.
 principleAnalysis = false;  % main analysis
-seasonalAnalysisKs = false;   % seasonality of statistics: K-S
-seasonalAnalysisAd = false;  % seasonality of statistics: A-D
+seasonalAnalysisKs = true;   % seasonality of statistics: K-S
+seasonalAnalysisAd = true;  % seasonality of statistics: A-D
 analyseStartYear = false;  % analyse effect (if any) of varying start year 
                             % on distributions
-analyseEndYear = true;      % effect of varying end year
+analyseEndYear = false;      % effect of varying end year
 crn131 = false;             % analyse 2001-2021 data (to mirror CTD results)
 nightAnalysis = false;      % analyse night-time 2001-2021 (to mirror CTD 
                             % results)

@@ -158,16 +158,16 @@ autumn = nan(329,1);
 for i = 1:329
     tmp = round(mean(month(datetime(ctdData(i).date,"ConvertFrom","datenum"))));
     
-    if (tmp == 1) || (tmp == 2) || (tmp == 3)
+    if (tmp == 12) || (tmp == 1) || (tmp == 2)
         winter(i) = 1;
     end
-    if (tmp == 4) || (tmp == 5) || (tmp == 6)
+    if (tmp == 3) || (tmp == 4) || (tmp == 5)
         spring(i) = 1;
     end
-    if (tmp == 7) || (tmp == 8) || (tmp == 9)
+    if (tmp == 6) || (tmp == 7) || (tmp == 8)
         summer(i) = 1;
     end
-    if (tmp == 10) || (tmp == 11) || (tmp == 12)
+    if (tmp == 9) || (tmp == 10) || (tmp == 11)
         autumn(i) = 1;
     end
 

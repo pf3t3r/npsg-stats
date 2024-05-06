@@ -8,7 +8,7 @@ set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28
 
 % Possible test cases.
 principleAnalysis = false;  % main analysis
-seasonalAnalysisKs = false;   % seasonality of statistics: K-S
+seasonalAnalysisKs = true;   % seasonality of statistics: K-S
 seasonalAnalysisAd = true;   % seasonality of statistics: A-D
 logAxes = true;                 % output p-values as log values (true)
 if logAxes == true

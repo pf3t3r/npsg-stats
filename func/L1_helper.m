@@ -56,16 +56,16 @@ if season ~= 0
     winter = nan(n,1); spring = nan(n,1); summer = nan(n,1); autumn = nan(n,1);
     for i = 1:n
         tmpY = botMth(i);
-        if (tmpY == 1) || (tmpY == 2) || (tmpY == 3)
+        if (tmpY == 12) || (tmpY == 1) || (tmpY == 2)
             winter(i) = 1;
         end
-        if (tmpY == 4) || (tmpY == 5) || (tmpY == 6)
+        if (tmpY == 3) || (tmpY == 4) || (tmpY == 5)
             spring(i) = 1;
         end
-        if (tmpY == 7) || (tmpY == 8) || (tmpY == 9)
+        if (tmpY == 6) || (tmpY == 7) || (tmpY == 8)
             summer(i) = 1;
         end
-        if (tmpY == 10) || (tmpY == 11) || (tmpY == 12)
+        if (tmpY == 9) || (tmpY == 10) || (tmpY == 11)
             autumn(i) = 1;
         end
     end

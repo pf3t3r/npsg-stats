@@ -12,7 +12,7 @@ dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 % Possible test cases.
 principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = true;   % seasonality of statistics
-seasonalAnalysisAd = false;   % seasonality of statistics
+seasonalAnalysisAd = true;   % seasonality of statistics
 
 % TEMPLATE (XX-YY)
 % 1. Load data
