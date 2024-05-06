@@ -11,8 +11,8 @@ dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
 principleAnalysis = false;  % main analysis
-seasonalAnalysisKs = false;   % seasonality of statistics
-seasonalAnalysisAd = true;   % seasonality of statistics
+seasonalAnalysisKs = true;   % seasonality of statistics
+seasonalAnalysisAd = false;   % seasonality of statistics
 
 % TEMPLATE (XX-YY)
 % 1. Load data
@@ -21,7 +21,7 @@ seasonalAnalysisAd = true;   % seasonality of statistics
 % 4. Plot results
 
 %% Seasonal Analysis: K-S
-thresh = 25;
+thresh = 30;
 if seasonalAnalysisKs == true
     
     %%% WINTER
@@ -464,6 +464,7 @@ end
 
 if seasonalAnalysisAd == true
 
+    thresh = 30;
     %%% WINTER
     tmpT = "-ad-01";
 
@@ -687,7 +688,7 @@ if seasonalAnalysisAd == true
 
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,15,4,"ad",[-80 80],[3 19],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-80 80],[3 19],3);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
@@ -795,7 +796,7 @@ if seasonalAnalysisAd == true
     
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,15,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
