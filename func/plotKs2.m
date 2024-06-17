@@ -224,21 +224,41 @@ if testSel == 4
     end
 elseif testSel == 2
     % 4.b. Vuong: Normal Vs. Lognormal Only
-    for i = 1:n
-        if vuongRes(i) == 1
-            annot(i) = "Normal";
-            anClr(i) = '#a6cee3';
-            if pV(1,i) > alphaLlr
-                tmpEmph(i) = 'normal';
+    if hypTest == "ks"
+        for i = 1:n
+            if vuongRes(i) == 1 && ks(1,i) > alphaHy
+                annot(i) = "Normal";
+                anClr(i) = '#a6cee3';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            elseif vuongRes(i) == 2 && ks(2,i) > alphaHy
+                annot(i) = "Lognormal";
+                anClr(i) = '#1f78b4';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            else
+                annot(i) = "";
             end
-        elseif vuongRes(i) == 2
-            annot(i) = "Lognormal";
-            anClr(i) = '#1f78b4';
-            if pV(1,i) > alphaLlr
-                tmpEmph(i) = 'normal';
+        end
+    elseif hypTest == "ad"
+        for i = 1:n
+            if vuongRes(i) == 1 && ks(1,i) > alphaHy
+                annot(i) = "Normal";
+                anClr(i) = '#a6cee3';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            elseif vuongRes(i) == 2 && ks(2,i) > alphaHy
+                annot(i) = "Lognormal";
+                anClr(i) = '#1f78b4';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            else
+                annot(i) = "";
             end
-        else
-            annot(i) = "";
         end
     end
 end

@@ -155,7 +155,7 @@ if testSel==4
         end
     end
     rV(rV==0) = nan;
-else
+elseif testSel == 2
     for i = 1:length(pr)
         if rV(1,i)  > 0
             vuongRes(i) = 1;

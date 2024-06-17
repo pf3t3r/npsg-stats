@@ -13,6 +13,7 @@ dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 principleAnalysis = true;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics
 seasonalAnalysisAd = false;   % seasonality of statistics
+testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 % TEMPLATE (XX-YY)
 % 1. Load data
@@ -21,113 +22,114 @@ seasonalAnalysisAd = false;   % seasonality of statistics
 % 4. Plot results
 
 %% Seasonal Analysis: K-S
-thresh = 30;
+% thresh = 30;
 if seasonalAnalysisKs == true
     
+    thresh = 50;
     %%% WINTER
     tmpT = "-01";
 
     % Chlorophyll a (88-21)
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[2 14],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[2 14],1);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[2 14],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[2 14],1);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[6 18],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[6 18],1);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[6 18],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[6 18],1);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],1);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[3 15],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[3 15],1);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -138,105 +140,105 @@ if seasonalAnalysisKs == true
 
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[8 20],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[8 20],2);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[8 20],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[8 20],2);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[6 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[6 18],2);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[6 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[6 18],2);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[6 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[6 18],2);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,10,4,"ks",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,10,testSel,"ks",[-60 60],[7 19],2);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -247,105 +249,105 @@ if seasonalAnalysisKs == true
 
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,15,4,"ks",[-80 80],[3 19],3);
+    ax = L2_helper(tmp,mld,dcm,15,testSel,"ks",[-80 80],[3 19],3);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[6 18],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[6 18],3);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,10,4,"ks",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,10,testSel,"ks",[-60 60],[5 17],3);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -355,105 +357,105 @@ if seasonalAnalysisKs == true
     
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,15,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,15,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[2 14],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[2 14],4);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-60 60],[2 14],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-60 60],[2 14],4);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,10,4,"ks",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,10,testSel,"ks",[-50 50],[1 11],4);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -470,105 +472,105 @@ if seasonalAnalysisAd == true
 
     % Chlorophyll a (88-21)
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[2 14],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[2 14],1);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[2 14],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[2 14],1);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[6 18],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[6 18],1);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[6 18],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[6 18],1);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[3 15],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[3 15],1);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -579,105 +581,105 @@ if seasonalAnalysisAd == true
 
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[8 20],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[8 20],2);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[8 20],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[8 20],2);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[6 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[6 18],2);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[6 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[6 18],2);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[6 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[6 18],2);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,10,4,"ad",[-60 60],[7 19],2);
+    ax = L2_helper(tmp,mld,dcm,10,testSel,"ad",[-60 60],[7 19],2);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -688,105 +690,105 @@ if seasonalAnalysisAd == true
 
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-80 80],[3 19],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-80 80],[3 19],3);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[6 18],3);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[6 18],3);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,10,4,"ad",[-60 60],[5 17],3);
+    ax = L2_helper(tmp,mld,dcm,10,testSel,"ad",[-60 60],[5 17],3);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -796,105 +798,105 @@ if seasonalAnalysisAd == true
     
     % chla
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     clear tmp ax;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("But19 (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     clear tmp ax;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("HPLC Zeaxanthin (88-21): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("Particulate Carbon 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("Particulate Nitrogen 89-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     clear tmp ax;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[2 14],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[2 14],4);
     sgtitle("Nitrate + Nitrite 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     clear tmp ax;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-60 60],[2 14],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[2 14],4);
     sgtitle("Phosphate 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     clear tmp ax;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("Dissolved Oxygen 88-21: L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     clear tmp ax;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,10,4,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,10,testSel,"ad",[-50 50],[1 11],4);
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
@@ -907,226 +909,226 @@ if principleAnalysis == true
     
     % Chlorophyll a (88-21)
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku,~,~,~,ad,pr,VuongRes] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku,~,~,~,ad,pr,VuongRes] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("[Chl a] 88-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     save("output\L2\chla.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     save("output\L2\mvchla.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     save("output\L2\dvchla.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("HPLC Chlorophyll b (88-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     save("output\L2\chlb.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     save("output\L2\chl123.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("HPLC alpha-Carotene (94-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     save("output\L2\acar.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("But19 (88-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     save("output\L2\but19.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     save("output\L2\hex19.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("HPLC Zeaxanthin (88-21): L2");
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     save("output\L2\zeaxan.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-80 80],[6 22]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-80 80],[6 22]);
     sgtitle("Particulate Carbon 89-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     save("output\L2\pc.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[8 20]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[8 20]);
     sgtitle("Particulate Nitrogen 89-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     save("output\L2\pn.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("Nitrate + Nitrite 88-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     save("output\L2\nit2.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
     sgtitle("Phosphate 88-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     save("output\L2\phos.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[6 18]);
+    [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[6 18]);
     sgtitle("Dissolved Oxygen 88-21: L2");
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     save("output\L2\boxy.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[6 18]);
+    [ax,p,ks,obs,sk,ku] = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[6 18]);
     sgtitle("PProd Light-12 (89-22): L2");
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     save("output\L2\l12.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
 
 %     % Macrozooplankton (94-22)
 %     tmp = importdata("data/L0/macrozoo_94-22_200.txt");
-%     ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+%     ax = L2_helper(tmp,mld,dcm,50,testSel,"ks",[-60 60],[7 19]);
 %     sgtitle("Macrozooplankton 94-21: L2");
 %     exportgraphics(ax,"figures/L2/bottle/log/macrozoo" + tmpT + ".png");
 %     %save("output\L2\chla.mat","p","ks","obs","sk","ku");
-%     %clearvars -except mld dcm tmpT;
+%     %clearvars -except mld dcm tmpT testSel;
     
     % A-D
     tmpT = "-ad";
     
     % Chlorophyll a (88-21)
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("[Chl a] 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     % save("output\L2\chla.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Monovinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\mvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("HPLC Monovinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/mvchla" + tmpT + ".png");
     % save("output\L2\mvchla.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Divinyl chlorophyll a (94-21)
     tmp = importdata("data\L2\dvchla_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("HPLC Divinyl chlorophyll a (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/dvchla" + tmpT + ".png");
     % save("output\L2\dvchla.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     % save("output\L2\chlb.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     % save("output\L2\chl123.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC alpha-Carotene (94-21)
     tmp = importdata("data\L2\acar_94-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("HPLC alpha-Carotene (94-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/acar" + tmpT + ".png");
     % save("output\L2\acar.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % But19 (88-21)
     tmp = importdata("data\L2\but19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("But19 (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/but19" + tmpT + ".png");
     % save("output\L2\but19.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC 19 Hexanoyloxyfucoxanthin (88-21)
     tmp = importdata("data\L2\hex19_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("HPLC 19' Hexanoyloxyfucoxanthin (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/hex19" + tmpT + ".png");
     % save("output\L2\hex19.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % HPLC Zeaxanthin (88-21)
     tmp = importdata("data\L2\zeaxan_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("HPLC Zeaxanthin (88-21): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/zeaxan" + tmpT + ".png");
     % save("output\L2\zeaxan.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-80 80],[6 22]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-80 80],[6 22]);
     sgtitle("Particulate Carbon 89-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     % save("output\L2\pc.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Particulate Nitrogen (89-21)
     tmp = importdata("data\L2\parn_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[8 20]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[8 20]);
     sgtitle("Particulate Nitrogen 89-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/pn" + tmpT + ".png");
     % save("output\L2\pn.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Nitrate + Nitrite (88-21)
     tmp = importdata("data/L2/nit2_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("Nitrate + Nitrite 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     % save("output\L2\nit2.mat","p","ks","obs","sk","ku");
@@ -1134,7 +1136,7 @@ if principleAnalysis == true
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[7 19]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
     sgtitle("Phosphate 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     % save("output\L2\phos.mat","p","ks","obs","sk","ku");
@@ -1142,7 +1144,7 @@ if principleAnalysis == true
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[6 18]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[6 18]);
     sgtitle("Dissolved Oxygen 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     % save("output\L2\boxy.mat","p","ks","obs","sk","ku");
@@ -1150,7 +1152,7 @@ if principleAnalysis == true
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ad",[-60 60],[6 18]);
+    ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[6 18]);
     sgtitle("PProd Light-12 (89-22): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     % save("output\L2\l12.mat","p","ks","obs","sk","ku");
