@@ -1,3 +1,4 @@
+% Check effectiveness of four hypothesis data against ALOHA data.
 % Compare a selection of hypothesis tests [1] against a selection of 
 % parameters [2] from Station ALOHA.
 % [1]: Kolmogorov-Smirnov (K-S), Lilliefors (Lil), Anderson-Darling (A-D),
@@ -8,8 +9,7 @@ clear; clc; close all;
 addpath("baroneRoutines\"); addpath("packages\"); addpath("func\");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
-%% Extract Maximum Mixed Layer Depth (per cruise) 'maxMld'
-
+% Extract Maximum Mixed Layer Depth (per cruise) 'maxMld'
 ctdData = importdata('datafiles\ctd_iso_ALL.mat').ctd;
 maxMld = nan(329,1);
 for i = 1:329

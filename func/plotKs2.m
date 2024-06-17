@@ -31,7 +31,7 @@ anClr = strings(1,n);
 anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 
-alphaHy = 0.05;
+alphaHy = 0.005;
 alphaLlr = 0.1;
 
 vuongRes2 = nan(length(vuongRes),1);

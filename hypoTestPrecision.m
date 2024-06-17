@@ -1,3 +1,4 @@
+% Check relationship between p-value and sample size.
 % This code checks whether there is any relationship between the p-value of
 % three hypothesis tests [1] run on random lognormal data and the (i) mean* 
 % and (ii) sample size [2] chosen for that data. It appears that there is 

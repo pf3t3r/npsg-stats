@@ -1,4 +1,4 @@
-function [tr,ks,obs,sk,ku,rV,pV,ad] = ksOfLagrangian(id,p,dcm,X,threshold)
+function [tr,ks,obs,sk,ku,rV,pV,ad,X_out,bottleArray] = ksOfLagrangian(id,p,dcm,X,threshold)
 %ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:
@@ -10,7 +10,7 @@ function [tr,ks,obs,sk,ku,rV,pV,ad] = ksOfLagrangian(id,p,dcm,X,threshold)
 % OUTPUTS:
 % bottleArray = not needed anymore, to remove
 % tr = depths where sufficient measurements are present
-% chl = also not used??
+% X_out = also not used??
 % pB = binned pressure, also not used?
 % ks = Kolmogorov-Smirnov Statistic (p value). High p-value indicates that
 % the given distribution fits the data better.
@@ -76,7 +76,7 @@ tmin = min(bottleArray(:,6));
 tmax = max(bottleArray(:,6));
 tr = tmin:10:tmax;
 
-chl = bottleArray(:,7);
+X_out = bottleArray(:,7);
 pB = bottleArray(:,6);
 ks = nan(5,length(tr));
 ad = nan(4,length(tr));
@@ -87,7 +87,7 @@ obs = nan(1,length(tr));
 sk = nan(1,length(tr));
 
 for i = 1:length(tr)
-    tmp = chl(pB==tr(i));
+    tmp = X_out(pB==tr(i));
     tmp(tmp<=0) = nan;
     tmp(isnan(tmp)) = [];
     obs(i) = length(tmp);

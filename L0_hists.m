@@ -4,10 +4,10 @@ close all;clc;clear;
 
 %% IMPORT data.
 % ONLY need to change variables in this subsection.
-tmp = importdata("data\L0\hplcChla_01-22_200.txt").data;
-NAME = "chla-25";
-xlab = "chl $a$ [ng/l]";
-binVal = 25;
+tmp = importdata("data\L0\dvchla_94-21_200.txt").data;
+NAME = "dvchla-55";
+xlab = "divinyl chl $a$ [ng/l]";
+binVal = 55;
 
 %% SPECIFY plot dimensions.
 

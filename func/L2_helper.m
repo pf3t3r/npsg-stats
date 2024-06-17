@@ -1,4 +1,4 @@
-function [ax,p,ks,obs,sk,ku,rV,pSubml,pV,ad,pr,vuongRes] = L2_helper(tmp,maxMld,dcm,threshold,testSel,hypTest,yLimits,yLimitsObs,season)
+function [ax,X_out,pSubml,bA,ks,obs,sk,ku,rV,p,pV,ad,pr,vuongRes] = L2_helper(tmp,maxMld,dcm,threshold,testSel,hypTest,yLimits,yLimitsObs,season)
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
 % is centred on the DCM). 
@@ -130,7 +130,7 @@ end
 
 % 3. Calculate KS p-value, skewness, kurtosis
 % ..., centre around DCM (?)
-[pr,ks,obs,sk,ku,rV,pV,ad] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
+[pr,ks,obs,sk,ku,rV,pV,ad,X_out,bA] = ksOfLagrangian(idSubml,pSubml,dcm,cSubml,threshold);
 
 % 3.a. Intercomparison of results from Vuong's Test: easily see best
 % distribution at each depth.

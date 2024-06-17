@@ -1,4 +1,4 @@
-% Look at lowered ADCP (LADCP) data from a given HOT cruise.
+% View lowered ADCP (LADCP) data from a given HOT cruise.
 
 clc;clear;close all;
 

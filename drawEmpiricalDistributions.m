@@ -1,5 +1,4 @@
-% Generate and plot the theoretical curves of skewness and kurtosis for a
-% selection of empirical distributions.
+% Draw skewness-kurtosis plots for range of empirical distributions.
 
 clc; close all; clear;
 

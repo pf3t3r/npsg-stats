@@ -1,5 +1,5 @@
-% Draw mathematical moments [1] for time series of chloropigment (1988-2021).
-% [1]: mean, standard deviation, skewness, and (excess) kurtosis.
+% Draw mathematical moments for chloropigment time series.
+% Moments: mean, standard deviation, skewness, and (excess) kurtosis.
 
 clear; clc; close all;
 addpath("baroneRoutines\");

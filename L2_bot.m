@@ -10,9 +10,9 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
-seasonalAnalysisKs = true;   % seasonality of statistics
-seasonalAnalysisAd = true;   % seasonality of statistics
+principleAnalysis = true;  % main analysis
+seasonalAnalysisKs = false;   % seasonality of statistics
+seasonalAnalysisAd = false;   % seasonality of statistics
 
 % TEMPLATE (XX-YY)
 % 1. Load data
@@ -1025,13 +1025,13 @@ if principleAnalysis == true
     save("output\L2\l12.mat","p","ks","obs","sk","ku");
     clearvars -except mld dcm tmpT;
 
-    % Macrozooplankton (94-22)
-    tmp = importdata("data/L0/macrozoo_94-22_200.txt");
-    ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
-    sgtitle("Macrozooplankton 94-21: L2");
-    exportgraphics(ax,"figures/L2/bottle/log/macrozoo" + tmpT + ".png");
-    %save("output\L2\chla.mat","p","ks","obs","sk","ku");
-    %clearvars -except mld dcm tmpT;
+%     % Macrozooplankton (94-22)
+%     tmp = importdata("data/L0/macrozoo_94-22_200.txt");
+%     ax = L2_helper(tmp,mld,dcm,50,4,"ks",[-60 60],[7 19]);
+%     sgtitle("Macrozooplankton 94-21: L2");
+%     exportgraphics(ax,"figures/L2/bottle/log/macrozoo" + tmpT + ".png");
+%     %save("output\L2\chla.mat","p","ks","obs","sk","ku");
+%     %clearvars -except mld dcm tmpT;
     
     % A-D
     tmpT = "-ad";
