@@ -75,7 +75,7 @@ anClr(cellfun(@isempty,anClr)) = '#FFFFFF';
 tmpEmph = strings(1,n); tmpEmph(cellfun(@isempty,tmpEmph)) = 'bold';
 % Default Case
 
-alphaHy = 0.05;
+alphaHy = 0.005;
 alphaLlr = 0.10;
 
 if testSel == 4
@@ -359,7 +359,7 @@ end
 xlabel('# Observations','FontSize',15);
 
 subplot(1,6,[2 3])
-xline(alphaHy,DisplayName='\alpha');
+xline(alphaHy,DisplayName='\alpha',LineWidth=1.5,Color="#b2df8a");
 hold on
 if strcmp(hypTest,"ks")
     if testSel == 4
@@ -387,11 +387,11 @@ end
 hold off
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.005,'--',HandleVisibility='off');
-    xline(0.1,'--',HandleVisibility='off');
+    xline(0.05,':',HandleVisibility='off',LineWidth=1);
+    xline(0.1,':',HandleVisibility='off',LineWidth=1);
 end
 grid minor;
-ylim(limits);
+ylim(limits); xlim([0.75*alphaHy 1])
 set(gca,'YDir','reverse');
 legend(Location="best",FontSize=13);
 yticklabels({});
