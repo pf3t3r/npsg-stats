@@ -263,20 +263,38 @@ if testSel == 4
 elseif testSel == 2
     % Normal-Lognormal Case
     for i = 1:n
-        if vuongRes(i) == 1
-            annot(i) = "Normal";
-            anClr(i) = '#a6cee3';
-            if pV(1,i) > alphaLlr
-                tmpEmph(i) = 'normal';
+        if strcmp(hypTest,"ks")
+            if vuongRes(i) == 1 && ks(1,i) > alphaHy
+                annot(i) = "Normal";
+                anClr(i) = '#a6cee3';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            elseif vuongRes(i) == 2 && ks(2,i) > alphaHy
+                annot(i) = "Lognormal";
+                anClr(i) = '#1f78b4';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            elseif vuongRes(i) == 0
+                annot(i) = "";
             end
-        elseif vuongRes(i) == 2
-            annot(i) = "Lognormal";
-            anClr(i) = '#1f78b4';
-            if pV(1,i) > alphaLlr
-                tmpEmph(i) = 'normal';
+        elseif strcmp(hypTest,"ad")
+            if vuongRes(i) == 1 && ad(1,i) > alphaHy
+                annot(i) = "Normal";
+                anClr(i) = '#a6cee3';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy
+                annot(i) = "Lognormal";
+                anClr(i) = '#1f78b4';
+                if pV(1,i) > alphaLlr
+                    tmpEmph(i) = 'normal';
+                end
+            elseif vuongRes(i) == 0
+                annot(i) = "";
             end
-        elseif vuongRes(i) == 0
-            annot(i) = "";
         end
     end
 end
@@ -391,7 +409,7 @@ if logAxis == true
     xline(0.1,':',HandleVisibility='off',LineWidth=1);
 end
 grid minor;
-ylim(limits); xlim([0.75*alphaHy 1])
+ylim(limits); xlim([0.6*alphaHy 1]);
 set(gca,'YDir','reverse');
 legend(Location="best",FontSize=13);
 yticklabels({});

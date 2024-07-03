@@ -244,13 +244,13 @@ elseif testSel == 2
         end
     elseif hypTest == "ad"
         for i = 1:n
-            if vuongRes(i) == 1 && ks(1,i) > alphaHy
+            if vuongRes(i) == 1 && ad(1,i) > alphaHy
                 annot(i) = "Normal";
                 anClr(i) = '#a6cee3';
                 if pV(1,i) > alphaLlr
                     tmpEmph(i) = 'normal';
                 end
-            elseif vuongRes(i) == 2 && ks(2,i) > alphaHy
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy
                 annot(i) = "Lognormal";
                 anClr(i) = '#1f78b4';
                 if pV(1,i) > alphaLlr
@@ -313,7 +313,7 @@ set(gca,"YTickLabel",limits(1):10:limits(2),"YTick",1:1+b-a);
 ylim([1 1+b-a]);
 
 subplot(1,6,[2 3])
-xline(alphaHy,DisplayName='\alpha');
+xline(alphaHy,DisplayName='\alpha',LineWidth=1.5,Color="#b2df8a");
 hold on
 if strcmp(hypTest,"ks")
     if testSel == 4
@@ -340,12 +340,12 @@ else
 end
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.005,':',HandleVisibility='off');
-    xline(0.1,':',HandleVisibility='off');
+    xline(0.05,':',HandleVisibility='off',LineWidth=1);
+    xline(0.1,':',HandleVisibility='off',LineWidth=1);
 end
 hold off
 grid minor;
-ylim([limits(1) limits(2)]);
+ylim([limits(1) limits(2)]); xlim([0.6*alphaHy 1]);
 set(gca,'YDir','reverse');
 set(gca,"YTick",limits(1):10:limits(2));
 yticklabels({});
