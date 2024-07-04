@@ -1,43 +1,42 @@
 close all;clc;clear;
 
 ctd = load("datafiles\ctd_iso_ALL.mat").ctd;
-iso = load("datafiles\ctd_iso_ALL.mat").iso;
-
 ct50_ctd = ctd(50).ct;
-ct50_iso = iso(50).ct;
-T50 = datetime(ctd(50).date,"ConvertFrom","datenum");
-
+t50 = datetime(ctd(50).date,"ConvertFrom","datenum");
 p = ctd(50).p;
 
-deltaT = ct50_ctd - ct50_iso;
 
 %%
-plotThis = false;
+% iso = load("datafiles\ctd_iso_ALL.mat").iso;
+% ct50_iso = iso(50).ct;
+% deltaT = ct50_ctd - ct50_iso;
 
-if plotThis
-    figure;
-    subplot(1,2,1)
-    plot(ct50_ctd(:,5),p,DisplayName="\Theta");
-    hold on
-    plot(ct50_iso(:,5),p,DisplayName="\Theta_{iso}");
-    hold off
-    set(gca,"YDir","reverse");
-    title("$\Theta$ vs. $\Theta_{iso}$","Interpreter","latex")
-    sgtitle("HOT-50: Cast 5","FontSize",8);
-    legend(Location="southeast"); grid on;
-    ylabel("Pressure [dbar]");
-    xlabel("\Theta [{\circ}C]");
-    
-    subplot(1,2,2)
-    plot(deltaT(:,5),p);
-    set(gca,"YDir","reverse");
-    title("$\Delta \Theta = \Theta - \Theta_{iso}$","Interpreter","latex")
-    yticklabels({}); grid on;
-    xlabel("\Theta [{\circ}C]");
-end
+% plotThis = false;
+% 
+% if plotThis
+%     figure;
+%     subplot(1,2,1)
+%     plot(ct50_ctd(:,5),p,DisplayName="\Theta");
+%     hold on
+%     plot(ct50_iso(:,5),p,DisplayName="\Theta_{iso}");
+%     hold off
+%     set(gca,"YDir","reverse");
+%     title("$\Theta$ vs. $\Theta_{iso}$","Interpreter","latex")
+%     sgtitle("HOT-50: Cast 5","FontSize",8);
+%     legend(Location="southeast"); grid on;
+%     ylabel("Pressure [dbar]");
+%     xlabel("\Theta [{\circ}C]");
+%     
+%     subplot(1,2,2)
+%     plot(deltaT(:,5),p);
+%     set(gca,"YDir","reverse");
+%     title("$\Delta \Theta = \Theta - \Theta_{iso}$","Interpreter","latex")
+%     yticklabels({}); grid on;
+%     xlabel("\Theta [{\circ}C]");
+% end
 
 %%
-clear deltaT; 
+% clear deltaT; 
 sig50_ctd = ctd(50).sig(1:101,:);
 p = p(1:101,1);
 
@@ -48,7 +47,6 @@ step = 0.05;
 
 % binned densities
 sb = sbm:step:sbM;
-
 
 n = length(ct50_ctd(1,:));
 meanPressurePerIsopycnal = nan(length(sb),n+2);
@@ -114,11 +112,11 @@ legend();
 
 % Depth of sigma = 25 kg/m3 isopycnal (defined as 24.00 - 24.05)
 figure
-plot(T50,meanPressurePerIsopycnal(30,3:end),'o-',DisplayName="24.60 kgm^{-3}");
+plot(t50,meanPressurePerIsopycnal(30,3:end),'o-',DisplayName="24.60 kgm^{-3}");
 hold on
-plot(T50,meanPressurePerIsopycnal(34,3:end),'o-',DisplayName="24.80 kgm^{-3}");
-plot(T50,meanPressurePerIsopycnal(38,3:end),'o-',DisplayName="25.00 kgm^{-3}");
-plot(T50,meanPressurePerIsopycnal(42,3:end),'o-',DisplayName="25.20 kgm^{-3}");
+plot(t50,meanPressurePerIsopycnal(34,3:end),'o-',DisplayName="24.80 kgm^{-3}");
+plot(t50,meanPressurePerIsopycnal(38,3:end),'o-',DisplayName="25.00 kgm^{-3}");
+plot(t50,meanPressurePerIsopycnal(42,3:end),'o-',DisplayName="25.20 kgm^{-3}");
 hold off
 set(gca,"YDir","reverse");
 xlabel("time");
@@ -127,10 +125,27 @@ title("Isopycnal Depth: HOT-50");
 grid on; grid minor;
 legend();
 
-% figure;
-% plot(ct50_ctd(:,5),depthBins);
+%% Pressure range per isopycnal
+
+for i = 1:51
+    pm(i) = min(meanPressurePerIsopycnal(i,3:end));
+    pM(i) = max(meanPressurePerIsopycnal(i,3:end));
+    pmn(i) = mean(meanPressurePerIsopycnal(i,3:end),"omitnan");
+    Dp(i) = pM(i) - pm(i);
+end
+
+a = string(round(pmn));
+f5s = 58*ones(51,1); % array of 58s: just for plotting text labels
+
+figure;
+plot(Dp,sb,'square-','Color',[0.4940 0.1840 0.5560]);
+text(f5s,sb,a,"Color",[0.5 0.5 0.5],"FontSize",8);
+set(gca,"YDir","reverse");
+xlabel('\Delta p = p_{max} - p_{min} [dbar]'); 
+ylabel("\sigma_0 [kg m^{-3}]");
+title("Pressure Range Across Isopycnals: HOT-50",FontSize=13);
+subtitle("28-30/10/1993 (18 casts; p_{mean} in grey)","FontSize",9);
+grid on; grid minor;
 
 
-% figure;
-% scatter(ct50_ctd,sig50_ctd,'.'); set(gca,"YDir","reverse");
-% xlabel("\Theta [{\circ}C]"); ylabel("\sigma [kgm^{-3}]");
+
