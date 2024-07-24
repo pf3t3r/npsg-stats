@@ -2,7 +2,7 @@
 
 clear; clc; close all;
 addpath("baroneRoutines\"); addpath("func\");
-set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28 15]);
+set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Load maximum mixed-layer depth 'MLD' and cruise-averaged deep chlorophyll
 % maximum depth 'DCM'.
@@ -10,9 +10,9 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = true;  % main analysis
+principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics
-seasonalAnalysisAd = false;   % seasonality of statistics
+seasonalAnalysisAd = true;   % seasonality of statistics
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 % TEMPLATE (XX-YY)
@@ -1132,7 +1132,7 @@ if principleAnalysis == true
     sgtitle("Nitrate + Nitrite 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/nit2" + tmpT + ".png");
     % save("output\L2\nit2.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Phosphate (88-21)
     tmp = importdata("data/L2/pho_88-21_200.txt");
@@ -1140,7 +1140,7 @@ if principleAnalysis == true
     sgtitle("Phosphate 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/phos" + tmpT + ".png");
     % save("output\L2\phos.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % Oxygen (88-21)
     tmp = importdata("data/L2/oxy_88-21_200.txt");
@@ -1148,7 +1148,7 @@ if principleAnalysis == true
     sgtitle("Dissolved Oxygen 88-21: L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/boxy" + tmpT + ".png");
     % save("output\L2\boxy.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
     
     % PProd Light-12 (89-22)
     tmp = importdata("data\L2\l12_89-22_200.txt");
@@ -1156,7 +1156,7 @@ if principleAnalysis == true
     sgtitle("PProd Light-12 (89-22): L2"+tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     % save("output\L2\l12.mat","p","ks","obs","sk","ku");
-    clearvars -except mld dcm tmpT;
+    clearvars -except mld dcm tmpT testSel;
 end
 
 %% K-S Unused

@@ -4,12 +4,12 @@ clear; clc; close all;
 addpath("baroneRoutines\");
 addpath("func\");
 
-set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 28 15]);
+set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Possible test cases.
 principleAnalysis = false;  % main analysis
-seasonalAnalysisKs = true;   % seasonality of statistics: K-S
-seasonalAnalysisAd = false;   % seasonality of statistics: A-D
+seasonalAnalysisKs = false;   % seasonality of statistics: K-S
+seasonalAnalysisAd = true;   % seasonality of statistics: A-D
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 logAxes = true;                 % output p-values as log values (true)

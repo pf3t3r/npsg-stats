@@ -3,13 +3,13 @@
 clear; clc; close all;
 addpath("baroneRoutines\");
 addpath("func\");
-set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 15 15]);
 % tmpT = "";
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
-seasonalAnalysisKs = true;   % seasonality of statistics: K-S
-seasonalAnalysisAd = true;  % seasonality of statistics: A-D
+principleAnalysis = true;  % main analysis
+seasonalAnalysisKs = false;   % seasonality of statistics: K-S
+seasonalAnalysisAd = false;  % seasonality of statistics: A-D
 analyseStartYear = false;  % analyse effect (if any) of varying start year 
                             % on distributions
 analyseEndYear = false;      % effect of varying end year
@@ -1042,6 +1042,8 @@ if principleAnalysis == true
     % K-S
     tmpT = "";
 
+    dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
+
     % chla
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
     [ax,~,~] = L0_helper(tmp,50,"ks",logAxes);
@@ -1174,9 +1176,10 @@ if principleAnalysis == true
     tmpT = "-ad";
     
     % chla
+    tmpX ="";
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
     [ax,~,~,pB,X] = L0_helper(tmp,50,'ad');
-    sgtitle("L0: Chl $a$ (1988-2021)"+tmpT,"Interpreter","latex");
+    sgtitle("L0: Chl-$a$ (1988-2021)"+tmpX,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla" + tmpT + ".png");
     clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     

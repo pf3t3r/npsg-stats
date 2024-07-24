@@ -22,7 +22,7 @@ end
 if nargin <2
     threshold = 50;
 end
-tmpT = ""; alphaKs = 0.05;
+tmpT = ""; alphaHy = 0.005;
 
 if isstruct(tmp)
     if length(tmp.data(1,:))==6
@@ -123,8 +123,8 @@ end
 
 n2 = 20;
 ks = nan(5,n2);
-sk = nan(1,n2); ku = nan(1,n2);
-rV = nan(10,n2); pV = nan(10,n2);
+%sk = nan(1,n2); ku = nan(1,n2);
+%rV = nan(10,n2); pV = nan(10,n2);
 obs = nan(1,n2);
 ad = nan(1,n2);
 
@@ -141,9 +141,9 @@ for i = 1:n2
         else
             [~,ad(i)] = adtest(X_i,'Distribution','logn');
         end
-        [rV(:,i),pV(:,i)] = bbvuong(X_i);
-        sk(i) = skewness(X_i);
-        ku(i) = kurtosis(X_i);
+        %[rV(:,i),pV(:,i)] = bbvuong(X_i);
+        %sk(i) = skewness(X_i);
+        %ku(i) = kurtosis(X_i);
     end
     obs(i) = length(X_i);
     clear X_i;
@@ -151,53 +151,53 @@ end
 
 ks(:,obs<threshold) = nan;
 ad(obs<threshold) = nan;
-sk(obs<threshold) = nan;
-ku(obs<threshold) = nan;
+% sk(obs<threshold) = nan;
+% ku(obs<threshold) = nan;
 
-% Lognormal family: generate theoretical skewness and kurtosis
-sigTh = linspace(0,1,1000);
-for i = 1:length(sigTh)
-    skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
-    kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
-end
-
-% Negative Distributions
-skLognN = -skLogn;
-kuLognN = kuLogn;
-
-kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
-if max(ku) > 10 & min(sk) < 0
-    kurtLimB = max(ku) + 1;
-    skewLimA = min(sk) - 0.1;
-    skewLimB = max(sk) + 0.1;
-elseif max(ku) > 10
-    kurtLimB = max(ku) + 1;
-    skewLimB = max(sk) + 0.1;
-elseif min(sk) < 0 
-    skewLimA = min(sk) - 0.1;
-elseif max(sk) > 2.5
-    kurtLimB = max(ku) + 1;
-    skewLimB = max(sk) + 0.1;
-else 
-    kurtLimB = 10;
-    skewLimA = 0;
-    skewLimB = 2.5;
-end
+% % Lognormal family: generate theoretical skewness and kurtosis
+% sigTh = linspace(0,1,1000);
+% for i = 1:length(sigTh)
+%     skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
+%     kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
+% end
+% 
+% % Negative Distributions
+% skLognN = -skLogn;
+% kuLognN = kuLogn;
+% 
+% kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
+% if max(ku) > 10 & min(sk) < 0
+%     kurtLimB = max(ku) + 1;
+%     skewLimA = min(sk) - 0.1;
+%     skewLimB = max(sk) + 0.1;
+% elseif max(ku) > 10
+%     kurtLimB = max(ku) + 1;
+%     skewLimB = max(sk) + 0.1;
+% elseif min(sk) < 0 
+%     skewLimA = min(sk) - 0.1;
+% elseif max(sk) > 2.5
+%     kurtLimB = max(ku) + 1;
+%     skewLimB = max(sk) + 0.1;
+% else 
+%     kurtLimB = 10;
+%     skewLimA = 0;
+%     skewLimB = 2.5;
+% end
 
 pXX = 5:10:195;
 ax = figure;
-subplot(1,5,1)
-barh(obs);
+subplot(1,3,3)
+barh(obs,'FaceColor','#d3d3d3');
 xline(threshold);
 ylim([0.5 20.5]);
 yticks(0.5:2:20.5);
-yticklabels(0:20:200);
+yticklabels({});
 set(gca,"YDir","reverse");
-xlabel("# Observations",FontSize=15);
-ylabel("P [dbar]",FontSize=15);
+xlabel("No. of Observations",Interpreter="latex",FontSize=13);
+% ylabel("P [dbar]",FontSize=15);
 
-subplot(1,5,[2 3])
-xline(0.05,DisplayName='\alpha'); 
+subplot(1,3,[1 2])
+xline(alphaHy,DisplayName='\alpha',LineWidth=1.5,Color="#808080"); 
 hold on
 if strcmp(hypTest,'ks')
     plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
@@ -208,47 +208,47 @@ else
 end
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.005,'--',HandleVisibility='off');
-    xline(0.1,'--',HandleVisibility='off');
+    xline(0.05,':',HandleVisibility='off',LineWidth=1);
+    xline(0.1,':',HandleVisibility='off',LineWidth=1);
 end
 ylim([0 200]);
 set(gca,'YDir','reverse');
-yticklabels([]);
+ylabel("Pressure [dbar]",Interpreter="latex",FontSize=13);
 grid minor;
 legend(FontSize=15);
 
-clr = 1:1:length(pXX);
-subplot(1,5,[4.1 5])
-plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
-hold on
-plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
-for i = 1:n2
-    if strcmp(hypTest,'ks')
-        if ks(2,i) < alphaKs
-            plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
-        else
-            plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
-        end
-    else
-        if ad(i) < alphaKs
-            plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
-        else
-            plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
-        end
-    end
-end
-scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
-hold off
-colormap(gca,cbrewer2("RdYlBu"));
-cbar = colorbar;
-cbar.Direction = "reverse";
-cbar.Ticks = 1:1:length(pXX);
-cbar.TickLabels = pXX;
-cbar.Label.String = "P [dbar]";
-legend(Location="best",FontSize=15);
-grid minor;
-ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-ylabel('Kurtosis',FontSize=15); xlabel('Skewness',FontSize=15);
+% clr = 1:1:length(pXX);
+% subplot(1,5,[4.1 5])
+% plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
+% hold on
+% plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
+% for i = 1:n2
+%     if strcmp(hypTest,'ks')
+%         if ks(2,i) < alphaKs
+%             plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
+%         else
+%             plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+%         end
+%     else
+%         if ad(i) < alphaKs
+%             plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
+%         else
+%             plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
+%         end
+%     end
+% end
+% scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
+% hold off
+% colormap(gca,cbrewer2("RdYlBu"));
+% cbar = colorbar;
+% cbar.Direction = "reverse";
+% cbar.Ticks = 1:1:length(pXX);
+% cbar.TickLabels = pXX;
+% cbar.Label.String = "P [dbar]";
+% legend(Location="best",FontSize=15);
+% grid minor;
+% ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
+% ylabel('Kurtosis',FontSize=15); xlabel('Skewness',FontSize=15);
 
 % sgtitle("L0: Bottle Chl-a");
 % exportgraphics(ax,"figures/L0/bottle/chla" + tmpT + ".png"); clear ax;
