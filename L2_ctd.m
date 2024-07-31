@@ -13,8 +13,8 @@ lowerP = 129;
 pIn = 0:2:2*(lowerP-1);
 
 % Cases studied here
-principalAnalysis = false;
-seasonalAnalysis = true;
+principalAnalysis = true;
+seasonalAnalysis = false;
 dists = 2;
 logAxes = true;                 % output p-values as log values (true)
 if logAxes == true
@@ -379,7 +379,7 @@ if principalAnalysis == true
     % Chlorophyll a (88-21)
     % chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
     ax = L2_ctdHelper(chla,pIn,maxMld,dcm,dists,"ad",[-60 60]);
-    sgtitle('fluorescence (01-21): L2'+tmpx);
+    sgtitle('L2 Fluorescence 2001-2021'+tmpx);
     exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
     %save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
     clear ax lowerP ks ku obs pL pV rV sk;

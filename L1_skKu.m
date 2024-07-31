@@ -525,11 +525,12 @@ else
     skewLimB = 2.5;
 end
 
-scatter(0,3,40,[0 0 0],'DisplayName','Norm.',Marker='o',LineWidth=2.5);
+scatter(nan,nan,72,[0.8 0.8 0.8],DisplayName='Data');
 hold on
+scatter(0,3,72,[0.2 0.2 0.2],'DisplayName','Normal',Marker='pentagram',LineWidth=2.5);
 if testSel == 2
-    plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#000000',LineStyle='--',LineWidth=1.7);
-    plot(skLognN,kuLognN,'Color','#000000',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
+    plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#808080',LineStyle='-',LineWidth=1.3);
+    plot(skLognN,kuLognN,'Color','#808080',LineStyle='-',LineWidth=1.3,HandleVisibility='off');
 elseif testSel == 4
     plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
     plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
@@ -542,21 +543,25 @@ elseif testSel == 4
     scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
     scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 end
-scatter(sk,ku,[],[0.8 0.8 0.8],HandleVisibility="off");
+scatter(sk,ku,72,[0.8 0.8 0.8],HandleVisibility="off");
 clr = 1:1:length(p);
-scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
-colormap(gca,cbrewer2("PiYG"));
+scatter(sk,ku,54,clr,"filled","o",HandleVisibility="off");
+colormap(gca,cbrewer2("Greens"));
 cbar = colorbar;
 cbar.Direction = "reverse";
 cbar.Ticks = 1:1:length(p);
 % cbar.TickLabels = p(1):10:p(end);
 cbar.TickLabels = p;
 cbar.Label.String = "P [dbar]";
+cbar.Label.Position = [0.7 1-0.35];
+cbar.Label.Rotation = 0;
 % hold on
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness','FontSize',13,'Interpreter','latex'); ylabel('Kurtosis',FontSize=13,Interpreter='latex');
 lgd = legend('Location','best');
-title(lgd,'Distributions');
-title('chl-$a$ (L1): Skewness vs. Kurtosis','Interpreter','latex','FontSize',13);
+% title(lgd,'Distributions');
+title('L1 chl-$a$ 1988-2021','Interpreter','latex','FontSize',13);
+% sgtitle("L2 chl-$a$ skewness-kurtosis 1988-2021","Interpreter","latex");
+exportgraphics(ax,"figures/L1/bottle/log/chla_ad_skKu.png");

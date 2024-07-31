@@ -6,7 +6,7 @@ close all; clc; clear;
 % Set Figure Parameters
 set(groot,'defaultAxesXGrid','on');
 set(groot,'defaultAxesYGrid','on');
-set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 32 10]);
+set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 5 32 12]);
 set(0,'defaultAxesFontSize',12);
 
 %% Open data file and extract variables; add Barone's routines to path
@@ -183,12 +183,13 @@ ax2 = figure;
 contourf(tgrid200,pgrid200,chloro200,linspace(0,1.4,nb),'LineColor','auto');
 set(gca,'Ydir','reverse');
 datetickzoom('x','yyyy','keeplimits');
-colormap(flipud(cbrewer2('Spectral',nb)));
+% colormap(flipud(cbrewer2('Spectral',nb)));
+colormap(flipud(cbrewer2('YlGnBu')));
 c = colorbar;
 c.Label.String = 'chloropigment [\mug/L]';
-% xlabel('Time','FontSize',15);
-ylabel('Pressure [dbar]','FontSize',15);
-% title('Fluo (1988-2021) [200 db]');
+xlabel('Time','FontSize',13,Interpreter='latex');
+ylabel('Pressure [dbar]','FontSize',13,Interpreter='latex');
+title('L0 Fluorescence 1988-2022',Interpreter='latex');
 
 exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerian.png');
 

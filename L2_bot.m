@@ -10,9 +10,9 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
+principleAnalysis = true;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics
-seasonalAnalysisAd = true;   % seasonality of statistics
+seasonalAnalysisAd = false;   % seasonality of statistics
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 % TEMPLATE (XX-YY)
@@ -466,14 +466,17 @@ end
 
 if seasonalAnalysisAd == true
 
+    set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 10 15]);
+
     thresh = 30;
     %%% WINTER
     tmpT = "-ad-01";
 
     % Chlorophyll a (88-21)
+    tmpx = ": Winter";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],1);
-    sgtitle("[Chl a] 88-21: L2"+tmpT);
+    sgtitle("L2 chl-$a$"+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -580,9 +583,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-02";
 
     % chla
+    tmpx = ": Spring";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[7 19],2);
-    sgtitle("[Chl a] 88-21: L2"+tmpT);
+    sgtitle("L2 chl-$a$"+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -689,9 +693,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-03";
 
     % chla
+    tmpx = ": Summer";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-80 80],[3 19],3);
-    sgtitle("[Chl a] 88-21: L2"+tmpT);
+    sgtitle("L2 chl-$a$"+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -797,9 +802,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-04";
     
     % chla
+    tmpx = ": Autumn";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
-    sgtitle("[Chl a] 88-21: L2"+tmpT);
+    sgtitle("L2 chl-$a$"+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -1039,9 +1045,10 @@ if principleAnalysis == true
     tmpT = "-ad";
     
     % Chlorophyll a (88-21)
+    tmpX = "";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
-    sgtitle("[Chl a] 88-21: L2"+tmpT);
+    sgtitle("L2 chla-$a$ 1988-2021"+tmpX,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     % save("output\L2\chla.mat","p","ks","obs","sk","ku");
     clearvars -except mld dcm tmpT testSel;
@@ -1111,9 +1118,10 @@ if principleAnalysis == true
     clearvars -except mld dcm tmpT testSel;
     
     % Particulate Carbon (89-21)
+    tmpx = "";
     tmp = importdata("data\L2\parc_89-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-80 80],[6 22]);
-    sgtitle("Particulate Carbon 89-21: L2"+tmpT);
+    sgtitle("L2 Particulate Carbon 1989-2021"+tmpx);
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     % save("output\L2\pc.mat","p","ks","obs","sk","ku");
     clearvars -except mld dcm tmpT testSel;

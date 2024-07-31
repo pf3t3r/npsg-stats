@@ -390,7 +390,7 @@ yticklabels({})
 % title('No. of Observations');
 
 subplot(1,3,[1 2])
-xline(alphaHy,DisplayName='\alpha');
+xline(alphaHy,'-','\alpha',LineWidth=1.5,Color="#808080",HandleVisibility="off");
 hold on
 if strcmp(hypTest,"ks")
     if testSel==4
@@ -411,18 +411,18 @@ elseif strcmp(hypTest,"ad")
         plot(ad(4,:),range,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
     elseif testSel==2
         for i = 1:n
-            if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr
+            if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr && ad(2,i) > alphaHy
                 plot(ad(1,i),range(i),'square','Color','#c51b7d','MarkerSize',15,HandleVisibility='off');
-            elseif vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) < alphaLlr
+            elseif vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) < alphaLlr && ad(2,i) > alphaHy
                 plot(ad(1,i),range(i),'square','Color','#c51b7d','MarkerSize',15,'LineWidth',4,HandleVisibility='off');
-            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) > alphaLlr
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) > alphaLlr && ad(1,i) > alphaHy
                 plot(ad(2,i),range(i),'square','Color','#4d9221','MarkerSize',15,HandleVisibility='off');
-            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) < alphaLlr
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) < alphaLlr && ad(1,i) > alphaHy
                 plot(ad(2,i),range(i),'square','Color','#4d9221','MarkerSize',15,'LineWidth',4,HandleVisibility='off');
             end
         end
         plot(ad(1,:),range,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-        plot(ad(2,:),range,'+--','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(2,:),range,'o-','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
     end
     xlabel('A-D p-value & Vuong Ratio',FontSize=13,Interpreter='latex');
 end
@@ -430,10 +430,10 @@ hold off
 grid minor;
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.05,'--',HandleVisibility='off');
-    xline(0.1,'--',HandleVisibility='off');
+    %xline(0.05,'--',HandleVisibility='off');
+    %xline(0.1,'--',HandleVisibility='off');
 end
-ylim(limits);
+ylim(limits); xlim([0.1*alphaHy 1]); 
 set(gca,"YTick",limits(1):10:limits(2),"YTickLabel",limits(1):10:limits(2));
 % yticklabels({});
 ylabel("Pressure [dbar]",Interpreter="latex",FontSize=13);

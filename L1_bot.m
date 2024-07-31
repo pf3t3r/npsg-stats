@@ -7,9 +7,9 @@ addpath("func\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
+principleAnalysis = true;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics: K-S
-seasonalAnalysisAd = true;   % seasonality of statistics: A-D
+seasonalAnalysisAd = false;   % seasonality of statistics: A-D
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 logAxes = true;                 % output p-values as log values (true)
@@ -486,13 +486,16 @@ end
 if seasonalAnalysisAd == true
 
     thresh = 30;
+    set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 10 15]);
+
     %%% WINTER
     tmpT = "-ad-01";
 
     % chla
+    tmpx = ": Winter";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,1);
-    sgtitle("[Chl a] 88-21: L1" + tmpT,"Interpreter","latex");
+    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -598,9 +601,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-02";
 
     % chla
+    tmpx = ": Spring";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,2);
-    sgtitle("[Chl a] 88-21: L1" + tmpT,"Interpreter","latex");
+    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -706,9 +710,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-03";
 
     % chla
+    tmpx = ": Summer";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,3);
-    sgtitle("[Chl a] 88-21: L1" + tmpT,"Interpreter","latex");
+    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -814,9 +819,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-04";
 
     % chla
+    tmpx = ": Autumn";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,4);
-    sgtitle("[Chl a] 88-21: L1" + tmpT,"Interpreter","latex");
+    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -1052,9 +1058,10 @@ if principleAnalysis == true
     thresh = 30;
     
     % HPLC chl-a
+    tmpX = "";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad");
-    sgtitle("[Chl a] 88-21: L1"+tmpT);
+    sgtitle("L1 chl-$a$ 1988-2021"+tmpX,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clearvars -except tmpT maxMld lp thresh testSel;
     
@@ -1115,9 +1122,10 @@ if principleAnalysis == true
     clearvars -except tmpT maxMld lp thresh testSel;
     
     % pc
+    tmpx = "";
     tmp = importdata("data/L1/parc_89-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad");
-    sgtitle("Particulate Carbon 88-21: L1"+tmpT);
+    sgtitle("L1 Particulate Carbon 1988-2021"+tmpx);
     exportgraphics(ax,"figures/L1/bottle/" + lp + "pc" + tmpT + ".png");
     clearvars -except tmpT maxMld lp thresh testSel;
     

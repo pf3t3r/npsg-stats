@@ -592,10 +592,10 @@ end
 % % end
 % 
 
-scatter(0,3,20,[0 0 0],'DisplayName','Norm.',Marker='o',LineWidth=2.5);
+scatter(0,3,72,[0.2 0.2 0.2],'DisplayName','Normal',Marker='pentagram',LineWidth=2.5);
 hold on
-plot(skLogn,kuLogn,'DisplayName','Logn.','Color','#000000',LineStyle='--',LineWidth=1.7);
-plot(skLognN,kuLognN,'Color','#000000',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
+plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#808080',LineStyle='-',LineWidth=1.3);
+plot(skLognN,kuLognN,'Color','#808080',LineStyle='-',LineWidth=1.3,HandleVisibility='off');
 % plot(skWbl,kuWbl,'DisplayName','Weib.','Color','#b2df8a',LineStyle='-',LineWidth=1.7);
 % plot(skWblN,kuWblN,'Color','#b2df8a',LineStyle='-',LineWidth=1.7,HandleVisibility='off');
 % plot(skGam,kuGam,'DisplayName','Gam.','Color','#33a02c',LineStyle='--',LineWidth=1.7);
@@ -605,25 +605,29 @@ plot(skLognN,kuLognN,'Color','#000000',LineStyle='--',LineWidth=1.7,HandleVisibi
 % scatter(0,21/5,'DisplayName','Logi.',Marker='.',LineWidth=1);
 % scatter(1.1395,5.4,'DisplayName','LEV',Marker='x',LineWidth=1);
 % errorbar(sk2,ku2,yneg,ypos,xneg,xpos,'o','Color',[0.6 0.6 0.6],'HandleVisibility','off');
-scatter(sk2,ku2,[],[0.8 0.8 0.8],HandleVisibility='off');
+scatter(sk2,ku2,72,[0.8 0.8 0.8],HandleVisibility='off');
 clr = 1:1:length(tr2);
-scatter(sk2,ku2,24,clr,"filled","o",HandleVisibility="off");
+scatter(sk2,ku2,54,clr,"filled","o",HandleVisibility="off");
 % colormap(gca,flipud(colormap("hot")));
-colormap(gca,cbrewer2("PiYG"));
+colormap(gca,flipud(cbrewer2("PiYG")));
 cbar = colorbar;
 cbar.Direction = "reverse";
 cbar.Ticks = 1:1:length(tr2);
 % cbar.TickLabels = tr2(1):10:tr2(end);
 cbar.TickLabels = tr2;
-cbar.Label.String = "Pressure [dbar]";
+cbar.Label.String = "P [dbar]";
+cbar.Label.Position = [0.7 1-0.7];
+cbar.Label.Rotation = 0;
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-xlabel('Skewness',FontSize=13,Interpreter='latex'); ylabel('Kurtosis',FontSize=13,Interpreter='latex');
-lgd = legend('Location','best');
-title(lgd,'Distributions');
+xlabel('Skewness',FontSize=13,Interpreter='latex'); 
+% ylabel('Kurtosis',FontSize=13,Interpreter='latex');
+yticklabels({});
+% lgd = legend('Location','best');
+% title(lgd,'Distributions');
 % title('Skewness vs. Kurtosis');
 
 %%
-sgtitle("chl-$a$ (L2): Skewness vs Kurtosis [1988-2022]");
+title("L2 chl-$a$ 1988-2021","Interpreter","latex",FontSize=13);
 exportgraphics(ax,"figures/L2/bottle/log/chla_ad_skKu.png");

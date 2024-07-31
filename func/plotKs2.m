@@ -302,18 +302,17 @@ hold on
 xline(threshold);
 hold off
 set(gca,'YDir','reverse');
-% ylabel('Pressure [dbar]',FontSize=15);
 yticklabels({});
-xlabel('No. of Observations',Interpreter='latex',FontSize=13);
+xlabel('No. of Obs.',Interpreter='latex',FontSize=13);
 % if b-a > 14 % b/c of bug with yticklabel
 %     set(gca,"YTickLabel",limits(1):5:limits(2));
 % else
-set(gca,"YTickLabel",limits(1):10:limits(2),"YTick",1:1+b-a);
+% set(gca,"YTickLabel",limits(1):10:limits(2),"YTick",1:1+b-a);
 % end
 ylim([1 1+b-a]);
 
 subplot(1,3,[1 2])
-xline(alphaHy,'-','\alpha',LineWidth=1.5,Color="#808080",HandleVisibility="off",FontSize=11);
+xline(alphaHy,'-','\color{black}\alpha=0.005',LineWidth=1.5,Color="#808080",HandleVisibility="off",LabelOrientation="horizontal",LabelHorizontalAlignment="center",FontSize=13);
 hold on
 if strcmp(hypTest,"ks")
     if testSel == 4
@@ -322,8 +321,8 @@ if strcmp(hypTest,"ks")
         plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
         plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
     elseif testSel == 2
-        plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-        plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5,'HandleVisibility','off');
+        plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5,'HandleVisibility','off');
     end
     xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
 else
@@ -334,20 +333,20 @@ else
         plot(ad(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
     elseif testSel == 2
         for i = 1:n
-            if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr
+            if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr && ad(2,i) > alphaHy
                 plot(ad(1,i),tr(i),'square','Color','#c51b7d','MarkerSize',15,HandleVisibility='off');
-            elseif vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) < alphaLlr
+            elseif vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) < alphaLlr && ad(2,i) > alphaHy
                 plot(ad(1,i),tr(i),'square','Color','#c51b7d','MarkerSize',15,'LineWidth',4,HandleVisibility='off');
-            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) > alphaLlr
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) > alphaLlr && ad(1,i) > alphaHy
                 plot(ad(2,i),tr(i),'square','Color','#4d9221','MarkerSize',15,HandleVisibility='off');
-            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) < alphaLlr
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) < alphaLlr && ad(1,i) > alphaHy
                 plot(ad(2,i),tr(i),'square','Color','#4d9221','MarkerSize',15,'LineWidth',4,HandleVisibility='off');
             end
         end
-        plot(ad(1,:),tr,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-        plot(ad(2,:),tr,'+--','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(1,:),tr,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5,'HandleVisibility','off');
+        plot(ad(2,:),tr,'o-','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5,'HandleVisibility','off');
     end
-    xlabel('A-D $p$-value + Vuong Ratio',Interpreter='latex',FontSize=13);
+    xlabel('A-D $p$-value',Interpreter='latex',FontSize=13);
 end
 if logAxis == true
     set(gca, 'XScale', 'log');
@@ -356,12 +355,12 @@ if logAxis == true
 end
 hold off
 grid minor;
-ylim([limits(1) limits(2)]); xlim([0.6*alphaHy 1]);
+ylim([limits(1) limits(2)]); xlim([0.1*alphaHy 1]);
 set(gca,'YDir','reverse');
 set(gca,"YTick",limits(1):10:limits(2));
 % yticklabels({});
 ylabel('Pressure [dbar]',Interpreter='latex',FontSize=13);
-legend('Location','best',FontSize=11);
+% legend('Location','best',FontSize=11);
 % title('K-S Test');
 
 % zzs = 0.1*ones(n,1);

@@ -197,25 +197,25 @@ xlabel("No. of Observations",Interpreter="latex",FontSize=13);
 % ylabel("P [dbar]",FontSize=15);
 
 subplot(1,3,[1 2])
-xline(alphaHy,DisplayName='\alpha',LineWidth=1.5,Color="#808080"); 
+xline(alphaHy,'-','\color{black}\alpha=0.005',LineWidth=1.5,Color="#808080",HandleVisibility="off",LabelOrientation="horizontal",LabelHorizontalAlignment="center",FontSize=13); 
 hold on
 if strcmp(hypTest,'ks')
-    plot(ks(2,:),pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
-    xlabel('K-S $p$-value',Interpreter='latex',FontSize=15);
+    plot(ks(2,:),pXX,'o-','Color','#4d9221',LineWidth=1.5,MarkerSize=5,DisplayName="Lognormal");
+    xlabel('K-S $p$-value',Interpreter='latex',FontSize=13);
 else
-    plot(ad,pXX,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
-    xlabel('A-D $p$-value',Interpreter='latex',FontSize=15);
+    plot(ad,pXX,'o-','Color','#4d9221',LineWidth=1.5,MarkerSize=5,DisplayName="Lognormal");
+    xlabel('A-D $p$-value',Interpreter='latex',FontSize=13);
 end
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.05,':',HandleVisibility='off',LineWidth=1);
-    xline(0.1,':',HandleVisibility='off',LineWidth=1);
+    %xline(0.05,':',HandleVisibility='off',LineWidth=1);
+    %xline(0.1,':',HandleVisibility='off',LineWidth=1);
 end
-ylim([0 200]);
+ylim([0 200]); xlim([0.1*alphaHy 1]);
 set(gca,'YDir','reverse');
 ylabel("Pressure [dbar]",Interpreter="latex",FontSize=13);
 grid minor;
-legend(FontSize=15);
+legend(FontSize=13);
 
 % clr = 1:1:length(pXX);
 % subplot(1,5,[4.1 5])

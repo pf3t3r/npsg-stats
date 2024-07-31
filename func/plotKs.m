@@ -374,10 +374,10 @@ elseif botCtd == "ctd"
     yticklabels(0:10:150);
 end
 yticklabels({});
-xlabel('No. of Observations',Interpreter='latex',FontSize=13);
+xlabel('No. of Obs.',Interpreter='latex',FontSize=13);
 
 subplot(1,3,[1 2])
-xline(alphaHy,DisplayName='\alpha',LineWidth=1.5,Color="#808080");
+xline(alphaHy,'-','\color{black}\alpha=0.005',LineWidth=1.5,Color="#808080",HandleVisibility="off",LabelOrientation="horizontal",LabelHorizontalAlignment="center",FontSize=13);
 hold on
 if strcmp(hypTest,"ks")
     if testSel == 4
@@ -398,31 +398,33 @@ else
         plot(ad(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
     elseif testSel == 2
         for i = 1:n
-            if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr
+            if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr && ad(2,i) > alphaHy
                 plot(ad(1,i),tr(i),'square','Color','#c51b7d','MarkerSize',15,HandleVisibility='off');
-            elseif vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) < alphaLlr
+            elseif vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) < alphaLlr && ad(2,i) > alphaHy
                 plot(ad(1,i),tr(i),'square','Color','#c51b7d','MarkerSize',15,'LineWidth',4,HandleVisibility='off');
-            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) > alphaLlr
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) > alphaLlr && ad(1,i) > alphaHy
                 plot(ad(2,i),tr(i),'square','Color','#4d9221','MarkerSize',15,HandleVisibility='off');
-            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) < alphaLlr
+            elseif vuongRes(i) == 2 && ad(2,i) > alphaHy & pV(1,i) < alphaLlr && ad(1,i) > alphaHy
                 plot(ad(2,i),tr(i),'square','Color','#4d9221','MarkerSize',15,'LineWidth',4,HandleVisibility='off');
             end
         end
+        plot(nan,nan,'square','Color','#808080','MarkerSize',15,'DisplayName','V-LLR best fit (p > 0.1)');        
+        plot(nan,nan,'square','Color','#808080','MarkerSize',15,'LineWidth',4,'DisplayName','V-LLR best fit (p < 0.1)');        
         plot(ad(1,:),tr,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-        plot(ad(2,:),tr,'+--','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(2,:),tr,'o-','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
     end
-    xlabel('A-D $p$-value + Vuong Ratio',Interpreter='latex',FontSize=13);
+    xlabel('A-D $p$-value',Interpreter='latex',FontSize=13);
 end
 hold off
 if logAxis == true
     set(gca, 'XScale', 'log');
-    xline(0.05,':',HandleVisibility='off',LineWidth=1);
-    xline(0.1,':',HandleVisibility='off',LineWidth=1);
+    %xline(0.05,':',HandleVisibility='off',LineWidth=1);
+    %xline(0.1,':',HandleVisibility='off',LineWidth=1);
 end
 grid minor;
-ylim(limits); xlim([0.6*alphaHy 1]); ylabel('Pressure [dbar]',Interpreter='latex',FontSize=13);
+ylim(limits); xlim([0.1*alphaHy 1]); ylabel('Pressure [dbar]',Interpreter='latex',FontSize=13);
 set(gca,'YDir','reverse');
-legend(Location="best",FontSize=11);
+legend('Position',[0.4 0.7 0.07 0.12],FontSize=11);
 % yticklabels({});
 % title('K-S p-values');
 

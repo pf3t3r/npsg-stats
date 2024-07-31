@@ -5,8 +5,8 @@ addpath("baroneRoutines\"); addpath("func\"); addpath("output\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Test Cases
-principleAnalysis = false;       % main analysis
-seasonalAnalysis = true;       % seasonality of statistics
+principleAnalysis = true;       % main analysis
+seasonalAnalysis = false;       % seasonality of statistics
 noOfDists = 2;
 adThresh = 30;                  % only for chl-a in A-D
 logAxes = true;                 % output p-values as log values (true)
@@ -124,7 +124,7 @@ if principleAnalysis == true
     tmpx = "";
     % CHL-A
     ax = L1_ctdHelper(epN,pIn,maxMld,adThresh,noOfDists,"ad");
-    sgtitle("fluorescence (01-21): L1"+tmpx);
+    sgtitle("L1 Fluorescence 2001-2021"+tmpx);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"chla" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\chla.mat","p","ks","obs","Sk","Ku");
     
