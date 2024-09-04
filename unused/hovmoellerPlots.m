@@ -189,7 +189,7 @@ c = colorbar;
 c.Label.String = 'chloropigment [\mug/L]';
 xlabel('Time','FontSize',13,Interpreter='latex');
 ylabel('Pressure [dbar]','FontSize',13,Interpreter='latex');
-title('L0 Fluorescence 1988-2022',Interpreter='latex');
+% title('L0 Fluorescence 1988-2022',Interpreter='latex');
 
 exportgraphics(ax2,'figures/fluorescence-1988-2021_eulerian.png');
 

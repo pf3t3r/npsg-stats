@@ -124,7 +124,7 @@ if principleAnalysis == true
     tmpx = "";
     % CHL-A
     ax = L1_ctdHelper(epN,pIn,maxMld,adThresh,noOfDists,"ad");
-    sgtitle("L1 Fluorescence 2001-2021"+tmpx);
+    sgtitle("L1"+tmpx);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"chla" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\chla.mat","p","ks","obs","Sk","Ku");
     

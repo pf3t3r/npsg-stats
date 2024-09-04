@@ -383,7 +383,7 @@ hold off
 set(gca,'YDir','reverse');
 % set(gca,'XDir','reverse');
 % ylabel('Pressure [dbar]',FontSize=13);
-xlabel('No. of Observations','FontSize',13,Interpreter='latex');
+xlabel('No. of Obs.','FontSize',13,Interpreter='latex');
 set(gca,"YTick",2:5:n2,"YTickLabel",range(2):10:range(end));
 ylim([rangeLen(1-bottom) rangeLen(end-top)]);
 yticklabels({})
@@ -424,7 +424,7 @@ elseif strcmp(hypTest,"ad")
         plot(ad(1,:),range,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
         plot(ad(2,:),range,'o-','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
     end
-    xlabel('A-D p-value & Vuong Ratio',FontSize=13,Interpreter='latex');
+    xlabel('A-D $p$-value',FontSize=13,Interpreter='latex');
 end
 hold off
 grid minor;
@@ -438,7 +438,7 @@ set(gca,"YTick",limits(1):10:limits(2),"YTickLabel",limits(1):10:limits(2));
 % yticklabels({});
 ylabel("Pressure [dbar]",Interpreter="latex",FontSize=13);
 set(gca,'YDir','reverse');
-legend(Location="west");
+% legend(Location="west");
 % title('K-S Test');
 
 % zzs = 0.25*ones(n2,1);

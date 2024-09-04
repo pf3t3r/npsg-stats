@@ -1179,7 +1179,7 @@ if principleAnalysis == true
     tmpX ="";
     tmp = importdata('data/L0/hplcChla_88-21_200.txt');
     [ax,~,~,pB,X] = L0_helper(tmp,50,'ad');
-    sgtitle("L0 chl-$a$ 1988-2021"+tmpX,"Interpreter","latex");
+    %sgtitle("L0 chl-$a$ 1988-2021"+tmpX,"Interpreter","latex");
     exportgraphics(ax,"figures/L0/bot/" + lp + "chla" + tmpT + ".png");
     clearvars -except tmpT analyseStartYear crn131 nightAnalysis logAxes lp;
     

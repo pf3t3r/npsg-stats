@@ -562,6 +562,6 @@ ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
 xlabel('Skewness','FontSize',13,'Interpreter','latex'); ylabel('Kurtosis',FontSize=13,Interpreter='latex');
 lgd = legend('Location','best');
 % title(lgd,'Distributions');
-title('L1 chl-$a$ 1988-2021','Interpreter','latex','FontSize',13);
+title('L1','Interpreter','latex','FontSize',13);
 % sgtitle("L2 chl-$a$ skewness-kurtosis 1988-2021","Interpreter","latex");
 exportgraphics(ax,"figures/L1/bottle/log/chla_ad_skKu.png");

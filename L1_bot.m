@@ -492,10 +492,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-01";
 
     % chla
-    tmpx = ": Winter";
+    tmpx = "Winter";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,1);
-    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
+    sgtitle("L1 " + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -601,10 +601,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-02";
 
     % chla
-    tmpx = ": Spring";
+    tmpx = " Spring";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,2);
-    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
+    sgtitle("L1" + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -710,10 +710,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-03";
 
     % chla
-    tmpx = ": Summer";
+    tmpx = "Summer";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,3);
-    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
+    sgtitle("L1 " + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -819,10 +819,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-04";
 
     % chla
-    tmpx = ": Autumn";
+    tmpx = " Autumn";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,4);
-    sgtitle("L1 chl-$a$" + tmpx,"Interpreter","latex");
+    sgtitle("L1" + tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -1061,7 +1061,7 @@ if principleAnalysis == true
     tmpX = "";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad");
-    sgtitle("L1 chl-$a$ 1988-2021"+tmpX,"Interpreter","latex");
+    sgtitle("L1"+tmpX,"Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
     clearvars -except tmpT maxMld lp thresh testSel;
     
@@ -1125,7 +1125,7 @@ if principleAnalysis == true
     tmpx = "";
     tmp = importdata("data/L1/parc_89-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad");
-    sgtitle("L1 Particulate Carbon 1988-2021"+tmpx);
+    sgtitle("L1"+tmpx);
     exportgraphics(ax,"figures/L1/bottle/" + lp + "pc" + tmpT + ".png");
     clearvars -except tmpT maxMld lp thresh testSel;
     

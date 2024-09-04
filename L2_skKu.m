@@ -629,5 +629,5 @@ yticklabels({});
 % title('Skewness vs. Kurtosis');
 
 %%
-title("L2 chl-$a$ 1988-2021","Interpreter","latex",FontSize=13);
+title("L2","Interpreter","latex",FontSize=13);
 exportgraphics(ax,"figures/L2/bottle/log/chla_ad_skKu.png");

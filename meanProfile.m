@@ -23,7 +23,7 @@ plot(f95,pp(:,1),'-',"Color",[0.5 0.5 0.5],DisplayName="95%");
 hold off
 set(gca,"YDir","reverse");
 legend();
-title("L0 Fluorescence 1988-2022",Interpreter="latex");
+% title("L0 Fluorescence 1988-2022",Interpreter="latex");
 xlabel("chl-$a$ fluorescence [$\mu$g/L]",Interpreter="latex");
 % ylabel("Pressure [dbar]",Interpreter="latex");
 yticklabels({});
