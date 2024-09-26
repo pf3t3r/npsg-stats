@@ -24,6 +24,35 @@ else
     lp = "";
 end
 
+%% Parameters vs Depth
+
+tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+[ax,~,~,pB,X] = L0_helper(tmp,50,'ad');
+
+XN = nan(20,500);
+for i = 1:20
+    loc = find(pB == i);
+    XN(i,1:length(loc)) = X(loc);
+end
+
+figure;
+histogram(XN(15,:));
+XN(XN<=0) = nan;
+
+for i = 1:20
+    phat(i,:) = mle(XN(i,:),distribution="Lognormal");
+end
+
+depths = 5:10:195;
+
+figure;
+subplot(1,2,1)
+plot(exp(phat(:,1)),depths);
+title("$\mu^*$",Interpreter="latex"); set(gca,"YDir","reverse");
+subplot(1,2,2)
+plot(exp(phat(:,2)),depths);
+title("$\sigma^*$",Interpreter="latex"); set(gca,"YDir","reverse");
+sgtitle("chlorophyll concentration parameters L0 (1988-2021)");
 
 %% Seasonal Analysis: K-S
 if seasonalAnalysisKs == true

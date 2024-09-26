@@ -10,9 +10,9 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = true;  % main analysis
+principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics
-seasonalAnalysisAd = false;   % seasonality of statistics
+seasonalAnalysisAd = true;   % seasonality of statistics
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 % TEMPLATE (XX-YY)
@@ -538,8 +538,8 @@ if seasonalAnalysisAd == true
     
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[2 14],1);
-    sgtitle("Particulate Carbon 89-21: L2" + tmpT);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[1 13],1);
+    sgtitle("L2 Winter");
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
@@ -649,7 +649,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[8 20],2);
-    sgtitle("Particulate Carbon 89-21: L2" + tmpT);
+    sgtitle("L2 Spring");
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
@@ -759,7 +759,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-60 60],[5 17],3);
-    sgtitle("Particulate Carbon 89-21: L2" + tmpT);
+    sgtitle("L2 Summer");
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     
@@ -868,7 +868,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L2\parc_89-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
-    sgtitle("Particulate Carbon 89-21: L2" + tmpT);
+    sgtitle("L2 Autumn");
     exportgraphics(ax,"figures/L2/bottle/log/pc" + tmpT + ".png");
     clear tmp ax;
     

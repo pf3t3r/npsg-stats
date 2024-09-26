@@ -7,9 +7,9 @@ addpath("func\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Possible test cases.
-principleAnalysis = true;  % main analysis
+principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics: K-S
-seasonalAnalysisAd = false;   % seasonality of statistics: A-D
+seasonalAnalysisAd = true;   % seasonality of statistics: A-D
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 logAxes = true;                 % output p-values as log values (true)
@@ -558,7 +558,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L1\parc_89-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,1);
-    sgtitle("Particulate Carbon 89-21: L1"+tmpT,"Interpreter","latex");
+    sgtitle("L1 Winter","Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "pc" + tmpT + ".png");
     clear tmp ax;
     
@@ -667,7 +667,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L1\parc_89-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,2);
-    sgtitle("Particulate Carbon 89-21: L1"+tmpT,"Interpreter","latex");
+    sgtitle("L1 Spring","Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "pc" + tmpT + ".png");
     clear tmp ax;
     
@@ -776,7 +776,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L1\parc_89-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,3);
-    sgtitle("Particulate Carbon 89-21: L1"+tmpT,"Interpreter","latex");
+    sgtitle("L1 Summer","Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "pc" + tmpT + ".png");
     clear tmp ax;
     
@@ -885,7 +885,7 @@ if seasonalAnalysisAd == true
     % Particulate Carbon (89-21)
     tmp = importdata("data\L1\parc_89-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad",true,4);
-    sgtitle("Particulate Carbon 89-21: L1"+tmpT,"Interpreter","latex");
+    sgtitle("L1 Autumn","Interpreter","latex");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "pc" + tmpT + ".png");
     clear tmp ax;
     

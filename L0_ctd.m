@@ -6,9 +6,9 @@ addpath("func\");
 set(groot, 'defaultFigureUnits', 'centimeters', 'defaultFigurePosition', [3 3 28 15]);
 
 % Test Cases
-principleAnalysis = false;       % main analysis
+principleAnalysis = true;       % main analysis
 startYearAnalysis = false;      % effect of altering start year on HTs
-seasonalAnalysis = true;       % seasonality of statistics
+seasonalAnalysis = false;       % seasonality of statistics
 logAxes = true;                 % output p-values as log values (true)
 if logAxes == true
     lp = "log/";
@@ -71,6 +71,40 @@ for i = 1:329
     meanO2(:,i) = mean(squeeze(O2(i,:,:)),2,"omitnan");
 end
 
+%% Check Parameters for CHLA
+
+chla = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
+chla = 1000*chla; % convert to ng/l
+
+muStar = nan(1,101);
+sigStar = nan(1,101);
+for i = 1:101
+    tmp = mle(chla(i,:),'distribution','Lognormal');
+    muStar(i) = tmp(1);
+    sigStar(i) = tmp(2);
+end
+depths = 0:2:200;
+
+sigStar = exp(sigStar);
+muStar = exp(muStar);
+
+figure
+subplot(1,2,1)
+plot(muStar,depths); set(gca,"YDir","reverse"); ylabel("P (dbar)");
+title("$\mu^*$",Interpreter="latex");
+subplot(1,2,2)
+plot(sigStar,depths); set(gca,"YDir","reverse");
+title("$\sigma^*$",Interpreter="latex");
+sgtitle("chlorophyll fluorescence parameters: L0 (2001-2021)");
+
+% sigStar seems to low. Test parameters of random lognormal distributions.
+test = lognrnd(-0.6361,0.2654,1000,1);
+phatT = mle(test,distribution="Lognormal");
+figure
+histogram(test);
+
+[h,p,adstat,cv] = adtest(test,"Distribution","logn");
+
 %% Principal Analysis
 
 if principleAnalysis == true
@@ -104,7 +138,7 @@ if principleAnalysis == true
     
     % chla
     chla = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
-    ax = L0_ctdHelper(chla,"ad",logAxes);
+    [ax,ad] = L0_ctdHelper(chla,"ad",logAxes);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L0/ctd/" + lp + "chla" + tmpT + ".png");
     
