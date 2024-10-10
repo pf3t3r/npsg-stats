@@ -4,6 +4,10 @@ function [ax,ks,obs,pB,X,ad] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 %OUTPUT: ks = K-S p-value, obs = no. of observations, 
 % SAVE and OUTPUT bottle ID: reminder!
 
+meanDcm = load("datafiles/timeSeriesMeanDcm.mat").timeSeriesMeanDcm;
+meanPrc = load("datafiles\timeSeriesPrctl.mat").timeSeriesPrctl;
+
+
 if nargin < 5
     season = 0;
     % 0 = no seasonal analysis, 1 = winter, 2 = spring, 3 = summer,
@@ -126,7 +130,7 @@ ks = nan(5,n2);
 %sk = nan(1,n2); ku = nan(1,n2);
 %rV = nan(10,n2); pV = nan(10,n2);
 obs = nan(1,n2);
-ad = nan(1,n2);
+ad = nan(2,n2);
 
 % Calculate KS p-value, skewness, kurtosis
 for i = 1:n2
@@ -139,7 +143,8 @@ for i = 1:n2
         if strcmp(hypTest,'ks')
             [~,ks(:,i),~] = statsplot2(X_i,'noplot');
         else
-            [~,ad(i)] = adtest(X_i,'Distribution','logn');
+            [~,ad(1,i)] = adtest(X_i,'Distribution','logn');
+            [~,ad(2,i)] = adtest(X_i,'Distribution','norm');
         end
         %[rV(:,i),pV(:,i)] = bbvuong(X_i);
         %sk(i) = skewness(X_i);
@@ -150,39 +155,7 @@ for i = 1:n2
 end
 
 ks(:,obs<threshold) = nan;
-ad(obs<threshold) = nan;
-% sk(obs<threshold) = nan;
-% ku(obs<threshold) = nan;
-
-% % Lognormal family: generate theoretical skewness and kurtosis
-% sigTh = linspace(0,1,1000);
-% for i = 1:length(sigTh)
-%     skLogn(i) = (exp(sigTh(i)^2) + 2)*(sqrt(exp(sigTh(i)^2) - 1));
-%     kuLogn(i) = exp(4*sigTh(i)^2) + 2*exp(3*sigTh(i)^2) + 3*exp(2*sigTh(i)^2) - 3;
-% end
-% 
-% % Negative Distributions
-% skLognN = -skLogn;
-% kuLognN = kuLogn;
-% 
-% kurtLimB = 10; skewLimA = 0; skewLimB = 2.5;
-% if max(ku) > 10 & min(sk) < 0
-%     kurtLimB = max(ku) + 1;
-%     skewLimA = min(sk) - 0.1;
-%     skewLimB = max(sk) + 0.1;
-% elseif max(ku) > 10
-%     kurtLimB = max(ku) + 1;
-%     skewLimB = max(sk) + 0.1;
-% elseif min(sk) < 0 
-%     skewLimA = min(sk) - 0.1;
-% elseif max(sk) > 2.5
-%     kurtLimB = max(ku) + 1;
-%     skewLimB = max(sk) + 0.1;
-% else 
-%     kurtLimB = 10;
-%     skewLimA = 0;
-%     skewLimB = 2.5;
-% end
+ad(:,obs<threshold) = nan;
 
 pXX = 5:10:195;
 ax = figure;
@@ -193,7 +166,7 @@ ylim([0.5 20.5]);
 yticks(0.5:2:20.5);
 yticklabels({});
 set(gca,"YDir","reverse");
-xlabel("No. of Observations",Interpreter="latex",FontSize=13);
+xlabel("No. of Obs.",Interpreter="latex",FontSize=13);
 % ylabel("P [dbar]",FontSize=15);
 
 subplot(1,3,[1 2])
@@ -203,7 +176,13 @@ if strcmp(hypTest,'ks')
     plot(ks(2,:),pXX,'o-','Color','#4d9221',LineWidth=1.5,MarkerSize=5,DisplayName="Lognormal");
     xlabel('K-S $p$-value',Interpreter='latex',FontSize=13);
 else
-    plot(ad,pXX,'o-','Color','#4d9221',LineWidth=1.5,MarkerSize=5,DisplayName="Lognormal");
+    plot(ad(2,:),pXX,'o-','Color','#c51b7d',LineWidth=1.5,MarkerSize=5,DisplayName="Normal");
+    hold on
+    plot(ad(1,:),pXX,'o-','Color','#4d9221',LineWidth=1.5,MarkerSize=5,DisplayName="Lognormal");
+    yline(meanDcm,DisplayName="$\bar{p}_{dcm} \pm$ 5/95");
+    yline(meanPrc(1),LineWidth=0.25,HandleVisibility="off");
+    yline(meanPrc(2),LineWidth=0.25,HandleVisibility="off");
+    hold off
     xlabel('A-D $p$-value',Interpreter='latex',FontSize=13);
 end
 if logAxis == true
@@ -215,42 +194,6 @@ ylim([0 200]); xlim([0.1*alphaHy 1]);
 set(gca,'YDir','reverse');
 ylabel("Pressure [dbar]",Interpreter="latex",FontSize=13);
 grid minor;
-legend(FontSize=13);
-
-% clr = 1:1:length(pXX);
-% subplot(1,5,[4.1 5])
-% plot(skLogn,kuLogn,'DisplayName','Lognormal','Color','#1f78b4',LineStyle='--',LineWidth=1.7);
-% hold on
-% plot(skLognN,kuLognN,'Color','#1f78b4',LineStyle='--',LineWidth=1.7,HandleVisibility='off');
-% for i = 1:n2
-%     if strcmp(hypTest,'ks')
-%         if ks(2,i) < alphaKs
-%             plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
-%         else
-%             plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
-%         end
-%     else
-%         if ad(i) < alphaKs
-%             plot(sk(i),ku(i),Marker="o",Color='k',HandleVisibility='off',MarkerSize=6);
-%         else
-%             plot(sk(i),ku(i),Marker="o",Color=[0.8 0.8 0.8],HandleVisibility='off');
-%         end
-%     end
-% end
-% scatter(sk,ku,24,clr,"filled","o",HandleVisibility="off");
-% hold off
-% colormap(gca,cbrewer2("RdYlBu"));
-% cbar = colorbar;
-% cbar.Direction = "reverse";
-% cbar.Ticks = 1:1:length(pXX);
-% cbar.TickLabels = pXX;
-% cbar.Label.String = "P [dbar]";
-% legend(Location="best",FontSize=15);
-% grid minor;
-% ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);
-% ylabel('Kurtosis',FontSize=15); xlabel('Skewness',FontSize=15);
-
-% sgtitle("L0: Bottle Chl-a");
-% exportgraphics(ax,"figures/L0/bottle/chla" + tmpT + ".png"); clear ax;
+legend(FontSize=13,Interpreter="latex");
 
 end

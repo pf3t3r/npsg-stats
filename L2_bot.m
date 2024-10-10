@@ -10,9 +10,9 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
+principleAnalysis = true;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics
-seasonalAnalysisAd = true;   % seasonality of statistics
+seasonalAnalysisAd = false;   % seasonality of statistics
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 % TEMPLATE (XX-YY)
@@ -1044,6 +1044,8 @@ if principleAnalysis == true
     % A-D
     tmpT = "-ad";
     
+    testSel = 4;
+    
     % Chlorophyll a (88-21)
     tmpX = "";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
@@ -1072,7 +1074,7 @@ if principleAnalysis == true
     % HPLC Chlorophyll b (88-21)
     tmp = importdata("data\L2\chlb_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
-    sgtitle("HPLC Chlorophyll b (88-21): L2"+tmpT);
+    sgtitle("L2");
     exportgraphics(ax,"figures/L2/bottle/log/chlb" + tmpT + ".png");
     % save("output\L2\chlb.mat","p","ks","obs","sk","ku");
     clearvars -except mld dcm tmpT testSel;
@@ -1080,7 +1082,7 @@ if principleAnalysis == true
     % HPLC Chlorophyll C1 + C2 + C3 (88-21)
     tmp = importdata("data\L2\chl123_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,50,testSel,"ad",[-60 60],[7 19]);
-    sgtitle("Chlorophyll C1 + C2 + C3 (88-21): L2"+tmpT);
+    sgtitle("L2");
     exportgraphics(ax,"figures/L2/bottle/log/chl123" + tmpT + ".png");
     % save("output\L2\chl123.mat","p","ks","obs","sk","ku");
     clearvars -except mld dcm tmpT testSel;

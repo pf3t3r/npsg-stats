@@ -7,9 +7,9 @@ addpath("func\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Possible test cases.
-principleAnalysis = false;  % main analysis
+principleAnalysis = true;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics: K-S
-seasonalAnalysisAd = true;   % seasonality of statistics: A-D
+seasonalAnalysisAd = false;   % seasonality of statistics: A-D
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 logAxes = true;                 % output p-values as log values (true)
@@ -1056,7 +1056,7 @@ if principleAnalysis == true
     % A-D
     tmpT = "-ad";
     thresh = 30;
-    
+   
     % HPLC chl-a
     tmpX = "";
     tmp = importdata("data/L1/hplcChla_88-21_150.txt");
@@ -1082,14 +1082,14 @@ if principleAnalysis == true
     % chl-b
     tmp = importdata("data/L1/chlb_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad");
-    sgtitle("[Chl b] 88-21: L1"+tmpT);
+    sgtitle("L1");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chlb" + tmpT + ".png");
     clearvars -except tmpT maxMld lp thresh testSel;
     
     % chl-c123
     tmp = importdata("data/L1/chl123_88-21_150.txt");
     ax = L1_helper(tmp,maxMld,thresh,testSel,"ad");
-    sgtitle("[Chl-c 1 + 2 + 3] 88-21: L1"+tmpT);
+    sgtitle("L1");
     exportgraphics(ax,"figures/L1/bottle/" + lp + "chlc123" + tmpT + ".png");
     clearvars -except tmpT maxMld lp thresh testSel;
     

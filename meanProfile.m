@@ -26,6 +26,6 @@ legend();
 % title("L0 Fluorescence 1988-2022",Interpreter="latex");
 xlabel("chl-$a$ fluorescence [$\mu$g/L]",Interpreter="latex");
 % ylabel("Pressure [dbar]",Interpreter="latex");
-yticklabels({});
+% yticklabels({});
 yticks(0:20:200);
-exportgraphics(ax,'figures/L1/meanProfile.png');
+exportgraphics(ax,'figures/L0/meanProfile.png');
