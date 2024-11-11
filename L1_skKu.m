@@ -139,7 +139,6 @@ end
 % 5. Plot results
 ax = figure;
 
-
 n = length(p);
 
 % % Create Annotations for Vuong's Test Results
@@ -556,6 +555,14 @@ cbar.Label.String = "P [dbar]";
 cbar.Label.Position = [0.7 1-0.35];
 cbar.Label.Rotation = 0;
 % hold on
+% add polynomial
+[skS,id] = sort(sk);
+kuS = ku(id);
+[p,S] = polyfit(skS,kuS,2);
+[f,delta] = polyval(p,skS,S);
+plot(skS,f,'r-',DisplayName="Fit");
+plot(skS,f+2*delta,'m--',DisplayName='95% Prediction Interval');
+plot(skS,f-2*delta,'m--',HandleVisibility='off');
 hold off
 grid minor;
 ylim([1 kurtLimB]); xlim([skewLimA skewLimB]);

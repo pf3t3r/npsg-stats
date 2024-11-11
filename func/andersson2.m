@@ -6,20 +6,32 @@
 % term 'M'. This can be constant or also time-varying. This equation is
 % designed to be used with the ode45() solver.
 
-function dxdt = andersson2(x,muk,sigk,M,timeVary)
+function [dxdt,listeta] = andersson2(x,muk,sigk,M,timeVary)
+
+% listeta was only used to verify that the random generation was working
+% properly and is not necessary for the functioning of the model.
+
+listeta = [];
 if nargin < 5
     timeVary = false;
 end
 if nargin<4
-    eta = rand();
+    %eta = normrnd(0,1);
+    eta = randi(1:2)-1.5;
     dxdt = -(muk + sigk*eta)*x;
+    listeta = [listeta eta];
 else
-    eta = rand();
+    %eta = normrnd(0,1);
+    eta = randi(1:2)-1.5;
     if timeVary == true
-        dxdt = -(muk + sigk*eta)*x + M*rand();
+        dxdt = -(muk + sigk*eta)*x + M*normrnd(0,1);
     else
         dxdt = -(muk + sigk*eta)*x + M;
     end
+    listeta = [listeta eta];
 end
+
+
+
 end
 
