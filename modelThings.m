@@ -3,13 +3,14 @@ clear; clc; addpath("func\"); close all;
 % Initial Conditions
 x0 = 1;             % initial concentration
 t0 = 0;             % start time
-tF = 1000;          % finish time
-h = tF/100000;      % step size
+tF = 10*1000;          % finish time
+% h = tF/100000;      % step size
+h = 0.01;
 time = t0:h:tF;     % time vector
 
 % Cases 1-2 will be run by default. Other cases may be run or not.
-runCase3 = false;
-runCase4 = false;
+runCase3 = true;
+runCase4 = true;
 checkEtas = false;
 
 %% Case 1: "Campbell"
@@ -18,8 +19,9 @@ checkEtas = false;
 % (1995) to mu_k in order to be consistent with the equation from Andersson
 % (2021).
 
-% mu_k = 10/tF;               % net growth rate / deterministic component of growth
-mu_k = 0;
+% mu_k = -10/tF;               % net growth rate / deterministic component of growth
+mu_k = -0.00001;
+% mu_k = 0;
 F = @(t,x) -mu_k*x;         % Eqn 1 in Andersson (2021); main equation in Campbell (1995)
 
 C1 = modelEquation(F,t0,h,tF,x0);
@@ -32,8 +34,8 @@ C1 = modelEquation(F,t0,h,tF,x0);
 % fluctuations.
 % d[X]/dt = -(mu_k + sigma_k*eta(t))[X]
 
-% sigma_k = 10*mu_k;             % magnitude of the stochastic fluctuation
-sigma_k = 0.001;
+sigma_k = 10*abs(mu_k);             % magnitude of the stochastic fluctuation
+% sigma_k = 5e-3;
 
 opt = odeset(Events=@stopIntegration);  % stop integration at 0.001*x0
 
@@ -58,8 +60,8 @@ end
 C3 = nan(length(time),5);
 if runCase3 == true
     xTarget = 0.05;
-    mix = xTarget*mu_k;           % mixing term
-    %mix = 0.005;
+    %mix = xTarget*mu_k;           % mixing term
+    mix = -1e-5;
 
     for i = 1:5
         [~,tmp] = ode45(@(t,x) andersson2(x,mu_k,sigma_k,mix),time,x0,opt);
@@ -133,7 +135,7 @@ end
 %% Test basic solution of Case 1
 
 mu = 0; t = 0:(1000/100000):1000;
-sigma = 0.001; eta = normrnd(0,1,length(t),1)';
+sigma = 5e-4; eta = normrnd(0,1,length(t),1)';
 X1 = exp(-mu*t);             % case one
 X2 = exp(-(mu+sigma*eta).*t);  % case two
 
