@@ -42,3 +42,8 @@ opts = odeset(RelTol=1e-2,AbsTol=1e-4);
 figure;
 plot(t,x);
 grid on
+
+%% Deprecated from modelThings.m
+
+F = @(t,x) -mu_k*x;         % Eqn 1 in Andersson (2021); main equation in Campbell (1995)
+C1 = modelEquation(F,t0,h,tF,x0);

@@ -16,17 +16,17 @@ if nargin < 5
     timeVary = false;
 end
 if nargin<4
-    %eta = normrnd(0,1);
-    eta = randi(1:2)-1.5;
-    dxdt = -(muk + sigk*eta)*x;
+    eta = normrnd(0,1);
+    %eta = randi(1:2)-1.5;
+    dxdt = (muk + sigk*eta)*x;
     listeta = [listeta eta];
 else
     %eta = normrnd(0,1);
     eta = randi(1:2)-1.5;
     if timeVary == true
-        dxdt = -(muk + sigk*eta)*x + M*normrnd(0,1);
+        dxdt = (muk + sigk*eta)*x - M*lognrnd(0,1);
     else
-        dxdt = -(muk + sigk*eta)*x + M;
+        dxdt = (muk + sigk*eta)*x - M;
     end
     listeta = [listeta eta];
 end
