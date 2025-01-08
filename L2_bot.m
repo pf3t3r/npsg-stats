@@ -583,10 +583,10 @@ if seasonalAnalysisAd == true
     tmpT = "-ad-02";
 
     % chla
-    tmpx = ": Spring";
+    tmpx = "Spring";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
     ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[7 17],2);
-    sgtitle("L2 chl-$a$"+tmpx,"Interpreter","latex");
+    sgtitle("L2 "+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
 
@@ -797,6 +797,7 @@ if seasonalAnalysisAd == true
     sgtitle("PProd Light-12 (89-22): L2" + tmpT);
     exportgraphics(ax,"figures/L2/bottle/log/l12" + tmpT + ".png");
     clear tmp ax;
+
 
     %%% AUTUMN
     tmpT = "-ad-04";
