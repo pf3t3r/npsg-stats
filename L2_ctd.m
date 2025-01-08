@@ -13,7 +13,8 @@ lowerP = 129;
 pIn = 0:2:2*(lowerP-1);
 
 % Cases studied here
-principalAnalysis = true;
+principalAnalysisAd = true;
+principalAnalysisKs = false;
 seasonalAnalysis = false;
 dists = 2;
 logAxes = true;                 % output p-values as log values (true)
@@ -85,7 +86,107 @@ end
 clear i j cRm O2in SPin Tin tmp;
 % keep dcm lowerP maxMld pIn o2 Sp T
 
+%% GSW Processing.
+% Convert temperature and practical salinity into conservative temperature
+% and absolute salinity, and then calculate potential density.
 
+stnALOHA_lon = -158;
+stnALOHA_lat = 22.75;
+SA = gsw_SA_from_SP(Sp,pIn',stnALOHA_lon,stnALOHA_lat);
+CT = gsw_CT_from_t(SA,T,pIn');
+% rho = gsw_rho(SA,CT,pIn');
+sigma0 = gsw_sigma0(SA,CT);
+[N2,p_mid] = gsw_Nsquared(SA,CT,pIn',stnALOHA_lat);
+
+%% Principal Analysis
+if principalAnalysisKs == true
+
+    % K-S
+    tmpT = "";
+    
+    % Chlorophyll a (88-21)
+    chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,dists,"ks",[-60 60]);
+    sgtitle('[Chl a] 01-21: L2');
+    exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
+    %save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+    clear ax ks ku obs pL pV rV sk;
+    
+    % Temperature (88-21)
+    ax = L2_ctdHelper(T,pIn,maxMld,dcm,dists,"ks",[-60 60]);
+    sgtitle('T 88-21: L2');
+    exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
+
+    % Conservative Temperature (88-21)
+    ax = L2_ctdHelper(CT,pIn,maxMld,dcm,dists,"ks",[-60 60]);
+    sgtitle('\Theta 88-21: L2');
+    exportgraphics(ax,"figures/L2/ctd/log/CT" + tmpT + ".png"); clear ax;
+       
+    % Practical Salinity (88-21)
+    ax = L2_ctdHelper(Sp,pIn,maxMld,dcm,dists,"ks",[-60 60]);
+    sgtitle('S_p 88-21: L2');
+    exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
+    %save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
+        
+    % O2 (88-21)
+    ax = L2_ctdHelper(o2,pIn,maxMld,dcm,dists,"ks",[-60 60]);
+    sgtitle('O_2 88-21: L2');
+    exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
+    %save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
+   
+end
+
+if principalAnalysisAd == true
+    % A-D
+    tmpT = "-ad";
+    
+    tmpx = "";
+    % Chlorophyll a (88-21)
+    % chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
+    chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
+    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,dists,"ad",[-60 60]);
+    sgtitle('L2'+tmpx);
+    exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
+    %save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
+    clear ax lowerP ks ku obs pL pV rV sk;
+    
+    % Temperature (88-21)
+    ax = L2_ctdHelper(T,pIn,maxMld,dcm,dists,"ad",[-60 60]);
+    sgtitle('T 88-21: L2'+tmpT);
+    exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
+
+    % Conservative Temperature (88-21)
+    ax = L2_ctdHelper(CT,pIn,maxMld,dcm,dists,"ad",[-60 60],30,true,false);
+    sgtitle('L2');
+    exportgraphics(ax,"figures/L2/ctd/log/CT" + tmpT + ".png"); clear ax;
+    
+    % Practical Salinity (88-21)
+    ax = L2_ctdHelper(Sp,pIn,maxMld,dcm,dists,"ad",[-60 60]);
+    sgtitle('S_p 88-21: L2'+tmpT);
+    exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
+
+    % Absolute Salinity (88-21)
+    ax = L2_ctdHelper(SA,pIn,maxMld,dcm,dists,"ad",[-60 60],30,true,true);
+    sgtitle('S_A 88-21: L2'+tmpT);
+    exportgraphics(ax,"figures/L2/ctd/log/SA" + tmpT + ".png"); clear ax;
+
+    % Potential Density (88-21)
+    ax = L2_ctdHelper(sigma0,pIn,maxMld,dcm,dists,"ad",[-60 60],30,true,true);
+    sgtitle('\sigma_0 88-21: L2'+tmpT);
+    exportgraphics(ax,"figures/L2/ctd/log/sigma0" + tmpT + ".png"); clear ax;
+    
+    % Stratification (N^2)
+    ax = L2_ctdHelper(N2,p_mid(:,1),maxMld,dcm,dists,"ad",[-60 60],30,true,true);
+    sgtitle('N^2 88-21: L2'+tmpT);
+    exportgraphics(ax,"figures/L2/ctd/log/N2" + tmpT + ".png"); clear ax;
+    
+    % O2 (88-21)
+    ax = L2_ctdHelper(o2,pIn,maxMld,dcm,dists,"ad",[-60 60]);
+    sgtitle('O_2 88-21: L2'+tmpT);
+    exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png"); clear ax;
+    %save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
+
+end
 
 %% Seasonal Analysis
 
@@ -340,69 +441,6 @@ if seasonalAnalysis == true
 
 end
 
-%% Principal Analysis
-if principalAnalysis == true
-
-    % K-S
-    tmpT = "";
-    
-    % Chlorophyll a (88-21)
-    chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,dists,"ks",[-60 60]);
-    sgtitle('[Chl a] 01-21: L2');
-    exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
-    %save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax ks ku obs pL pV rV sk;
-    
-    % Temperature (88-21)
-    ax = L2_ctdHelper(T,pIn,maxMld,dcm,dists,"ks",[-60 60]);
-    sgtitle('T 88-21: L2');
-    exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
-    %save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
-       
-    % Practical Salinity (88-21)
-    ax = L2_ctdHelper(Sp,pIn,maxMld,dcm,dists,"ks",[-60 60]);
-    sgtitle('S_p 88-21: L2');
-    exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
-    %save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
-        
-    % O2 (88-21)
-    ax = L2_ctdHelper(o2,pIn,maxMld,dcm,dists,"ks",[-60 60]);
-    sgtitle('O_2 88-21: L2');
-    exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png");
-    %save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
-   
-    % A-D
-    tmpT = "-ad";
-    
-    tmpx = "";
-    % Chlorophyll a (88-21)
-    % chla = load("output\CTD\chla.mat").meanLiN(1:lowerP,131:329);
-    ax = L2_ctdHelper(chla,pIn,maxMld,dcm,dists,"ad",[-60 60]);
-    sgtitle('L2'+tmpx);
-    exportgraphics(ax,"figures/L2/ctd/log/chla" + tmpT + ".png");
-    %save("output\L2\ctd\chla.mat","pL","ks","obs","sk","ku","pV","rV");
-    clear ax lowerP ks ku obs pL pV rV sk;
-    
-    % Temperature (88-21)
-    ax = L2_ctdHelper(T,pIn,maxMld,dcm,dists,"ad",[-60 60]);
-    sgtitle('T 88-21: L2'+tmpT);
-    exportgraphics(ax,"figures/L2/ctd/log/T" + tmpT + ".png"); clear ax;
-    %save("output\L2\ctd\T.mat","pL","ks","obs","sk","ku","pV","rV");
-    
-    % Practical Salinity (88-21)
-    ax = L2_ctdHelper(Sp,pIn,maxMld,dcm,dists,"ad",[-60 60]);
-    sgtitle('S_p 88-21: L2'+tmpT);
-    exportgraphics(ax,"figures/L2/ctd/log/Sp" + tmpT + ".png"); clear ax;
-    %save("output\L2\ctd\Sp.mat","pL","ks","obs","sk","ku","pV","rV");
-    
-    % O2 (88-21)
-    ax = L2_ctdHelper(o2,pIn,maxMld,dcm,dists,"ad",[-60 60]);
-    sgtitle('O_2 88-21: L2'+tmpT);
-    exportgraphics(ax,"figures/L2/ctd/log/o2" + tmpT + ".png"); clear ax;
-    %save("output\L2\ctd\o2.mat","pL","ks","obs","sk","ku","pV","rV");
-
-end
 %% Unused: NO3-.
 
 % %% No3-: 88-21

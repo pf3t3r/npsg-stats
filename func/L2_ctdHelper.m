@@ -1,4 +1,4 @@
-function [ax,rV,pV,ad,vuongRes] = L2_ctdHelper(X,pIn,maxMld,dcm,testSel,hypTest,limits,threshold,logAxis)
+function [ax,rV,pV,ad,vuongRes] = L2_ctdHelper(X,pIn,maxMld,dcm,testSel,hypTest,limits,threshold,logAxis,legendOn)
 % [ax,pL,ks,obs,sk,ku,pV,rV,tr,ad,tr2]
 %%L2_helper: this function makes the calculation of KS p-values, skewness,
 %%and kurtosis a little more efficient for L2 (sub-mixed layer region that
@@ -18,6 +18,10 @@ function [ax,rV,pV,ad,vuongRes] = L2_ctdHelper(X,pIn,maxMld,dcm,testSel,hypTest,
 % Sk = skewness at depths where ks is taken,
 % Ku = kurtosis at the same depths.
 
+% Set up default values.
+if nargin < 10
+    legendOn = false;
+end
 if nargin < 9
     logAxis = true; % true => output p-values in log x-axis, otherwise no log plot.
 end
@@ -33,10 +37,12 @@ end
 if nargin < 5
     testSel = 4;
 end
+
+
 n = length(pIn);        % Depth range
 nT = length(X(1,:));    % Time range
-alphaHy = 0.005;         % Alpha for K-S/A-D p-value
-alphaLlr = 0.1;        % Alpha for Vuong LLR p-value
+alphaHy = 0.005;        % Alpha for K-S/A-D p-value
+alphaLlr = 0.1;         % Alpha for Vuong LLR p-value
 
 
 % 1. Extract data beneath ML
@@ -438,7 +444,9 @@ set(gca,"YTick",limits(1):10:limits(2),"YTickLabel",limits(1):10:limits(2));
 % yticklabels({});
 ylabel("Pressure [dbar]",Interpreter="latex",FontSize=13);
 set(gca,'YDir','reverse');
-% legend(Location="west");
+if legendOn == true
+    legend(Location="west");
+end
 % title('K-S Test');
 
 % zzs = 0.25*ones(n2,1);

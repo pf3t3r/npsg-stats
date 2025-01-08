@@ -10,9 +10,9 @@ mld = load("mldVals.mat").maxMld; % single maximum per cruise
 dcm = load("output/dcm.mat").dcm; % pDcm + sigmaDcm (all casts, crn 1-329)
 
 % Possible test cases.
-principleAnalysis = true;  % main analysis
+principleAnalysis = false;  % main analysis
 seasonalAnalysisKs = false;   % seasonality of statistics
-seasonalAnalysisAd = false;   % seasonality of statistics
+seasonalAnalysisAd = true;   % seasonality of statistics
 testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 
 % TEMPLATE (XX-YY)
@@ -475,7 +475,7 @@ if seasonalAnalysisAd == true
     % Chlorophyll a (88-21)
     tmpx = "Winter";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[6 16],1);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[4 14],1);
     sgtitle("L2 "+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
@@ -585,7 +585,7 @@ if seasonalAnalysisAd == true
     % chla
     tmpx = ": Spring";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[8 18],2);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[7 17],2);
     sgtitle("L2 chl-$a$"+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;
@@ -804,7 +804,7 @@ if seasonalAnalysisAd == true
     % chla
     tmpx = " Autumn";
     tmp = importdata("data/L2/hplcChla_88-21_200.txt");
-    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[1 11],4);
+    ax = L2_helper(tmp,mld,dcm,thresh,testSel,"ad",[-50 50],[3 13],4);
     sgtitle("L2"+tmpx,"Interpreter","latex");
     exportgraphics(ax,"figures/L2/bottle/log/chla" + tmpT + ".png");
     clear tmp ax;

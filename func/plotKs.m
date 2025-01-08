@@ -382,9 +382,9 @@ hold on
 if strcmp(hypTest,"ks")
     if testSel == 4
         plot(ks(1,:),tr,'o-','Color','#a6cee3','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-        plot(ks(2,:),tr,'+--','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(2,:),tr,'+-','Color','#1f78b4','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
         plot(ks(3,:),tr,'x-','Color','#b2df8a','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-        plot(ks(4,:),tr,'.--','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+        plot(ks(4,:),tr,'.-','Color','#33a02c','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
     elseif testSel == 2
         plot(ks(1,:),tr,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
         plot(ks(2,:),tr,'+--','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
@@ -393,9 +393,9 @@ if strcmp(hypTest,"ks")
 else
     if testSel == 4
         plot(ad(1,:),tr,'o-','Color','#c51b7d','DisplayName','Normal','LineWidth',1.5,'MarkerSize',5);
-        plot(ad(2,:),tr,'+--','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(2,:),tr,'+-','Color','#4d9221','DisplayName','Lognormal','LineWidth',1.5,'MarkerSize',5);
         plot(ad(3,:),tr,'x-','Color','#d3d3d3','DisplayName','Weibull','LineWidth',1.5,'MarkerSize',5);
-        plot(ad(4,:),tr,'.--','Color','#000000','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
+        plot(ad(4,:),tr,'.-','Color','#000000','DisplayName','Gamma','LineWidth',1.5,'MarkerSize',5);
     elseif testSel == 2
         for i = 1:n
             if vuongRes(i) == 1 && ad(1,i) > alphaHy & pV(1,i) > alphaLlr && ad(2,i) > alphaHy

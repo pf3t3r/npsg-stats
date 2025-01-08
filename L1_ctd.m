@@ -5,7 +5,8 @@ addpath("baroneRoutines\"); addpath("func\"); addpath("output\");
 set(groot, "defaultFigureUnits", "centimeters", "defaultFigurePosition", [3 3 15 15]);
 
 % Test Cases
-principleAnalysis = true;       % main analysis
+principalAnalysisAd = true;     % main analysis with A-D test
+principleAnalysisKs = false;    % main analysis with K-S test
 seasonalAnalysis = false;       % seasonality of statistics
 noOfDists = 2;
 adThresh = 30;                  % only for chl-a in A-D
@@ -75,6 +76,17 @@ for i = 1:329
     meanO2(:,i) = mean(squeeze(O2(i,:,:)),2,"omitnan");
 end
 
+%% GSW Processing.
+% Convert temperature and practical salinity into conservative temperature
+% and absolute salinity, and then calculate potential density.
+
+stnALOHA_lon = -158;
+stnALOHA_lat = 22.75;
+SA = gsw_SA_from_SP(meanSp,pIn',stnALOHA_lon,stnALOHA_lat);
+CT = gsw_CT_from_t(SA,meanT,pIn');
+sigma0 = gsw_sigma0(SA,CT);
+[N2,p_mid] = gsw_Nsquared(SA,CT,pIn',stnALOHA_lat);
+
 %% Show vertical profiles
 
 % figure
@@ -90,7 +102,7 @@ end
 % title("$O_2$ (mmol m$^{-3}$)",Interpreter="latex");
 
 %% Principal Analysis
-if principleAnalysis == true
+if principleAnalysisKs == true
     %  K-S
     tmpT = "";
     
@@ -118,6 +130,10 @@ if principleAnalysis == true
     exportgraphics(ax,"figures/L1/ctd/"+lp+"o2" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\o2.mat","p","ks","obs","Sk","Ku");
     
+end
+
+if principalAnalysisAd == true
+
     % A-D
     tmpT = "-ad";
     
@@ -133,12 +149,37 @@ if principleAnalysis == true
     sgtitle("CTD Temperature 88-21: L1"+tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"T" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\t.mat","p","ks","obs","Sk","Ku");
+
+    % CT
+    ax = L1_ctdHelper(CT,pIn,maxMld,adThresh,noOfDists,"ad");
+    sgtitle("L1");
+    exportgraphics(ax,"figures/L1/ctd/"+lp+"CT" + tmpT + ".png"); clear ax;
+    % save("output\L1\ctd\t.mat","p","ks","obs","Sk","Ku");
     
     % SP
     [ax,mldCon,rV,pV,ad,V] = L1_ctdHelper(meanSp,pIn,maxMld,adThresh,noOfDists,"ad");
     sgtitle("CTD S_P 88-21: L1"+tmpT);
     exportgraphics(ax,"figures/L1/ctd/"+lp+"sp" + tmpT + ".png"); clear ax;
     % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
+
+    % SA
+    ax = L1_ctdHelper(SA,pIn,maxMld,adThresh,noOfDists,"ad");
+    sgtitle("CTD S_A 88-21: L1"+tmpT);
+    exportgraphics(ax,"figures/L1/ctd/"+lp+"sa" + tmpT + ".png"); clear ax;
+    % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
+
+    % sigma0
+    ax = L1_ctdHelper(sigma0,pIn,maxMld,adThresh,noOfDists,"ad");
+    sgtitle("CTD \sigma_0 88-21: L1"+tmpT);
+    exportgraphics(ax,"figures/L1/ctd/"+lp+"sigma0" + tmpT + ".png"); clear ax;
+    % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
+
+    % N^2 Stratification
+    ax = L1_ctdHelper(N2,p_mid(:,1),maxMld,adThresh,noOfDists,"ad");
+    sgtitle("N^2 88-21: L1"+tmpT);
+    exportgraphics(ax,"figures/L1/ctd/"+lp+"n_squared" + tmpT + ".png"); clear ax;
+    % save("output\L1\ctd\sp.mat","p","ks","obs","Sk","Ku");
+    
     
     % O2
     ax = L1_ctdHelper(meanO2,pIn,maxMld,adThresh,noOfDists,"ad");

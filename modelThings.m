@@ -24,7 +24,7 @@ runAnalytical = false;
 % used here is:
 % d[X]/dt = + sigma*eta*[X]
 
-sigma_k = 8.8;          % magnitude of the stochastic fluctuation
+sigma_k = 7.2;          % magnitude of the stochastic fluctuation
 
 opt = odeset(Events=@stopIntegration);  % stop integration at 0.001*x0
 
@@ -185,6 +185,19 @@ if runAnalytical == true
     legend("case one","case two");
     title("\mu = " + mu + ", \sigma = " + sigma);
 end
+
+%% realistic mu study
+
+muSig = [68.3 68.5 69 70 71 72 73 74 75 76 77 78 79 80 81];
+numMu = [16.3508 10.4064 2.5199 4.3821 10.4134 0.28142 0.13845 2.3196 0.88711 0.16095 -0.0027239 0.17528 -0.002159 -0.0040504 -0.00095759];
+
+figure
+plot(muSig,numMu,'*-');
+xlabel("\mu / \sigma");
+ylabel("numerical \mu");
+title("\mu / \sigma vs. numerical \mu");
+subtitle("\sigma = 0.1");
+
 
 %% theoretical lognormal
 % x = 1;

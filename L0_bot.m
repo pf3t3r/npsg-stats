@@ -24,10 +24,145 @@ else
     lp = "";
 end
 
+%% chl-a only
+tmp = importdata('data/L0/hplcChla_88-21_200.txt');
+[ax,~,~,pB,X,botId] = L0_helper(tmp,50,'ad');
+
+
+time = tmp.data(:,2);
+hms = tmp.data(:,3);
+
+YY1 = mod(time,100);
+
+% Correct the years
+for i=1:length(YY1)
+    if YY1(i) < 85
+        YY1(i) = YY1(i) + 2000;
+    else
+        YY1(i) = YY1(i) + 1900;
+    end
+end
+
+YY2 = string(compose('%02d',YY1));
+YY = str2double(YY2);
+
+DD1 = mod(time,10000)-mod(time,100);
+DD2 = DD1/100;
+DD3 = string(compose('%02d',DD2));
+DD = str2double(DD3);
+
+MM1 = mod(time,1000000) - mod(time,10000);
+MM2 = MM1/10000;
+MM3 = string(compose('%02d',MM2));
+MM = str2double(MM3);
+
+hms(hms==-9) = nan;
+
+ss1 = mod(hms,100);
+ss2 = string(compose('%02d',ss1));
+ss = str2double(ss2);
+
+mm1 = mod(hms,10000)-mod(hms,100);
+mm2 = mm1/100;
+mm3 = string(compose('%02d',mm2));
+mm = str2double(mm3);
+
+hh1 = mod(hms,1000000) - mod(hms,10000);
+hh2 = hh1/10000;
+hh3 = string(compose('%02d',hh2));
+hh = str2double(hh3);
+
+
+time2 = datetime(YY,MM,DD,hh,mm,ss);
+
+newCast = [1];
+
+for i = 2:length(pB)
+    if pB(i) < pB(i-1)
+        disp(i);
+        newCast = [newCast i];
+    end
+end
+
+pgrid = nan(320,20);
+tgrid = NaT(320,20);
+chlagrid = NaN(320,20);
+
+% First Case.
+pgrid(1,1:(newCast(2)-newCast(1))) = pB(newCast(1):newCast(2)-1);
+tgrid(1,1:(newCast(2)-newCast(1))) = time2(newCast(1):newCast(2)-1);
+chlagrid(1,1:(newCast(2)-newCast(1))) = X(newCast(1):newCast(2)-1);
+
+% Then Loop.
+% i = 2:319
+for i = 2:319
+    pgrid(i,1:(newCast(i+1)-newCast(i))) = pB(newCast(i):newCast(i+1)-1);
+    tgrid(i,1:(newCast(i+1)-newCast(i))) = time2(newCast(i):newCast(i+1)-1);
+    chlagrid(i,1:(newCast(i+1)-newCast(i))) = X(newCast(i):newCast(i+1)-1);
+    %pgrid(3,1:(newCast(4)-newCast(3))) = pB(newCast(3):newCast(4)-1);
+end
+
+% Final Case.
+pgrid(320,1:(length(pB)+1-newCast(320))) = pB(newCast(320):length(pB));
+tgrid(320,1:(length(time2)+1-newCast(320))) = time2(newCast(320):length(time2));
+chlagrid(320,1:(length(X)+1-newCast(320))) = X(newCast(320):length(X));
+
+% newpgrid = 10*pgrid-5;
+
+figure;
+s = surf(tgrid,pgrid,chlagrid);
+colormap(flipud(cbrewer2("GnBu")));
+view([0 -90]);
+s.EdgeColor = "none";
+c = colorbar;
+c.Label.String = 'chl-a [ng/l]';
+xlim([tgrid(1,1) tgrid(320,12)]);
+ylim([1 18]);
+zlim([0 500]);
+yticklabels(15:20:175);
+ylabel("P [dbar]"); xlabel("Time");
+
+%% mean profile
+
+chlaProfile = nan(1,20);
+f5 = nan(1,20);
+f95 = nan(1,20);
+
+for i = 1:20
+    chlaProfile(i) = mean(chlagrid(pgrid==i),"omitnan");
+    f5(i) = prctile(chlagrid(pgrid==i),5);
+    f95(i) = prctile(chlagrid(pgrid==i),95);
+end
+
+% Toggle show y-label and title (for paper we don't need either)
+displayYLabelAndTitle = false;
+
+% Plot the mean profile of fluorescence with the mean and confidence
+% interval.
+ax = figure;
+plot(chlagrid(:,1),pgrid(:,1),'.',Color=[0.8 0.8 0.8],DisplayName="raw data");
+hold on
+plot(chlagrid(:,2:20),pgrid(:,2:20),'.',Color=[0.8 0.8 0.8],HandleVisibility='off');
+plot(chlaProfile,1:1:20,'-',"Color",[0 0 0],DisplayName="mean");
+plot(f5,1:1:20,'-',"Color",[0.5 0.5 0.5],DisplayName="5%");
+plot(f95,1:1:20,'-',"Color",[0.5 0.5 0.5],DisplayName="95%");
+hold off
+set(gca,"YDir","reverse");
+legend();
+xlabel("chl-$a$[ng/L]",Interpreter="latex");
+if displayYLabelAndTitle == true
+    title("L0 Chl-$a$ 1988-2022",Interpreter="latex");
+    ylabel("P [dbar]",Interpreter="latex");
+    yticklabels({});
+end
+yticks(1:1:18); yticklabels(5:10:175);
+ylim([1 18]);
+
+% use this as example
+% contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
+
 %% Parameters vs Depth
 
-tmp = importdata('data/L0/hplcChla_88-21_200.txt');
-[ax,~,~,pB,X] = L0_helper(tmp,50,'ad');
 
 XN = nan(20,500);
 for i = 1:20
@@ -1879,7 +2014,7 @@ else
 end
 
 %% Analyse by end year
-if analyseEndYear
+if analyseEndYear == true
 
     yearList = 1994:1:2022;
     pVals = [];

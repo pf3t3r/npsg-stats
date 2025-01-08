@@ -7,7 +7,6 @@ function [ax,ks,obs,pB,X,ad] = L0_helper(tmp,threshold,hypTest,logAxis,season)
 meanDcm = load("datafiles/timeSeriesMeanDcm.mat").timeSeriesMeanDcm;
 meanPrc = load("datafiles\timeSeriesPrctl.mat").timeSeriesPrctl;
 
-
 if nargin < 5
     season = 0;
     % 0 = no seasonal analysis, 1 = winter, 2 = spring, 3 = summer,
