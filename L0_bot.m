@@ -113,7 +113,7 @@ figure;
 s = surf(tgrid,pgrid,chlagrid);
 colormap(flipud(cbrewer2("GnBu")));
 view([0 -90]);
-s.EdgeColor = "none";
+s.EdgeColor ="interp";
 c = colorbar;
 c.Label.String = 'chl-a [ng/l]';
 xlim([tgrid(1,1) tgrid(320,12)]);
@@ -121,6 +121,24 @@ ylim([1 18]);
 zlim([0 500]);
 yticklabels(15:20:175);
 ylabel("P [dbar]"); xlabel("Time");
+
+
+tgridDatenum = datenum(tgrid);
+
+figure;
+contourf(tgridDatenum,pgrid,chlagrid,'LineColor','auto');
+set(gca,"YDir","reverse");
+datetickzoom('x','yyyy','keeplimits');
+colormap(flipud(cbrewer2("GnBu")));
+c = colorbar;
+c.Label.String = 'chl-a [ng/l]';
+ylim([1 18]);
+zlim([0 500]);
+yticks(1:1:18);
+% yticklabels({});
+yticklabels(5:10:175);
+ylabel("P [dbar]"); xlabel("Time");
+
 
 %% mean profile
 
