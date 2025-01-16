@@ -1,4 +1,4 @@
-function [tr,ks,obs,sk,ku,rV,pV,ad,X_out,bottleArray] = ksOfLagrangian(id,p,dcm,X,threshold)
+function [tr,ks,obs,sk,ku,rV,pV,ad,X_out,bottleArray,pB] = ksOfLagrangian(id,p,dcm,X,threshold)
 %ksOfLagrangian(): quickly find the DCM-centred (Lagrangian) transformation for a
 %given variable.
 % INPUTS:

@@ -21,6 +21,18 @@ testSel = 2; % 2 = norm + logn; 4 = norm + logn + weib + gamm
 % 3. Calculate K-S (or A-D) p-value, Vuong LLR, skewness + kurtosis
 % 4. Plot results
 
+%% L2 Histograms
+tmp = importdata("data/L2/hplcChla_88-21_200.txt");
+% [~,~,pSubml,~,~,~,~,~,~,~,~,~,~,~,cSubml] = L2_helper(tmp,mld,dcm,30,2,"ad");
+% pB = round(pSubml,-1);   % bin the pressure
+
+[~,chla_L2,~,~,~,~,~,~,~,~,~,~,~,~,~,p_L2] = L2_helper(tmp,mld,dcm,30,2,"ad");
+
+%% hist
+
+figure
+histfit(chla_L2(p_L2==60),10,"lognormal");
+
 %% Seasonal Analysis: K-S
 % thresh = 30;
 if seasonalAnalysisKs == true

@@ -58,6 +58,25 @@ ax = L1_helper(tmp,maxMld,thresh,4,"ad");
 sgtitle("L1"+tmpX,"Interpreter","latex");
 exportgraphics(ax,"figures/L1/bottle/" + lp + "chla" + tmpT + ".png");
 
+%% L1 chla: set up histograms
+
+tmp = importdata("data/L1/hplcChla_88-21_150.txt");
+thresh = 30; testSel = 2;
+[~,~,~,~,~,~,~,~,~,chla_ML,p_ML] = L1_helper(tmp,maxMld,thresh,testSel,"ad");
+
+% chla = tmp.data(:,5);
+% p = tmp.data(:,4);
+pB = round(p_ML,-1);   % bin the pressure
+
+%% Plot the L1 chl-a histograms
+% for chla measured at pressures in range 5-15 dbar, use pB = 10
+% for range 15-25 dbar, use pB = 20, etc.
+figure;
+histogram(chla_ML(pB==10));
+
+%% histfit variation
+figure
+histfit(chla_ML(pB==40),10,"lognormal");
 %% Principal Analysis: A-D
 
 if principleAnalysisAd == true
