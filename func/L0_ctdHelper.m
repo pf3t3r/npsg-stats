@@ -9,7 +9,7 @@ if nargin <2
 end
 
 n = 101;
-ks = nan(5,n); ad = nan(1,n);
+ks = nan(5,n); ad = nan(2,n);
 sk = nan(1,n); ku = nan(1,n);
 % rVC = nan(10,n); pVC = nan(10,n);
 obs = nan(1,n);
@@ -28,7 +28,8 @@ for i = 1:n
         if strcmp(hypTest,"ks")
             [~,ks(:,i),~] = statsplot2(X_i,'noplot');
         else
-            [~,ad(i)] = adtest(X_i,"Distribution","logn");
+            [~,ad(1,i)] = adtest(X_i,"Distribution","norm");
+            [~,ad(2,i)] = adtest(X_i,"Distribution","logn");
         end
         [rVC(:,i),pVC(:,i)] = bbvuong(X_i);
         sk(i) = skewness(X_i);
@@ -81,7 +82,8 @@ if strcmp(hypTest,"ks")
     plot(ks(2,:),pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
     xlabel('K-S $p$-value','Interpreter','latex',FontSize=15);
 else
-    plot(ad,pCtd,'+--','Color','#1f78b4',LineWidth=1.5,MarkerSize=5,HandleVisibility='off');
+    plot(ad(1,:),pCtd,'o-','Color','#c51b7d',LineWidth=1.5,MarkerSize=5,DisplayName="normal");
+    plot(ad(2,:),pCtd,'o-','Color','#4d9221',LineWidth=1.5,MarkerSize=5,DisplayName="lognormal");
     xlabel('A-D $p$-value','Interpreter','latex',FontSize=15);
 end
 if logAxis == true

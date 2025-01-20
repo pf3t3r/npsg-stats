@@ -1057,7 +1057,7 @@ if principleAnalysis == true
     % A-D
     tmpT = "-ad";
     
-    testSel = 4;
+    testSel = 2;
     
     % Chlorophyll a (88-21)
     tmpX = "";

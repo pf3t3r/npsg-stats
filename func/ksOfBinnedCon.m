@@ -42,8 +42,8 @@ for i = 1:n
         gammaParams = mle(X_i,"distribution","Gamma");
         pdG = makedist("Gamma",gammaParams(1),gammaParams(2));
         [~,ks(:,i),~] = statsplot2(X_i,'noplot');
-        [~,ad(2,i)] = adtest(X_i,"Distribution","logn");
-        [~,ad(1,i)] = adtest(X_i,"Distribution","norm");
+        [~,ad(2,i)] = adtest(X_i,"Distribution","logn","Alpha",0.005);
+        [~,ad(1,i)] = adtest(X_i,"Distribution","norm","Alpha",0.005);
         [~,ad(3,i)] = adtest(X_i,"Distribution","weibull");
         [~,ad(4,i)] = adtest(X_i,Distribution=pdG,MCTol=0.05);
         [rV(:,i),pV(:,i)] = bbvuong(X_i);

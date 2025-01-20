@@ -142,8 +142,8 @@ for i = 1:n2
         if strcmp(hypTest,'ks')
             [~,ks(:,i),~] = statsplot2(X_i,'noplot');
         else
-            [~,ad(1,i)] = adtest(X_i,'Distribution','logn');
-            [~,ad(2,i)] = adtest(X_i,'Distribution','norm');
+            [~,ad(1,i)] = adtest(X_i,'Distribution','logn','alpha',0.005);
+            [~,ad(2,i)] = adtest(X_i,'Distribution','norm','alpha',0.005);
         end
         %[rV(:,i),pV(:,i)] = bbvuong(X_i);
         %sk(i) = skewness(X_i);

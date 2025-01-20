@@ -138,7 +138,7 @@ if principleAnalysis == true
     
     % chla
     chla = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
-    [ax,ad] = L0_ctdHelper(chla,"ad",logAxes);
+    ax = L0_ctdHelper(chla,"ad",logAxes);
     sgtitle("chl-a " + tmpT);
     exportgraphics(ax,"figures/L0/ctd/" + lp + "chla" + tmpT + ".png");
     
