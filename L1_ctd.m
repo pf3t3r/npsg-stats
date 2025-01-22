@@ -87,6 +87,23 @@ CT = gsw_CT_from_t(SA,meanT,pIn');
 sigma0 = gsw_sigma0(SA,CT);
 [N2,p_mid] = gsw_Nsquared(SA,CT,pIn',stnALOHA_lat);
 
+%% Show Derived Parameters
+
+% Potential Density Anomaly (wrt p=0) 'sigma0'
+figure;
+scatter(sigma0,pIn,5,"yellow");
+set(gca,"YDir","reverse");
+
+% Absolute Salinity SA
+figure;
+scatter(SA,pIn,4,"yellow");
+set(gca,"YDir","reverse");
+
+% Conservative Temperature CT
+figure;
+scatter(CT,pIn,4,"yellow");
+set(gca,"YDir","reverse");
+
 %% Show vertical profiles
 
 % figure

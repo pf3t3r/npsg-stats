@@ -71,6 +71,17 @@ for i = 1:329
     meanO2(:,i) = mean(squeeze(O2(i,:,:)),2,"omitnan");
 end
 
+%% Derived Quantities
+
+tmpP = 0:2:200;
+lon = -158; lat = 22.75;
+
+% Absolute Salinity SA
+SA = gsw_SA_from_SP(meanSp,tmpP',lon,lat);
+
+% Conservative Temperature CT
+CT = gsw_CT_from_t(SA,meanT,tmpP');
+
 %% Check Parameters for CHLA
 
 chla = load("output\CTD\chla.mat").meanEpN(1:101,131:329);
@@ -146,7 +157,12 @@ if principleAnalysis == true
     ax = L0_ctdHelper(meanT,"ad",logAxes);
     sgtitle("T " + tmpT);
     exportgraphics(ax,"figures/L0/ctd/" + lp + "T" + tmpT + ".png");
-    
+
+    % CT
+    ax = L0_ctdHelper(CT,"ad",logAxes);
+    sgtitle("CT " + tmpT);
+    %exportgraphics(ax,"figures/L0/ctd/" + lp + "T" + tmpT + ".png");
+
     % Sp
     ax = L0_ctdHelper(meanSp,"ad",logAxes);
     sgtitle("$S_p$ " + tmpT,"Interpreter","latex");
