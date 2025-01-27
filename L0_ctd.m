@@ -160,8 +160,8 @@ if principleAnalysis == true
 
     % CT
     ax = L0_ctdHelper(CT,"ad",logAxes);
-    sgtitle("CT " + tmpT);
-    %exportgraphics(ax,"figures/L0/ctd/" + lp + "T" + tmpT + ".png");
+    sgtitle("CT ");
+    exportgraphics(ax,"figures/L0/ctd/" + lp + "CT" + tmpT + ".png");
 
     % Sp
     ax = L0_ctdHelper(meanSp,"ad",logAxes);
