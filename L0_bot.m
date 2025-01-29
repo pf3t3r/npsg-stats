@@ -132,12 +132,15 @@ datetickzoom('x','yyyy','keeplimits');
 colormap(flipud(cbrewer2("GnBu")));
 c = colorbar;
 c.Label.String = 'chl-a [ng/l]';
+c.FontSize = 13;
 ylim([1 18]);
 zlim([0 500]);
 yticks(1:1:18);
 % yticklabels({});
 yticklabels(5:10:175);
-ylabel("P [dbar]"); xlabel("Time");
+ylabel("P [dbar]","FontSize",13); xlabel("Time",FontSize=13);
+ax = gca;
+ax.FontSize = 15;
 
 
 %% mean profile
@@ -167,7 +170,7 @@ plot(f95,1:1:20,'-',"Color",[0.5 0.5 0.5],DisplayName="95%");
 hold off
 set(gca,"YDir","reverse");
 legend();
-xlabel("chl-$a$[ng/L]",Interpreter="latex");
+xlabel("chl-$a$ [ng/L]",Interpreter="latex");
 if displayYLabelAndTitle == true
     title("L0 Chl-$a$ 1988-2022",Interpreter="latex");
     ylabel("P [dbar]",Interpreter="latex");
@@ -175,6 +178,8 @@ if displayYLabelAndTitle == true
 end
 yticks(1:1:18); yticklabels(5:10:175);
 ylim([1 18]);
+ax = gca;
+ax.FontSize = 15;
 
 % use this as example
 % contourf(t_grid,p_grid,CT2D,linspace(16,28,nb),'LineColor','auto');
