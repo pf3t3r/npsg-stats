@@ -1,4 +1,4 @@
-% Check the trend in chl-a in 1988-2021
+% Check the trend in chl-a in 1988-2021.
 
 clear; clc; close all;
 addpath("baroneRoutines\"); addpath("func\");
@@ -20,13 +20,6 @@ MDY = num2str(MDY);
 hms = tmp.data(:,3);
 hms(hms == -9) = 999999;
 hms = num2str(hms);
-
-% for i = 1:length(MDY)
-%     if ~isnan(MDY(i))
-%         disp(i);
-%         M = str2num(MDY(:,1:2)); D = str2num(MDY(:,3:4)); Y = str2num(MDY(:,5:6));
-%     end
-% end
 
 for i = 1:length(MDY)
     MDY(i,:) = strrep(MDY(i,:),' ','0');
@@ -68,7 +61,3 @@ x0 = X(binnedPressure==0);
 
 figure;
 plot(x0);
-
-% LT = trenddecomp(x0);
-% figure;
-% plot()
